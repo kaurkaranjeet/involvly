@@ -71617,17 +71617,6 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./resources/assets/images/portrait/small/avatar-s-11.jpg":
-/*!****************************************************************!*\
-  !*** ./resources/assets/images/portrait/small/avatar-s-11.jpg ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/avatar-s-11.jpg?1a620230b75dd161d37ad2d21948e9cb";
-
-/***/ }),
-
 /***/ "./resources/assets/utils/color.js":
 /*!*****************************************!*\
   !*** ./resources/assets/utils/color.js ***!
@@ -72098,8 +72087,7 @@ var AuthService = /*#__PURE__*/function (_EventEmitter) {
   }, {
     key: "isAuthenticated",
     value: function isAuthenticated() {
-      var fff = localStorage.getItem("loggedIn");
-      return fff;
+      return new Date(Date.now()) < new Date(localStorage.getItem(tokenExpiryKey)) && localStorage.getItem(localStorageKey) === 'true';
     }
   }]);
 
@@ -73154,7 +73142,9 @@ router.beforeEach(function (to, from, next) {
   // }
   // If auth required, check login. If login fails redirect to login page
   if (to.meta.authRequired) {
-    if (!_auth_authService__WEBPACK_IMPORTED_MODULE_2__["default"].isAuthenticated()) {
+    var loggedIn = localStorage.getItem('userInfo');
+
+    if (!loggedIn) {
       router.push({
         path: '/pages/login'
       });
@@ -73912,17 +73902,7 @@ __webpack_require__.r(__webpack_exports__);
 // /////////////////////////////////////////////
 // *From Auth - Data will be received from auth provider
 
-var userDefaults = {
-  uid: 0,
-  // From Auth
-  displayName: "John Doe",
-  // From Auth
-  about: "Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.",
-  photoURL: __webpack_require__(/*! @assets/images/portrait/small/avatar-s-11.jpg */ "./resources/assets/images/portrait/small/avatar-s-11.jpg"),
-  // From Auth
-  status: "online",
-  userRole: "admin"
-}; //console.log(localStorage.getItem('userInfo'));
+var userDefaults = {}; //console.log(localStorage.getItem('userInfo'));
 
 var userInfoLocalStorage = JSON.parse(localStorage.getItem('userInfo')) || {}; //console.log(userInfoLocalStorage)
 // Set default values for active-user

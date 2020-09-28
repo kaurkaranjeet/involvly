@@ -148,7 +148,8 @@ router.beforeEach((to, from, next) => {
 
     // If auth required, check login. If login fails redirect to login page
     if (to.meta.authRequired) {
-      if (!(auth.isAuthenticated())) {
+       const loggedIn = localStorage.getItem('userInfo');
+       if(!loggedIn) {
         router.push({ path: '/pages/login' })
       }
     }
