@@ -37,7 +37,7 @@ class StudentController extends Controller {
        }  
        else{ 
         $student_obj=new User;
-        $addUser = $uersObj->store($request);
+        $addUser = $student_obj->store($request);
         if(!empty( $addUser )){
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
        }
