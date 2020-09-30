@@ -70,6 +70,7 @@ class User extends Authenticatable implements JWTSubject {
         $this->email = $request->input('email');
         $this->last_name = $request->input('last_name');
           $this->first_name = $request->input('first_name');
+           $this->role_id = $request->input('role_id');
         $this->password = $request->input('password');
         $this->device_token = $request->input('device_token');
         if(!empty($request->class_code)){
@@ -81,7 +82,7 @@ class User extends Authenticatable implements JWTSubject {
      $this->state_id =$request->state_id;
       $this->school_id =$request->school_id;
      $this->country =$request->country;
-     $this->city =$request->city;
+     $this->city =$request->city_id;
      $this->type_of_schooling =$request->type_of_schooling;
      $this->save();
      if ($this->id > 0) {
