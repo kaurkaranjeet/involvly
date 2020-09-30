@@ -68,7 +68,8 @@ class User extends Authenticatable implements JWTSubject {
     public function store($request) {
         $this->name = $request->input('first_name').' '.$request->input('last_name');
         $this->email = $request->input('email');
-        $this->email = $request->input('last_name');
+        $this->last_name = $request->input('last_name');
+          $this->first_name = $request->input('first_name');
         $this->password = $request->input('password');
         $this->device_token = $request->input('device_token');
         if(!empty($request->class_code)){
