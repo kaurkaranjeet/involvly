@@ -66,26 +66,26 @@ class User extends Authenticatable implements JWTSubject {
      * @return $this
      */
     public function store($request) {
-        $this->name = $request->input('name');
+        $this->name = $request->input('first_name').' '.$request->input('last_name');
         $this->email = $request->input('email');
-        if($request->input('type')=='snapchat'){
-        $this->email = $request->input('authenticiation_key');
-        }
-        $this->email_verified_at = $request->input('email_verified_at');
+        $this->email = $request->input('last_name');
         $this->password = $request->input('password');
-        $this->remember_token = $request->input('remember_token');
-        $this->authenticiation_key = $request->input('authenticiation_key');
-        $this->type = $request->input('type');
         $this->device_token = $request->input('device_token');
-        
-       
-         $this->image = $request->input('image');;
-        $this->status = 'ACTIVE';
-        $this->save();
-        if ($this->id > 0) {
-            return $this;
-        }
+        if(!empty($request->class_code)){
+         $this->status = '1';
+     } else{
+         $this->status = '0';
+     }  
+     $this->role_id =$request->role_id;
+     $this->state_id =$request->state_id;
+     $this->country =$request->country;
+     $this->city =$request->city;
+     $this->type_of_schooling =$request->type_of_schooling;
+     $this->save();
+     if ($this->id > 0) {
+        return $this;
     }
+}
 
     protected function fetchUsers()
     {

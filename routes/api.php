@@ -39,30 +39,8 @@ use Illuminate\Support\Facades\Route;
 
   Route::prefix('v1')->group(function () {
     Route::post('login', 'Api\V1\LoginController@login');
-    Route::post('social-login', 'Api\V1\LoginController@socialSignupLogin');
-    Route::post('music-login', 'Api\V1\LoginController@musicSignupLogin');
-    Route::post('update-profile', 'Api\V1\ProfileController@updateProfile');
-    Route::post('getuserprofile', 'Api\V1\ProfileController@Getuserprofile');
-    Route::post('create_stream', 'Api\V1\WowzaController@AddStream');
-    Route::post('add_queue', 'Api\V1\QueueController@AddUserQueue');
-    Route::get('get_live_user', 'Api\V1\QueueController@GetUserLive');
-    Route::get('list_avaliable_slot', 'Api\V1\QueueController@listallslots');
-    Route::get('listfutureslots', 'Api\V1\QueueController@listfutureslots');
-    Route::get('listbda/{user_id}', 'Api\V1\CommonController@listBda');
-    Route::post('listuserslots', 'Api\V1\QueueController@listuserslots');  
-    Route::post('start_stream', 'Api\V1\QueueController@StartStream');  
-    Route::post('end_stream', 'Api\V1\QueueController@EndStream'); 
-    Route::post('user_watching_stream', 'Api\V1\QueueController@UserWatching');
-    //upload video
-    Route::post('upload_video', 'Api\V1\CommonController@uploadVideo');
-    Route::post('like_unlike', 'Api\V1\ProfileController@LikeUnlikeStream');
-    Route::post('add_comment', 'Api\V1\ProfileController@AddComments');
-    Route::post('follow_unfollow', 'Api\V1\ProfileController@FollowUnfollowUser');
-    Route::post('stream_comments', 'Api\V1\QueueController@GetComments');
-    Route::post('get_audio', 'Api\V1\QueueController@GetAudio');
-    Route::get('send_notification', 'Api\V1\NotificationController@SendNotification');
-    Route::get('send_two_minutes', 'Api\V1\ProfileController@Sendtwominutes');
-    Route::post('logout', 'Api\V1\LoginController@Logout'); 
-   Route::post('confirm_slot', 'Api\V1\QueueController@ConfirmSlot'); 
-    Route::post('notification_list', 'Api\V1\NotificationController@AllNotifications'); 
+    Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');
+    Route::post('get_cities', 'Api\V1\CommonController@GetCities');
+    Route::get('list_states', 'Api\V1\CommonController@GetStates');
+    Route::get('list_schools', 'Api\V1\CommonController@GetSchools');
   });
