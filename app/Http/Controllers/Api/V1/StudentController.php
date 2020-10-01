@@ -37,11 +37,7 @@ class StudentController extends Controller {
          throw new Exception($validator->errors()->first());
        }  
        else{ 
-         $request->request->add([
-                    'email_verified_at' => null,
-                    'password' => '',
-                    'remember_token' => '',
-                ]);
+
         $student_obj=new User;
         $addUser = $student_obj->store($request);
          $token = JWTAuth::fromUser($addUser);
