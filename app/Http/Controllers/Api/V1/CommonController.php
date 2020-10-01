@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Exception;
 use App\User;
+use App\Models\Subject;
 use App\Models\State;
 use App\Models\Cities;
 use App\Models\School;
@@ -88,4 +89,20 @@ class CommonController extends Controller {
    }
 }
 
+ public function GetSubjects(Request $request) {
+      try {
+
+        $Subject=Subject::all();
+        if(!empty( $Subject )){
+           return response()->json(array('error' => false, 'data' =>$Subject ), 200);
+       }
+       else{
+           throw new Exception('No Record');
+       }
+
+   }
+   catch (\Exception $e) {
+       return response()->json(array('error' => true, 'errors' => $e->getMessage(), 'data'=>[]), 200);
+   }
+}
 }

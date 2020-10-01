@@ -34,4 +34,5 @@ use Illuminate\Support\Facades\Route;
     Route::post('get_cities', 'Api\V1\CommonController@GetCities');
     Route::get('list_states', 'Api\V1\CommonController@GetStates');
     Route::get('list_schools', 'Api\V1\CommonController@GetSchools');
+      Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
   });

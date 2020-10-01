@@ -42,27 +42,20 @@ class TeacherController extends Controller {
         $addUser = $student_obj->store($request);
         $token = JWTAuth::fromUser($addUser);
          $addUser->token=$token;
-
          if($request->type_of_schooling=='home'){
           $this->AddteacherSubject($request->subject_id, $addUser->id);
-
           if($request->hasfile('documents'))
-         {
+          {
             $files = $request->file('documents');
             foreach($files as $file)
             {
-
-
-               $name = time().'.'.$file->extension();
-                $file->move(public_path().'/files/', $name);  
-                DB::table('teacher_documents')->insert(
+             $name = time().'.'.$file->extension();
+             $file->move(public_path().'/files/', $name);  
+             DB::table('teacher_documents')->insert(
               ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'files/'.$name]);
-                 
-            }
-              
-
+           }
          }
-         }
+       }
         //clascodes
         if(!empty( $addUser )){
         	$class_code=  ClassCode::where('class_code',$request->class_code)->first();
