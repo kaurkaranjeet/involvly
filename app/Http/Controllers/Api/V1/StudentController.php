@@ -23,7 +23,7 @@ class StudentController extends Controller {
        $validator = Validator::make($input, [
         'first_name' => 'required',
         'last_name' => 'required',
-        'email' => 'required',
+        'email' => 'required|unique:users',
         'password' => 'required',
         'type_of_schooling' => 'required',
         'country' => 'required',
@@ -33,7 +33,7 @@ class StudentController extends Controller {
       ]);
        
        if ($validator->fails()) {
-         throw new Exception($validator->errors());
+         throw new Exception($validator->errors()->first());
        }  
        else{ 
          $request->request->add([
