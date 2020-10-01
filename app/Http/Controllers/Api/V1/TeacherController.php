@@ -11,6 +11,7 @@ use App\Models\ClassCode;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use URL;
 class TeacherController extends Controller {
     public function __construct()
     { 
@@ -37,20 +38,36 @@ class TeacherController extends Controller {
          throw new Exception($validator->errors()->first());
        }  
        else{ 
-         $request->request->add([
-                    'email_verified_at' => null,
-                    'password' => '',
-                    'remember_token' => '',
-                ]);
         $student_obj=new User;
         $addUser = $student_obj->store($request);
-         $token = JWTAuth::fromUser($addUser);
+        $token = JWTAuth::fromUser($addUser);
          $addUser->token=$token;
+
+         if($request->type_of_schooling=='home'){
+          $this->AddteacherSubject($request->subject_id, $addUser->id);
+
+          if($request->hasfile('documents'))
+         {
+            $files = $request->file('documents');
+            foreach($files as $file)
+            {
+
+
+               $name = time().'.'.$file->extension();
+                $file->move(public_path().'/files/', $name);  
+                DB::table('teacher_documents')->insert(
+              ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'files/'.$name]);
+                 
+            }
+              
+
+         }
+         }
         //clascodes
         if(!empty( $addUser )){
         	$class_code=  ClassCode::where('class_code',$request->class_code)->first();
         	if(!empty($class_code)){
-        		DB::table('user_class_code')->insert(
+        		DB::table('user_class_code')->updateOrInsert(
         			['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
         	}else{
         		$obj_class=new ClassCode;
@@ -70,6 +87,15 @@ class TeacherController extends Controller {
    } catch (\Exception $e) {
      return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
    }
+
+ }
+
+ public function AddteacherSubject($subject_id,$user_id){
+
+  $teacher_subject=DB::table('teacher_subjects')->insert(
+              ['user_id' =>$user_id, 'subject_id' => $subject_id]);
+
+return $teacher_subject;
 
  }
     public function updateProfile(Request $request) {
