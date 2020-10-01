@@ -11,13 +11,13 @@ use App\Models\ClassCode;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
-class StudentController extends Controller {
+class TeacherController extends Controller {
     public function __construct()
     { 
     }
 
        // Register Student
-    public function StudentRegister(Request $request){
+    public function TeacherRegister(Request $request){
       try {
 
        $input = $request->all();

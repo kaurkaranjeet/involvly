@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use JWTAuth;
-use Exception;
 use App\User;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use DB;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class LoginController extends Controller {
 
@@ -31,7 +29,7 @@ class LoginController extends Controller {
         } else {
             $credentials = $request->only(['email', 'password']);
             try {
-                if (!$token = JWTAuth::attempt($credentials)) {
+                if (! $token = JWTAuth::attempt($credentials)) {
                     return response()->json(['message' => 'invalid_credentials', 'error' => true], 200);
                 }
             } catch (JWTException $e) {

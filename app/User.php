@@ -3,11 +3,11 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Tymon\JWTAuth\Contracts\JWTSubject;
 use URL;
-use App\FollowUnfollow;
+use Hash;
 
 class User extends Authenticatable implements JWTSubject {
 
@@ -44,14 +44,14 @@ class User extends Authenticatable implements JWTSubject {
         return $this->role;
     }
 
-    public function getJWTIdentifier() {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims() {
-        return [];
-    }
-
+    public function getJWTIdentifier()
+        {
+            return $this->getKey();
+        }
+        public function getJWTCustomClaims()
+        {
+            return [];
+        }
     protected function validateLogin($data) {
         return User::where('email', $data['email'])->first();
     }
@@ -69,23 +69,26 @@ class User extends Authenticatable implements JWTSubject {
         $this->name = $request->input('first_name').' '.$request->input('last_name');
         $this->email = $request->input('email');
         $this->last_name = $request->input('last_name');
-          $this->first_name = $request->input('first_name');
-           $this->role_id = $request->input('role_id');
-        $this->password = $request->input('password');
+        $this->first_name = $request->input('first_name');
+        $this->role_id = $request->input('role_id');
+        $this->password = Hash::make($request->input('password'));
         $this->device_token = $request->input('device_token');
         if(!empty($request->class_code)){
-         $this->status = '1';
-     } else{
-         $this->status = '0';
-     }  
-     $this->role_id =$request->role_id;
-     $this->state_id =$request->state_id;
-      $this->school_id =$request->school_id;
-     $this->country =$request->country;
-     $this->city =$request->city_id;
-     $this->type_of_schooling =$request->type_of_schooling;
-     $this->save();
-     if ($this->id > 0) {
+           $this->status = '1';
+       } else{
+           $this->status = '0';
+       }  
+       $this->role_id =$request->role_id;
+       $this->state_id =$request->state_id;
+       $this->school_id =$request->school_id;
+       $this->country =$request->country;
+       $this->city =$request->city_id;
+       if(isset($request->join_community)){
+          $this->join_community= $request->join_community;
+       }
+       $this->type_of_schooling =$request->type_of_schooling;
+       $this->save();
+       if ($this->id > 0) {
         return $this;
     }
 }
