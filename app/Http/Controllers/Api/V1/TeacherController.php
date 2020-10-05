@@ -30,7 +30,8 @@ class TeacherController extends Controller {
         'type_of_schooling' => 'required',
         'country' => 'required',
         'state_id' => 'required|exists:states,id',
-        'city_id' => 'required|exists:cities,id'
+        'city_id' => 'required|exists:cities,id',
+       'school_id' => 'required_if:type_of_schooling, =,school|exists:schools,id'
       ]);
        
        if ($validator->fails()) {

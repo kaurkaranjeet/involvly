@@ -30,7 +30,7 @@ class StudentController extends Controller {
         'country' => 'required',
         'state_id' => 'required|exists:states,id',
         'city_id' => 'required|exists:cities,id',
-        'school_id' => 'required|exists:schools,id'
+        'school_id' => 'required_if:type_of_schooling, =,school|exists:schools,id'
       ]);
        
        if ($validator->fails()) {
