@@ -79,9 +79,7 @@ class User extends Authenticatable implements JWTSubject {
        } else{
            $this->status = '0';
        }  
-       if(isset($request->student_id)){
-        $this->student_id =$request->student_id;
-    }
+       
        $this->role_id =$request->role_id;
        $this->state_id =$request->state_id;
        if(isset($request->school_id)){

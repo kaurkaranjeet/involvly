@@ -31,8 +31,8 @@ class ParentController extends Controller {
         'country' => 'required',
         'state_id' => 'required|exists:states,id',
         'city_id' => 'required|exists:cities,id',
-        'school_id' => 'required_if:type_of_schooling:school|exists:schools,id',
-        'student_id' => 'required_if:type_of_schooling:school|exists:users,id'
+        'school_id' => 'required_if:type_of_schooling, =,school|exists:schools,id',
+        'student_id' => 'required_if:type_of_schooling, =,school|exists:users,id'
       ]);
        
        if ($validator->fails()) {
@@ -60,6 +60,11 @@ class ParentController extends Controller {
         			['user_id' =>$addUser->id, 'class_id' => $obj_class->id]);
           }
         	}
+
+           if(isset($request->student_id)) {
+              DB::table('parent_childrens')->updateOrInsert(
+              ['parent_id' =>$addUser->id, 'children_id' => $request->student_id]);
+           }
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
        }
        else{

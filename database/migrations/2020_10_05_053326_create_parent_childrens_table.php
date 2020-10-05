@@ -16,9 +16,9 @@ class CreateParentChildrensTable extends Migration
         Schema::create('parent_childrens', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('parent_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('children_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('children_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
