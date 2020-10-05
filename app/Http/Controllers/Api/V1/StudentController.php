@@ -44,6 +44,7 @@ class StudentController extends Controller {
          $addUser->token=$token;
         //clascodes
         if(!empty( $addUser )){
+          if(!empty($request->class_code)){
         	$class_code=  ClassCode::where('class_code',$request->class_code)->first();
         	if(!empty($class_code)){
         		DB::table('user_class_code')->insert(
@@ -56,6 +57,7 @@ class StudentController extends Controller {
         		$obj_class->save();
         		DB::table('user_class_code')->insert(
         			['user_id' =>$addUser->id, 'class_id' => $obj_class->id]);
+          }
         	}
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
        }
