@@ -74,7 +74,7 @@ public function forgot_password(Request $request)
         $arr = array(  "error"=>true, "message" => $validator->errors()->first(), "data" => array());
     } else {
         try {
-            Mail::send(['text'=>'mail'], $data=array(), function($message) {
+            Mail::send(["email.reset-password"], $data=array(), function($message) {
          $message->to('harpreet.kaur@digimantra.com', 'Tutorials Point')->subject
             ('Laravel Basic Testing Mail');
          $message->from('harpreet.kaur@digimantra.com','Virat Gandhi');

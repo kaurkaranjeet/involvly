@@ -131,5 +131,10 @@ class User extends Authenticatable implements JWTSubject {
 
     }
 
+    public function classes()
+    {
+        return $this->belongsToMany('App\Models\ClassCode','user_class_code','class_id','user_id','id',);
+    }
+
 
 }

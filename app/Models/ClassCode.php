@@ -10,4 +10,9 @@ class ClassCode extends Model
 { 
        
 	protected $table= 'class_code';
+
+	public function users()
+    {
+        return $this->hasMany('App\User');
+    }
 }
