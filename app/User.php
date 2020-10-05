@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
-    use Illuminate\Foundation\Auth\User as Authenticatable;
-    use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use URL;
 use Hash;
+use App\Models\School;
 
 class User extends Authenticatable implements JWTSubject {
 
@@ -83,7 +84,9 @@ class User extends Authenticatable implements JWTSubject {
     }
        $this->role_id =$request->role_id;
        $this->state_id =$request->state_id;
-       $this->school_id =$request->school_id;
+       if(isset($request->school_id)){
+         $this->school_id =$request->school_id;
+     }
        $this->country =$request->country;
        $this->city =$request->city_id;
        if(isset($request->join_community)){
@@ -122,11 +125,11 @@ class User extends Authenticatable implements JWTSubject {
      */
    public function role()
 {
-    return $this->belongsTo('App\Role');
+    return $this->belongsTo('App\Models\Role');
 }
-    public function GetStudent()
+    public function SchoolDetail()
     {
-        return $this->belongsTo('App\School','school_id');
+        return $this->belongsTo('App\Models\School','school_id');
 
     }
 

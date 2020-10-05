@@ -82,7 +82,7 @@ class ParentController extends Controller {
          throw new Exception($validator->errors()->first());
        }  
        else{ 
-        $students=User::with('GetStudent')->get();
+        $students=User::with('SchoolDetail')->where('role_id',2)->get();
          return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $students), 200);
 
        }

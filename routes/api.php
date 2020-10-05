@@ -30,9 +30,11 @@ use Illuminate\Support\Facades\Route;
   Route::prefix('v1')->group(function () {
     Route::post('login', 'Api\V1\LoginController@login');
     Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');
-      Route::post('signup_teacher', 'Api\V1\TeacherController@TeacherRegister');
+    Route::post('signup_teacher', 'Api\V1\TeacherController@TeacherRegister');
+    Route::post('signup_parent', 'Api\V1\ParentController@ParentRegister');
     Route::post('get_cities', 'Api\V1\CommonController@GetCities');
     Route::get('list_states', 'Api\V1\CommonController@GetStates');
     Route::get('list_schools', 'Api\V1\CommonController@GetSchools');
-      Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
+    Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
+    Route::post('list_students', 'Api\V1\ParentController@GetStudents');
   });
