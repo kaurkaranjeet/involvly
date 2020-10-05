@@ -63,7 +63,7 @@ class ParentController extends Controller {
 
            if(isset($request->student_id)) {
               DB::table('parent_childrens')->updateOrInsert(
-              ['parent_id' =>$addUser->id, 'children_id' => $request->student_id]);
+              ['parent_id' =>$addUser->id, 'children_id' => $request->student_id, 'relationship' => $request->relationship]);
            }
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
        }

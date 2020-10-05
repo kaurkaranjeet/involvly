@@ -27,7 +27,14 @@ use Illuminate\Support\Facades\Route;
  });
 // Mobile Apis
 
+
+
   Route::prefix('v1')->group(function () {
+    Route::post('forgot-password', 'Api\V1\LoginController@forgot_password');
+
+Route::group(['middleware' => 'auth:api'], function () {
+ Route::post('change-password', 'Auth\AuthController@change_password');
+});
     Route::post('login', 'Api\V1\LoginController@login');
     Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');
     Route::post('signup_teacher', 'Api\V1\TeacherController@TeacherRegister');

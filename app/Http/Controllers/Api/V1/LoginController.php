@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-
+use Mail;
 class LoginController extends Controller {
 
     /**
@@ -61,5 +61,30 @@ class LoginController extends Controller {
         $u->save(); 
         return response()->json(array('error' => false, 'message' => 'logout', 'data' => $u), 200);
     }
+}
+
+public function forgot_password(Request $request)
+{
+    $input = $request->all();
+    $rules = array(
+        'email' => "required|email",
+    );
+    $validator = Validator::make($input, $rules);
+    if ($validator->fails()) {
+        $arr = array(  "error"=>true, "message" => $validator->errors()->first(), "data" => array());
+    } else {
+        try {
+            Mail::send(['text'=>'mail'], $data=array(), function($message) {
+         $message->to('harpreet.kaur@digimantra.com', 'Tutorials Point')->subject
+            ('Laravel Basic Testing Mail');
+         $message->from('harpreet.kaur@digimantra.com','Virat Gandhi');
+      });
+           
+            
+        } catch (Exception $ex) {
+            $arr = array("status" => 400, "message" => $ex->getMessage(), "data" => []);
+        }
+    }
+    return \Response::json($arr);
 }
 }
