@@ -78,6 +78,9 @@ class User extends Authenticatable implements JWTSubject {
        } else{
            $this->status = '0';
        }  
+       if(isset($request->student_id)){
+        $this->student_id =$request->student_id;
+    }
        $this->role_id =$request->role_id;
        $this->state_id =$request->state_id;
        $this->school_id =$request->school_id;
@@ -117,12 +120,15 @@ class User extends Authenticatable implements JWTSubject {
      *
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles()
+   public function role()
+{
+    return $this->belongsTo('App\Role');
+}
+    public function GetStudent()
     {
-        return $this->belongsToMany(Role::class);
-    }
+        return $this->belongsTo('App\School','school_id');
 
-    
+    }
 
 
 }

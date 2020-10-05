@@ -12,13 +12,13 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use URL;
-class TeacherController extends Controller {
+class ParentController extends Controller {
     public function __construct()
     { 
     }
 
        // Register Student
-    public function TeacherRegister(Request $request){
+    public function ParentRegister(Request $request){
       try {
 
        $input = $request->all();
@@ -31,7 +31,8 @@ class TeacherController extends Controller {
         'country' => 'required',
         'state_id' => 'required|exists:states,id',
         'city_id' => 'required|exists:cities,id',
-        'school_id' => 'required|exists:schools,id'
+        'school_id' => 'required|exists:schools,id',
+        'student_id' => 'required|exists:users,id'
       ]);
        
        if ($validator->fails()) {
@@ -42,20 +43,6 @@ class TeacherController extends Controller {
         $addUser = $student_obj->store($request);
         $token = JWTAuth::fromUser($addUser);
          $addUser->token=$token;
-         if($request->type_of_schooling=='home'){
-          $this->AddteacherSubject($request->subject_id, $addUser->id);
-          if($request->hasfile('documents'))
-          {
-            $files = $request->file('documents');
-            foreach($files as $file)
-            {
-             $name = time().'.'.$file->extension();
-             $file->move(public_path().'/files/', $name);  
-             DB::table('teacher_documents')->insert(
-              ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'files/'.$name]);
-           }
-         }
-       }
         //clascodes
         if(!empty( $addUser )){
           if(!empty($request->class_code)) {
@@ -85,14 +72,24 @@ class TeacherController extends Controller {
 
  }
 
- public function AddteacherSubject($subject_id,$user_id){
+ public function GetStudents(Request $request){
+ $input = $request->all();
+  $validator = Validator::make($input, [
+        'school_id' => 'required'
+      ]);
+       
+       if ($validator->fails()) {
+         throw new Exception($validator->errors()->first());
+       }  
+       else{ 
+        $students=User::with('GetStudent')->get();
+         return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $students), 200);
 
-  $teacher_subject=DB::table('teacher_subjects')->insert(
-              ['user_id' =>$user_id, 'subject_id' => $subject_id]);
-
-return $teacher_subject;
+       }
 
  }
+
+ 
     public function updateProfile(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
