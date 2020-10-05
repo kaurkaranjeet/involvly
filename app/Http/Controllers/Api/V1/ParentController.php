@@ -83,7 +83,7 @@ class ParentController extends Controller {
        }  
        else{ 
         $students=User::with('SchoolDetail')->where('role_id',2)->get();
-         return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $students), 200);
+         return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $students), 200);
 
        }
 
