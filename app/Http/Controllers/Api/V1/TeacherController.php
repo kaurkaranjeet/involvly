@@ -51,7 +51,7 @@ class TeacherController extends Controller {
              $name = time().'.'.$file->extension();
              $file->move(public_path().'/files/', $name);  
              DB::table('teacher_documents')->insert(
-              ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'files/'.$name]);
+              ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'/files/'.$name]);
            }
          }
        }

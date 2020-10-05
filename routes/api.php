@@ -37,4 +37,5 @@ use Illuminate\Support\Facades\Route;
     Route::get('list_schools', 'Api\V1\CommonController@GetSchools');
     Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
     Route::post('list_students', 'Api\V1\ParentController@GetStudents');
+   Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
   });

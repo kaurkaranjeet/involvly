@@ -13,7 +13,7 @@ use App\Models\School;
 use Illuminate\Support\Facades\Validator;
 use Pusher\Pusher;
 use DB;
-
+use Illuminate\Support\Facades\Artisan;
 class CommonController extends Controller {
 
     public function __construct() {
@@ -104,5 +104,9 @@ class CommonController extends Controller {
    catch (\Exception $e) {
        return response()->json(array('error' => true, 'errors' => $e->getMessage(), 'data'=>[]), 200);
    }
+}
+
+public function  RunMigration(){
+  Artisan::call('migrate');
 }
 }
