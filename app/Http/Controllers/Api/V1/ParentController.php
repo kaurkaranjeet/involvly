@@ -31,8 +31,8 @@ class ParentController extends Controller {
         'country' => 'required',
         'state_id' => 'required|exists:states,id',
         'city_id' => 'required|exists:cities,id',
-        'school_id' => 'required_if:type_of_schooling, =,school|exists:schools,id',
-        'student_id' => 'required_if:type_of_schooling, =,school|exists:users,id'
+        'school_id' => 'required_if:type_of_schooling, =,school',
+        'student_id' => 'required_if:type_of_schooling, =,school'
       ]);
        
        if ($validator->fails()) {
