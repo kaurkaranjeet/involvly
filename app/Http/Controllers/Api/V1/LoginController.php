@@ -134,7 +134,7 @@ public function ChnagePassword(Request $request)
 {
   $input = $request->all();
          $validator = Validator::make($input, [
-                    'user_id' => 'required',
+                    'email' => 'required',
                     'confirm_password' => 'required',                  
                     'new_password' => 'required',
                   
@@ -144,7 +144,7 @@ public function ChnagePassword(Request $request)
         }  else {       
         try {          
             if($request->confirm_password==$request->new_password){
-             $datauser=  User::find($request->user_id)->update(["password" =>Hash::make($request->input('new_password'))]);
+             $datauser=  User::where("email",$request->email)->update(["password" =>Hash::make($request->input('new_password'))]);
              $arr = array("error"=>false, "message" =>'Your password is changed', "data" => $datauser); 
             }else{
                   throw new Exception('Confirm password do not match');
