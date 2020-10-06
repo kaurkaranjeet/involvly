@@ -45,4 +45,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
     Route::post('list_students', 'Api\V1\ParentController@GetStudents');
     Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
+  Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
+
   });

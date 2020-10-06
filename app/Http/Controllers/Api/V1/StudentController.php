@@ -117,39 +117,38 @@ class StudentController extends Controller {
         }  
         else{ 
             $data = User::fetchUser($request->user_id);
-            $get_followers=User::FollowedUsers($request->user_id);
-            $following_users=User::FollowingUser($request->user_id);
-            $data->followers=$get_followers;
-            $data->following=$following_users;
-            if(isset($request->viewing_user_id)){
-                $folow_or_not=FollowUnfollow::where('following_user_id',$request->viewing_user_id)->where('followed_user_id',$request->user_id)->count();
-                if($folow_or_not >0){
-                    $data->is_follow=1;
-                }else{
-                  $data->is_follow=0;
-                }
-            }
-           // DB::enableQueryLog(); 
-
-            $streams=  Queue::select(DB::raw('GROUP_CONCAT(id) as streams'))->where('user_id' , $request->user_id)->first();
-            if(!empty($streams->streams)){
-              $results = DB::select( DB::raw("select count(*) as total_likes from `like_unlike` where `stream_id` in (".$streams->streams.") and `like` = 1") );
-
-              if(isset($results[0])){
-                $data->total_likes=number_format_short($results[0]->total_likes);
-              }
-              else{
-               $data->total_likes=0;
-             }
-
-           }
-            else{
-               $data->total_likes=0;
-             }
-
+    
+            
+           
             return response()->json(array('error' => false, 'message' => 'profile fetched successfully', 'data' => $data), 200);
 
         }
 
     }
+
+    public function Checkifclassvalid(Request $request) {
+      try{
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'class_code' => 'required'
+        ]);    
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        }  
+        else{ 
+         $class_code=  ClassCode::where('class_code',$request->class_code)->first();
+         if(!empty($class_code)){
+          return response()->json(array('error' => false, 'message' => 'class code is valid', 'data' => $class_code), 200);
+        }  
+        else{
+          throw new Exception('class code is not valid');
+        }
+      }
+
+    }
+    catch (\Exception $e) {
+     return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
+   }
+
+ }
 }
