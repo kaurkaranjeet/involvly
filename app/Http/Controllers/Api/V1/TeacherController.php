@@ -8,6 +8,7 @@ use JWTAuth;
 use Exception;
 use App\User;
 use App\Models\ClassCode;
+use App\Models\Subject;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -20,6 +21,7 @@ class TeacherController extends Controller {
        // Register Student
     public function TeacherRegister(Request $request){
       try {
+        DB::beginTransaction();
 
        $input = $request->all();
        $validator = Validator::make($input, [
@@ -40,10 +42,16 @@ class TeacherController extends Controller {
        else{ 
         $student_obj=new User;
         $addUser = $student_obj->store($request);
+         DB::commit();
         $token = JWTAuth::fromUser($addUser);
          $addUser->token=$token;
          if($request->type_of_schooling=='home'){
+          if(Subject::where('id', '=',$request->subject_id)->exists()) {
           $this->AddteacherSubject($request->subject_id, $addUser->id);
+           DB::commit();
+        } else{
+            throw new Exception('Subject id is not valid');
+        }
           if($request->hasfile('documents'))
           {
             $files = $request->file('documents');
@@ -54,6 +62,8 @@ class TeacherController extends Controller {
              DB::table('teacher_documents')->insert(
               ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'/files/'.$name]);
            }
+
+            DB::commit();
          }
        }
         //clascodes
@@ -74,6 +84,7 @@ class TeacherController extends Controller {
        }
      }
    } catch (\Exception $e) {
+    DB::rollback();
      return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
    }
 
