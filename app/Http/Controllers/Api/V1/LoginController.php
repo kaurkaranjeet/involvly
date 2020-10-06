@@ -82,9 +82,9 @@ public function forgot_password(Request $request)
         try {
              $datauser= User::where("email",$request->email)->first();
              $data=array("name"=>$datauser->name,"otp_code"=>$datauser->otp_code);
-            Mail::send("email.reset-password", $data, function ($m) use ($data) {
+            Mail::send("email.reset-password", $data, function ($m) use ($datauser) {
             $m->from('testinvolvly@gmail.com','Involvly');
-            $m->to($request->email);
+            $m->to($datauser->email);
             $m->subject('One time password');
           
 
