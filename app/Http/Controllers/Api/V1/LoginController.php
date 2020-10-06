@@ -66,21 +66,20 @@ class LoginController extends Controller {
 
 public function forgot_password(Request $request)
 {
+     try {
     $input = $request->all();
     $rules = array(
         'email' => "required|email",
     );
     $validator = Validator::make($input, $rules);
     if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
 
-        $arr = array(  "error"=>true, "message" => $validator->errors()->first(), "data" => array());
+
     } else {
-        $otp_code=rand ( 1000 , 9999 );
-        
-        User::where("email", $request->email)->update(["otp_code"=>$otp_code]);
-       
-        try {
-             $datauser= User::where("email",$request->email)->first();
+        $otp_code=rand ( 1000 , 9999 );        
+        User::where("email", $request->email)->update(["otp_code"=>$otp_code]);      
+        $datauser= User::where("email",$request->email)->first();
              if(!empty($datauser)){
              $data=array("name"=>$datauser->first_name,"otp_code"=>$datauser->otp_code);
             Mail::send("email.reset-password", $data, function ($m) use ($datauser) {
@@ -91,18 +90,18 @@ public function forgot_password(Request $request)
           
 
     });
-        
-        $arr = array("error"=>false, "message" =>'One time password', "data" => $data); 
+            $arr = array("error"=>false, "message" =>'One time password', "data" => $data); 
         }
         else{
 
                   throw new Exception('Email is not valid');
             
-        }    
+        } 
+        }   
         } catch (Exception $ex) {
             $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
         }
-    }
+    
     return \Response::json($arr);
 }
 
