@@ -109,7 +109,7 @@ public function VerifyOtp(Request $request)
 {
     $input = $request->all();
     $rules = array(
-      'user_id' => "required",
+      'email' => "required",
        'otp_code' => "required",
     );
     $validator = Validator::make($input, $rules);
@@ -117,7 +117,7 @@ public function VerifyOtp(Request $request)
         $arr = array(  "error"=>true, "message" => $validator->errors()->first(), "data" => array());
     } else {       
         try {
-             $datauser=  User::find($request->user_id);
+             $datauser=  User::where("email",$request->email)->first();
             if($datauser->otp_code==$request->otp_code){
              $arr = array("error"=>false, "message" =>'Your otp is verfied.', "data" => $datauser); 
             }else{
