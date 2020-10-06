@@ -31,7 +31,7 @@ class LoginController extends Controller {
             $credentials = $request->only(['email', 'password']);
             try {
                 if (! $token = JWTAuth::attempt($credentials)) {
-                    return response()->json(['message' => 'invalid_credentials', 'error' => true], 200);
+                    return response()->json(['message' => 'Invalid Credentials', 'error' => true], 200);
                 }
             } catch (JWTException $e) {
                 return response()->json(['error' => 'could_not_create_token'], 500);
@@ -114,6 +114,32 @@ public function VerifyOtp(Request $request)
              $arr = array("error"=>false, "message" =>'Your otp is verfied.', "data" => $datauser); 
             }else{
                   throw new Exception('Incorrect Otp');
+            }            
+        } catch (Exception $ex) {
+            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
+        }
+    }
+    return \Response::json($arr);
+}
+
+public function ChnagePassword(Request $request)
+{
+  $input = $request->all();
+         $validator = Validator::make($input, [
+                    'user_id' => 'required',
+                    'confirm_password' => 'required',                  
+                    'new_password' => 'required',
+                  
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        }  else {       
+        try {          
+            if($request->confirm_password==$request->new_password){
+             $datauser=  User::find($request->user_id)->update(["password" =>Hash::make($request->input('new_password'))]);
+             $arr = array("error"=>false, "message" =>'Your password is changed', "data" => $datauser); 
+            }else{
+                  throw new Exception('Confirm password do not match');
             }            
         } catch (Exception $ex) {
             $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
