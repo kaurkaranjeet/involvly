@@ -42,13 +42,13 @@ class TeacherController extends Controller {
        else{ 
         $student_obj=new User;
         $addUser = $student_obj->store($request);
-         DB::commit();
+       // DB::commit();
         $token = JWTAuth::fromUser($addUser);
          $addUser->token=$token;
          if($request->type_of_schooling=='home'){
           if(Subject::where('id', '=',$request->subject_id)->exists()) {
           $this->AddteacherSubject($request->subject_id, $addUser->id);
-           DB::commit();
+          
         } else{
             throw new Exception('Subject id is not valid');
         }
@@ -63,9 +63,11 @@ class TeacherController extends Controller {
               ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'/files/'.$name]);
            }
 
-            DB::commit();
+           
          }
        }
+
+        DB::commit();
         //clascodes
         if(!empty( $addUser )){
          if(!empty($request->class_code)) {
@@ -78,6 +80,7 @@ class TeacherController extends Controller {
          }
        }
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
+           DB::commit();
        }
        else{
          throw new Exception('Something went wrong');
