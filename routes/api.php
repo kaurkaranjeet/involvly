@@ -47,5 +47,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
   Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
    Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
+   Route::post('add_children', 'Api\V1\LoginController@AddChildren');
+
 
   });

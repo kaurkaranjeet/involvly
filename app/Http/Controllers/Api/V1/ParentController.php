@@ -108,7 +108,6 @@ class ParentController extends Controller {
 
        $input = $request->all();
        $validator = Validator::make($input, [
-
         'type_of_schooling' => 'required',
         'parent_id' => 'required',
         'school_id' => 'required_if:type_of_schooling, =,school',
@@ -119,8 +118,7 @@ class ParentController extends Controller {
        if ($validator->fails()) {
          throw new Exception($validator->errors()->first());
        }  
-       else{ 
-    
+       else{     
         //clascodes
         if(!empty($request->class_code)) {
           $class_code=  ClassCode::where('class_code',$request->class_code)->first();
@@ -130,24 +128,19 @@ class ParentController extends Controller {
           }else{
            return response()->json(array('error' => true, 'data' =>'Class Code is not valid'), 200);
          }
-         
-           if(isset($request->student_id)) {
-            $explode=explode(',',$request->student_id);
-            foreach($explode as $single){
-            
-            DB::table('parent_childrens')->updateOrInsert(
+       }
+
+           if(!empty($request->student_id)) {  
+
+         $addUser=   DB::table('parent_childrens')->insert(
              [
-                    'parent_id' => $addUser->id,
-                    'children_id' => $single,
+                    'parent_id' =>$request->parent_id,
+                    'children_id' =>$request->student_id,
                     'relationship' => $request->relationship
                    ]);
-           }
+          
          }
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
-       }
-       else{
-         throw new Exception('Something went wrong');
-       }
      }
    } catch (\Exception $e) {
      return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
