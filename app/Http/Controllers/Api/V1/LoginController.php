@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Mail;
+use Exception;
 class LoginController extends Controller {
 
     /**
@@ -71,18 +72,51 @@ public function forgot_password(Request $request)
     );
     $validator = Validator::make($input, $rules);
     if ($validator->fails()) {
+
         $arr = array(  "error"=>true, "message" => $validator->errors()->first(), "data" => array());
     } else {
+        $otp_code=rand ( 1000 , 9999 );
+        
+        User::where("email", $request->email)->update(["otp_code"=>$otp_code]);
+       
         try {
-            Mail::send(["email.reset-password"], $data=array(), function($message) {
-         $message->to('harpreet.kaur@digimantra.com', 'Tutorials Point')->subject
-            ('Laravel Basic Testing Mail');
-         $message->from('harpreet.kaur@digimantra.com','Virat Gandhi');
-      });
-           
-            
+             $datauser= User::where("email",$request->email)->first();
+             $data=array("name"=>$datauser->name,"otp_code"=>$datauser->otp_code);
+            Mail::send("email.reset-password", $data, function ($m) use ($data) {
+            $m->from('testinvolvly@gmail.com','Involvly');
+            $m->to($request->email);
+            $m->subject('One time password');
+          
+
+    });
+        $arr = array("error"=>false, "message" =>'One time password', "data" => $data);     
         } catch (Exception $ex) {
-            $arr = array("status" => 400, "message" => $ex->getMessage(), "data" => []);
+            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
+        }
+    }
+    return \Response::json($arr);
+}
+
+public function VerifyOtp(Request $request)
+{
+    $input = $request->all();
+    $rules = array(
+      'user_id' => "required",
+       'otp_code' => "required",
+    );
+    $validator = Validator::make($input, $rules);
+    if ($validator->fails()) {
+        $arr = array(  "error"=>true, "message" => $validator->errors()->first(), "data" => array());
+    } else {       
+        try {
+             $datauser=  User::find($request->user_id);
+            if($datauser->otp_code==$request->otp_code){
+             $arr = array("error"=>false, "message" =>'Your otp is verfied.', "data" => $datauser); 
+            }else{
+                  throw new Exception('Incorrect Otp');
+            }            
+        } catch (Exception $ex) {
+            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
         }
     }
     return \Response::json($arr);
