@@ -58,21 +58,15 @@ class TeacherController extends Controller {
        }
         //clascodes
         if(!empty( $addUser )){
-          if(!empty($request->class_code)) {
-        	$class_code=  ClassCode::where('class_code',$request->class_code)->first();
-        	if(!empty($class_code)){
-        		DB::table('user_class_code')->updateOrInsert(
-        			['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
-        	}else{
-        		$obj_class=new ClassCode;
-        		$obj_class->class_name=$request->class_code;
-        		$obj_class->class_code=$request->class_code;
-        		$obj_class->approved=0;
-        		$obj_class->save();
-        		DB::table('user_class_code')->insert(
-        			['user_id' =>$addUser->id, 'class_id' => $obj_class->id]);
-          }
-        	}
+         if(!empty($request->class_code)) {
+          $class_code=  ClassCode::where('class_code',$request->class_code)->first();
+          if(!empty($class_code)){
+            DB::table('user_class_code')->updateOrInsert(
+              ['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
+          }else{
+           return response()->json(array('error' => true, 'data' =>'Class Code is not valid'), 200);
+         }
+       }
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
        }
        else{

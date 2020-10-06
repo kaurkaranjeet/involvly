@@ -50,13 +50,7 @@ class ParentController extends Controller {
         		DB::table('user_class_code')->updateOrInsert(
         			['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
         	}else{
-        		$obj_class=new ClassCode;
-        		$obj_class->class_name=$request->class_code;
-        		$obj_class->class_code=$request->class_code;
-        		$obj_class->approved=0;
-        		$obj_class->save();
-        		DB::table('user_class_code')->insert(
-        			['user_id' =>$addUser->id, 'class_id' => $obj_class->id]);
+             return response()->json(array('error' => true, 'data' =>'Class Code is not valid'), 200);
           }
         	}
 
