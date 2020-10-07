@@ -48,6 +48,6 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
    Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
    Route::post('add_children', 'Api\V1\LoginController@AddChildren');
-
+Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
 
   });

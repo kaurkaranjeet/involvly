@@ -155,4 +155,26 @@ public function ChnagePassword(Request $request)
     }
     return \Response::json($arr);
 }
+
+ public function EmailExist(Request $request) {
+        //email,adriod_token,ios_token,access_token,profile picture
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'email' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+
+        $exist=  User::where('email',$request->email)->count();
+        if($exist>0){
+           return response()->json(array('error' => true, 'message' =>'This email is already being used' ), 200);
+        }
+        else{
+           return response()->json(array('error' => false, 'message' =>'Email does not exist' ), 200);
+        }
+
+        
+      }
+    }
 }
