@@ -51,7 +51,7 @@ class StudentController extends Controller {
               DB::table('user_class_code')->updateOrInsert(
                 ['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
             }else{
-             return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
+             return response()->json(array('error' => true, 'message' =>'Class code is not valid.'), 200);
            }
          }
            return response()->json(array('error' => false, 'data' =>$addUser ), 200);
@@ -82,7 +82,7 @@ class StudentController extends Controller {
           return response()->json(array('error' => false, 'message' => 'Class Code is valid', 'data' => $class_code), 200);
         }  
         else{
-          throw new Exception('Class Code is not valid');
+          throw new Exception('Class code is not valid.');
         }
       }
 
