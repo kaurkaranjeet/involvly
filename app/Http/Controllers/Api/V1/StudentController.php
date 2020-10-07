@@ -79,7 +79,7 @@ class StudentController extends Controller {
         else{ 
          $class_code=  ClassCode::where('class_code',$request->class_code)->first();
          if(!empty($class_code)){
-          return response()->json(array('error' => false, 'message' => 'class code is valid', 'data' => $class_code), 200);
+          return response()->json(array('error' => false, 'message' => 'Class Code is valid', 'data' => $class_code), 200);
         }  
         else{
           throw new Exception('class code is not valid');
