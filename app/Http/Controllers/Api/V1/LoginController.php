@@ -34,14 +34,14 @@ class LoginController extends Controller {
                     return response()->json(['message' => 'Invalid Credentials', 'error' => true], 200);
                 }
             } catch (JWTException $e) {
-                return response()->json(['error' => 'could_not_create_token'], 500);
+                return response()->json(['message' => 'could_not_create_token', 'error' => true], 500);
             }
             $user_details = User::validateLogin($request->all());
             $user_details->token = $token;
             if (!empty($user_details)) {
                 return response()->json(array('error' => false, 'data' => $user_details), 202);
             } else {
-                return response()->json(array('error' => true, 'data' => []), 200);
+                return response()->json(array('error' => true, 'data' => [],'message' => 'Something went wrong'), 200);
             }
         }
     }
@@ -60,7 +60,7 @@ class LoginController extends Controller {
         $u =User::find($request->user_id); 
         $u->device_token =null; 
         $u->save(); 
-        return response()->json(array('error' => false, 'message' => 'logout', 'data' => $u), 200);
+        return response()->json(array('error' => false, 'message' => 'Logout Successfully', 'data' => $u), 200);
     }
 }
 
@@ -94,7 +94,7 @@ public function forgot_password(Request $request)
         }
         else{
 
-                  throw new Exception('Email is not valid');
+                  throw new Exception('Email does not exist');
             
         } 
         }   
