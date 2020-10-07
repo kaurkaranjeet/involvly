@@ -82,7 +82,7 @@ class StudentController extends Controller {
           return response()->json(array('error' => false, 'message' => 'Class Code is valid', 'data' => $class_code), 200);
         }  
         else{
-          throw new Exception('class code is not valid');
+          throw new Exception('Class Code is not valid');
         }
       }
 
