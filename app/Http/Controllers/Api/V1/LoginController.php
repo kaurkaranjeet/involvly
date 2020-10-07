@@ -90,7 +90,7 @@ public function forgot_password(Request $request)
           
 
     });
-            $arr = array("error"=>false, "message" =>'One time password', "data" => $data); 
+            $arr = array("error"=>false, "message" =>'Otp has been sent', "data" => $data); 
         }
         else{
 
