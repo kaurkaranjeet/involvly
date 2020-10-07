@@ -51,7 +51,7 @@ class StudentController extends Controller {
               DB::table('user_class_code')->updateOrInsert(
                 ['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
             }else{
-             return response()->json(array('error' => true, 'data' =>'Class Code is not valid'), 200);
+             return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
            }
          }
            return response()->json(array('error' => false, 'data' =>$addUser ), 200);
@@ -61,7 +61,7 @@ class StudentController extends Controller {
        }
      }
    } catch (\Exception $e) {
-     return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
 
  }
@@ -73,7 +73,7 @@ class StudentController extends Controller {
         ]);
        
        if ($validator->fails()) {
-            return response()->json(array('error' => true, 'errors' => $validator->errors()), 200);
+            return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
         }  
         else{ 
        $count_user=User::where('id','!=', $request->user_id)->where('username','=',$request->username)->count();

@@ -50,7 +50,7 @@ class ParentController extends Controller {
         		DB::table('user_class_code')->updateOrInsert(
         			['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
         	}else{
-             return response()->json(array('error' => true, 'data' =>'Class Code is not valid'), 200);
+             return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
           }
         	}
 
@@ -73,7 +73,7 @@ class ParentController extends Controller {
        }
      }
    } catch (\Exception $e) {
-     return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
 
  }
@@ -126,7 +126,7 @@ class ParentController extends Controller {
             DB::table('user_class_code')->insert(
               ['user_id' =>$request->parent_id, 'class_id' => $class_code->id]);
           }else{
-           return response()->json(array('error' => true, 'data' =>'Class Code is not valid'), 200);
+           return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
          }
        }
 
@@ -143,7 +143,7 @@ class ParentController extends Controller {
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
      }
    } catch (\Exception $e) {
-     return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
 
  }

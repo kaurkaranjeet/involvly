@@ -42,7 +42,7 @@ class CommonController extends Controller {
 
    }
    catch (\Exception $e) {
-       return response()->json(array('error' => true, 'errors' => $e->getMessage(), 'data'=>[]), 200);
+       return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
    }
 }
 
@@ -68,7 +68,7 @@ class CommonController extends Controller {
        }  
  }
    catch (\Exception $e) {
-       return response()->json(array('error' => true, 'errors' => $e->getMessage(), 'data'=>[]), 200);
+       return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
    }
 }
 
@@ -85,7 +85,7 @@ class CommonController extends Controller {
 
    }
    catch (\Exception $e) {
-       return response()->json(array('error' => true, 'errors' => $e->getMessage(), 'data'=>[]), 200);
+       return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
    }
 }
 
@@ -102,7 +102,7 @@ class CommonController extends Controller {
 
    }
    catch (\Exception $e) {
-       return response()->json(array('error' => true, 'errors' => $e->getMessage(), 'data'=>[]), 200);
+       return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
    }
 }
 

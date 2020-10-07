@@ -26,7 +26,7 @@ class LoginController extends Controller {
                     'password' => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(array('error' => true, 'errors' => $validator->errors()->first()), 200);
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $credentials = $request->only(['email', 'password']);
             try {
@@ -55,7 +55,7 @@ class LoginController extends Controller {
 
     ]);
      if ($validator->fails()) {
-        return response()->json(array('error' => true, 'errors' => $validator->errors()->first()), 200);
+        return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
     } else {
         $u =User::find($request->user_id); 
         $u->device_token =null; 
@@ -99,7 +99,7 @@ public function forgot_password(Request $request)
         } 
         }   
         } catch (Exception $ex) {
-            $arr = array("error"=>true, "errors" => $ex->getMessage(), "data" => []);
+            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
         }
     
     return \Response::json($arr);
@@ -124,7 +124,7 @@ public function VerifyOtp(Request $request)
                   throw new Exception('Incorrect Otp');
             }            
         } catch (Exception $ex) {
-            $arr = array("error"=>true, "errors" => $ex->getMessage(), "data" => []);
+            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
         }
     }
     return \Response::json($arr);
@@ -150,7 +150,7 @@ public function ChnagePassword(Request $request)
                   throw new Exception('Confirm password do not match');
             }            
         } catch (Exception $ex) {
-            $arr = array("error"=>true, "errors" => $ex->getMessage(), "data" => []);
+            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
         }
     }
     return \Response::json($arr);
