@@ -24,7 +24,7 @@
                 return response()->json(['error' => 'could_not_create_token'], 500);
             }
 
-          $userData = User::where('email', '=', $request->input('email'))->select('name AS displayName','email','id AS uid')->first();
+          $userData = User::where('email', '=', $request->input('email'))->whereIn('role_id', [10,1])->select('name AS displayName','email','id AS uid')->first();
             return response()->json(compact('accessToken','userData'));
         }
         
@@ -78,7 +78,7 @@
             }
             public function manageUsers()
             {
-                $users = User::select('users.name AS username','email','users.id','status')->with('roles')->join('role_user', 'role_user.user_id', '=', 'users.id')->where('role_user.role_id','!=', '1')->get();
+        $users = User::select('users.name AS username','email','users.id','status')->with('role')->whereIn('role_id', [7])->get();
                 if (isset($users) && count($users) > 0) {
                     return response()->json(compact('users'), 200);
               } else {

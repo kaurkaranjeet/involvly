@@ -99,7 +99,7 @@ public function forgot_password(Request $request)
         } 
         }   
         } catch (Exception $ex) {
-            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
+            $arr = array("error"=>true, "errors" => $ex->getMessage(), "data" => []);
         }
     
     return \Response::json($arr);
@@ -124,7 +124,7 @@ public function VerifyOtp(Request $request)
                   throw new Exception('Incorrect Otp');
             }            
         } catch (Exception $ex) {
-            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
+            $arr = array("error"=>true, "errors" => $ex->getMessage(), "data" => []);
         }
     }
     return \Response::json($arr);
@@ -150,7 +150,7 @@ public function ChnagePassword(Request $request)
                   throw new Exception('Confirm password do not match');
             }            
         } catch (Exception $ex) {
-            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
+            $arr = array("error"=>true, "errors" => $ex->getMessage(), "data" => []);
         }
     }
     return \Response::json($arr);

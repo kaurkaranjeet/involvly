@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Route;
     // Create New User
 //    Route::post('register', 'UserController@register');
     // Login User
-  /* Route::post('login', 'UserController@login');
+   Route::post('login', 'UserController@login');
    Route::any('/manage-users', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
    Route::any('/fetch-user/{id}', ['as' => 'fetch.user', 'uses' => 'UserController@fetchUser']);
    Route::post('update-profile', 'UserController@UpdateProfile');
- Route::get('delete-user/{id}', 'UserController@RemoveUser');*/
+ Route::get('delete-user/{id}', 'UserController@RemoveUser');
  });
 // Mobile Apis
 
