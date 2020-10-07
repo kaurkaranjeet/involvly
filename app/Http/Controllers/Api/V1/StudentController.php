@@ -65,66 +65,7 @@ class StudentController extends Controller {
    }
 
  }
-    public function updateProfile(Request $request) {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-                    'username' => 'required',
-                    'user_id' => 'required|exists:users,id'
-        ]);
-       
-       if ($validator->fails()) {
-            return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
-        }  
-        else{ 
-       $count_user=User::where('id','!=', $request->user_id)->where('username','=',$request->username)->count();
-         
-          if($count_user==0){
-            $updateData = User::where('id', $request->user_id)->update([
-                'name' => $request->name,
-                'username' => $request->username,
-                'bio' => $request->bio,
-                'insta_key' => $request->insta_key
-            ]);
-            // upload image file
-            if ($request->hasfile('image')) {
-              $video = $request->file('image');
-              $name = time() . '.' . trim($video->getClientOriginalExtension());
-              $destinationPath = public_path('/uploads');
-              $video->move($destinationPath, $name);
-              $videourl = url('/') . '/uploads/' . $name;
-              $updateData = User::where('id', $request->user_id)->update([
-                'image' => $videourl
-              ]);
-            }
-            $update= User::find( $request->user_id);
-            return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $update), 200);
-          }
-        else{
-           return response()->json(array('error' => true, 'message' => 'Username already exist', 'data' => []), 200);
-        }
-      }
-       
-    }
-
-    public function Getuserprofile(Request $request) {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'user_id' => 'required'
-
-        ]);    
-        if ($validator->fails()) {
-            return response()->json(array('error' => true, 'errors' => $validator->errors()), 200);
-        }  
-        else{ 
-            $data = User::fetchUser($request->user_id);
-    
-            
-           
-            return response()->json(array('error' => false, 'message' => 'profile fetched successfully', 'data' => $data), 200);
-
-        }
-
-    }
+  
 
     public function Checkifclassvalid(Request $request) {
       try{
@@ -147,7 +88,7 @@ class StudentController extends Controller {
 
     }
     catch (\Exception $e) {
-     return response()->json(array('error' => true, 'errors' => $e->getMessage()), 200);
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
 
  }
