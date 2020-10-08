@@ -118,6 +118,7 @@ class CommonController extends Controller {
           throw new Exception( $validator->errors()->first());
     } else {
        User::where('id',$request->user_id)->update(['join_community'=>'1']);
+          return response()->json(array('error' => false, 'data' =>[],'message'=>'Updated Successfully'), 200);
    }
  }
    catch (\Exception $e) {
