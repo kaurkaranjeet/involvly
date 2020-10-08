@@ -106,6 +106,25 @@ class CommonController extends Controller {
    }
 }
 
+ public function Joincommunity(Request $request) {
+      try {
+     $input = $request->all();
+     $validator = Validator::make($input, [
+        'user_id' => 'required',
+         'join_community' => 'required',
+
+    ]);
+     if ($validator->fails()) {
+          throw new Exception( $validator->errors()->first());
+    } else {
+       User::where('id',$request->user_id)->update(['join_community'=>'1']);
+   }
+ }
+   catch (\Exception $e) {
+       return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
+   }
+}
+
 public function  RunMigration(){
   Artisan::call('migrate');
 }

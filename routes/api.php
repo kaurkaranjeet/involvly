@@ -50,5 +50,6 @@ Route::group(['middleware' => 'auth:api'], function () {
    Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
    Route::post('add_children', 'Api\V1\LoginController@AddChildren');
 Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
+Route::post('join_community', 'Api\V1\CommonController@Joincommunity');
 
   });
