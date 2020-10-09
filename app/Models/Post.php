@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 { 
-	  public function userDetail()
+	  public function user()
 {
     return $this->belongsTo('App\User');
 }

@@ -29,7 +29,7 @@ class PostController extends Controller {
 }
 public function GetPostHomefeed(Request $request){
 		
-	$posts=	Post::with('userDetail')->get();
+	$posts=	Post::with('user')->get();
 	return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $posts), 200);
 
 	}
