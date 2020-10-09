@@ -131,10 +131,11 @@ class User extends Authenticatable implements JWTSubject {
 
     }
 
-    public function classes()
-    {
-        return $this->belongsToMany('App\Models\ClassCode','user_class_code','class_id','user_id','id',);
-    }
+   protected function getstudents($id){
+   return  User::where('school_id',$id)->where('role_id',7)->where('status',1)->count();
+   }
 
-
+    protected function getteachers($id){
+   return  User::where('school_id',$id)->where('role_id',9)->where('status',1)->count();
+   }
 }

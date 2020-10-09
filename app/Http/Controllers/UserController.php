@@ -2,8 +2,8 @@
 
  namespace App\Http\Controllers;
     use App\User;
-    use App\Role;
- use App\RoleUser;
+    use App\Models\Role;
+    use DB;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Facades\Validator;
@@ -52,6 +52,13 @@
             return response()->json(compact('user','token'),201);
         }
 
+        public function gettotalStatistic($id)
+        {
+         $students=User::getstudents($id);
+         $teachers=User::getteachers($id);
+         return response()->json(compact('students','teachers'), 200);
+       }
+
         public function getAuthenticatedUser()
             {
                     try {
@@ -74,11 +81,24 @@
 
                     }
 
-                    return response()->json(compact('user'));
+                    return response()->json(compact('user'), 200);
             }
-            public function manageUsers()
+
+
+            public function manageUsers(Request $request)
             {
-        $users = User::select('users.name AS username','email','users.id','status')->with('role')->whereIn('role_id', [7])->get();
+              DB::enableQueryLog(); 
+              if($request->type=='teacher'){
+                 $users = User::where('role_id', 9)->with('role')->get();
+              }
+              else if($request->type=='students'){
+                 $users = User::where('role_id', 7)->get();
+              }
+              else{
+                 $users = User::where('role_id', 8)->get();
+              }
+            //  print_r(DB::getQueryLog());die;
+       
                 if (isset($users) && count($users) > 0) {
                     return response()->json(compact('users'), 200);
               } else {

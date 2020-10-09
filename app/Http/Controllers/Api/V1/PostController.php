@@ -26,6 +26,11 @@ class PostController extends Controller {
 		$PostObj->save();
 		return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}
+}
+public function GetPostHomefeed(Request $request){
+		
+	$posts=	Post::with('userDetail')->get();
+	return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $posts), 200);
 
 	}
 	
