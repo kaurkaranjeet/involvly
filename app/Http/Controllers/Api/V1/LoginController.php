@@ -41,6 +41,7 @@ class LoginController extends Controller {
             $user_details->role_id = strval($user_details->role_id);
             $user_details->state_id = strval($user_details->state_id);
             $user_details->school_id = strval($user_details->school_id);
+            $user_details->status = strval($user_details->status);
             $user_details->join_community = strval($user_details->join_community);
             if (!empty($user_details)) {
                 return response()->json(array('error' => false, 'data' => $user_details), 202);
