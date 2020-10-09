@@ -38,6 +38,7 @@ class LoginController extends Controller {
             }
             $user_details = User::validateLogin($request->all());
             $user_details->token = $token;
+            $user_details->role_id = strval($user_details->role_id);
             if (!empty($user_details)) {
                 return response()->json(array('error' => false, 'data' => $user_details), 202);
             } else {
