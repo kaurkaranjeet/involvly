@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Exception;
 use App\Models\Post;
 use Illuminate\Support\Facades\Validator;
-
+use URL;
 class PostController extends Controller {
 
 	public function AddPost(Request $request){
@@ -23,6 +23,16 @@ class PostController extends Controller {
 		$PostObj = new Post();		
 		$PostObj->post_name=$request->post_name;
 		$PostObj->user_id=$request->user_id;
+		 $PostObj->image->is_image=0;
+		if($request->hasFile('image')) {
+        $image = $request->file('image');
+        $name = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $name);
+        $PostObj->image=URL::to('/').'/images/'.$name;
+        $PostObj->image->is_image=1;
+       
+    }
 		$PostObj->save();
 		return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}
