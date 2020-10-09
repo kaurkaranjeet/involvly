@@ -75,9 +75,9 @@ class User extends Authenticatable implements JWTSubject {
         $this->password = Hash::make($request->input('password'));
         $this->device_token = $request->input('device_token');
         if(!empty($request->class_code)){
-           $this->status = '1';
+           $this->status = 1;
        } else{
-           $this->status = '0';
+           $this->status = 0;
        }  
        
        $this->role_id =$request->role_id;
