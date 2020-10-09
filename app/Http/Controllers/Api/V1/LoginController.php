@@ -56,7 +56,7 @@ class LoginController extends Controller {
     public function Logout(Request $request){
      $input = $request->all();
      $validator = Validator::make($input, [
-        'user_id' => 'required',
+        'user_id' => 'required|exists:users,id',
 
     ]);
      if ($validator->fails()) {

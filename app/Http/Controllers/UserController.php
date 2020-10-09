@@ -89,13 +89,13 @@
             {
               DB::enableQueryLog(); 
               if($request->type=='teacher'){
-                 $users = User::where('role_id', 9)->with('role')->get();
+                 $users = User::where('role_id', 9)->where('status', 1)->with('role')->get();
               }
               else if($request->type=='students'){
-                 $users = User::where('role_id', 7)->get();
+                 $users = User::where('role_id', 7)->where('status', 1)->get();
               }
               else{
-                 $users = User::where('role_id', 8)->get();
+                 $users = User::where('role_id', 8)->where('status', 1)->get();
               }
             //  print_r(DB::getQueryLog());die;
        
