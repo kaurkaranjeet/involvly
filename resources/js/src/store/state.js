@@ -17,12 +17,17 @@ import colors from "@/../themeConfig.js"
 
 // *From Auth - Data will be received from auth provider
 const userDefaults = {
-  
+  uid         :"" ,          // From Auth
+  displayName : "", // From Auth
+  about       : "",
+  photoURL    : "", // From Auth
+  status      : "",
+  userRole    : ""
 }
 
 //console.log(localStorage.getItem('userInfo'));
 const userInfoLocalStorage = JSON.parse(localStorage.getItem('userInfo')) || {}
-//console.log(userInfoLocalStorage)
+console.log(userInfoLocalStorage)
 // Set default values for active-user
 // More data can be added by auth provider or other plugins/packages
 
@@ -31,17 +36,17 @@ const getUserInfo = () => {
   const userInfo = {}
 
   // Update property in user
-  Object.keys(userDefaults).forEach((key) => {
+  /*Object.keys(userDefaults).forEach((key) => {
     // If property is defined in localStorage => Use that
     userInfo[key] = userInfoLocalStorage[key] ? userInfoLocalStorage[key] : userDefaults[key]
-  })
+  }*/
 
   // Include properties from localStorage
   Object.keys(userInfoLocalStorage).forEach((key) => {
-    if (userInfo[key] === undefined && userInfoLocalStorage[key] !== null) userInfo[key] = userInfoLocalStorage[key]
+  console.log( userInfoLocalStorage[key]);
   })
   //console.log(userInfoLocalStorage);
-  return userInfo
+  return userInfoLocalStorage
 }
 
 // Check if device is touch device

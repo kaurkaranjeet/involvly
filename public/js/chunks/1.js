@@ -6941,13 +6941,23 @@ __webpack_require__.r(__webpack_exports__);
   icon: "HomeIcon"
 }, {
   url: null,
-  name: 'User',
+  name: 'Users',
   icon: 'UserIcon',
   i18n: 'User',
   submenu: [{
     url: '/apps/user/user-list',
-    name: 'List',
+    name: 'Teachers List',
     slug: 'app-user-list',
+    i18n: 'List'
+  }, {
+    url: '/apps/user/listofstudents',
+    name: 'Student List',
+    slug: 'list-students',
+    i18n: 'List'
+  }, {
+    url: '/apps/user/listofparents',
+    name: 'Parent List',
+    slug: 'list-parents',
     i18n: 'List'
   }]
 }]);

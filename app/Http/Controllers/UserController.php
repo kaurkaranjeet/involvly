@@ -24,7 +24,7 @@
                 return response()->json(['error' => 'could_not_create_token'], 500);
             }
 
-          $userData = User::where('email', '=', $request->input('email'))->whereIn('role_id', [10,1])->select('name AS displayName','email','id AS uid')->first();
+          $userData = User::where('email', '=', $request->input('email'))->whereIn('role_id', [5,1])->select('name AS displayName','email','id AS uid')->first();
             return response()->json(compact('accessToken','userData'));
         }
         
@@ -89,13 +89,13 @@
             {
               DB::enableQueryLog(); 
               if($request->type=='teacher'){
-                 $users = User::where('role_id', 9)->where('status', 1)->with('role')->get();
+                 $users = User::where('role_id', 4)->where('status', 1)->with('role')->get();
               }
               else if($request->type=='students'){
-                 $users = User::where('role_id', 7)->where('status', 1)->get();
+                 $users = User::where('role_id', 2)->where('status', 1)->get();
               }
               else{
-                 $users = User::where('role_id', 8)->where('status', 1)->get();
+                 $users = User::where('role_id', 3)->where('status', 1)->get();
               }
             //  print_r(DB::getQueryLog());die;
        

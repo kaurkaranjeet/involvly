@@ -11,24 +11,24 @@
 
   <div id="page-user-list">
 
-    <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
+    <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters" style="display: none">
       <div class="vx-row">
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+       <!--  <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Role</label>
           <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div>
+        </div> -->
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Status</label>
           <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
         </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+        <!-- <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Verified</label>
           <v-select :options="isVerifiedOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
-        </div>
-        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+        </div> -->
+      <!--   <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Department</label>
           <v-select :options="departmentOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="departmentFilter" />
-        </div>
+        </div> -->
       </div>
     </vx-card>
 
@@ -220,8 +220,8 @@ export default {
           headerCheckboxSelection: true
         },
         {
-          headerName: 'Username',
-          field: 'username',
+          headerName: 'Name',
+          field: 'name',
           filter: true,
           width: 210,
           cellRendererFramework: 'CellRendererLink'
@@ -232,24 +232,8 @@ export default {
           filter: true,
           width: 225
         },
-        {
-          headerName: 'Name',
-          field: 'name',
-          filter: true,
-          width: 200
-        },
-        {
-          headerName: 'Country',
-          field: 'country',
-          filter: true,
-          width: 150
-        },
-        {
-          headerName: 'Role',
-          field: 'role',
-          filter: true,
-          width: 150
-        },
+       
+      
         {
           headerName: 'Status',
           field: 'status',
@@ -257,20 +241,7 @@ export default {
           width: 150,
           cellRendererFramework: 'CellRendererStatus'
         },
-        {
-          headerName: 'Verified',
-          field: 'is_verified',
-          filter: true,
-          width: 125,
-          cellRendererFramework: 'CellRendererVerified',
-          cellClass: 'text-center'
-        },
-        {
-          headerName: 'Department',
-          field: 'department',
-          filter: true,
-          width: 150
-        },
+        
         {
           headerName: 'Actions',
           field: 'transactions',
@@ -304,6 +275,7 @@ export default {
     }
   },
   computed: {
+
     usersData () {
       return this.$store.state.userManagement.users
     },

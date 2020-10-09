@@ -51,10 +51,10 @@ const router = new Router({
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'User' },
+              { title: 'Teachers' },
               { title: 'List', active: true }
             ],
-            pageTitle: 'User List',
+            pageTitle: 'Teachers List',
             rule: 'editor'
           }
         },
@@ -86,6 +86,35 @@ const router = new Router({
             rule: 'editor'
           }
         },
+
+         {
+          path: '/apps/user/listofstudents',
+          name: 'list-students',
+          component: () => import('@/views/apps/user/user-list/StudentList.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Students' },
+              { title: 'List', active: true }
+            ],
+            pageTitle: 'Students List',
+            rule: 'editor'
+          }
+        },
+         {
+          path: '/apps/user/listofparents',
+          name: 'list-parents',
+          component: () => import('@/views/apps/user/user-list/ParentList.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Parents' },
+              { title: 'List', active: true }
+            ],
+            pageTitle: 'Parents List',
+            rule: 'editor'
+          }
+        }
             ],
         },
     // =============================================================================
