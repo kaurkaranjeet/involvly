@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Post;
+use App\Models\LikeUnlike;
 use App\Models\Comment;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Validator;
@@ -53,12 +54,15 @@ class PostController extends Controller {
        
     }
 		$PostObj->save();
+
+     // $PostObj->likes=$PostObj->likes;
 		return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}
 }
 public function GetPostHomefeed(Request $request){
 		
-	$posts=	Post::with('user')->get();
+        $posts = Post::with('user')->withCount('likes','comments')->get();
+	//$posts=	Post::with('user')->get();
 	return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $posts), 200);
 
 	}
@@ -109,6 +113,67 @@ public function GetComments(Request $request){
 
     }
 
+}
+
+    public function LikeUnlikePost(Request $request){
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'user_id' => 'required|exists:users,id',
+        'post_id' => 'required|exists:posts,id',
+        'like' => 'required'
+
+    ]);    
+       if ($validator->fails()) {
+        return response()->json(array('error' => true, 'errors' => $validator->errors()), 200);
+    }
+    else{
+    $like_unlike_id = LikeUnlike::where('user_id', $request->user_id)->where('post_id', $request->post_id)->first();
+    if(!empty($like_unlike_id)){
+    /* $notify_id=1;
+     if($like_unlike_id->like!=$request->like){
+      $notify_id=0;
+    }*/
+     $flight = LikeUnlike::find($like_unlike_id->id);
+  } 
+  else
+  {
+  //$notify_id=0;
+  $flight= new LikeUnlike;//then create new object
+}
+    $flight->user_id=$request->user_id;
+    $flight->post_id=$request->post_id;
+    $flight->like=$request->like;
+    $flight->save();
+  // total likes
+  /* $results = DB::select( DB::raw("select count(*) as total_likes from `like_unlike` where `post_id` = ".$request->stream_id." and `like` = 1") );
+
+   
+           if(isset($results[0])){
+            $flight->total_likes=$results[0]->total_likes;
+        }
+        else{
+             $flight->total_likes=0;
+        }*/
+
+        if($request->like=='1'){
+         // $like='liked';
+         $this->pusher->trigger('like-channel', 'like_stream', $flight);
+       }
+       else{
+     //   $like='unliked';
+         $this->pusher->trigger('like-channel', 'dislike_stream', $flight);
+       }
+       /*if($notify_id==0){
+        // send notification
+          $user=$flight->Streamuser($request->stream_id);
+         $message= $flight->User->name .' has '.$like.' your video';
+         Notification::create(['user_id'=>$user->id,'notification_message'=>$message,'type'=>'like','is_follow'=>0,'stream_id'=> $request->stream_id,'notify_id'=>$request->user_id]);  
+       }   */    
+
+       return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
+
+
+}
 }
 	
 }
