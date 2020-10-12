@@ -60,4 +60,6 @@ Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
 Route::get('get_home_feed', 'Api\V1\PostController@GetPostHomefeed');
 Route::post('get_comments', 'Api\V1\PostController@GetComments');
 Route::post('like_post', 'Api\V1\PostController@LikeUnlikePost');
+Route::post('list_home_students', 'Api\V1\ParentController@GethomeStudents');
+
   });
