@@ -10,7 +10,24 @@ use App\Models\Comment;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Validator;
 use URL;
+use DB;
 class PostController extends Controller {
+
+    public function __construct()
+    {
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'encrypted' => true
+        );
+        $this->pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'), 
+            $options
+        );
+
+       
+    }
 
 	public function AddPost(Request $request){
 		$validator = Validator::make($request->all(), [
@@ -49,8 +66,8 @@ public function GetPostHomefeed(Request $request){
 	  public function AddComments(Request $request){
        $input = $request->all();
        $validator = Validator::make($input, [
-        'user_id' => 'required',
-        'post_id' => 'required',
+        'user_id' => 'required|exists:users,id',
+        'post_id' => 'required|exists:posts,id',
         'comment' => 'required'
 
     ]);    
@@ -77,6 +94,21 @@ public function GetPostHomefeed(Request $request){
         $this->pusher->trigger('comment-channel', 'add_comment', $flight);
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
+}
+
+public function GetComments(Request $request){
+    $validator = Validator::make($request->all(), [
+        'post_id' => 'required|exists:posts,id'
+    ]);
+    if($validator->fails()){
+        return response()->json(array('errors' => $validator->errors(),'error' => true));
+    }
+    else{
+    $comments=  Comment::with('User')->where('post_id' , $request->post_id)->get();
+    return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $comments), 200);
+
+    }
+
 }
 	
 }
