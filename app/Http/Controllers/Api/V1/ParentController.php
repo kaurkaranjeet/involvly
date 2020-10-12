@@ -95,7 +95,7 @@ class ParentController extends Controller {
   $students = User::with('SchoolDetail:id,school_name')
             ->join('user_class_code', 'users.id', '=', 'user_class_code.user_id')
             ->join('class_code', 'user_class_code.class_id', '=', 'class_code.id')
-            ->select('users.*', 'class_code.class_name')->where('role_id',2)->where('user_class_code.class_code',$request->class_code)->where('users.school_id',$request->school_id)->whereNotNull('user_class_code.class_code')->get();
+            ->select('users.*', 'class_code.class_name')->where('role_id',2)->where('user_class_code.class_code',$request->class_code)->where('users.school_id',$request->school_id)->get();
          return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $students), 200);
 
        }
