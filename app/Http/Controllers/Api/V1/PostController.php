@@ -89,7 +89,7 @@ public function GetPostHomefeed(Request $request){
     // total comments
         $results1 = DB::select( DB::raw("select count(*) as total_comments from `comments` where `post_id` = ".$request->post_id."") );
         if(isset($results1[0])){
-            $flight->total_comments=$results1[0]->total_comments;
+            $flight->total_comments=(int)$results1[0]->total_comments;
         }
         else{
              $flight->total_comments=0;
