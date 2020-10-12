@@ -51,10 +51,11 @@ Route::post('list_students', 'Api\V1\ParentController@GetStudents');
 Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
 Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
 Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
-Route::post('add_children', 'Api\V1\LoginController@AddChildren');
+Route::post('add_children', 'Api\V1\ParentController@AddChildren');
 Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
 Route::post('join_community', 'Api\V1\CommonController@Joincommunity');
 Route::post('add_post', 'Api\V1\PostController@AddPost');
+Route::post('add_comment', 'Api\V1\PostController@AddComments');
 Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
 Route::get('get_home_feed', 'Api\V1\PostController@GetPostHomefeed');
 

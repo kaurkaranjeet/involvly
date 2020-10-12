@@ -138,9 +138,11 @@ class ParentController extends Controller {
                     'children_id' =>$request->student_id,
                     'relationship' => $request->relationship
                    ]);
+
+         $addUser= DB::table('parent_childrens')->where('parent_id',$request->parent_id)->where('children_id',$request->children_id)->first();
           
          }
-         return response()->json(array('error' => false, 'data' =>$addUser ), 200);
+         return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
      }
    } catch (\Exception $e) {
      return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
