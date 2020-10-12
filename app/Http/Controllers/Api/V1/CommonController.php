@@ -74,19 +74,29 @@ class CommonController extends Controller {
 
   public function GetSchools(Request $request) {
       try {
-
-        $states=School::all();
+      $input = $request->all();
+      $validator = Validator::make($input, [
+        'city_id' => 'required|exists:cities,id'
+  
+    ]);    
+       if ($validator->fails()) {
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+    }
+    else{
+        $states=School::where('city_id',$request->city_id)->get();
         if(!empty( $states )){
            return response()->json(array('error' => false, 'data' =>$states ), 200);
        }
        else{
-           throw new Exception('No Record');
+           throw new Exception('No Schools in this city.');
        }
 
    }
+ }
    catch (\Exception $e) {
        return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
    }
+
 }
 
  public function GetSubjects(Request $request) {

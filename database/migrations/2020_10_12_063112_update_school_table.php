@@ -14,6 +14,12 @@ class UpdateSchoolTable extends Migration
     public function up()
     {
         //
+         Schema::table('schools', function (Blueprint $table) {
+           $table->index('city_id');
+           $table->unsignedBigInteger('city_id')->references('id')->on('cities')->onDelete('cascade'); 
+           $table->index('state_id');
+           $table->unsignedBigInteger('state_id')->references('id')->on('states')->onDelete('cascade'); 
+     });
     }
 
     /**
