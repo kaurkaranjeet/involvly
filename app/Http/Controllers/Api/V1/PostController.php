@@ -95,6 +95,9 @@ public function GetPostHomefeed(Request $request){
              $flight->total_comments=0;
         }
 
+            $flight->user_id=(int) $request->user_id;
+    $flight->post_id=(int) $request->post_id;
+
         $this->pusher->trigger('comment-channel', 'add_comment', $flight);
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
