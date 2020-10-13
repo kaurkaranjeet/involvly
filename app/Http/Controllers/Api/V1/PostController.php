@@ -40,23 +40,24 @@ class PostController extends Controller {
 		return response()->json(array('errors' => $validator->errors(),'error' => true));
 	}
 	else{
-		$PostObj = new Post();		
-		$PostObj->post_name=$request->post_name;
-		$PostObj->user_id=$request->user_id;
-		 $PostObj->is_image=0;
-		if($request->hasFile('image')) {
-        $image = $request->file('image');
-        $name = time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path('/images');
-        $image->move($destinationPath, $name);
-        $PostObj->image=URL::to('/').'/images/'.$name;
-        $PostObj->is_image=1;
-       
+	$PostObj = new Post();		
+	$PostObj->post_name=$request->post_name;
+	$PostObj->user_id=$request->user_id;
+  $PostObj->is_image=0;
+  $data = [];
+   if($request->hasfile('image'))
+   {
+    $PostObj->is_image=1;
+    foreach($request->file('image') as $key=>$file)
+    {
+      $name=time().'.'.$file->getClientOriginalExtension();    
+      $file->move(public_path().'/images/', $name);      
+      $data[$key] = URL::to('/').'/images/'.$name;  
     }
-		$PostObj->save();
-
-     // $PostObj->likes=$PostObj->likes;
-		return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $PostObj), 200);
+  }
+  $PostObj->image=json_encode($data);
+  $PostObj->save();
+	return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}
 }
 public function GetPostHomefeed(Request $request){
