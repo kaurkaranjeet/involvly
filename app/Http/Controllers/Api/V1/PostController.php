@@ -64,7 +64,7 @@ public function GetPostHomefeed(Request $request){
 		
         $posts = Post::with('user')->withCount('likes','comments')->get();
         foreach($posts as $single_post){
-         $single_post->is_like= $single_post->isUserLikedPost;
+         $single_post->is_like= $single_post->isUserLikedPost($single_post->user_id);
         }
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
 
