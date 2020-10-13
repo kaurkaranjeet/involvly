@@ -8,7 +8,6 @@ use Exception;
 use App\Models\Post;
 use App\Models\LikeUnlike;
 use App\Models\Comment;
-use App\Models\CommentReply;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Validator;
 use URL;
@@ -46,12 +45,12 @@ class PostController extends Controller {
 	$PostObj->user_id=$request->user_id;
   $PostObj->is_image=0;
   $data = [];
-   if($request->hasfile('image[]'))
+   if($request->hasfile('image'))
    {
     $PostObj->is_image=1;
-    foreach($request->file('image[]') as $key=>$file)
+    foreach($request->file('image') as $key=>$file)
     {
-      $name=time().'.'.$file->getClientOriginalExtension();    
+      $name=time().$key'.'.$file->getClientOriginalExtension();    
       $file->move(public_path().'/images/', $name);      
       $data[$key] = URL::to('/').'/images/'.$name;  
     }
@@ -63,7 +62,7 @@ class PostController extends Controller {
 }
 public function GetPostHomefeed(Request $request){
 		
-        $posts = Post::with('user')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+        $posts = Post::with('user')->withCount('likes','comments')->get();
         foreach($posts as $single_post){
          $single_post->is_like= $single_post->isUserLikedPost($single_post->user_id);
         }
@@ -182,60 +181,5 @@ public function GetComments(Request $request){
 
 }
 }
-
-public function DeletePost($id)
-  {
-    if (!empty($id)) {
-      //check id exist or not
-      $getpost = Post::where('id', $id)->first();
-      if(!empty($getpost)){
-       $post = Post::findOrFail($id);
-      $post->delete();
-      return response()->json(array('error' => false, 'message' => 'Success', 'data' => $post), 200);  
-      }else{
-      return response()->json(array('error' => false, 'message' => 'Post id not exist', 'data' => ''), 200);   
-      }
-      
-    } else {
-        return response()->json(array('error' => false, 'message' => 'No Post Found!', 'data' => ''), 200);
-    }
-  }
-  	  public function AddReplyComments(Request $request){
-            $input = $request->all();
-            $validator = Validator::make($input, [
-             'user_id' => 'required|exists:users,id',
-             'post_id' => 'required|exists:posts,id',
-             'comment_id' => 'required|exists:comments,id',
-             'reply_comment' => 'required'
-
-         ]);    
-            if ($validator->fails()) {
-             return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
-         }
-         else{
-
-         $reply= new CommentReply;//then create new object
-         $reply->user_id=$request->user_id;
-         $reply->post_id=$request->post_id;
-         $reply->comment_id=$request->comment_id;
-         $reply->reply_comment=$request->reply_comment;
-         $reply->save();
-         $reply->name= $reply->User->name;
-//          total reply comments
-         $results1 = DB::select( DB::raw("select count(*) as total_reply_comments from `comment_replies` where `comment_id` = ".$request->comment_id."") );
-             if(isset($results1[0])){
-                 $reply->total_reply_comments=(int)$results1[0]->total_reply_comments;
-             }
-             else{
-                  $reply->total_reply_comments=0;
-             }
-
-         $reply->user_id=(int) $request->user_id;
-         $reply->post_id=(int) $request->post_id;
-
-             $this->pusher->trigger('comment-channel', 'add_comment', $reply);
-            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $reply), 200);
-     }
-    }
 	
 }
