@@ -181,5 +181,23 @@ public function GetComments(Request $request){
 
 }
 }
+
+public function DeletePost($id)
+  {
+    if (!empty($id)) {
+      //check id exist or not
+      $getpost = Post::where('id', $id)->first();
+      if(!empty($getpost)){
+       $post = Post::findOrFail($id);
+      $post->delete();
+      return response()->json(array('error' => false, 'message' => 'Success', 'data' => $post), 200);  
+      }else{
+      return response()->json(array('error' => false, 'message' => 'Post id not exist', 'data' => ''), 200);   
+      }
+      
+    } else {
+        return response()->json(array('error' => false, 'message' => 'No Post Found!', 'data' => ''), 200);
+    }
+  }
 	
 }
