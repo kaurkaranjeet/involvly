@@ -62,7 +62,7 @@ class PostController extends Controller {
 }
 public function GetPostHomefeed(Request $request){
 		
-        $posts = Post::with('user')->withCount('likes','comments')->get();
+        $posts = Post::with('user')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
         foreach($posts as $single_post){
          $single_post->is_like= $single_post->isUserLikedPost($single_post->user_id);
         }
