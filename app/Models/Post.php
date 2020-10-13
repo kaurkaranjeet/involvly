@@ -23,4 +23,13 @@ public function likes(){
 public function comments(){
    return $this->hasMany('App\Models\Comment','post_id');
 }
+
+
+public function isUserLikedPost($user_id){
+      $like = $this->likes()->where('user_id',  $user_id)->get();
+      if ($like->isEmpty()){
+          return 0;
+      }
+      return 1;
+   }
 }
