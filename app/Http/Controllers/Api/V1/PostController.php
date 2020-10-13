@@ -160,11 +160,11 @@ public function GetComments(Request $request){
 
         if($request->like=='1'){
          // $like='liked';
-         $this->pusher->trigger('like-channel', 'like_stream', $flight);
+         $this->pusher->trigger('like-channelpost', 'like_post', $flight);
        }
        else{
      //   $like='unliked';
-         $this->pusher->trigger('like-channel', 'dislike_stream', $flight);
+         $this->pusher->trigger('like-channelpost', 'dislike_post', $flight);
        }
        /*if($notify_id==0){
         // send notification
