@@ -45,10 +45,10 @@ class PostController extends Controller {
 	$PostObj->user_id=$request->user_id;
   $PostObj->is_image=0;
   $data = [];
-   if($request->hasfile('image'))
+   if($request->hasfile('image[]'))
    {
     $PostObj->is_image=1;
-    foreach($request->file('image') as $key=>$file)
+    foreach($request->file('image[]') as $key=>$file)
     {
       $name=time().'.'.$file->getClientOriginalExtension();    
       $file->move(public_path().'/images/', $name);      

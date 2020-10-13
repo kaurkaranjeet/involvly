@@ -120,18 +120,27 @@ const router = new Router({
     // =============================================================================
     // FULL PAGE LAYOUTS
     // =============================================================================
-        {
-            path: '',
-            component: () => import('@/layouts/full-page/FullPage.vue'),
-            children: [
+    {
+      path: '',
+      component: () => import('@/layouts/full-page/FullPage.vue'),
+      children: [
         // =============================================================================
         // PAGES
         // =============================================================================
+        {
+          path: '/pages/login',
+          name: 'page-login',
+          component: () => import('@/views/pages/Login.vue')
+        },
+
               {
-                path: '/pages/login',
-                name: 'page-login',
-                component: () => import('@/views/pages/Login.vue')
-              },
+          path: '/pages/register',
+          name: 'page-register',
+          component: () => import('@/views/pages/register/Register.vue'),
+          meta: {
+            rule: 'editor'
+          }
+        },
               {
                 path: '/pages/error-404',
                 name: 'page-error-404',
