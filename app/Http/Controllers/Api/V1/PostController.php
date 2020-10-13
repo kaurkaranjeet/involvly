@@ -50,7 +50,7 @@ class PostController extends Controller {
     $PostObj->is_image=1;
     foreach($request->file('image') as $key=>$file)
     {
-      $name=time().$key'.'.$file->getClientOriginalExtension();    
+      $name=time().$key.'.'.$file->getClientOriginalExtension();    
       $file->move(public_path().'/images/', $name);      
       $data[$key] = URL::to('/').'/images/'.$name;  
     }
