@@ -55,7 +55,7 @@ class PostController extends Controller {
       $data[$key] = URL::to('/').'/images/'.$name;  
     }
   }
-  $PostObj->image=json_encode($data);
+  $PostObj->image=$data;
   $PostObj->save();
 	return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}

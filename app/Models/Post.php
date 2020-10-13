@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 { 
+
+	 protected $casts = [
+        'image' => 'array'
+    ];
 	  public function user()
 {
     return $this->belongsTo('App\User');
