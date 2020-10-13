@@ -62,5 +62,6 @@ Route::post('get_comments', 'Api\V1\PostController@GetComments');
 Route::post('like_post', 'Api\V1\PostController@LikeUnlikePost');
 Route::post('list_home_students', 'Api\V1\ParentController@GethomeStudents');
 Route::post('delete_post/{id}', 'Api\V1\PostController@DeletePost');
+Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
 
   });
