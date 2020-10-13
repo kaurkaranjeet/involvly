@@ -37,7 +37,7 @@ class PostController extends Controller {
 
 	]);
 	if($validator->fails()){
-		return response()->json(array('errors' => $validator->errors(),'error' => true));
+		return response()->json(array('message' => $validator->errors(),'error' => true));
 	}
 	else{
 	$PostObj = new Post();		
@@ -57,14 +57,14 @@ class PostController extends Controller {
   }
   $PostObj->image=$data;
   $PostObj->save();
-	return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $PostObj), 200);
+	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}
 }
 public function GetPostHomefeed(Request $request){
 		
         $posts = Post::with('user')->withCount('likes','comments')->get();
 	//$posts=	Post::with('user')->get();
-	return response()->json(array('error' => true, 'message' => 'Record found', 'data' => $posts), 200);
+	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
 
 	}
 
@@ -77,7 +77,7 @@ public function GetPostHomefeed(Request $request){
 
     ]);    
        if ($validator->fails()) {
-        return response()->json(array('error' => true, 'errors' => $validator->errors()), 200);
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
     }
     else{
     
@@ -128,7 +128,7 @@ public function GetComments(Request $request){
 
     ]);    
        if ($validator->fails()) {
-        return response()->json(array('error' => true, 'errors' => $validator->errors()), 200);
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
     }
     else{
     $like_unlike_id = LikeUnlike::where('user_id', $request->user_id)->where('post_id', $request->post_id)->first();
