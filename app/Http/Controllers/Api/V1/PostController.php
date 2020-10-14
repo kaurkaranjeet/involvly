@@ -132,7 +132,7 @@ public function GetComments(Request $request){
         return response()->json(array('errors' => $validator->errors(),'error' => true));
     }
     else{
-    $comments=  Comment::with('User')->withCount('replycomments')->where('post_id' , $request->post_id)->get();
+    $comments=  Comment::with('User')->withCount('replycomments')->with('replycomments')->where('post_id' , $request->post_id)->get();
     return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $comments), 200);
 
     }
