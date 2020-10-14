@@ -147,6 +147,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -155,13 +172,24 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       displayName: '',
+      Position: '',
       email: '',
       password: '',
       confirm_password: '',
       country: 'United States',
       stateFilteroption: [],
+      cityoptions: [],
+      schooloptions: [],
       stateFilter: {
         label: 'Select State',
+        value: ''
+      },
+      schoolFilter: {
+        label: 'Select School',
+        value: ''
+      },
+      cityFilter: {
+        label: 'Select city',
         value: ''
       },
       isTermsConditionAccepted: true
@@ -169,7 +197,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     validateForm: function validateForm() {
-      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true && this.country !== '' && this.stateFilter !== '';
+      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true && this.country !== '' && this.stateFilter.value !== '' && this.cityFilter.value !== '' && this.Position !== '' && this.schoolFilter.value !== '';
     }
   },
   methods: {
@@ -195,22 +223,66 @@ __webpack_require__.r(__webpack_exports__);
       if (!this.validateForm || !this.checkLogin()) return;
       var payload = {
         userDetails: {
-          displayName: this.displayName,
+          name: this.displayName,
           email: this.email,
           password: this.password,
           confirmPassword: this.confirm_password,
-          country: this.country
+          country: this.country,
+          state_id: this.stateFilter.value,
+          city_id: this.cityFilter.value,
+          school_id: this.schoolFilter.value
         },
         notify: this.$vs.notify
       };
+      console.log(payload);
       this.$store.dispatch('auth/registerUserJWT', payload);
     },
-    getCities: function getCities(id) {
-      alert(id);
+    getCities: function getCities(a) {
+      var _this = this;
+
+      this.cityFilter = {
+        label: 'Select city',
+        value: ''
+      };
+      this.cityoptions = [];
+      this.$http.post("/api/v1/get_cities", {
+        state_id: a.value
+      }).then(function (response) {
+        var data = response.data.data;
+
+        for (var index in data) {
+          var newobj = {};
+          newobj.label = data[index].city;
+          newobj.value = data[index].id;
+
+          _this.cityoptions.push(newobj);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getSchools: function getSchools(a) {
+      var _this2 = this;
+
+      this.$http.post("/api/v1/list_schools", {
+        city_id: a.value
+      }).then(function (response) {
+        var data = response.data.data;
+
+        for (var index in data) {
+          var newobj = {};
+          newobj.label = data[index].school_name;
+          newobj.value = data[index].id;
+
+          _this2.schooloptions.push(newobj);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   },
   created: function created() {
-    var _this = this;
+    var _this3 = this;
 
     this.$http.get("/api/v1/list_states").then(function (response) {
       var data = response.data.data;
@@ -220,7 +292,7 @@ __webpack_require__.r(__webpack_exports__);
         newobj.label = data[index].state_name;
         newobj.value = data[index].id;
 
-        _this.stateFilteroption.push(newobj);
+        _this3.stateFilteroption.push(newobj);
       }
     })["catch"](function (error) {
       console.log(error);
@@ -415,8 +487,8 @@ var render = function() {
           {
             name: "validate",
             rawName: "v-validate",
-            value: "required|alpha_dash|min:3",
-            expression: "'required|alpha_dash|min:3'"
+            value: "required",
+            expression: "'required'"
           }
         ],
         staticClass: "w-full",
@@ -437,6 +509,35 @@ var render = function() {
       _vm._v(" "),
       _c("span", { staticClass: "text-danger text-sm" }, [
         _vm._v(_vm._s(_vm.errors.first("displayName")))
+      ]),
+      _vm._v(" "),
+      _c("vs-input", {
+        directives: [
+          {
+            name: "validate",
+            rawName: "v-validate",
+            value: "required",
+            expression: "'required'"
+          }
+        ],
+        staticClass: "w-full",
+        attrs: {
+          "data-vv-validate-on": "blur",
+          "label-placeholder": "Position",
+          name: "Position",
+          placeholder: "Position"
+        },
+        model: {
+          value: _vm.Position,
+          callback: function($$v) {
+            _vm.Position = $$v
+          },
+          expression: "Position"
+        }
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-danger text-sm" }, [
+        _vm._v(_vm._s(_vm.errors.first("Position")))
       ]),
       _vm._v(" "),
       _c("vs-input", {
@@ -564,11 +665,7 @@ var render = function() {
       _c("v-select", {
         staticClass: "w-full mt-6",
         attrs: { options: _vm.stateFilteroption, clearable: false },
-        on: {
-          change: function($event) {
-            return _vm.getCities(_vm.stateFilteroption.value)
-          }
-        },
+        on: { input: _vm.getCities },
         model: {
           value: _vm.stateFilter,
           callback: function($$v) {
@@ -578,8 +675,37 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _c("v-select", {
+        staticClass: "w-full mt-6",
+        attrs: { options: _vm.cityoptions, clearable: false },
+        on: { input: _vm.getSchools },
+        model: {
+          value: _vm.cityFilter,
+          callback: function($$v) {
+            _vm.cityFilter = $$v
+          },
+          expression: "cityFilter"
+        }
+      }),
+      _vm._v(" "),
       _c("span", { staticClass: "text-danger text-sm" }, [
-        _vm._v(_vm._s(_vm.errors.first("state")))
+        _vm._v(_vm._s(_vm.errors.first("cityFilter")))
+      ]),
+      _vm._v(" "),
+      _c("v-select", {
+        staticClass: "w-full mt-6",
+        attrs: { options: _vm.schooloptions, clearable: false },
+        model: {
+          value: _vm.schoolFilter,
+          callback: function($$v) {
+            _vm.schoolFilter = $$v
+          },
+          expression: "schoolFilter"
+        }
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-danger text-sm" }, [
+        _vm._v(_vm._s(_vm.errors.first("schoolFilter")))
       ]),
       _vm._v(" "),
       _c(

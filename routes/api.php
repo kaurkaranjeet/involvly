@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
   Route::prefix('auth')->group(function () {
     // Below mention routes are public, user can access those without any restriction.
     // Create New User
-//    Route::post('register', 'UserController@register');
+  Route::post('register', 'UserController@register');
     // Login User
    Route::post('login', 'UserController@login');
    Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);

@@ -73653,7 +73653,11 @@ __webpack_require__.r(__webpack_exports__);
         displayName = _payload$userDetails.displayName,
         email = _payload$userDetails.email,
         password = _payload$userDetails.password,
-        confirmPassword = _payload$userDetails.confirmPassword;
+        confirmPassword = _payload$userDetails.confirmPassword,
+        country = _payload$userDetails.country,
+        school_id = _payload$userDetails.school_id,
+        city_id = _payload$userDetails.city_id,
+        state_id = _payload$userDetails.state_id;
     return new Promise(function (resolve, reject) {
       // Check confirm password
       if (password !== confirmPassword) {
@@ -73662,15 +73666,13 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      _http_requests_auth_jwt_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].registerUser(displayName, email, password).then(function (response) {
-        // Redirect User
-        _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/'); // Update data in localStorage
-
-        localStorage.setItem('accessToken', response.data.accessToken);
-        commit('UPDATE_USER_INFO', response.data.userData, {
-          root: true
-        });
-        resolve(response);
+      _http_requests_auth_jwt_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].registerUser(displayName, email, password, country, school_id, city_id, state_id).then(function (response) {
+        console.log(response); // Redirect User
+        // router.push(router.currentRoute.query.to || '/')
+        // Update data in localStorage
+        // localStorage.setItem('accessToken', response.data.accessToken)
+        // commit('UPDATE_USER_INFO', response.data.userData, {root: true})
+        // resolve(response)
       })["catch"](function (error) {
         reject(error);
       });

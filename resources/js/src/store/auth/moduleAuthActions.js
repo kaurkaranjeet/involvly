@@ -330,7 +330,7 @@ export default {
   },
   registerUserJWT ({ commit }, payload) {
 
-    const { displayName, email, password, confirmPassword } = payload.userDetails
+    const { displayName, email, password, confirmPassword , country,school_id,city_id,state_id} = payload.userDetails
 
     return new Promise((resolve, reject) => {
 
@@ -339,16 +339,17 @@ export default {
         reject({message: 'Password doesn\'t match. Please try again.'})
       }
 
-      jwt.registerUser(displayName, email, password)
+      jwt.registerUser(displayName, email, password, country,school_id,city_id,state_id)
         .then(response => {
+          console.log(response);
           // Redirect User
-          router.push(router.currentRoute.query.to || '/')
+         // router.push(router.currentRoute.query.to || '/')
 
           // Update data in localStorage
-          localStorage.setItem('accessToken', response.data.accessToken)
-          commit('UPDATE_USER_INFO', response.data.userData, {root: true})
+         // localStorage.setItem('accessToken', response.data.accessToken)
+         // commit('UPDATE_USER_INFO', response.data.userData, {root: true})
 
-          resolve(response)
+         // resolve(response)
         })
         .catch(error => { reject(error) })
     })

@@ -32,7 +32,6 @@ class PostController extends Controller {
 
 	public function AddPost(Request $request){
 		$validator = Validator::make($request->all(), [
-		'post_name' => 'required',
 		'user_id' => 'required|exists:users,id'
 
 	]);
@@ -40,9 +39,10 @@ class PostController extends Controller {
 		return response()->json(array('message' => $validator->errors(),'error' => true));
 	}
 	else{
-	$PostObj = new Post();		
-	$PostObj->post_name=$request->post_name;
-	$PostObj->user_id=$request->user_id;
+   $PostObj = new Post();		
+   $PostObj->post_name=$request->post_name;
+   $PostObj->user_id=$request->user_id;
+   $PostObj->post_description=$request->post_description;
   $PostObj->is_image=0;
   $data = [];
    if($request->hasfile('image'))

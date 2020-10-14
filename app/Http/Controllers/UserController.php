@@ -31,25 +31,34 @@
         // Register API
  public function register(Request $request)
         {
-                $validator = Validator::make($request->all(), [
-               // 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6',
-            ]);
+          $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'city_id' => 'required',
+            'state_id' => 'required',
+            'school_id' => 'required',
+            'country' => 'required'
+          ]);
 
             if($validator->fails()){
-                    return response()->json($validator->errors()->toJson(), 400);
+                   return response()->json($validator->errors()->toJson(), 400);
             }
 
-            $user = User::create([
-                'name' => $request->get('email'),
-                'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password')),
-            ]);
+            $user =new  User;
+            $user->name=$request->name;
+            $user->email=$request->email;
+            $user->password=$request->password;
+            $user->city_id=$request->city_id;
+            $user->state_id=$request->state_id;
+            $user->school_id=$request->school_id;
+            $user->country=$request->country;
+            $user->password=Hash::make($request->password;
+            $user->role_id=5;
 
             $token = JWTAuth::fromUser($user);
 
-            return response()->json(compact('user','token'),201);
+            return response()->json(compact('user','token'),200);
         }
 
         public function gettotalStatistic($id)
