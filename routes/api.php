@@ -94,4 +94,3 @@ Route::post('list_home_students', 'Api\V1\ParentController@GethomeStudents');
 Route::post('delete_post', 'Api\V1\PostController@RemovePost');
 Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
 
-  });
