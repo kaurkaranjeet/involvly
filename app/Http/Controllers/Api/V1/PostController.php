@@ -8,7 +8,6 @@ use Exception;
 use App\Models\Post;
 use App\Models\LikeUnlike;
 use App\Models\Comment;
-use App\Models\CommentReply;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Validator;
 use URL;
@@ -33,7 +32,6 @@ class PostController extends Controller {
 
 	public function AddPost(Request $request){
 		$validator = Validator::make($request->all(), [
-		'post_name' => 'required',
 		'user_id' => 'required|exists:users,id'
 
 	]);
@@ -41,9 +39,10 @@ class PostController extends Controller {
 		return response()->json(array('message' => $validator->errors(),'error' => true));
 	}
 	else{
-	$PostObj = new Post();		
-	$PostObj->post_name=$request->post_name;
-	$PostObj->user_id=$request->user_id;
+   $PostObj = new Post();		
+   $PostObj->post_name=$request->post_name;
+   $PostObj->user_id=$request->user_id;
+   $PostObj->post_description=$request->post_description;
   $PostObj->is_image=0;
   $data = [];
    if($request->hasfile('image'))
@@ -51,7 +50,7 @@ class PostController extends Controller {
     $PostObj->is_image=1;
     foreach($request->file('image') as $key=>$file)
     {
-      $name=time().'.'.$file->getClientOriginalExtension();    
+      $name=time().$key.'.'.$file->getClientOriginalExtension();    
       $file->move(public_path().'/images/', $name);      
       $data[$key] = URL::to('/').'/images/'.$name;  
     }
@@ -62,14 +61,21 @@ class PostController extends Controller {
 	}
 }
 public function GetPostHomefeed(Request $request){
-		
-        $posts = Post::with('user')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
-        foreach($posts as $single_post){
-         $single_post->is_like= $single_post->isUserLikedPost($single_post->user_id);
-        }
-	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
+        
+        $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+              SELECT *
+              FROM likes
+              WHERE posts.id = likes.post_id
+              AND likes.user_id = ".$request->user_id."  AND likes.like = 1
+              ) THEN TRUE
+              ELSE FALSE END)
+              AS is_like,posts.*")))->with('user')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+       
+    return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
 
-	}
+ 
+
+    }
 
 	  public function AddComments(Request $request){
        $input = $request->all();
@@ -99,10 +105,20 @@ public function GetPostHomefeed(Request $request){
              $flight->total_comments=0;
         }
 
-            $flight->user_id=(int) $request->user_id;
-    $flight->post_id=(int) $request->post_id;
+        $flight->user_id=(int) $request->user_id;
+        $flight->post_id=(int) $request->post_id;
 
-        $this->pusher->trigger('comment-channel', 'add_comment', $flight);
+        
+
+    $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+      SELECT *
+      FROM likes
+      WHERE posts.id = likes.post_id
+      AND likes.user_id = ".$request->user_id."  AND likes.like = 1
+      ) THEN TRUE
+      ELSE FALSE END)
+      AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('post_id', $request->post_id)->orderBy('id', 'DESC')->first();
+    $this->pusher->trigger('count-channel', 'comment_count', $posts);
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
 }
@@ -170,6 +186,16 @@ public function GetComments(Request $request){
      //   $like='unliked';
          $this->pusher->trigger('like-channelpost', 'dislike_post', $flight);
        }
+
+       $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+        SELECT *
+        FROM likes
+        WHERE posts.id = likes.post_id
+        AND likes.user_id = ".$request->user_id."  AND likes.like = 1
+        ) THEN TRUE
+        ELSE FALSE END)
+        AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('post_id', $request->post_id)->orderBy('id', 'DESC')->first();
+       $this->pusher->trigger('count-channel', 'like_count', $posts);
        /*if($notify_id==0){
         // send notification
           $user=$flight->Streamuser($request->stream_id);
@@ -183,24 +209,25 @@ public function GetComments(Request $request){
 }
 }
 
-public function DeletePost($id)
-  {
-    if (!empty($id)) {
-      //check id exist or not
-      $getpost = Post::where('id', $id)->first();
-      if(!empty($getpost)){
-       $post = Post::findOrFail($id);
-      $post->delete();
-      return response()->json(array('error' => false, 'message' => 'Success', 'data' => $post), 200);  
-      }else{
-      return response()->json(array('error' => false, 'message' => 'Post id not exist', 'data' => ''), 200);   
-      }
-      
-    } else {
-        return response()->json(array('error' => false, 'message' => 'No Post Found!', 'data' => ''), 200);
+ public function RemovePost(Request $request){
+
+       $validator = Validator::make($request->all(), [
+        'post_id' => 'required|exists:posts,id',
+
+    ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+              $delete= Post::where('id',$request->post_id)->delete();                   
+            if ($delete) {
+                return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+            }
+        }
     }
-  }
-  	  public function AddReplyComments(Request $request){
+
+     public function AddReplyComments(Request $request){
             $input = $request->all();
             $validator = Validator::make($input, [
              'user_id' => 'required|exists:users,id',
@@ -208,11 +235,15 @@ public function DeletePost($id)
              'comment_id' => 'required|exists:comments,id',
              'reply_comment' => 'required'
 
+ 
+
          ]);    
             if ($validator->fails()) {
              return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
          }
          else{
+
+ 
 
          $reply= new CommentReply;//then create new object
          $reply->user_id=$request->user_id;
@@ -230,10 +261,14 @@ public function DeletePost($id)
                   $reply->total_reply_comments=0;
              }
 
+ 
+
          $reply->user_id=(int) $request->user_id;
          $reply->post_id=(int) $request->post_id;
 
-             $this->pusher->trigger('comment-channel', 'add_comment', $reply);
+ 
+
+           $this->pusher->trigger('reply-channel', 'add_reply', $reply);
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $reply), 200);
      }
     }
