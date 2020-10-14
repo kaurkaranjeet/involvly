@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     // Below mention routes are public, user can access those without any restriction.
     // Create New User
-//    Route::post('register', 'UserController@register');
+  Route::post('register', 'UserController@register');
     // Login User
     Route::post('login', 'UserController@login');
     Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
@@ -68,3 +68,30 @@ Route::prefix('v1')->group(function () {
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
 });
+Route::post('login', 'Api\V1\LoginController@login');
+Route::post('logout', 'Api\V1\LoginController@Logout');
+Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');
+Route::post('signup_teacher', 'Api\V1\TeacherController@TeacherRegister');
+Route::post('signup_parent', 'Api\V1\ParentController@ParentRegister');
+Route::post('get_cities', 'Api\V1\CommonController@GetCities');
+Route::get('list_states', 'Api\V1\CommonController@GetStates');
+Route::post('list_schools', 'Api\V1\CommonController@GetSchools');
+Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
+Route::post('list_students', 'Api\V1\ParentController@GetStudents');
+Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
+Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
+Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
+Route::post('add_children', 'Api\V1\ParentController@AddChildren');
+Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
+Route::post('join_community', 'Api\V1\CommonController@Joincommunity');
+Route::post('add_post', 'Api\V1\PostController@AddPost');
+Route::post('add_comment', 'Api\V1\PostController@AddComments');
+Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
+Route::get('get_home_feed', 'Api\V1\PostController@GetPostHomefeed');
+Route::post('get_comments', 'Api\V1\PostController@GetComments');
+Route::post('like_post', 'Api\V1\PostController@LikeUnlikePost');
+Route::post('list_home_students', 'Api\V1\ParentController@GethomeStudents');
+Route::post('delete_post', 'Api\V1\PostController@RemovePost');
+Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
+
+  });
