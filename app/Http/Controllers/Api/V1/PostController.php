@@ -237,5 +237,20 @@ public function DeletePost($id)
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $reply), 200);
      }
     }
+
+    public function GetReplyComments(Request $request){
+      $validator = Validator::make($request->all(), [
+          'comment_id' => 'required|exists:comments,id'
+      ]);
+      if($validator->fails()){
+          return response()->json(array('errors' => $validator->errors(),'error' => true));
+      }
+      else{
+      $replycomments=  CommentReply::with('User')->where('comment_id' , $request->comment_id)->get();
+      return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $replycomments), 200);
+  
+      }
+  
+  }
 	
 }

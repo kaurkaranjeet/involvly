@@ -66,4 +66,5 @@ Route::prefix('v1')->group(function () {
     Route::post('list_home_students', 'Api\V1\ParentController@GethomeStudents');
     Route::post('delete_post/{id}', 'Api\V1\PostController@DeletePost');
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
+    Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
 });
