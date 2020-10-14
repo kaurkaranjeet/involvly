@@ -118,7 +118,7 @@ public function GetPostHomefeed(Request $request){
       AND likes.user_id = ".$request->user_id."  AND likes.like = 1
       ) THEN TRUE
       ELSE FALSE END)
-      AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('id', $request->post_id)->orderBy('id', 'DESC')->first();
+      AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('post_id', $request->post_id)->orderBy('id', 'DESC')->first();
     $this->pusher->trigger('count-channel', 'comment_count', $posts);
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
