@@ -65,28 +65,33 @@ Author URL: http://www.themeforest.net/user/pixinvent
 
        <vs-input
       v-validate="'required'"
-      data-vv-validate-on="blur"
+      data-vv-validate-on="change"
       name="country"
       type="country"
       label-placeholder=""
       placeholder="Country"
       v-model="country"
-      class="w-full mt-6" />
+      class="w-full mt-6"  />
     <span class="text-danger text-sm">{{ errors.first('country') }}</span>
      
    
- <v-select  :options="stateFilteroption"   :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities">
+ <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
+      data-vv-validate-on="change">
     
 </v-select>
- <v-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"  @input="getSchools"/>
+ <v-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"  @input="getSchools"  name="city"  v-validate="'required'"
+      data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
 <v-select  :options="schooloptions"   :clearable="false"  v-model="schoolFilter" class="w-full mt-6"  >
     
 </v-select>
 <span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
+    <div class="flex items-start flex-col sm:flex-row">
+ <input type="file" class="hidden" ref="update_avatar_input" @change="selectFile" accept="image/*" multiple >
 
-
-
+            <!-- Toggle comment of below buttons as one for actual flow & currently shown is only for demo -->
+            <vs-button type="border" class="w-full mt-6" @click="$refs.update_avatar_input.click()">Upload Documents</vs-button> 
+</div>
     <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>
     <vs-button  type="border" to="/pages/login" class="mt-6">Login</vs-button>
     <vs-button class="float-right mt-6" @click="registerUserJWt" :disabled="!validateForm">Register</vs-button>
@@ -109,23 +114,34 @@ export default {
       Position: '',
       email: '',
       password: '',
+       documents: '',
       confirm_password: '',
+        state_id: '',
+      city: '',
       country: 'United States',
       stateFilteroption:[],
       cityoptions:[],
       schooloptions:[],
-      stateFilter: { label: 'Select State', value: '' },
-     schoolFilter: { label: 'Select School', value: '' },
-      cityFilter: { label: 'Select city', value: '' },      
+      stateFilter: { label: 'Select State', value: '0' },
+     schoolFilter: { label: 'Select School', value: '0' },
+      cityFilter: { label: 'Select city', value: '0' },      
       isTermsConditionAccepted: true
     }
   },
   computed: {
     validateForm () {
-      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && (this.stateFilter.value) !== '' && (this.cityFilter.value) !== '' && this.Position !== ''  && (this.schoolFilter.value) !== ''
+      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && (this.stateFilter.value !== '0') && (this.cityFilter.value !== '0') && this.Position !== ''  && (this.schoolFilter.value !== '0')
     }
   },
   methods: {
+
+     selectFile(event) {
+     // console.log(event.target.files)
+            // `files` is always an array because the file input may be in multiple mode
+            this.documents = event.target.files;
+
+
+        },
     checkLogin () {
       // If user is already logged in notify
       if (this.$store.state.auth.isUserLoggedIn()) {
@@ -148,25 +164,44 @@ export default {
     registerUserJWt () {
       // If form is not validated or user is already login return
       if (!this.validateForm || !this.checkLogin()) return
+      //  console.log(this.stateFilter.value);
+//    console.log( this.stateFilter);
+        let formData = new FormData();
+      formData.append('documents', this.documents);  
+      formData.append('name', this.displayName);
+      formData.append('email', this.email);
+      formData.append('password', this.password);
+      formData.append('confirmPassword', this.confirmPassword);
+      formData.append('country', this.country);
+      formData.append('state_id', this.stateFilter.value);
+      formData.append('city', this.cityFilter.value);
+      formData.append('school_id', this.schoolFilter.value);
+      this.$http
+      .post( '/api/auth/register',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+        ).then(function(){
+          console.log('SUCCESS!!');
+        })
+        .catch(function(){
+          console.log('FAILURE!!');
+        });
+    
+    //  data.append('data', payload);
+    //  console.log(payload)
+  /*  this.$http
+    .post('/api/auth/register', data) .then(response => {
+      var data=response.data.data;
 
-      const payload = {
-        userDetails: {
-          name: this.displayName,
-          email: this.email,
-          password: this.password,
-          confirmPassword: this.confirm_password,
-          country: this.country,
-          state_id: this.stateFilter.value,
-          city_id: this.cityFilter.value,
-          school_id: this.schoolFilter.value
-        },
-
-        notify: this.$vs.notify
-      }
-
-      console.log(payload)
-  this.$store.dispatch('auth/registerUserJWT', payload)
-    },
+   })
+    .catch(error => {
+      console.log(error);
+    });*/
+  },
 
     getCities(a){
        this.cityFilter= { label: 'Select city', value: '' };
@@ -202,7 +237,9 @@ this.$http
       .catch(error => {
         console.log(error);
       }); 
-    }
+    },
+
+   
 
   }
 ,

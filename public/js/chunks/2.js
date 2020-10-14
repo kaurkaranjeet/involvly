@@ -6960,6 +6960,17 @@ __webpack_require__.r(__webpack_exports__);
     slug: 'list-parents',
     i18n: 'List'
   }]
+}, {
+  url: null,
+  name: 'Classes ',
+  icon: 'UserIcon',
+  i18n: 'Class',
+  submenu: [{
+    url: '/apps/class/class-list',
+    name: 'Class Code List',
+    slug: 'app-class-list',
+    i18n: 'List'
+  }]
 }]);
 
 /***/ }),

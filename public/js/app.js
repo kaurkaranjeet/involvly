@@ -73028,11 +73028,51 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       component: function component() {
         return __webpack_require__.e(/*! import() */ 16).then(__webpack_require__.bind(null, /*! ./views/Page2.vue */ "./resources/js/src/views/Page2.vue"));
       }
+    }, //classes menu path
+    {
+      path: '/apps/class/class-list',
+      name: 'app-class-list',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-list/ClassList.vue */ "./resources/js/src/views/apps/class/class-list/ClassList.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Class Code'
+        }, {
+          title: 'List',
+          active: true
+        }],
+        pageTitle: 'Class Code List',
+        rule: 'editor'
+      }
     }, {
+      path: '/apps/class/class-add',
+      name: 'app-class-add',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-add/ClassAdd.vue */ "./resources/js/src/views/apps/class/class-add/ClassAdd.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Class Code'
+        }, {
+          title: 'Add',
+          active: true
+        }],
+        pageTitle: 'Class Code Add',
+        rule: 'editor'
+      }
+    }, //users menu path
+    {
       path: '/apps/user/user-list',
       name: 'app-user-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/UserList.vue */ "./resources/js/src/views/apps/user/user-list/UserList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(11), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/UserList.vue */ "./resources/js/src/views/apps/user/user-list/UserList.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73089,7 +73129,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/listofstudents',
       name: 'list-students',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentList.vue */ "./resources/js/src/views/apps/user/user-list/StudentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(11), __webpack_require__.e(20)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentList.vue */ "./resources/js/src/views/apps/user/user-list/StudentList.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73108,7 +73148,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/listofparents',
       name: 'list-parents',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentList.vue */ "./resources/js/src/views/apps/user/user-list/ParentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(11), __webpack_require__.e(19)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentList.vue */ "./resources/js/src/views/apps/user/user-list/ParentList.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73653,11 +73693,7 @@ __webpack_require__.r(__webpack_exports__);
         displayName = _payload$userDetails.displayName,
         email = _payload$userDetails.email,
         password = _payload$userDetails.password,
-        confirmPassword = _payload$userDetails.confirmPassword,
-        country = _payload$userDetails.country,
-        school_id = _payload$userDetails.school_id,
-        city_id = _payload$userDetails.city_id,
-        state_id = _payload$userDetails.state_id;
+        confirmPassword = _payload$userDetails.confirmPassword;
     return new Promise(function (resolve, reject) {
       // Check confirm password
       if (password !== confirmPassword) {
@@ -73666,13 +73702,15 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      _http_requests_auth_jwt_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].registerUser(displayName, email, password, country, school_id, city_id, state_id).then(function (response) {
-        console.log(response); // Redirect User
-        // router.push(router.currentRoute.query.to || '/')
-        // Update data in localStorage
-        // localStorage.setItem('accessToken', response.data.accessToken)
-        // commit('UPDATE_USER_INFO', response.data.userData, {root: true})
-        // resolve(response)
+      _http_requests_auth_jwt_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].registerUser(displayName, email, password).then(function (response) {
+        // Redirect User
+        _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/'); // Update data in localStorage
+
+        localStorage.setItem('accessToken', response.data.accessToken);
+        commit('UPDATE_USER_INFO', response.data.userData, {
+          root: true
+        });
+        resolve(response);
       })["catch"](function (error) {
         reject(error);
       });
