@@ -206,5 +206,51 @@ public function GetComments(Request $request){
             }
         }
     }
+
+     public function AddReplyComments(Request $request){
+            $input = $request->all();
+            $validator = Validator::make($input, [
+             'user_id' => 'required|exists:users,id',
+             'post_id' => 'required|exists:posts,id',
+             'comment_id' => 'required|exists:comments,id',
+             'reply_comment' => 'required'
+
+ 
+
+         ]);    
+            if ($validator->fails()) {
+             return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+         }
+         else{
+
+ 
+
+         $reply= new CommentReply;//then create new object
+         $reply->user_id=$request->user_id;
+         $reply->post_id=$request->post_id;
+         $reply->comment_id=$request->comment_id;
+         $reply->reply_comment=$request->reply_comment;
+         $reply->save();
+         $reply->name= $reply->User->name;
+//          total reply comments
+         $results1 = DB::select( DB::raw("select count(*) as total_reply_comments from `comment_replies` where `comment_id` = ".$request->comment_id."") );
+             if(isset($results1[0])){
+                 $reply->total_reply_comments=(int)$results1[0]->total_reply_comments;
+             }
+             else{
+                  $reply->total_reply_comments=0;
+             }
+
+ 
+
+         $reply->user_id=(int) $request->user_id;
+         $reply->post_id=(int) $request->post_id;
+
+ 
+
+           $this->pusher->trigger('reply-channel', 'add_reply', $reply);
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $reply), 200);
+     }
+    }
 	
 }
