@@ -16,131 +16,174 @@ Vue.use(Router)
 const router = new Router({
     mode: 'history',
     base: '/',
-    scrollBehavior () {
+    scrollBehavior() {
         return { x: 0, y: 0 }
     },
     routes: [
 
         {
-    // =============================================================================
-    // MAIN LAYOUT ROUTES
-    // =============================================================================
+            // =============================================================================
+            // MAIN LAYOUT ROUTES
+            // =============================================================================
             path: '',
-            component: () => import('./layouts/main/Main.vue'),
+            component: () =>
+                import ('./layouts/main/Main.vue'),
             children: [
-        // =============================================================================
-        // Theme Routes
-        // =============================================================================
-              {
-                path: '/',
-                name: 'home',
-                component: () => import('./views/Home.vue'),
-                meta:{
-                  authRequired:true
-                }
-              },
-              {
-                path: '/page2',
-                name: 'page-2',
-                component: () => import('./views/Page2.vue')
-              },
+                // =============================================================================
+                // Theme Routes
+                // =============================================================================
                 {
-          path: '/apps/user/user-list',
-          name: 'app-user-list',
-          component: () => import('@/views/apps/user/user-list/UserList.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'Teachers' },
-              { title: 'List', active: true }
-            ],
-            pageTitle: 'Teachers List',
-            rule: 'editor'
-          }
-        },
-        {
-          path: '/apps/user/user-view/:userId',
-          name: 'app-user-view',
-          component: () => import('@/views/apps/user/UserView.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'User' },
-              { title: 'View', active: true }
-            ],
-            pageTitle: 'User View',
-            rule: 'editor'
-          }
-        },
-        {
-          path: '/apps/user/user-edit/:userId',
-          name: 'app-user-edit',
-          component: () => import('@/views/apps/user/user-edit/UserEdit.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'User' },
-              { title: 'Edit', active: true }
-            ],
-            pageTitle: 'User Edit',
-            rule: 'editor'
-          }
-        },
+                    path: '/',
+                    name: 'home',
+                    component: () =>
+                        import ('./views/Home.vue'),
+                    meta: {
+                        authRequired: true
+                    }
+                },
+                {
+                    path: '/page2',
+                    name: 'page-2',
+                    component: () =>
+                        import ('./views/Page2.vue')
+                },
+                //classes menu path
+                {
+                    path: '/apps/class/class-list',
+                    name: 'app-class-list',
+                    component: () =>
+                        import ('@/views/apps/class/class-list/ClassList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Class Code' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Class Code List',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/class/class-add',
+                    name: 'app-class-add',
+                    component: () =>
+                        import ('@/views/apps/class/class-add/ClassAdd.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Class Code' },
+                            { title: 'Add', active: true }
+                        ],
+                        pageTitle: 'Class Code Add',
+                        rule: 'editor'
+                    }
+                },
+                //users menu path
+                {
+                    path: '/apps/user/user-list',
+                    name: 'app-user-list',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/UserList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Teachers' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Teachers List',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/user/user-view/:userId',
+                    name: 'app-user-view',
+                    component: () =>
+                        import ('@/views/apps/user/UserView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'User' },
+                            { title: 'View', active: true }
+                        ],
+                        pageTitle: 'User View',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/user/user-edit/:userId',
+                    name: 'app-user-edit',
+                    component: () =>
+                        import ('@/views/apps/user/user-edit/UserEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'User' },
+                            { title: 'Edit', active: true }
+                        ],
+                        pageTitle: 'User Edit',
+                        rule: 'editor'
+                    }
+                },
 
-         {
-          path: '/apps/user/listofstudents',
-          name: 'list-students',
-          component: () => import('@/views/apps/user/user-list/StudentList.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'Students' },
-              { title: 'List', active: true }
+                {
+                    path: '/apps/user/listofstudents',
+                    name: 'list-students',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/StudentList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Students' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Students List',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/user/listofparents',
+                    name: 'list-parents',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/ParentList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Parents' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Parents List',
+                        rule: 'editor'
+                    }
+                }
             ],
-            pageTitle: 'Students List',
-            rule: 'editor'
-          }
         },
-         {
-          path: '/apps/user/listofparents',
-          name: 'list-parents',
-          component: () => import('@/views/apps/user/user-list/ParentList.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'Parents' },
-              { title: 'List', active: true }
-            ],
-            pageTitle: 'Parents List',
-            rule: 'editor'
-          }
-        }
-            ],
-        },
-    // =============================================================================
-    // FULL PAGE LAYOUTS
-    // =============================================================================
+        // =============================================================================
+        // FULL PAGE LAYOUTS
+        // =============================================================================
         {
             path: '',
-            component: () => import('@/layouts/full-page/FullPage.vue'),
+            component: () =>
+                import ('@/layouts/full-page/FullPage.vue'),
             children: [
-        // =============================================================================
-        // PAGES
-        // =============================================================================
-              {
-                path: '/pages/login',
-                name: 'page-login',
-                component: () => import('@/views/pages/Login.vue')
-              },
-              {
-                path: '/pages/error-404',
-                name: 'page-error-404',
-                component: () => import('@/views/pages/Error404.vue')
-              },
+                // =============================================================================
+                // PAGES
+                // =============================================================================
+                {
+                    path: '/pages/login',
+                    name: 'page-login',
+                    component: () =>
+                        import ('@/views/pages/Login.vue')
+                },
+                {
+                    path: '/pages/error-404',
+                    name: 'page-error-404',
+                    component: () =>
+                        import ('@/views/pages/Error404.vue')
+                },
             ]
         },
-       
-       
+
+
         // Redirect to 404 page, if no match found
         {
             path: '*',
@@ -150,17 +193,17 @@ const router = new Router({
 })
 
 router.afterEach(() => {
-  // Remove initial loading
-  const appLoading = document.getElementById('loading-bg')
+    // Remove initial loading
+    const appLoading = document.getElementById('loading-bg')
     if (appLoading) {
         appLoading.style.display = "none";
     }
 })
 router.beforeEach((to, from, next) => {
- // firebase.auth().onAuthStateChanged(() => {
+    // firebase.auth().onAuthStateChanged(() => {
 
     // get firebase current user
-   // const firebaseCurrentUser = firebase.auth().currentUser
+    // const firebaseCurrentUser = firebase.auth().currentUser
 
     // if (
     //     to.path === "/pages/login" ||
@@ -177,18 +220,18 @@ router.beforeEach((to, from, next) => {
 
     // If auth required, check login. If login fails redirect to login page
     if (to.meta.authRequired) {
-       const loggedIn = localStorage.getItem('userInfo');
-       if(!loggedIn) {
-        router.push({ path: '/pages/login' })
-      }
+        const loggedIn = localStorage.getItem('userInfo');
+        if (!loggedIn) {
+            router.push({ path: '/pages/login' })
+        }
     }
 
     return next()
-    // Specify the current path as the customState parameter, meaning it
-    // will be returned to the application after auth
-    // auth.login({ target: to.path });
+        // Specify the current path as the customState parameter, meaning it
+        // will be returned to the application after auth
+        // auth.login({ target: to.path });
 
-  //})
+    //})
 
 })
 
