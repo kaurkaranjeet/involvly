@@ -182,7 +182,7 @@ public function GetComments(Request $request){
 }
 }
 
- public function DeletePost(Request $request){
+ public function RemovePost(Request $request){
 
        $validator = Validator::make($request->all(), [
         'post_id' => 'required|exists:posts,id',
