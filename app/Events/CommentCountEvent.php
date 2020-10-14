@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class StreamEvent
+class CommentCountEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -31,6 +31,6 @@ class StreamEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('stream-channel');
+        return new PrivateChannel('count-channel');
     }
 }

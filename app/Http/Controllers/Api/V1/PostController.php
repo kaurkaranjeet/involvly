@@ -105,10 +105,20 @@ public function GetPostHomefeed(Request $request){
              $flight->total_comments=0;
         }
 
-            $flight->user_id=(int) $request->user_id;
-    $flight->post_id=(int) $request->post_id;
+        $flight->user_id=(int) $request->user_id;
+        $flight->post_id=(int) $request->post_id;
 
-        $this->pusher->trigger('comment-channel', 'add_comment', $flight);
+        
+
+    $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+      SELECT *
+      FROM likes
+      WHERE posts.id = likes.post_id
+      AND likes.user_id = ".$request->user_id."  AND likes.like = 1
+      ) THEN TRUE
+      ELSE FALSE END)
+      AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('post_id', $request->post_id)->orderBy('id', 'DESC')->first();
+    $this->pusher->trigger('count-channel', 'comment_count', $posts);
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
 }
@@ -176,6 +186,16 @@ public function GetComments(Request $request){
      //   $like='unliked';
          $this->pusher->trigger('like-channelpost', 'dislike_post', $flight);
        }
+
+       $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+        SELECT *
+        FROM likes
+        WHERE posts.id = likes.post_id
+        AND likes.user_id = ".$request->user_id."  AND likes.like = 1
+        ) THEN TRUE
+        ELSE FALSE END)
+        AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('post_id', $request->post_id)->orderBy('id', 'DESC')->first();
+       $this->pusher->trigger('count-channel', 'like_count', $posts);
        /*if($notify_id==0){
         // send notification
           $user=$flight->Streamuser($request->stream_id);
