@@ -8,41 +8,53 @@
 ==========================================================================================*/
 
 
-export default [
-  {
-    url: "/",
-    name: "Home",
-    slug: "home",
-    icon: "HomeIcon"
+export default [{
+        url: "/",
+        name: "Home",
+        slug: "home",
+        icon: "HomeIcon"
 
-  },
-  
-        {
+    },
+
+    {
         url: null,
         name: 'Users',
         icon: 'UserIcon',
         i18n: 'User',
-        submenu: [
-          {
-            url: '/apps/user/user-list',
-            name: 'Teachers List',
-            slug: 'app-user-list',
-            i18n: 'List'
-          },
+        submenu: [{
+                url: '/apps/user/user-list',
+                name: 'Teachers List',
+                slug: 'app-user-list',
+                i18n: 'List'
+            },
 
-           {
-            url: '/apps/user/listofstudents',
-            name: 'Student List',
-            slug: 'list-students',
-            i18n: 'List'
-          },
-           {
-            url: '/apps/user/listofparents',
-            name: 'Parent List',
-            slug: 'list-parents',
-            i18n: 'List'
-          }
-         
+            {
+                url: '/apps/user/listofstudents',
+                name: 'Student List',
+                slug: 'list-students',
+                i18n: 'List'
+            },
+            {
+                url: '/apps/user/listofparents',
+                name: 'Parent List',
+                slug: 'list-parents',
+                i18n: 'List'
+            }
+
         ]
-      }
+    },
+    {
+        url: null,
+        name: 'Classes ',
+        icon: 'UserIcon',
+        i18n: 'Class',
+        submenu: [{
+                url: '/apps/class/class-list',
+                name: 'Class Code List',
+                slug: 'app-class-list',
+                i18n: 'List'
+            },
+
+        ]
+    }
 ]
