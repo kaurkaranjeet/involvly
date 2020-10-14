@@ -67,6 +67,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -145,7 +147,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_0___default.a
+  },
   data: function data() {
     return {
       displayName: '',
@@ -198,14 +204,16 @@ __webpack_require__.r(__webpack_exports__);
         notify: this.$vs.notify
       };
       this.$store.dispatch('auth/registerUserJWT', payload);
+    },
+    getCities: function getCities(id) {
+      alert(id);
     }
   },
   created: function created() {
     var _this = this;
 
     this.$http.get("/api/v1/list_states").then(function (response) {
-      var data = response.data.data; //this.stateFilter = response.data.data;
-      //var stateFilteroption = [];
+      var data = response.data.data;
 
       for (var index in data) {
         var newobj = {};
@@ -553,9 +561,14 @@ var render = function() {
         _vm._v(_vm._s(_vm.errors.first("country")))
       ]),
       _vm._v(" "),
-      _c("vs-select", {
+      _c("v-select", {
         staticClass: "w-full mt-6",
         attrs: { options: _vm.stateFilteroption, clearable: false },
+        on: {
+          change: function($event) {
+            return _vm.getCities(_vm.stateFilteroption.value)
+          }
+        },
         model: {
           value: _vm.stateFilter,
           callback: function($$v) {

@@ -181,5 +181,23 @@ public function GetComments(Request $request){
 
 }
 }
+
+ public function DeletePost(Request $request){
+
+       $validator = Validator::make($request->all(), [
+        'post_id' => 'required|exists:posts,id',
+
+    ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+              $delete= Post::where('id',$request->post_id)->delete();                   
+            if ($delete) {
+                return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+            }
+        }
+    }
 	
 }

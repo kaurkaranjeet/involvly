@@ -65,9 +65,9 @@ Author URL: http://www.themeforest.net/user/pixinvent
       v-model="country"
       class="w-full mt-6" />
     <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-
    
-   <vs-select :options="stateFilteroption" :clearable="false" v-model="stateFilter" class="w-full mt-6"/>
+   
+   <v-select :options="stateFilteroption" :clearable="false" v-model="stateFilter" class="w-full mt-6"  v-on:change='getCities(stateFilteroption.value)'/>
     <span class="text-danger text-sm">{{ errors.first('state') }}</span>
 
     <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>
@@ -77,7 +77,13 @@ Author URL: http://www.themeforest.net/user/pixinvent
 </template>
 
 <script>
+  import vSelect from 'vue-select'
 export default {
+  components: {
+
+    vSelect,
+
+  },
   data () {
     return {
       displayName: '',
@@ -85,7 +91,8 @@ export default {
       password: '',
       confirm_password: '',
       country: 'United States',
-      stateFilteroption:[],
+   stateFilteroption:[],
+      
       stateFilter: { label: 'Select State', value: '' },
       isTermsConditionAccepted: true
     }
@@ -130,38 +137,34 @@ export default {
         notify: this.$vs.notify
       }
       this.$store.dispatch('auth/registerUserJWT', payload)
-    }
+    },
+
+    getCities(id){
+      alert(id);
+
+    },
 
   }
 ,
   created(){
+
     this.$http
       .get("/api/v1/list_states")
       .then(response => {
-
-
         var data=response.data.data;
-        //this.stateFilter = response.data.data;
-        //var stateFilteroption = [];
         for ( var index in data ) {
          let newobj={}
-
          newobj.label=data[index].state_name;
          newobj.value=data[index].id;
-         this.stateFilteroption.push( newobj );
-
+        this.stateFilteroption.push( newobj );
        }
-
-
       })
       .catch(error => {
         console.log(error);
-      });
-
+      });  
     
-    
-  }
-
+  },
+  
 
 }
 </script>
