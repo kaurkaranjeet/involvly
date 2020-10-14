@@ -8,6 +8,7 @@ use Exception;
 use App\Models\Post;
 use App\Models\LikeUnlike;
 use App\Models\Comment;
+use App\Models\CommentReply;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Validator;
 use URL;
@@ -281,7 +282,7 @@ public function GetComments(Request $request){
           return response()->json(array('errors' => $validator->errors(),'error' => true));
       }
       else{
-      $replycomments=  CommentReply::with('User')->where('comment_id' , $request->comment_id)->get();
+      $replycomments= CommentReply::with('User')->where('comment_id' , $request->comment_id)->get();
       return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $replycomments), 200);
   
       }
