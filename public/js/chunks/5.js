@@ -232,7 +232,8 @@ __webpack_require__.r(__webpack_exports__);
       return true;
     },
     registerUserJWt: function registerUserJWt() {
-      // If form is not validated or user is already login return
+      this.$vs.loading; // If form is not validated or user is already login return
+
       if (!this.validateForm || !this.checkLogin()) return; //  console.log(this.stateFilter.value);
       //    console.log( this.stateFilter);
 
@@ -252,6 +253,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function () {
         console.log('SUCCESS!!');
+        alert('Registered Successfully');
       })["catch"](function () {
         console.log('FAILURE!!');
       }); //  data.append('data', payload);
@@ -690,31 +692,39 @@ var render = function() {
         _vm._v(_vm._s(_vm.errors.first("country")))
       ]),
       _vm._v(" "),
-      _c("v-select", {
-        directives: [
-          {
-            name: "validate",
-            rawName: "v-validate",
-            value: "required",
-            expression: "'required'"
-          }
-        ],
-        staticClass: "w-full mt-6",
-        attrs: {
-          options: _vm.stateFilteroption,
-          name: "state_id",
-          clearable: false,
-          "data-vv-validate-on": "change"
-        },
-        on: { input: _vm.getCities },
-        model: {
-          value: _vm.stateFilter,
-          callback: function($$v) {
-            _vm.stateFilter = $$v
+      _c(
+        "v-select",
+        {
+          directives: [
+            {
+              name: "validate",
+              rawName: "v-validate",
+              value: "required",
+              expression: "'required'"
+            }
+          ],
+          staticClass: "w-full mt-6",
+          attrs: {
+            options: _vm.stateFilteroption,
+            name: "state_id",
+            clearable: false,
+            "data-vv-validate-on": "change"
           },
-          expression: "stateFilter"
-        }
-      }),
+          on: { input: _vm.getCities },
+          model: {
+            value: _vm.stateFilter,
+            callback: function($$v) {
+              _vm.stateFilter = $$v
+            },
+            expression: "stateFilter"
+          }
+        },
+        [
+          _c("span", { staticClass: "text-danger text-sm" }, [
+            _vm._v(_vm._s(_vm.errors.first("stateFilter")))
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c("v-select", {
         directives: [
