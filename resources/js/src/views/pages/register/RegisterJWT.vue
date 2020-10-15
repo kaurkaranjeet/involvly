@@ -172,6 +172,7 @@ export default {
 //    console.log( this.stateFilter);
         let formData = new FormData();
       formData.append('documents', this.documents);  
+        formData.append('position', this.Position); 
       formData.append('name', this.displayName);
       formData.append('email', this.email);
       formData.append('password', this.password);
