@@ -1,6 +1,6 @@
 <!-- =========================================================================================
-  File Name: UserAdd.vue
-  Description: User Add Page
+  File Name: ClassView.vue
+  Description: CLass View Page
   ----------------------------------------------------------------------------------------
   Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
   Author: Pixinvent
@@ -38,8 +38,8 @@
   </div>
   <div class="vx-row">
     <div class="vx-col w-full">
-      <vs-button class="mr-3 mb-2" @click="saveClassCode" :disabled="!validateForm" >Submit</vs-button>
-      <vs-button color="warning" type="border" class="mb-2" @click="class_name = class_code =''; check5 = false;">Cancel</vs-button>
+      <vs-button class="mr-3 mb-2" @click="editClassCode" :disabled="!validateForm" >Submit</vs-button>
+      <vs-button color="warning" type="border" class="mb-2" @click="reset_data">Reset</vs-button>
     </div>
   </div>
   </vx-card>
@@ -57,6 +57,15 @@ export default {
     return {
       class_name: "",
       class_code: "",
+      class_id: "",
+      className: "",
+      classCode: "",
+      activeTab: 0
+    }
+  },
+  watch: {
+    activeTab () {
+      this.fetch_user_data(this.$route.params.userId)
     }
   },
   computed: {
@@ -70,8 +79,28 @@ export default {
     },
   },
   methods: {
-    saveClassCode() {
+    fetch_Class_data (classId) {
+      this.$store.dispatch('classManagement/fetchClassCodeDetail', classId)
+        .then(res => { 
+          this.class_data = res.data.class
+          console.log(this.class_data)
+          this.className = this.class_data.class_name;
+          this.classCode = this.class_data.class_code;
+          this.class_name = this.className
+          this.class_code = this.classCode;
+          this.class_id = this.class_data.id;
+         })
+        .catch(err => {
+          if (err.response.status === 404) {
+            this.class_not_found = true
+            return
+          }
+          console.error(err) 
+        })
+    },
+    editClassCode() {
       var code = {
+        class_id: this.class_id,
         class_name: this.class_name,
         class_code: this.class_code,
       };
@@ -80,7 +109,7 @@ export default {
       // Loading
       this.$vs.loading();
       this.$store
-        .dispatch("classManagement/saveClassCode", code)
+        .dispatch("classManagement/editClassCode", code)
         .then((res) => {
           this.$vs.loading.close();
           this.$router
@@ -89,7 +118,7 @@ export default {
           this.$vs.notify({
             color: "success",
             title: "Success",
-            text: "Data add successfully!",
+            text: "Data updated successfully!",
           });
         })
         .catch((error) => {
@@ -103,17 +132,18 @@ export default {
           });
         });
     },
-  },
-  watch: {
-    activeTab () {
-      this.fetch_user_data(this.$route.params.userId)
+    reset_data(){
+     this.class_name = this.className
+     this.class_code = this.classCode;
     }
   },
-  created() {
-     if (!moduleClassManagement.isRegistered) {
+  created () {
+    // Register Module UserManagement Module
+    if (!moduleClassManagement.isRegistered) {
       this.$store.registerModule('classManagement', moduleClassManagement)
       moduleClassManagement.isRegistered = true
     }
+    this.fetch_Class_data(this.$route.params.classId)
   }
 }
 

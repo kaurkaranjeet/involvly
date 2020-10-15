@@ -78,6 +78,36 @@ const router = new Router({
                         rule: 'editor'
                     }
                 },
+                {
+                    path: '/apps/class/class-view/:classId',
+                    name: 'app-class-view',
+                    component: () =>
+                        import ('@/views/apps/class/class-view/ClassView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Class Code' },
+                            { title: 'View', active: true }
+                        ],
+                        pageTitle: 'Class Code View',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/class/class-edit/:classId',
+                    name: 'app-class-edit',
+                    component: () =>
+                        import ('@/views/apps/class/class-edit/ClassEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Class Code' },
+                            { title: 'Edit', active: true }
+                        ],
+                        pageTitle: 'Class Code Edit',
+                        rule: 'editor'
+                    }
+                },
                 //users menu path
                 {
                     path: '/apps/user/user-list',
@@ -157,35 +187,39 @@ const router = new Router({
                 }
             ],
         },
-    // =============================================================================
-    // FULL PAGE LAYOUTS
-    // =============================================================================
-    {
-      path: '',
-      component: () => import('@/layouts/full-page/FullPage.vue'),
-      children: [
         // =============================================================================
-        // PAGES
+        // FULL PAGE LAYOUTS
         // =============================================================================
         {
-          path: '/pages/login',
-          name: 'page-login',
-          component: () => import('@/views/pages/Login.vue')
-        },
+            path: '',
+            component: () =>
+                import ('@/layouts/full-page/FullPage.vue'),
+            children: [
+                // =============================================================================
+                // PAGES
+                // =============================================================================
+                {
+                    path: '/pages/login',
+                    name: 'page-login',
+                    component: () =>
+                        import ('@/views/pages/Login.vue')
+                },
 
-              {
-          path: '/pages/register',
-          name: 'page-register',
-          component: () => import('@/views/pages/register/Register.vue'),
-          meta: {
-            rule: 'editor'
-          }
-        },
-              {
-                path: '/pages/error-404',
-                name: 'page-error-404',
-                component: () => import('@/views/pages/Error404.vue')
-              },
+                {
+                    path: '/pages/register',
+                    name: 'page-register',
+                    component: () =>
+                        import ('@/views/pages/register/Register.vue'),
+                    meta: {
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/pages/error-404',
+                    name: 'page-error-404',
+                    component: () =>
+                        import ('@/views/pages/Error404.vue')
+                },
             ]
         },
 
