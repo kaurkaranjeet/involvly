@@ -136,7 +136,7 @@ class ParentController extends Controller {
         'type_of_schooling' => 'required',
         'parent_id' => 'required',
         'school_id' => 'required_if:type_of_schooling, =,school',
-        'class_code' => 'required_if:type_of_schooling, =,school',
+        //'class_code' => 'required_if:type_of_schooling, =,school',
         'student_id' => 'required_if:type_of_schooling, =,school'
       ]);
        
