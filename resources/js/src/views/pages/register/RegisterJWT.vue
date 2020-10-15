@@ -77,7 +77,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
    
  <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
       data-vv-validate-on="change">
-    
+      <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
 </v-select>
  <v-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"  @input="getSchools"  name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
@@ -130,7 +130,7 @@ export default {
   },
   computed: {
     validateForm () {
-      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && (this.stateFilter.value !== '0') && (this.cityFilter.value !== '0') && this.Position !== ''  && (this.schoolFilter.value !== '0')
+      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== ''  && this.schoolFilter.value !== '0'
     }
   },
   methods: {
@@ -162,6 +162,7 @@ export default {
       return true
     },
     registerUserJWt () {
+       this.$vs.loading;
       // If form is not validated or user is already login return
       if (!this.validateForm || !this.checkLogin()) return
       //  console.log(this.stateFilter.value);
@@ -186,6 +187,7 @@ export default {
         }
         ).then(function(){
           console.log('SUCCESS!!');
+        alert('Registered Successfully')
         })
         .catch(function(){
           console.log('FAILURE!!');

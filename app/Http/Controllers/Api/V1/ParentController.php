@@ -173,4 +173,38 @@ class ParentController extends Controller {
    }
 
  }
+
+ public function GetRelatedParents(Request $request){
+      try {
+
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'parent_id' => 'required',
+      
+      ]);
+       
+       if ($validator->fails()) {
+         throw new Exception($validator->errors()->first());
+       }  
+       else{ 
+
+  $results = DB::select( DB::raw("SELECT GROUP_CONCAT(children_id) as childrens FROM `parent_childrens` WHERE parent_id =".$request->parent_id." ") );
+
+  $childrens= $results->childrens;
+
+  if(!empty($childrens)){
+    $results = DB::select( DB::raw("SELECT GROUP_CONCAT(parent_id) as childrens FROM `parent_childrens` WHERE children_id IN(".$childrens.")  AND parent_id!=".$request->parent_id."") );
+
+
+
+
+
+  }
+
+
+}
+
+}
+}
+
 }
