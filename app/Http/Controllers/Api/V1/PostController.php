@@ -71,7 +71,7 @@ public function GetPostHomefeed(Request $request){
               ) THEN TRUE
               ELSE FALSE END)
               AS is_like,posts.*")))->with('user')->withCount('likes','comments')->get()->sortBy(function($posts)
-
+{
     return $posts->likes->count();
 });
 
