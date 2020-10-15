@@ -160,11 +160,13 @@ class ParentController extends Controller {
     $addUser= DB::table('parent_childrens')->where('parent_id',$request->parent_id)->whereIn('children_id', array($request->student_id))->get();
         return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
       }
+   }
+
    } catch (\Exception $e) {
      return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
 
- }
+ 
 }
 
     // Create task 
