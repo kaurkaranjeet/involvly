@@ -109,7 +109,7 @@ public function GetPostHomefeed(Request $request){
         $flight->user_id=(int) $request->user_id;
         $flight->post_id=(int) $request->post_id;
 
-        
+        $this->pusher->trigger('comment-channel', 'add_comment', $flight);
 
     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
       SELECT *
@@ -195,7 +195,7 @@ public function GetComments(Request $request){
         AND likes.user_id = ".$request->user_id."  AND likes.like = 1
         ) THEN TRUE
         ELSE FALSE END)
-        AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('post_id', $request->post_id)->orderBy('id', 'DESC')->first();
+        AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('id', $request->post_id)->orderBy('id', 'DESC')->first();
        $this->pusher->trigger('count-channel', 'like_count', $posts);
        /*if($notify_id==0){
         // send notification
