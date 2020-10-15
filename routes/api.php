@@ -67,6 +67,7 @@ Route::prefix('v1')->group(function () {
     Route::post('delete_post/{id}', 'Api\V1\PostController@DeletePost');
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
-      Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
+    Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
+    Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
 });
 
