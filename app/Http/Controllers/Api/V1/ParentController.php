@@ -181,7 +181,7 @@ class ParentController extends Controller {
                     'task_description' => 'required'
         ]);
         if ($validator->fails()) {
-            return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $tasks = [];
             $users_explode = explode(',', $request->task_assigned_to);
@@ -207,7 +207,7 @@ class ParentController extends Controller {
                     'user_id' => 'required|exists:users,id'
         ]);
         if ($validator->fails()) {
-            return response()->json(array('errors' => $validator->errors(), 'error' => true));
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $tasks = ParentTask::with('User')->where('task_assigned_by', $request->user_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
@@ -219,7 +219,7 @@ class ParentController extends Controller {
                     'task_id' => 'required|exists:parent_tasks,id'
         ]);
         if ($validator->fails()) {
-            return response()->json(array('errors' => $validator->errors(), 'error' => true));
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $tasks = ParentTask::with('User')->where('id', $request->task_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
