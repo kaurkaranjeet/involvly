@@ -52,22 +52,23 @@ export default {
   },
   methods: {
     checkLogin () {
-      // If user is already logged in notify
-      // if (this.$store.state.auth.isUserLoggedIn()) {
+      //If user is already logged in notify
+      if (this.$store.state.auth.isUserLoggedIn()) {
+       
 
-      //   // Close animation if passed as payload
-      //   // this.$vs.loading.close()
+        // Close animation if passed as payload
+         this.$vs.loading.close()
 
-      //   this.$vs.notify({
-      //     title: 'Login Attempt',
-      //     text: 'You are already logged in!',
-      //     iconPack: 'feather',
-      //     icon: 'icon-alert-circle',
-      //     color: 'warning'
-      //   })
+        this.$vs.notify({
+          title: 'Login Attempt',
+          text: 'You are already logged in!',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'warning'
+        })
 
-      //   return false
-      // }
+        return false
+      }
       return true
     },
     loginJWT () {

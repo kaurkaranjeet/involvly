@@ -118,51 +118,56 @@ class ParentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $students), 200);
         }
     }
+   public function AddChildren(Request $request){
+      try {
 
-    // Register Student
-    public function AddChildren(Request $request) {
-        try {
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'type_of_schooling' => 'required',
+        'parent_id' => 'required',
+        'school_id' => 'required_if:type_of_schooling, =,school',
+        //'class_code' => 'required_if:type_of_schooling, =,school',
+        'student_id' => 'required_if:type_of_schooling, =,school'
+      ]);
+       
+       if ($validator->fails()) {
+         throw new Exception($validator->errors()->first());
+       }  
+       else{     
+        //clascodes
+        if(!empty($request->class_code)) {
+          $class_code=  ClassCode::where('class_code',$request->class_code)->first();
+          if(!empty($class_code)){
+            DB::table('user_class_code')->insert(
+              ['user_id' =>$request->parent_id, 'class_id' => $class_code->id]);
+          }else{
+           return response()->json(array('error' => true, 'message' =>'Class code is not valid.'), 200);
+         }
+       }
 
-            $input = $request->all();
-            $validator = Validator::make($input, [
-                        'type_of_schooling' => 'required',
-                        'parent_id' => 'required',
-                        'school_id' => 'required_if:type_of_schooling, =,school',
-                        'class_code' => 'required_if:type_of_schooling, =,school',
-                        'student_id' => 'required_if:type_of_schooling, =,school'
+       if(!empty($request->student_id)) {  
+        $explode=explode(',', $request->student_id);
+        if(!empty($explode)){
+          foreach($explode as $student_id){
+            DB::table('parent_childrens')->insert(
+             [
+              'parent_id' =>$request->parent_id,
+              'children_id' =>$student_id,
+              'relationship' => $request->relationship
             ]);
-
-            if ($validator->fails()) {
-                throw new Exception($validator->errors()->first());
-            } else {
-                //clascodes
-                if (!empty($request->class_code)) {
-                    $class_code = ClassCode::where('class_code', $request->class_code)->first();
-                    if (!empty($class_code)) {
-                        DB::table('user_class_code')->insert(
-                                ['user_id' => $request->parent_id, 'class_id' => $class_code->id]);
-                    } else {
-                        return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
-                    }
-                }
-
-                if (!empty($request->student_id)) {
-
-                    $addUser = DB::table('parent_childrens')->insert(
-                            [
-                                'parent_id' => $request->parent_id,
-                                'children_id' => $request->student_id,
-                                'relationship' => $request->relationship
-                    ]);
-
-                    $addUser = DB::table('parent_childrens')->where('parent_id', $request->parent_id)->where('children_id', $request->children_id)->first();
-                }
-                return response()->json(array('error' => false, 'data' => $addUser, 'message' => 'Child added successfully.'), 200);
-            }
-        } catch (\Exception $e) {
-            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+          }
         }
-    }
+    $addUser= DB::table('parent_childrens')->where('parent_id',$request->parent_id)->whereIn('children_id', array($request->student_id))->get();
+        return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
+      }
+   }
+
+   } catch (\Exception $e) {
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+   }
+
+ 
+}
 
     // Create task 
     public function AddScheduleTask(Request $request) {
