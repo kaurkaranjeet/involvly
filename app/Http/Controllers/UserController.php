@@ -44,7 +44,7 @@
           ]);
 
             if($validator->fails()){
-                   return response()->json($validator->errors()->toJson(), 400);
+                   return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
             }
 
 
@@ -79,8 +79,9 @@
             }
 
             $token = JWTAuth::fromUser($user);
+            $error=false;
 
-            return response()->json(compact('user','token'),200);
+            return response()->json(compact('user','token','error'),200);
         }
 
         public function gettotalStatistic($id)

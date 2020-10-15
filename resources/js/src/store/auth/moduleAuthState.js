@@ -20,6 +20,7 @@ export default {
       isAuthenticated = false
 
     let userInfo=localStorage.getItem('userInfo');
-    return  (userInfo && isAuthenticated)
+   // return  (userInfo && isAuthenticated)
+   return  userInfo
   }
 }

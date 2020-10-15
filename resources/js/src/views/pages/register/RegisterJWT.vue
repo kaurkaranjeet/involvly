@@ -19,6 +19,8 @@ Author URL: http://www.themeforest.net/user/pixinvent
       v-model="displayName"
       class="w-full" />
     <span class="text-danger text-sm">{{ errors.first('displayName') }}</span>
+
+
  <vs-input
       v-validate="'required'"
       data-vv-validate-on="blur"
@@ -162,6 +164,7 @@ export default {
       return true
     },
     registerUserJWt () {
+
        this.$vs.loading;
       // If form is not validated or user is already login return
       if (!this.validateForm || !this.checkLogin()) return
@@ -185,12 +188,38 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         }
-        ).then(function(){
-          console.log('SUCCESS!!');
-        alert('Registered Successfully')
+        ).then((response) => {
+         if(response.data.error==false){
+        this.$vs.notify({
+          title: 'Successfully registered',
+          text: 'Your request is under Process',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
         })
-        .catch(function(){
-          console.log('FAILURE!!');
+
+         } else{
+          this.$vs.notify({
+          title: 'Error',
+          text: response.data.message,
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'danger'
+        })
+         }
+        })
+
+        .catch((err) => {
+          console.log(err.error)
+
+          this.$vs.notify({
+          title: 'Something went wrong',
+          text: 'Please try later',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'danger'
+        })
+        //  console.log('FAILURE!!');
         });
     
     //  data.append('data', payload);
