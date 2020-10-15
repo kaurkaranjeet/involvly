@@ -8,19 +8,24 @@
 ==========================================================================================*/
 
 
-import auth from '@/auth/authService'
 
 export default {
   isUserLoggedIn: () => {
     let isAuthenticated = false
     // get firebase current user
-    if (auth.isAuthenticated())
-     isAuthenticated = true
-    else 
-      isAuthenticated = false
+    
 
     let userInfo=localStorage.getItem('userInfo');
    // return  (userInfo && isAuthenticated)
    return  userInfo
   }
+,
+  logout:() =>{
+    // remove user from local storage to log user out
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('user_id');
+     localStorage.removeItem('school_id');
+     localStorage.removeItem('accessToken');
+      this.$router.push('/pages/login').catch(() => {})
+}
 }

@@ -312,7 +312,8 @@ export default {
 
             // Set accessToken
             localStorage.setItem('accessToken', response.data.accessToken)
-
+            localStorage.setItem('user_id',response.data.user.id);
+            localStorage.setItem('school_id',response.data.user.school_id);
             // Update user details
             commit('UPDATE_USER_INFO', response.data.userData, {root: true})
 

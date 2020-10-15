@@ -132,10 +132,10 @@ class User extends Authenticatable implements JWTSubject {
     }
 
    protected function getstudents($id){
-   return  User::where('school_id',$id)->where('role_id',7)->where('status',1)->count();
+   return  User::where('school_id',$id)->where('role_id',2)->where('status',1);
    }
 
     protected function getteachers($id){
-   return  User::where('school_id',$id)->where('role_id',9)->where('status',1)->count();
+   return  User::where('school_id',$id)->where('role_id',4)->where('status',1);
    }
 }

@@ -72085,6 +72085,8 @@ var AuthService = /*#__PURE__*/function (_EventEmitter) {
       localStorage.removeItem(localStorageKey);
       localStorage.removeItem(tokenExpiryKey);
       localStorage.removeItem('userInfo');
+      localStorage.removeItem('school_id');
+      localStorage.removeItem('user_id');
       this.idToken = null;
       this.tokenExpiry = null;
       this.profile = null;
@@ -73680,7 +73682,9 @@ __webpack_require__.r(__webpack_exports__);
           // Navigate User to homepage
           _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/'); // Set accessToken
 
-          localStorage.setItem('accessToken', response.data.accessToken); // Update user details
+          localStorage.setItem('accessToken', response.data.accessToken);
+          localStorage.setItem('user_id', response.data.user.id);
+          localStorage.setItem('school_id', response.data.user.school_id); // Update user details
 
           commit('UPDATE_USER_INFO', response.data.userData, {
             root: true
@@ -73795,7 +73799,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _auth_authService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/auth/authService */ "./resources/js/src/auth/authService.js");
+var _this = undefined;
+
 /*=========================================================================================
   File Name: moduleAuthState.js
   Description: Auth Module State
@@ -73804,15 +73809,22 @@ __webpack_require__.r(__webpack_exports__);
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   isUserLoggedIn: function isUserLoggedIn() {
     var isAuthenticated = false; // get firebase current user
 
-    if (_auth_authService__WEBPACK_IMPORTED_MODULE_0__["default"].isAuthenticated()) isAuthenticated = true;else isAuthenticated = false;
     var userInfo = localStorage.getItem('userInfo'); // return  (userInfo && isAuthenticated)
 
     return userInfo;
+  },
+  logout: function logout() {
+    // remove user from local storage to log user out
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('school_id');
+    localStorage.removeItem('accessToken');
+
+    _this.$router.push('/pages/login')["catch"](function () {});
   }
 });
 
@@ -74012,8 +74024,8 @@ var userDefaults = {
   userRole: ""
 }; //console.log(localStorage.getItem('userInfo'));
 
-var userInfoLocalStorage = JSON.parse(localStorage.getItem('userInfo')) || {};
-console.log(userInfoLocalStorage); // Set default values for active-user
+var userInfoLocalStorage = JSON.parse(localStorage.getItem('userInfo')) || {}; //console.log(userInfoLocalStorage)
+// Set default values for active-user
 // More data can be added by auth provider or other plugins/packages
 
 var getUserInfo = function getUserInfo() {
@@ -74024,10 +74036,10 @@ var getUserInfo = function getUserInfo() {
     // If property is defined in localStorage => Use that
     userInfo[key] = userInfoLocalStorage[key] ? userInfoLocalStorage[key] : userDefaults[key]
   }*/
-  // Include properties from localStorage
 
-  Object.keys(userInfoLocalStorage).forEach(function (key) {
-    console.log(userInfoLocalStorage[key]);
+  userInfoLocalStorage['photoURL'] = __webpack_require__(/*! @assets/images/portrait/small/avatar-s-11.jpg */ "./resources/assets/images/portrait/small/avatar-s-11.jpg"); // Include properties from localStorage
+
+  Object.keys(userInfoLocalStorage).forEach(function (key) {//console.log( userInfoLocalStorage[key]);
   }); //console.log(userInfoLocalStorage);
 
   return userInfoLocalStorage;
