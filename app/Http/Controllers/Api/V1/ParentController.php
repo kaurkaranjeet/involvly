@@ -183,15 +183,21 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
         } else {
+            $tasks = [];
+            $users_explode = explode(',', $request->task_assigned_to);
+            foreach ($users_explode as $single) {
+             
             $task = new ParentTask; //then create new object
             $task->task_assigned_by = $request->task_assigned_by;
-                $task->task_assigned_to = $request->task_assigned_to; 
+            $task->task_assigned_to = $single; 
             $task->task_name = $request->task_name;
             $task->task_date = $request->task_date;
             $task->task_time = $request->task_time;
             $task->task_description = $request->task_description;
             $task->save();
-            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
+            array_push($tasks , $task);
+            }
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
         }
     }
 
