@@ -62,8 +62,21 @@ class PostController extends Controller {
 	}
 }
 public function GetPostHomefeed(Request $request){
-        
-        $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+  if($request->sort_by_popularity==1){
+     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+              SELECT *
+              FROM likes
+              WHERE posts.id = likes.post_id
+              AND likes.user_id = ".$request->user_id."  AND likes.like = 1
+              ) THEN TRUE
+              ELSE FALSE END)
+              AS is_like,posts.*")))->with('user')->withCount('likes','comments')->get()->sortBy(function($posts)
+
+    return $posts->likes->count();
+});
+
+   }else{
+     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM likes
               WHERE posts.id = likes.post_id
@@ -71,6 +84,9 @@ public function GetPostHomefeed(Request $request){
               ) THEN TRUE
               ELSE FALSE END)
               AS is_like,posts.*")))->with('user')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+   }
+        
+       
        
     return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
 

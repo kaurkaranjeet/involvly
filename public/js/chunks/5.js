@@ -540,6 +540,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -587,7 +588,7 @@ __webpack_require__.r(__webpack_exports__);
         time: "28 days ago"
       }],
       analyticsData: _ui_elements_card_analyticsData_js__WEBPACK_IMPORTED_MODULE_2__["default"],
-      dispatchedOrders: []
+      teacherRequests: []
     };
   },
   components: {
@@ -633,28 +634,10 @@ __webpack_require__.r(__webpack_exports__);
       _this.salesBarSession = response.data;
     })["catch"](function (error) {
       console.log(error);
-    }); // Support Tracker
-
-    this.$http.get("/api/card/card-analytics/support-tracker").then(function (response) {
-      _this.supportTracker = response.data;
-    })["catch"](function (error) {
-      console.log(error);
-    }); // Products Order
-
-    this.$http.get("/api/card/card-analytics/products-orders").then(function (response) {
-      _this.productsOrder = response.data;
-    })["catch"](function (error) {
-      console.log(error);
-    }); // Sales Radar
-
-    this.$http.get("/api/card/card-analytics/sales/radar").then(function (response) {
-      _this.salesRadar = response.data;
-    })["catch"](function (error) {
-      console.log(error);
     }); // Dispatched Orders
 
-    this.$http.get("/api/table/dispatched-orders").then(function (response) {
-      _this.dispatchedOrders = response.data;
+    this.$http.get("api/auth/requests/" + school_id, requestOptions).then(function (response) {
+      _this.teacherRequests = response.data.data;
     })["catch"](function (error) {
       console.log(error);
     });
@@ -1563,7 +1546,7 @@ var render = function() {
         "div",
         { staticClass: "vx-col w-full" },
         [
-          _c("vx-card", { attrs: { title: "Dispatched Orders" } }, [
+          _c("vx-card", { attrs: { title: "Approve Teachers" } }, [
             _c(
               "div",
               {
@@ -1576,7 +1559,11 @@ var render = function() {
                   "vs-table",
                   {
                     staticClass: "table-dark-inverted",
-                    attrs: { data: _vm.dispatchedOrders },
+                    attrs: {
+                      "max-items": "5",
+                      pagination: "",
+                      data: _vm.teacherRequests
+                    },
                     scopedSlots: _vm._u([
                       {
                         key: "default",
@@ -1589,12 +1576,42 @@ var render = function() {
                               [
                                 _c(
                                   "vs-td",
-                                  { attrs: { data: data[indextr].orderNo } },
+                                  { attrs: { data: data[indextr].id } },
                                   [
                                     _c("span", [
-                                      _vm._v(
-                                        "#" + _vm._s(data[indextr].orderNo)
-                                      )
+                                      _vm._v("#" + _vm._s(data[indextr].id))
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "vs-td",
+                                  { attrs: { data: data[indextr].name } },
+                                  [
+                                    _c("span", [
+                                      _vm._v(_vm._s(data[indextr].name))
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "vs-td",
+                                  { attrs: { data: data[indextr].email } },
+                                  [
+                                    _c("span", [
+                                      _vm._v(_vm._s(data[indextr].email))
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "vs-td",
+                                  {
+                                    attrs: { data: data[indextr].created_date }
+                                  },
+                                  [
+                                    _c("span", [
+                                      _vm._v(_vm._s(data[indextr].created_at))
                                     ])
                                   ]
                                 ),
@@ -1610,16 +1627,15 @@ var render = function() {
                                           "flex items-center px-2 py-1 rounded"
                                       },
                                       [
-                                        _c("div", {
-                                          staticClass:
-                                            "h-3 w-3 rounded-full mr-2",
-                                          class:
-                                            "bg-" + data[indextr].statusColor
-                                        }),
-                                        _vm._v(
-                                          "\n                    " +
-                                            _vm._s(data[indextr].status) +
-                                            "\n                  "
+                                        _c(
+                                          "div",
+                                          {},
+                                          [
+                                            _c("vs-button", [
+                                              _vm._v(" Approve")
+                                            ])
+                                          ],
+                                          1
                                         )
                                       ]
                                     )
@@ -1628,93 +1644,29 @@ var render = function() {
                                 _vm._v(" "),
                                 _c(
                                   "vs-td",
-                                  { attrs: { data: data[indextr].orderNo } },
+                                  { attrs: { data: data[indextr].status } },
                                   [
                                     _c(
-                                      "ul",
-                                      { staticClass: "users-liked user-list" },
-                                      _vm._l(data[indextr].usersLiked, function(
-                                        user,
-                                        userIndex
-                                      ) {
-                                        return _c(
-                                          "li",
-                                          { key: userIndex },
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "flex items-center px-2 py-1 rounded"
+                                      },
+                                      [
+                                        _c(
+                                          "div",
+                                          { staticClass: "bg-danger" },
                                           [
                                             _c(
-                                              "vx-tooltip",
-                                              {
-                                                attrs: {
-                                                  text: user.name,
-                                                  position: "bottom"
-                                                }
-                                              },
-                                              [
-                                                _c("vs-avatar", {
-                                                  staticClass:
-                                                    "border-2 border-white border-solid -m-1",
-                                                  attrs: {
-                                                    src: user.img,
-                                                    size: "30px"
-                                                  }
-                                                })
-                                              ],
-                                              1
+                                              "vs-button",
+                                              { staticClass: "bg-danger" },
+                                              [_vm._v(" Reject")]
                                             )
                                           ],
                                           1
                                         )
-                                      }),
-                                      0
+                                      ]
                                     )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].orderNo } },
-                                  [
-                                    _c("span", [
-                                      _vm._v(_vm._s(data[indextr].location))
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].orderNo } },
-                                  [
-                                    _c("span", [
-                                      _vm._v(_vm._s(data[indextr].distance))
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("vs-progress", {
-                                      attrs: {
-                                        percent: data[indextr].distPercent,
-                                        color: data[indextr].statusColor
-                                      }
-                                    })
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].orderNo } },
-                                  [
-                                    _c("span", [
-                                      _vm._v(_vm._s(data[indextr].startDate))
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].orderNo } },
-                                  [
-                                    _c("span", [
-                                      _vm._v(_vm._s(data[indextr].estDelDate))
-                                    ])
                                   ]
                                 )
                               ],
@@ -1730,19 +1682,17 @@ var render = function() {
                       "template",
                       { slot: "thead" },
                       [
-                        _c("vs-th", [_vm._v("ORDER NO.")]),
+                        _c("vs-th", [_vm._v("Id")]),
                         _vm._v(" "),
-                        _c("vs-th", [_vm._v("STATUS")]),
+                        _c("vs-th", [_vm._v("Name")]),
                         _vm._v(" "),
-                        _c("vs-th", [_vm._v("OPERATORS")]),
+                        _c("vs-th", [_vm._v("Email")]),
                         _vm._v(" "),
-                        _c("vs-th", [_vm._v("LOCATION")]),
+                        _c("vs-th", [_vm._v("Registration Date")]),
                         _vm._v(" "),
-                        _c("vs-th", [_vm._v("DISTANCE")]),
+                        _c("vs-th", [_vm._v("Approve")]),
                         _vm._v(" "),
-                        _c("vs-th", [_vm._v("START DATE")]),
-                        _vm._v(" "),
-                        _c("vs-th", [_vm._v("EST DELIVERY DATE")])
+                        _c("vs-th", [_vm._v("Reject")])
                       ],
                       1
                     )

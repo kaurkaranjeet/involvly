@@ -3,7 +3,7 @@
  namespace App\Http\Controllers;
     use App\User;
     use App\Models\Role;
-    use DB;
+       use DB;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Facades\Validator;
@@ -163,8 +163,13 @@
      return response()->json(['message' => 'No record found'], 200);
  }
 }
-public function  RemoveUser($id){
+public function RemoveUser($id){
   $data= User::where('id',$id)->delete();
+  return response()->json(compact('data'), 200);
+}
+
+public function getRequest($school_id){
+  $data= User::where('role_id',4)->where('school_id',$school_id)->where('status',0)->get();
   return response()->json(compact('data'), 200);
 }
   }

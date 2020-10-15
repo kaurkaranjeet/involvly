@@ -257,62 +257,63 @@
     <div class="vx-row">
       <!-- CARD 9: DISPATCHED ORDERS -->
       <div class="vx-col w-full">
-        <vx-card title="Dispatched Orders">
+        <vx-card title="Approve Teachers">
           <div slot="no-body" class="mt-4">
-            <vs-table :data="dispatchedOrders" class="table-dark-inverted">
+            <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
-                <vs-th>ORDER NO.</vs-th>
-                <vs-th>STATUS</vs-th>
-                <vs-th>OPERATORS</vs-th>
-                <vs-th>LOCATION</vs-th>
-                <vs-th>DISTANCE</vs-th>
-                <vs-th>START DATE</vs-th>
-                <vs-th>EST DELIVERY DATE</vs-th>
+                <vs-th>Id</vs-th>
+                <vs-th>Name</vs-th>
+                <vs-th>Email</vs-th>                            
+                <vs-th>Registration Date</vs-th>
+                <vs-th>Approve</vs-th>  
+                <vs-th>Reject</vs-th>  
               </template>
 
               <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                  <vs-td :data="data[indextr].orderNo">
-                    <span>#{{data[indextr].orderNo}}</span>
+                  <vs-td :data="data[indextr].id">
+                    <span>#{{data[indextr].id}}</span>
+                  </vs-td>
+
+                    <vs-td :data="data[indextr].name">
+                    <span>{{data[indextr].name}}</span>
+                  </vs-td>
+
+                  <vs-td :data="data[indextr].email">
+                    <span>{{data[indextr].email}}</span>
+                  </vs-td>
+                  <vs-td :data="data[indextr].created_date">
+                    <span>{{data[indextr].created_at}}</span>
                   </vs-td>
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
-                      <div
-                        class="h-3 w-3 rounded-full mr-2"
-                        :class="'bg-' + data[indextr].statusColor"
-                      ></div>
-                      {{data[indextr].status}}
+                    
+                      
+                     <div class="">
+                      
+             <vs-button> Approve</vs-button>
+                     </div>
+                   
+                     
+                     
                     </span>
                   </vs-td>
-                  <vs-td :data="data[indextr].orderNo">
-                    <ul class="users-liked user-list">
-                      <li v-for="(user, userIndex) in data[indextr].usersLiked" :key="userIndex">
-                        <vx-tooltip :text="user.name" position="bottom">
-                          <vs-avatar
-                            :src="user.img"
-                            size="30px"
-                            class="border-2 border-white border-solid -m-1"
-                          ></vs-avatar>
-                        </vx-tooltip>
-                      </li>
-                    </ul>
+
+                   <vs-td :data="data[indextr].status">
+                    <span class="flex items-center px-2 py-1 rounded">
+                    
+                      
+                     <div class="bg-danger">
+                      
+             <vs-button class="bg-danger"> Reject</vs-button>
+                     </div>
+                   
+                     
+                     
+                    </span>
                   </vs-td>
-                  <vs-td :data="data[indextr].orderNo">
-                    <span>{{data[indextr].location}}</span>
-                  </vs-td>
-                  <vs-td :data="data[indextr].orderNo">
-                    <span>{{data[indextr].distance}}</span>
-                    <vs-progress
-                      :percent="data[indextr].distPercent"
-                      :color="data[indextr].statusColor"
-                    ></vs-progress>
-                  </vs-td>
-                  <vs-td :data="data[indextr].orderNo">
-                    <span>{{data[indextr].startDate}}</span>
-                  </vs-td>
-                  <vs-td :data="data[indextr].orderNo">
-                    <span>{{data[indextr].estDelDate}}</span>
-                  </vs-td>
+                  
+              
                 </vs-tr>
               </template>
             </vs-table>
@@ -381,7 +382,7 @@ export default {
       ],
 
       analyticsData,
-      dispatchedOrders: []
+      teacherRequests: []
     };
   },
   components: {
@@ -442,41 +443,16 @@ export default {
         console.log(error);
       });
 
-    // Support Tracker
-    this.$http
-      .get("/api/card/card-analytics/support-tracker")
-      .then(response => {
-        this.supportTracker = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+   
 
-    // Products Order
-    this.$http
-      .get("/api/card/card-analytics/products-orders")
-      .then(response => {
-        this.productsOrder = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    
 
-    // Sales Radar
-    this.$http
-      .get("/api/card/card-analytics/sales/radar")
-      .then(response => {
-        this.salesRadar = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
 
     // Dispatched Orders
     this.$http
-      .get("/api/table/dispatched-orders")
+      .get("api/auth/requests/"+school_id,requestOptions)
       .then(response => {
-        this.dispatchedOrders = response.data;
+        this.teacherRequests = response.data.data;
       })
       .catch(error => {
         console.log(error);
