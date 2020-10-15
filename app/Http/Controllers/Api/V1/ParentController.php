@@ -9,6 +9,7 @@ use Exception;
 use App\User;
 use App\Models\ClassCode;
 use App\Models\ParentTask;
+use App\Models\ParentChildrens;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -188,5 +189,38 @@ class ParentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
     }
+
+ public function GetRelatedParents(Request $request){
+      try {
+
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'parent_id' => 'required',
+      
+      ]);
+       
+       if ($validator->fails()) {
+         throw new Exception($validator->errors()->first());
+       }  
+       else{ 
+  $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id',$request->parent_id)->first();
+   $childrens= $results->childrens;
+  if(!empty($childrens)){
+ $results= ParentChildrens::select('parent_id')->with('ParentDetails')->whereIn('children_id', array($childrens))->get();
+if(!empty($results)){
+   return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
+}else{
+    throw new Exception('No another parents');
+  }
+  }
+  else{
+       throw new Exception('No childrens');
+  }
+}
+}
+ catch (\Exception $e) {
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+   }
+}
 
 }

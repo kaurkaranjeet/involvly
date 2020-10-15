@@ -164,6 +164,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -175,32 +180,40 @@ __webpack_require__.r(__webpack_exports__);
       Position: '',
       email: '',
       password: '',
+      documents: '',
       confirm_password: '',
+      state_id: '',
+      city: '',
       country: 'United States',
       stateFilteroption: [],
       cityoptions: [],
       schooloptions: [],
       stateFilter: {
         label: 'Select State',
-        value: ''
+        value: '0'
       },
       schoolFilter: {
         label: 'Select School',
-        value: ''
+        value: '0'
       },
       cityFilter: {
         label: 'Select city',
-        value: ''
+        value: '0'
       },
       isTermsConditionAccepted: true
     };
   },
   computed: {
     validateForm: function validateForm() {
-      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true && this.country !== '' && this.stateFilter.value !== '' && this.cityFilter.value !== '' && this.Position !== '' && this.schoolFilter.value !== '';
+      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true && this.country !== '' && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== '' && this.schoolFilter.value !== '0';
     }
   },
   methods: {
+    selectFile: function selectFile(event) {
+      // console.log(event.target.files)
+      // `files` is always an array because the file input may be in multiple mode
+      this.documents = event.target.files;
+    },
     checkLogin: function checkLogin() {
       // If user is already logged in notify
       if (this.$store.state.auth.isUserLoggedIn()) {
@@ -219,23 +232,40 @@ __webpack_require__.r(__webpack_exports__);
       return true;
     },
     registerUserJWt: function registerUserJWt() {
-      // If form is not validated or user is already login return
-      if (!this.validateForm || !this.checkLogin()) return;
-      var payload = {
-        userDetails: {
-          name: this.displayName,
-          email: this.email,
-          password: this.password,
-          confirmPassword: this.confirm_password,
-          country: this.country,
-          state_id: this.stateFilter.value,
-          city_id: this.cityFilter.value,
-          school_id: this.schoolFilter.value
-        },
-        notify: this.$vs.notify
-      };
-      console.log(payload);
-      this.$store.dispatch('auth/registerUserJWT', payload);
+      this.$vs.loading; // If form is not validated or user is already login return
+
+      if (!this.validateForm || !this.checkLogin()) return; //  console.log(this.stateFilter.value);
+      //    console.log( this.stateFilter);
+
+      var formData = new FormData();
+      formData.append('documents', this.documents);
+      formData.append('name', this.displayName);
+      formData.append('email', this.email);
+      formData.append('password', this.password);
+      formData.append('confirmPassword', this.confirmPassword);
+      formData.append('country', this.country);
+      formData.append('state_id', this.stateFilter.value);
+      formData.append('city', this.cityFilter.value);
+      formData.append('school_id', this.schoolFilter.value);
+      this.$http.post('/api/auth/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function () {
+        console.log('SUCCESS!!');
+        alert('Registered Successfully');
+      })["catch"](function () {
+        console.log('FAILURE!!');
+      }); //  data.append('data', payload);
+      //  console.log(payload)
+
+      /*  this.$http
+        .post('/api/auth/register', data) .then(response => {
+          var data=response.data.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });*/
     },
     getCities: function getCities(a) {
       var _this = this;
@@ -643,7 +673,7 @@ var render = function() {
         ],
         staticClass: "w-full mt-6",
         attrs: {
-          "data-vv-validate-on": "blur",
+          "data-vv-validate-on": "change",
           name: "country",
           type: "country",
           "label-placeholder": "",
@@ -662,22 +692,56 @@ var render = function() {
         _vm._v(_vm._s(_vm.errors.first("country")))
       ]),
       _vm._v(" "),
-      _c("v-select", {
-        staticClass: "w-full mt-6",
-        attrs: { options: _vm.stateFilteroption, clearable: false },
-        on: { input: _vm.getCities },
-        model: {
-          value: _vm.stateFilter,
-          callback: function($$v) {
-            _vm.stateFilter = $$v
+      _c(
+        "v-select",
+        {
+          directives: [
+            {
+              name: "validate",
+              rawName: "v-validate",
+              value: "required",
+              expression: "'required'"
+            }
+          ],
+          staticClass: "w-full mt-6",
+          attrs: {
+            options: _vm.stateFilteroption,
+            name: "state_id",
+            clearable: false,
+            "data-vv-validate-on": "change"
           },
-          expression: "stateFilter"
-        }
-      }),
+          on: { input: _vm.getCities },
+          model: {
+            value: _vm.stateFilter,
+            callback: function($$v) {
+              _vm.stateFilter = $$v
+            },
+            expression: "stateFilter"
+          }
+        },
+        [
+          _c("span", { staticClass: "text-danger text-sm" }, [
+            _vm._v(_vm._s(_vm.errors.first("stateFilter")))
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c("v-select", {
+        directives: [
+          {
+            name: "validate",
+            rawName: "v-validate",
+            value: "required",
+            expression: "'required'"
+          }
+        ],
         staticClass: "w-full mt-6",
-        attrs: { options: _vm.cityoptions, clearable: false },
+        attrs: {
+          options: _vm.cityoptions,
+          clearable: false,
+          name: "city",
+          "data-vv-validate-on": "change"
+        },
         on: { input: _vm.getSchools },
         model: {
           value: _vm.cityFilter,
@@ -707,6 +771,34 @@ var render = function() {
       _c("span", { staticClass: "text-danger text-sm" }, [
         _vm._v(_vm._s(_vm.errors.first("schoolFilter")))
       ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "flex items-start flex-col sm:flex-row" },
+        [
+          _c("input", {
+            ref: "update_avatar_input",
+            staticClass: "hidden",
+            attrs: { type: "file", accept: "image/*", multiple: "" },
+            on: { change: _vm.selectFile }
+          }),
+          _vm._v(" "),
+          _c(
+            "vs-button",
+            {
+              staticClass: "w-full mt-6",
+              attrs: { type: "border" },
+              on: {
+                click: function($event) {
+                  return _vm.$refs.update_avatar_input.click()
+                }
+              }
+            },
+            [_vm._v("Upload Documents")]
+          )
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "vs-checkbox",

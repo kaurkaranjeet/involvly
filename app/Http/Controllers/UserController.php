@@ -31,11 +31,13 @@
         // Register API
  public function register(Request $request)
         {
+
+     
           $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'city_id' => 'required',
+            'city' => 'required',
             'state_id' => 'required',
             'school_id' => 'required',
             'country' => 'required'
@@ -45,16 +47,36 @@
                    return response()->json($validator->errors()->toJson(), 400);
             }
 
+
             $user =new  User;
+            $name=explode(',',$request->name);
+             $user->first_name= $name[0];
+             if(isset($name[1])){
+            $user->last_name= $name[1];
+          }else{
+             $user->last_name= '';
+          }
             $user->name=$request->name;
             $user->email=$request->email;
             $user->password=$request->password;
-            $user->city_id=$request->city_id;
+            $user->city=$request->city;
             $user->state_id=$request->state_id;
             $user->school_id=$request->school_id;
             $user->country=$request->country;
-            $user->password=Hash::make($request->password;
+              $user->status=0;
+            $user->password=Hash::make($request->password);
             $user->role_id=5;
+             $user->save();
+             if($request->hasfile('documents'))
+             {           
+              foreach($request->file('documents') as $key=>$file)
+              {
+                $name=time().$key.'.'.$file->getClientOriginalExtension();    
+                $file->move(public_path().'/images/', $name);      
+                DB::table('teacher_documents')->insert(
+              ['user_id' =>$user->id, 'document_name' => $name, 'document_url' => URL::to('/').'/images/'.$name]);
+              }
+            }
 
             $token = JWTAuth::fromUser($user);
 
