@@ -39,7 +39,7 @@
   <div class="vx-row">
     <div class="vx-col w-full">
       <vs-button class="mr-3 mb-2" @click="saveClassCode" :disabled="!validateForm" >Submit</vs-button>
-      <vs-button color="warning" type="border" class="mb-2" @click="class_name = class_code =''; check5 = false;">Cancle</vs-button>
+      <vs-button color="warning" type="border" class="mb-2" @click="class_name = class_code =''; check5 = false;">Cancel</vs-button>
     </div>
   </div>
   </vx-card>
