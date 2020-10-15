@@ -1576,7 +1576,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     logout: function logout() {
-      localStorage.removeItem('userInfo'); // This is just for demo Purpose. If user clicks on logout -> redirect
+      localStorage.removeItem('userInfo');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('school_id');
+      localStorage.removeItem('user_id'); // This is just for demo Purpose. If user clicks on logout -> redirect
 
       this.$router.push('/pages/login')["catch"](function () {});
     }
@@ -4011,7 +4014,7 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("span", { staticClass: "vx-logo-text text-primary" }, [
-                  _vm._v("Vuexy")
+                  _vm._v("Invovvely")
                 ])
               ],
               1
@@ -6963,7 +6966,7 @@ __webpack_require__.r(__webpack_exports__);
 }, {
   url: null,
   name: 'Classes ',
-  icon: 'UserIcon',
+  icon: 'UsersIcon',
   i18n: 'Class',
   submenu: [{
     url: '/apps/class/class-list',

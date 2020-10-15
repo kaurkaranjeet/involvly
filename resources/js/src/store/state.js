@@ -27,7 +27,7 @@ photoURL: require('@assets/images/portrait/small/avatar-s-11.jpg'),
 
 //console.log(localStorage.getItem('userInfo'));
 const userInfoLocalStorage = JSON.parse(localStorage.getItem('userInfo')) || {}
-console.log(userInfoLocalStorage)
+//console.log(userInfoLocalStorage)
 // Set default values for active-user
 // More data can be added by auth provider or other plugins/packages
 
@@ -40,10 +40,10 @@ const getUserInfo = () => {
     // If property is defined in localStorage => Use that
     userInfo[key] = userInfoLocalStorage[key] ? userInfoLocalStorage[key] : userDefaults[key]
   }*/
-
+ userInfoLocalStorage['photoURL']=require('@assets/images/portrait/small/avatar-s-11.jpg');
   // Include properties from localStorage
   Object.keys(userInfoLocalStorage).forEach((key) => {
-  console.log( userInfoLocalStorage[key]);
+  //console.log( userInfoLocalStorage[key]);
   })
   //console.log(userInfoLocalStorage);
   return userInfoLocalStorage

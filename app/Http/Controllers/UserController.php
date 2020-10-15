@@ -87,9 +87,27 @@
 
         public function gettotalStatistic($id)
         {
-         $students=User::getstudents($id);
-         $teachers=User::getteachers($id);
-         return response()->json(compact('students','teachers'), 200);
+         $students=User::getstudents($id)->count();
+          $data=array();
+         $series_sql=User::getstudents($id)->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
+         if(!empty($series_sql)){
+        
+         foreach($series_sql as $rr){
+          $data[]=$rr->views;
+        }
+      }
+            $Studentseries[]['data']=$data;
+       
+         $teachers=User::getteachers($id)->count();
+         $tseries_sql=User::getteachers($id)->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
+          if(!empty($tseries_sql)){
+        
+         foreach($tseries_sql as $rr){
+          $tdata[]=$rr->views;
+        }
+      }
+            $Teacherseries[]['data']=$tdata;
+         return response()->json(compact('students','teachers','Studentseries','Teacherseries'), 200);
        }
 
         public function getAuthenticatedUser()

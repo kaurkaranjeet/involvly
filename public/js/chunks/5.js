@@ -608,13 +608,15 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     this.$http.get("api/auth/user", requestOptions).then(function (response) {
-      console.log('Authorization' + response.data.user);
+      //console.log('Authorization'+response.status)
       _this.checkpointReward = response.data.user;
-      console.log('school_id', response.data.user.school_id);
-      localStorage.setItem('user_id', response.data.user.id);
-      localStorage.setItem('school_id', response.data.user.school_id);
+      console.log('user_id', response.data.user.id); // localStorage.setItem('user_id',response.data.user.id);
+      //   localStorage.setItem('school_id',response.data.user.school_id);
     })["catch"](function (error) {
-      console.log(error);
+      //   console.log(error);
+      // auto logout if 401 response returned from api
+      _this.$store.state.auth.logout(); // location.reload(true);
+
     });
     var school_id = localStorage.getItem('school_id'); // Subscribers gained - Statistics
 
@@ -1068,7 +1070,7 @@ var render = function() {
               icon: "UsersIcon",
               statistic: _vm.subscribersGained.students,
               statisticTitle: "Student Registered",
-              chartData: _vm.subscribersGained.series,
+              chartData: _vm.subscribersGained.Studentseries,
               type: "area"
             }
           })
@@ -1088,7 +1090,7 @@ var render = function() {
               icon: "UsersIcon",
               statistic: _vm.subscribersGained.teachers,
               statisticTitle: "Teachers Registered",
-              chartData: _vm.ordersRecevied.series,
+              chartData: _vm.subscribersGained.Teacherseries,
               color: "warning",
               type: "area"
             }

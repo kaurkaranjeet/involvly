@@ -46,7 +46,7 @@ export default [{
     {
         url: null,
         name: 'Classes ',
-        icon: 'UserIcon',
+        icon: 'UsersIcon',
         i18n: 'Class',
         submenu: [{
                 url: '/apps/class/class-list',

@@ -44,7 +44,7 @@
           icon="UsersIcon"
           :statistic="subscribersGained.students"
           statisticTitle="Student Registered"
-          :chartData="subscribersGained.series"
+          :chartData="subscribersGained.Studentseries"
           type="area"
         ></statistics-card-line>
       </div>
@@ -55,7 +55,7 @@
           icon="UsersIcon"
          :statistic="subscribersGained.teachers"
           statisticTitle="Teachers Registered"
-          :chartData="ordersRecevied.series"
+          :chartData="subscribersGained.Teacherseries"
           color="warning"
           type="area"
         ></statistics-card-line>
@@ -398,20 +398,28 @@ export default {
         
         headers: { 'Authorization': 'Bearer '+x }
     };
-
     this.$http
       .get(`api/auth/user`, requestOptions).then(response => {
 
-      console.log('Authorization'+response.data.user)
-        this.checkpointReward = response.data.user;
-        console.log('school_id',response.data.user.school_id);
+      //console.log('Authorization'+response.status)
+   this.checkpointReward = response.data.user;
+     console.log('user_id',response.data.user.id);
 
-      localStorage.setItem('user_id',response.data.user.id);
-       localStorage.setItem('school_id',response.data.user.school_id);
+     // localStorage.setItem('user_id',response.data.user.id);
+    //   localStorage.setItem('school_id',response.data.user.school_id);
       })
       .catch(error => {
-        console.log(error);
+     //   console.log(error);
+
+
+                // auto logout if 401 response returned from api
+                this.$store.state.auth.logout();
+               // location.reload(true);
+            
       });
+
+
+
      var school_id= localStorage.getItem('school_id');
     // Subscribers gained - Statistics
     this.$http
