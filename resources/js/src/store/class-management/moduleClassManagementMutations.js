@@ -15,8 +15,8 @@ export default {
     SET_CLASSES(state, classes) {
         state.classes = classes
     },
-    REMOVE_RECORD(state, itemId) {
-        const userIndex = state.items.findIndex((u) => u.id === itemId)
-        state.items.splice(userIndex, 1)
+    REMOVE_RECORD(state, classId) {
+        const classIndex = state.classes.findIndex((u) => u.id === classId)
+        state.classes.splice(classIndex, 1)
     }
 }

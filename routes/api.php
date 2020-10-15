@@ -33,6 +33,8 @@ Route::prefix('auth')->group(function () {
     Route::any('/manage-classes/{id}', ['as' => 'manage.classes', 'uses' => 'ClassController@manageClasses']);
     Route::any('/save-class-code', ['as' => 'save.classes', 'uses' => 'ClassController@saveClassCode']);
     Route::any('/delete-class-code/{id}', ['as' => 'delete.classes', 'uses' => 'ClassController@deleteClassCode']);
+    Route::any('/fetch-class-detail/{id}', ['as' => 'fetch.classes', 'uses' => 'ClassController@fetchClassCodeDetail']);
+    Route::any('/edit-class-code', ['as' => 'edit.classes', 'uses' => 'ClassController@editClassCode']);
 });
 // Mobile Apis
 

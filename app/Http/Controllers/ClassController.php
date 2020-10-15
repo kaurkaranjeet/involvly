@@ -38,7 +38,7 @@ class ClassController extends Controller {
     {
       $validator = Validator::make($request->all(), [
         'class_name' => 'required',
-        'class_code' => 'required|min:3|unique:class_code',
+        'class_code' => 'required|min:3|unique:class_code,class_code',
     ]);
 
     if($validator->fails()){
@@ -56,11 +56,9 @@ class ClassController extends Controller {
     }
 
     //delete class code
-    //delete category
   public function deleteClassCode($id)
   {
     if (!empty($id)) {
-      dd($id);
       $classCode = ClassCode::findOrFail($id);
       $classCode->delete();
       return response()->json(compact('classCode'), 200);
@@ -68,6 +66,42 @@ class ClassController extends Controller {
       return response()->json(['error' => 'true', 'classes' => [], 'message' => 'No Class Code Found'], 200);
     }
   }
+
+    //fetch class code by class code id
+    public function fetchClassCodeDetail($id)
+    {
+      if (!empty($id)) {
+        $class = ClassCode::where('id',$id)->first();
+        if (isset($class)) {
+            return response()->json(compact('class'), 200);
+        } else {
+            return response()->json(['message' => 'No record found'], 200);
+        }
+      } else {
+        return response()->json(['message' => 'Something went wrong'], 200);
+      }
+    }
+
+    // edit class code
+    public function editClassCode(Request $request)
+    {
+      $validator = Validator::make($request->all(), [
+        'class_id' => 'required',
+        'class_name' => 'required',
+        'class_code' => 'required|unique:class_code,class_code,'.$request->get('class_id'),
+    ]);
+    if($validator->fails()){
+        return response()->json($validator->errors()->toJson(), 400);
+    }
+    if(!empty($request->get('class_id'))){
+    $data['class_name'] = $request->get('class_name');
+    $data['class_code'] = $request->get('class_code');
+    $class = ClassCode::where('id', $request->get('class_id'))->update($data);
+    return response()->json(compact('class'),201);
+    }else{
+      return response()->json(['message' => 'id not found'], 200);
+    }
+    }
 
     public function fetchUser($id) {
         $data = User::fetchUser($id);
