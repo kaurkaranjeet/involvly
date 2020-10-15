@@ -8,6 +8,7 @@ use JWTAuth;
 use Exception;
 use App\User;
 use App\Models\ClassCode;
+use App\Models\ParentChildrens;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -187,24 +188,24 @@ class ParentController extends Controller {
          throw new Exception($validator->errors()->first());
        }  
        else{ 
-
-  $results = DB::select( DB::raw("SELECT GROUP_CONCAT(children_id) as childrens FROM `parent_childrens` WHERE parent_id =".$request->parent_id." ") );
-
-  $childrens= $results->childrens;
-
+  $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id',$request->parent_id)->first();
+   $childrens= $results->childrens;
   if(!empty($childrens)){
-    $results = DB::select( DB::raw("SELECT GROUP_CONCAT(parent_id) as childrens FROM `parent_childrens` WHERE children_id IN(".$childrens.")  AND parent_id!=".$request->parent_id."") );
-
-
-
-
-
+ $results= ParentChildrens::select('parent_id')->with('ParentDetails')->whereIn('children_id', array($childrens))->get();
+if(!empty($results)){
+   return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
+}else{
+    throw new Exception('No another parents');
   }
-
-
+  }
+  else{
+       throw new Exception('No childrens');
+  }
 }
-
 }
+ catch (\Exception $e) {
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+   }
 }
 
 }
