@@ -63,6 +63,7 @@
             $user->state_id=$request->state_id;
             $user->school_id=$request->school_id;
             $user->country=$request->country;
+             $user->position=$request->position;
               $user->status=0;
             $user->password=Hash::make($request->password);
             $user->role_id=5;
