@@ -155,20 +155,21 @@ class ParentController extends Controller {
          }
        }
 
-           if(!empty($request->student_id)) {  
-
-         $addUser=   DB::table('parent_childrens')->insert(
+       if(!empty($request->student_id)) {  
+        $explode=explode(',', $request->student_id);
+        if(!empty($explode)){
+          foreach($explode as $student_id){
+            DB::table('parent_childrens')->insert(
              [
-                    'parent_id' =>$request->parent_id,
-                    'children_id' =>$request->student_id,
-                    'relationship' => $request->relationship
-                   ]);
-
-         $addUser= DB::table('parent_childrens')->where('parent_id',$request->parent_id)->where('children_id',$request->children_id)->first();
-          
-         }
-         return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
-     }
+              'parent_id' =>$request->parent_id,
+              'children_id' =>$student_id,
+              'relationship' => $request->relationship
+            ]);
+          }
+        }
+    $addUser= DB::table('parent_childrens')->where('parent_id',$request->parent_id)->whereIn('children_id', array($request->student_id))->get();
+        return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
+      }
    } catch (\Exception $e) {
      return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
