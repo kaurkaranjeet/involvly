@@ -120,8 +120,9 @@ public function GetPostHomefeed(Request $request){
 
         $flight->user_id=(int) $request->user_id;
         $flight->post_id=(int) $request->post_id;
+         $comments=  Comment::with('User')->withCount('replycomments')->with('replycomments')->where('id' , $flight->id)->first();
 
-        $this->pusher->trigger('comment-channel', 'add_comment', $flight);
+        $this->pusher->trigger('comment-channel', 'add_comment', $comments);
 
     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
       SELECT *
