@@ -208,6 +208,18 @@ class ParentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+    
+    public function GetScheduleTaskDetail(Request $request){
+        $validator = Validator::make($request->all(), [
+                    'task_id' => 'required|exists:parent_tasks,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->errors(), 'error' => true));
+        } else {
+            $tasks = ParentTask::with('User')->where('id', $request->task_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
+        }
+    }
 
     public function GetRelatedParents(Request $request) {
         try {
