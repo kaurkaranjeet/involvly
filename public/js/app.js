@@ -71617,6 +71617,17 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./resources/assets/images/portrait/small/avatar-s-11.jpg":
+/*!****************************************************************!*\
+  !*** ./resources/assets/images/portrait/small/avatar-s-11.jpg ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/avatar-s-11.jpg?1a620230b75dd161d37ad2d21948e9cb";
+
+/***/ }),
+
 /***/ "./resources/assets/utils/color.js":
 /*!*****************************************!*\
   !*** ./resources/assets/utils/color.js ***!
@@ -73996,8 +74007,7 @@ var userDefaults = {
   displayName: "",
   // From Auth
   about: "",
-  photoURL: "",
-  // From Auth
+  photoURL: __webpack_require__(/*! @assets/images/portrait/small/avatar-s-11.jpg */ "./resources/assets/images/portrait/small/avatar-s-11.jpg"),
   status: "",
   userRole: ""
 }; //console.log(localStorage.getItem('userInfo'));

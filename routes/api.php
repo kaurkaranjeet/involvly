@@ -26,7 +26,10 @@ Route::prefix('auth')->group(function () {
     Route::get('delete-user/{id}', 'UserController@RemoveUser');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
+   Route::get('requests/{id}', 'UserController@getRequest');
     //classes
+
+   
     Route::any('/manage-classes/{id}', ['as' => 'manage.classes', 'uses' => 'ClassController@manageClasses']);
     Route::any('/save-class-code', ['as' => 'save.classes', 'uses' => 'ClassController@saveClassCode']);
     Route::any('/delete-class-code/{id}', ['as' => 'delete.classes', 'uses' => 'ClassController@deleteClassCode']);
