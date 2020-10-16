@@ -1,6 +1,6 @@
 <!-- =========================================================================================
-  File Name: UserAdd.vue
-  Description: User Add Page
+  File Name: ClassView.vue
+  Description: CLass View Page
   ----------------------------------------------------------------------------------------
   Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
   Author: Pixinvent
@@ -18,6 +18,7 @@
       name="Class Name"
       v-model="class_name"
       class="w-full"
+      readonly
     />
     <span class="text-danger text-xs">{{ errors.first("Class Name") }}</span>
     </div>
@@ -32,14 +33,9 @@
       placeholder="Class Code"
       v-model="class_code"
       class="w-full"
+      readonly
     />
     <span class="text-danger text-xs">{{ errors.first("Class Code") }}</span>
-    </div>
-  </div>
-  <div class="vx-row">
-    <div class="vx-col w-full">
-      <vs-button class="mr-3 mb-2" @click="saveClassCode" :disabled="!validateForm" >Submit</vs-button>
-      <vs-button color="warning" type="border" class="mb-2" @click="class_name = class_code =''; check5 = false;">Cancel</vs-button>
     </div>
   </div>
   </vx-card>
@@ -57,63 +53,39 @@ export default {
     return {
       class_name: "",
       class_code: "",
+      activeTab: 0
     }
-  },
-  computed: {
-    validateForm() {
-      this.$vs.loading.close();
-      return (
-        !this.errors.any() &&
-        this.class_name !== "" &&
-        this.class_code !== "" 
-      );
-    },
-  },
-  methods: {
-    saveClassCode() {
-      var code = {
-        class_name: this.class_name,
-        class_code: this.class_code,
-      };
-      // If form is not validated return
-      if (!this.validateForm) returns;
-      // Loading
-      this.$vs.loading();
-      this.$store
-        .dispatch("classManagement/saveClassCode", code)
-        .then((res) => {
-          this.$vs.loading.close();
-          this.$router
-            .push(`/apps/class/class-list`)
-            .catch(() => {});
-          this.$vs.notify({
-            color: "success",
-            title: "Success",
-            text: "Data add successfully!",
-          });
-        })
-        .catch((error) => {
-          this.$vs.loading.close();
-          this.$vs.notify({
-            title: "Error",
-            text: error,
-            iconPack: "feather",
-            icon: "icon-alert-circle",
-            color: "danger",
-          });
-        });
-    },
   },
   watch: {
     activeTab () {
       this.fetch_user_data(this.$route.params.userId)
     }
   },
-  created() {
-     if (!moduleClassManagement.isRegistered) {
+  methods: {
+    fetch_Class_data (classId) {
+      this.$store.dispatch('classManagement/fetchClassCodeDetail', classId)
+        .then(res => { 
+          this.class_data = res.data.class
+          console.log(this.class_data)
+          this.class_name = this.class_data.class_name;
+          this.class_code = this.class_data.class_code;
+         })
+        .catch(err => {
+          if (err.response.status === 404) {
+            this.class_not_found = true
+            return
+          }
+          console.error(err) 
+        })
+    }
+  },
+  created () {
+    // Register Module UserManagement Module
+    if (!moduleClassManagement.isRegistered) {
       this.$store.registerModule('classManagement', moduleClassManagement)
       moduleClassManagement.isRegistered = true
     }
+    this.fetch_Class_data(this.$route.params.classId)
   }
 }
 

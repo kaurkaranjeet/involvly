@@ -149,6 +149,7 @@ public function GetComments(Request $request){
     }
     else{
 
+
     $comments=  Comment::with('User')->withCount('replycomments')->with('replycomments')->where('post_id' , $request->post_id)->get();
 
     return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $comments), 200);

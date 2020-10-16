@@ -52,6 +52,39 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+    removeClassCode({ commit }, id) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`/api/auth/delete-class-code/${id}`)
+                .then((response) => {
+                    commit('REMOVE_RECORD', id)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    fetchClassCodeDetail(context, id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/auth/fetch-class-detail/${id}`)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    editClassCode({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/edit-class-code`, code)
+                .then((response) => {
+                    console.log("reee", response)
+                    if (response) {
+                        resolve(response)
+                    } else {
+                        reject({ message: 'Error' })
+                    }
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
 
     fetchAllItems({ commit }) {
         return new Promise((resolve, reject) => {
