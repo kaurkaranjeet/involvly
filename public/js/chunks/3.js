@@ -4548,7 +4548,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.activeUserInfo.displayName
+  return _vm.activeUserInfo.name
     ? _c(
         "div",
         { staticClass: "the-navbar__user-meta flex items-center" },
@@ -4558,7 +4558,7 @@ var render = function() {
             { staticClass: "text-right leading-tight hidden sm:block" },
             [
               _c("p", { staticClass: "font-semibold" }, [
-                _vm._v(_vm._s(_vm.activeUserInfo.displayName))
+                _vm._v(_vm._s(_vm.activeUserInfo.name))
               ]),
               _vm._v(" "),
               _c("small", [_vm._v("Available")])
@@ -4605,78 +4605,6 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("span", { staticClass: "ml-2" }, [_vm._v("Profile")])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        staticClass:
-                          "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                      },
-                      [
-                        _c("feather-icon", {
-                          attrs: { icon: "MailIcon", svgClasses: "w-4 h-4" }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-2" }, [_vm._v("Inbox")])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        staticClass:
-                          "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                      },
-                      [
-                        _c("feather-icon", {
-                          attrs: {
-                            icon: "CheckSquareIcon",
-                            svgClasses: "w-4 h-4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-2" }, [_vm._v("Tasks")])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        staticClass:
-                          "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                      },
-                      [
-                        _c("feather-icon", {
-                          attrs: {
-                            icon: "MessageSquareIcon",
-                            svgClasses: "w-4 h-4"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-2" }, [_vm._v("Chat")])
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        staticClass:
-                          "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                      },
-                      [
-                        _c("feather-icon", {
-                          attrs: { icon: "HeartIcon", svgClasses: "w-4 h-4" }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-2" }, [
-                          _vm._v("Wish List")
-                        ])
                       ],
                       1
                     ),

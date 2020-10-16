@@ -45,9 +45,11 @@ const getUserInfo = () => {
   Object.keys(userInfoLocalStorage).forEach((key) => {
   //console.log( userInfoLocalStorage[key]);
   })
-  //console.log(userInfoLocalStorage);
+console.log(userInfoLocalStorage);
   return userInfoLocalStorage
 }
+
+ userInfoLocalStorage['photoURL']=require('@assets/images/portrait/small/avatar-s-11.jpg');
 
 // Check if device is touch device
 // This is used to remove perfect scrollbar from touch devices

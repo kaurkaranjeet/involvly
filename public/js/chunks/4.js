@@ -405,17 +405,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'CellRendererActions',
   methods: {
-    editRecord: function editRecord() {// this.$router.push(`/apps/user/user-edit/${  268}`).catch(() => {})
-
-      /*
-              Below line will be for actual product
-              Currently it's commented due to demo purpose - Above url is for demo purpose
-                this.$router.push("/apps/user/user-edit/" + this.params.data.id).catch(() => {})
-            */
+    viewRecord: function viewRecord() {
+      this.$router.push("/apps/class/class-view/".concat(this.params.data.id))["catch"](function () {});
+    },
+    editRecord: function editRecord() {
+      this.$router.push("/apps/class/class-edit/".concat(this.params.data.id))["catch"](function () {});
     },
     confirmDeleteRecord: function confirmDeleteRecord() {
       this.$vs.dialog({
@@ -430,43 +429,19 @@ __webpack_require__.r(__webpack_exports__);
     deleteRecord: function deleteRecord() {
       var _this = this;
 
-      this.$vs.loading();
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("api/auth/delete-class-code/" + this.params.data.id).then(function (res) {
-        _this.$router.push("/apps/class/class-list")["catch"](function () {});
-
-        _this.$vs.loading.close();
-
-        _this.$vs.notify({
-          color: "success",
-          title: "Deleted",
-          text: "Data deleted successfully!"
-        });
-      })["catch"](function (error) {
-        _this.$vs.loading.close();
-
-        _this.$vs.notify({
-          title: "Error",
-          text: error.message,
-          iconPack: "feather",
-          icon: "icon-alert-circle",
-          color: "danger"
-        });
+      this.$store.dispatch("classManagement/removeClassCode", this.params.data.id).then(function () {
+        _this.showDeleteSuccess();
+      })["catch"](function (err) {
+        console.error(err);
       });
-      /* Below two lines are just for demo purpose */
-      // this.showDeleteSuccess()
-
-      /* UnComment below lines for enabling true flow if deleting user */
-      // this.$store.dispatch("userManagement/removeRecord", this.params.data.id)
-      //   .then(()   => { this.showDeleteSuccess() })
-      //   .catch(err => { console.error(err)       })
-    } // showDeleteSuccess () {
-    //   this.$vs.notify({
-    //     color: 'success',
-    //     title: 'Deleted',
-    //     text: 'The selected data was successfully deleted'
-    //   })
-    // }
-
+    },
+    showDeleteSuccess: function showDeleteSuccess() {
+      this.$vs.notify({
+        color: 'success',
+        title: 'Deleted',
+        text: 'Data deleted successfully'
+      });
+    }
   }
 });
 
@@ -1028,6 +1003,14 @@ var render = function() {
     [
       _c("feather-icon", {
         attrs: {
+          icon: "EyeIcon",
+          svgClasses: "h-5 w-5 mr-4 hover:text-primary cursor-pointer"
+        },
+        on: { click: _vm.viewRecord }
+      }),
+      _vm._v(" "),
+      _c("feather-icon", {
+        attrs: {
           icon: "Edit3Icon",
           svgClasses: "h-5 w-5 mr-4 hover:text-primary cursor-pointer"
         },
@@ -1260,17 +1243,51 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data["class"]) {
           resolve(response);
         } else {
-          reject({
-            message: 'Error'
-          });
+          reject(response.data.message);
         }
       })["catch"](function (error) {
         reject(error);
       });
     });
   },
-  fetchAllItems: function fetchAllItems(_ref3) {
+  removeClassCode: function removeClassCode(_ref3, id) {
     var commit = _ref3.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-class-code/".concat(id)).then(function (response) {
+        commit('REMOVE_RECORD', id);
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  fetchClassCodeDetail: function fetchClassCodeDetail(context, id) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/fetch-class-detail/".concat(id)).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  editClassCode: function editClassCode(_ref4, code) {
+    var commit = _ref4.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-class-code", code).then(function (response) {
+        console.log("reee", response);
+
+        if (response) {
+          resolve(response);
+        } else {
+          reject(response.data.message);
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  fetchAllItems: function fetchAllItems(_ref5) {
+    var commit = _ref5.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/all-items").then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -1280,8 +1297,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchItems: function fetchItems(_ref4, userId) {
-    var commit = _ref4.commit;
+  fetchItems: function fetchItems(_ref6, userId) {
+    var commit = _ref6.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/view-items/".concat(userId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -1300,8 +1317,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  getItem: function getItem(_ref5, itemId) {
-    var commit = _ref5.commit;
+  getItem: function getItem(_ref7, itemId) {
+    var commit = _ref7.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/get-item/".concat(itemId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -1342,8 +1359,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  removeRecord: function removeRecord(_ref6, ItemId) {
-    var commit = _ref6.commit;
+  removeRecord: function removeRecord(_ref8, ItemId) {
+    var commit = _ref8.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/delete-item/".concat(ItemId)).then(function (response) {
         commit('REMOVE_RECORD', ItemId);
@@ -1402,11 +1419,11 @@ __webpack_require__.r(__webpack_exports__);
   SET_CLASSES: function SET_CLASSES(state, classes) {
     state.classes = classes;
   },
-  REMOVE_RECORD: function REMOVE_RECORD(state, itemId) {
-    var userIndex = state.items.findIndex(function (u) {
-      return u.id === itemId;
+  REMOVE_RECORD: function REMOVE_RECORD(state, classId) {
+    var classIndex = state.classes.findIndex(function (u) {
+      return u.id === classId;
     });
-    state.items.splice(userIndex, 1);
+    state.classes.splice(classIndex, 1);
   }
 });
 
