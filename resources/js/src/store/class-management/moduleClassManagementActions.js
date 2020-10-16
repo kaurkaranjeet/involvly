@@ -46,10 +46,13 @@ export default {
                     if (response.data.class) {
                         resolve(response)
                     } else {
-                        reject({ message: 'Error' })
+                        reject(response.data.message)
                     }
                 })
-                .catch((error) => { reject(error) })
+                .catch((error) => {
+                    reject(error)
+                })
+
         })
     },
     removeClassCode({ commit }, id) {
@@ -79,7 +82,7 @@ export default {
                     if (response) {
                         resolve(response)
                     } else {
-                        reject({ message: 'Error' })
+                        reject(response.data.message)
                     }
                 })
                 .catch((error) => { reject(error) })
