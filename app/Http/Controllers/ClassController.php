@@ -91,9 +91,7 @@ class ClassController extends Controller {
         'class_code' => 'required|unique:class_code,class_code,'.$request->get('class_id'),
     ]);
     if($validator->fails()){
-      $messages = implode(",", errorMessages($validator->messages()));
-      // return json_encode(array("statusCode" => 400, "message" => $messages));
-      return response()->json([ 'error' =>true, 'message'=>$messages], 200);
+      return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
     }
     if(!empty($request->get('class_id'))){
     $data['class_name'] = $request->get('class_name');
