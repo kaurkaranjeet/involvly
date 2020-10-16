@@ -8,4 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class Subject extends Model
 { 
+    protected $table= 'subjects';
+    protected $fillable = ['class_id','subject_name'];
 }

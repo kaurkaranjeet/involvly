@@ -18,5 +18,12 @@ export default {
     REMOVE_RECORD(state, classId) {
         const classIndex = state.classes.findIndex((u) => u.id === classId)
         state.classes.splice(classIndex, 1)
+    },
+    SET_SUBJECTS(state, subjects) {
+        state.subjects = subjects
+    },
+    REMOVE_SUBJECTS(state, subjectId) {
+        const subjectIndex = state.subjects.findIndex((u) => u.id === subjectId)
+        state.subjects.splice(subjectIndex, 1)
     }
 }
