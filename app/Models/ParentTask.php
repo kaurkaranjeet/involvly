@@ -15,8 +15,8 @@ class ParentTask extends Model {
         return $this->belongsTo('App\User', 'task_assigned_by', 'id');
     }
     
-    public function AssignedUser() {
-        return $this->belongsTo('App\User', 'task_assigned_to', 'id');
+    public function AssignedUser(){
+        return $this->hasMany('App\Models\ParentTaskAssigned','task_id');
     }
 
 }

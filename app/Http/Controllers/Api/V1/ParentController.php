@@ -9,6 +9,7 @@ use Exception;
 use App\User;
 use App\Models\ClassCode;
 use App\Models\ParentTask;
+use App\Models\ParentTaskAssigned;
 use App\Models\ParentChildrens;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
@@ -183,19 +184,22 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = [];
-            $users_explode = explode(',', $request->task_assigned_to);
-            foreach ($users_explode as $single) {
-             
             $task = new ParentTask; //then create new object
             $task->task_assigned_by = $request->task_assigned_by;
-            $task->task_assigned_to = $single; 
             $task->task_name = $request->task_name;
             $task->task_date = $request->task_date;
             $task->task_time = $request->task_time;
             $task->task_description = $request->task_description;
             $task->save();
-            array_push($tasks , $task);
+            $tasks = [];
+            $users_explode = explode(',', $request->task_assigned_to);
+            foreach ($users_explode as $single) {
+             
+            $task_assigned = new ParentTaskAssigned; //then create new object
+            $task_assigned->task_id = $task->id;
+            $task_assigned->task_assigned_to = $single; 
+            $task_assigned->save();
+            array_push($tasks , $task_assigned);
             }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
         }
@@ -221,7 +225,7 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::with('User')->with('AssignedUser')->where('id', $request->task_id)->get();
+            $tasks = ParentTask::with('User')->with('AssignedUser.User')->where('id', $request->task_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
