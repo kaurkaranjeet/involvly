@@ -148,7 +148,10 @@ public function GetComments(Request $request){
         return response()->json(array('errors' => $validator->errors(),'error' => true));
     }
     else{
-    $comments=  Comment::with('User')->withCount('replycomments')->with('replycomments.User')->where('post_id' , $request->post_id)->get();
+
+
+    $comments=  Comment::with('User')->withCount('replycomments')->with('replycomments')->where('post_id' , $request->post_id)->get();
+
     return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $comments), 200);
 
     }
@@ -282,7 +285,7 @@ public function GetComments(Request $request){
 
          $reply->user_id=(int) $request->user_id;
          $reply->post_id=(int) $request->post_id;
-
+         $reply->comment_id=(int) $request->comment_id;
  
 
            $this->pusher->trigger('reply-channel', 'add_reply', $reply);
