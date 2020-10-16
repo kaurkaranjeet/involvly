@@ -37,6 +37,7 @@ class LoginController extends Controller {
                 return response()->json(['message' => 'could_not_create_token', 'error' => true], 500);
             }
             $user_details = User::validateLogin($request->all());
+            if($user_details->role_id==$request->role_id){
             $user_details->token = $token;
             $user_details->role_id = strval($user_details->role_id);
             $user_details->state_id = strval($user_details->state_id);
@@ -47,6 +48,11 @@ class LoginController extends Controller {
                 return response()->json(array('error' => false, 'data' => $user_details), 202);
             } else {
                 return response()->json(array('error' => true, 'data' => [],'message' => 'Something went wrong'), 200);
+            }
+        }
+
+        else {
+                return response()->json(array('error' => true, 'data' => [],'message' => 'You are not allowed to login'), 200);
             }
         }
     }
