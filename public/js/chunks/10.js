@@ -242,7 +242,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Cancle")]
+            [_vm._v("Cancel")]
           )
         ],
         1
@@ -351,17 +351,51 @@ __webpack_require__.r(__webpack_exports__);
         if (response.data["class"]) {
           resolve(response);
         } else {
-          reject({
-            message: 'Error'
-          });
+          reject(response.data.message);
         }
       })["catch"](function (error) {
         reject(error);
       });
     });
   },
-  fetchAllItems: function fetchAllItems(_ref3) {
+  removeClassCode: function removeClassCode(_ref3, id) {
     var commit = _ref3.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-class-code/".concat(id)).then(function (response) {
+        commit('REMOVE_RECORD', id);
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  fetchClassCodeDetail: function fetchClassCodeDetail(context, id) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/fetch-class-detail/".concat(id)).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  editClassCode: function editClassCode(_ref4, code) {
+    var commit = _ref4.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-class-code", code).then(function (response) {
+        console.log("reee", response);
+
+        if (response) {
+          resolve(response);
+        } else {
+          reject(response.data.message);
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  fetchAllItems: function fetchAllItems(_ref5) {
+    var commit = _ref5.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/all-items").then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -371,8 +405,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchItems: function fetchItems(_ref4, userId) {
-    var commit = _ref4.commit;
+  fetchItems: function fetchItems(_ref6, userId) {
+    var commit = _ref6.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/view-items/".concat(userId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -391,8 +425,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  getItem: function getItem(_ref5, itemId) {
-    var commit = _ref5.commit;
+  getItem: function getItem(_ref7, itemId) {
+    var commit = _ref7.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/get-item/".concat(itemId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -433,8 +467,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  removeRecord: function removeRecord(_ref6, ItemId) {
-    var commit = _ref6.commit;
+  removeRecord: function removeRecord(_ref8, ItemId) {
+    var commit = _ref8.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/delete-item/".concat(ItemId)).then(function (response) {
         commit('REMOVE_RECORD', ItemId);
@@ -493,11 +527,11 @@ __webpack_require__.r(__webpack_exports__);
   SET_CLASSES: function SET_CLASSES(state, classes) {
     state.classes = classes;
   },
-  REMOVE_RECORD: function REMOVE_RECORD(state, itemId) {
-    var userIndex = state.items.findIndex(function (u) {
-      return u.id === itemId;
+  REMOVE_RECORD: function REMOVE_RECORD(state, classId) {
+    var classIndex = state.classes.findIndex(function (u) {
+      return u.id === classId;
     });
-    state.items.splice(userIndex, 1);
+    state.classes.splice(classIndex, 1);
   }
 });
 
