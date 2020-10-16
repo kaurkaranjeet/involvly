@@ -103,7 +103,7 @@ class User extends Authenticatable implements JWTSubject {
     }
     protected function fetchUser($id)
     {
-        return User::select('name','username', 'id', 'email','status','image','authenticiation_key','type','bio','insta_key')->with('roles')->where('id', $id)->first();
+        return User::with('role')->where('id', $id)->first();
     }
     protected function FollowedUsers($id){
 

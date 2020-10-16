@@ -22,7 +22,7 @@ export default {
   // },
   fetchUsers({ commit }) {
      var x = localStorage.getItem('accessToken');
-        var user_id = localStorage.getItem('user_id');
+        var school_id = localStorage.getItem('school_id');
     //  User Reward Card
     const requestOptions = {
         'type': 'teacher',
@@ -30,7 +30,7 @@ export default {
 
     };
     return new Promise((resolve, reject) => {
-      axios.post('/api/auth/manage-users/'+user_id,requestOptions)
+      axios.post('/api/auth/manage-users/'+school_id,requestOptions)
         .then((response) => {
           console.log(response.data.users);
           commit('SET_USERS', response.data.users)
@@ -42,7 +42,7 @@ export default {
 
    fetchStudents({ commit }) {
      var x = localStorage.getItem('accessToken');
-        var user_id = localStorage.getItem('user_id');
+        var school_id = localStorage.getItem('school_id');
     //  User Reward Card
     const requestOptions = {
         'type': 'student',
@@ -50,7 +50,7 @@ export default {
 
     };
     return new Promise((resolve, reject) => {
-      axios.post('/api/auth/manage-users/'+user_id,requestOptions)
+      axios.post('/api/auth/manage-users/'+school_id,requestOptions)
         .then((response) => {
           console.log(response.data.users);
           commit('SET_USERS', response.data.users)
@@ -62,7 +62,7 @@ export default {
 
   fetchParents({ commit }) {
      var x = localStorage.getItem('accessToken');
-        var user_id = localStorage.getItem('user_id');
+        var school_id = localStorage.getItem('school_id');
     //  User Reward Card
     const requestOptions = {
         'type': 'parents',
@@ -70,7 +70,7 @@ export default {
 
     };
     return new Promise((resolve, reject) => {
-      axios.post('/api/auth/manage-users/'+user_id,requestOptions)
+      axios.post('/api/auth/manage-users/'+school_id,requestOptions)
         .then((response) => {
           console.log(response.data.users);
           commit('SET_USERS', response.data.users)
@@ -93,6 +93,8 @@ export default {
     return new Promise((resolve, reject) => {
       axios.post(`/api/auth/update-profile/`, data)
         .then((response) => {
+
+         
           resolve(response)
         })
         .catch((error) => { reject(error) })

@@ -136,17 +136,18 @@
             }
 
 
-            public function manageUsers(Request $request)
+            public function manageUsers(Request $request,$id)
             {
               DB::enableQueryLog(); 
+             
               if($request->type=='teacher'){
-                 $users = User::where('role_id', 4)->where('status', 1)->with('role')->get();
+                 $users = User::where('role_id', 4)->where('status', 1)->where('school_id', $id)->with('role')->get();
               }
               else if($request->type=='students'){
-                 $users = User::where('role_id', 2)->where('status', 1)->get();
+                 $users = User::where('role_id', 2)->where('status', 1)->where('school_id', $id)->get();
               }
               else{
-                 $users = User::where('role_id', 3)->where('status', 1)->get();
+                 $users = User::where('role_id', 3)->where('status', 1)->where('school_id', $id)->get();
               }
             //  print_r(DB::getQueryLog());die;
        
@@ -170,12 +171,10 @@
 
   public function UpdateProfile(Request $request)
   {
-      User::where('id',$request->id)->update(['name'=>$request->name,'email'=>$request->email,'status'=>$request->status]);
-       $RoleObj = new Role;
-       $role_id= $RoleObj->Role($request->role);
-       RoleUser::updateOrCreate(['role_id'=>$role_id,'user_id'=>$request->user_id]);
-      $data = User::fetchUser($request->id);
-      if (isset($data)) {
+    $name=$request->first_name.' '.$request->last_name;
+      User::where('id',$request->id)->update(['first_name'=>$request->first_name,'last_name'=>$request->last_name,'name'=>$name,'status'=>$request->status]);
+      $data = User::find($request->id);
+      if (!empty($data)) {
         return response()->json(compact('data'), 200);
     } else {
      return response()->json(['message' => 'No record found'], 200);
@@ -187,7 +186,7 @@ public function RemoveUser($id){
 }
 
 public function getRequest($school_id){
-  $data= User::where('role_id',4)->where('school_id',$school_id)->where('status',0)->get();
+  $data= User::where('role_id',4)->where('school_id',$school_id)->where('status',0)->select('id','name','email',DB::raw('DATE(created_at) as date'),'id','status')->get();
   return response()->json(compact('data'), 200);
 }
   }

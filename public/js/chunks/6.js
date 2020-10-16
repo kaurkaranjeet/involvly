@@ -232,11 +232,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -253,10 +248,10 @@ __webpack_require__.r(__webpack_exports__);
       data_local: JSON.parse(JSON.stringify(this.data)),
       statusOptions: [{
         label: 'ACTIVE',
-        value: 'ACTIVE'
+        value: '1'
       }, {
         label: 'INACTIVE',
-        value: 'INACTIVE'
+        value: '0'
       }],
       roleOptions: [{
         label: 'Admin',
@@ -272,8 +267,14 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     status_local: {
       get: function get() {
+        var status = 'INACTIVE';
+
+        if (this.data_local.status == 1) {
+          status = 'ACTIVE';
+        }
+
         return {
-          label: this.capitalize(this.data_local.status),
+          label: status,
           value: this.data_local.status
         };
       },
@@ -294,8 +295,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    capitalize: function capitalize(str) {
-      return str.slice(0, 1).toUpperCase() + str.slice(1, str.length);
+    capitalize: function capitalize(str) {//  return str.slice(0, 1).toUpperCase() + str.slice(1, str.length)
     },
     save_changes: function save_changes() {
       var _this = this;
@@ -305,6 +305,19 @@ __webpack_require__.r(__webpack_exports__);
       var local = this.data_local;
       this.$store.dispatch('userManagement/UpdateUser', local).then(function (res) {
         _this.user_data = res.data.data;
+
+        _this.$vs.notify({
+          title: 'Success',
+          text: 'Updated Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        }); //alert(res.data.data.role_id)
+
+
+        if (res.data.data.role_id == '4') {
+          _this.$router.push('/apps/user/user-list')["catch"](function () {});
+        }
       })["catch"](function (err) {
         if (err.response.status === 404) {
           _this.user_not_found = true;
@@ -743,7 +756,7 @@ var render = function() {
                       "vs-tab",
                       {
                         attrs: {
-                          label: "Account",
+                          label: " Edit Account Information",
                           "icon-pack": "feather",
                           icon: "icon-user"
                         }
@@ -754,54 +767,6 @@ var render = function() {
                           { staticClass: "tab-text" },
                           [
                             _c("user-edit-tab-account", {
-                              staticClass: "mt-4",
-                              attrs: { data: _vm.user_data }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "vs-tab",
-                      {
-                        attrs: {
-                          label: "Information",
-                          "icon-pack": "feather",
-                          icon: "icon-info"
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "tab-text" },
-                          [
-                            _c("user-edit-tab-information", {
-                              staticClass: "mt-4",
-                              attrs: { data: _vm.user_data }
-                            })
-                          ],
-                          1
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "vs-tab",
-                      {
-                        attrs: {
-                          label: "Social",
-                          "icon-pack": "feather",
-                          icon: "icon-share-2"
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "tab-text" },
-                          [
-                            _c("user-edit-tab-social", {
                               staticClass: "mt-4",
                               attrs: { data: _vm.user_data }
                             })
@@ -845,7 +810,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "user-edit-tab-info" } }, [
-    _c("div", { staticClass: "vx-row" }, [
+    _c("div", { staticClass: "vx-row", staticStyle: { display: "none" } }, [
       _c("div", { staticClass: "vx-col w-full" }, [
         _c("div", { staticClass: "flex items-start flex-col sm:flex-row" }, [
           _c("img", {
@@ -893,18 +858,18 @@ var render = function() {
               {
                 name: "validate",
                 rawName: "v-validate",
-                value: "required|alpha_num",
-                expression: "'required|alpha_num'"
+                value: "required",
+                expression: "'required'"
               }
             ],
             staticClass: "w-full mt-4",
-            attrs: { label: "Username", name: "username" },
+            attrs: { label: "First name", name: "first_name" },
             model: {
-              value: _vm.data_local.username,
+              value: _vm.data_local.first_name,
               callback: function($$v) {
-                _vm.$set(_vm.data_local, "username", $$v)
+                _vm.$set(_vm.data_local, "first_name", $$v)
               },
-              expression: "data_local.username"
+              expression: "data_local.first_name"
             }
           }),
           _vm._v(" "),
@@ -915,49 +880,13 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.errors.has("username"),
-                  expression: "errors.has('username')"
+                  value: _vm.errors.has("first_name"),
+                  expression: "errors.has('first_name')"
                 }
               ],
               staticClass: "text-danger text-sm"
             },
-            [_vm._v(_vm._s(_vm.errors.first("username")))]
-          ),
-          _vm._v(" "),
-          _c("vs-input", {
-            directives: [
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required|alpha_spaces",
-                expression: "'required|alpha_spaces'"
-              }
-            ],
-            staticClass: "w-full mt-4",
-            attrs: { label: "Name", name: "name" },
-            model: {
-              value: _vm.data_local.name,
-              callback: function($$v) {
-                _vm.$set(_vm.data_local, "name", $$v)
-              },
-              expression: "data_local.name"
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.errors.has("name"),
-                  expression: "errors.has('name')"
-                }
-              ],
-              staticClass: "text-danger text-sm"
-            },
-            [_vm._v(_vm._s(_vm.errors.first("name")))]
+            [_vm._v(_vm._s(_vm.errors.first("first_name")))]
           ),
           _vm._v(" "),
           _c("vs-input", {
@@ -970,7 +899,12 @@ var render = function() {
               }
             ],
             staticClass: "w-full mt-4",
-            attrs: { label: "Email", type: "email", name: "email" },
+            attrs: {
+              label: "Email",
+              type: "email",
+              name: "email",
+              readonly: ""
+            },
             model: {
               value: _vm.data_local.email,
               callback: function($$v) {
@@ -991,7 +925,8 @@ var render = function() {
                   expression: "errors.has('email')"
                 }
               ],
-              staticClass: "text-danger text-sm"
+              staticClass: "text-danger text-sm",
+              attrs: { disabled: "" }
             },
             [_vm._v(_vm._s(_vm.errors.first("email")))]
           )
@@ -1003,6 +938,42 @@ var render = function() {
         "div",
         { staticClass: "vx-col md:w-1/2 w-full" },
         [
+          _c("vs-input", {
+            directives: [
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required",
+                expression: "'required'"
+              }
+            ],
+            staticClass: "w-full mt-4",
+            attrs: { label: "last name", name: "last_name" },
+            model: {
+              value: _vm.data_local.last_name,
+              callback: function($$v) {
+                _vm.$set(_vm.data_local, "last_name", $$v)
+              },
+              expression: "data_local.last_name"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "span",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.errors.has("last_name"),
+                  expression: "errors.has('last_name')"
+                }
+              ],
+              staticClass: "text-danger text-sm"
+            },
+            [_vm._v(_vm._s(_vm.errors.first("last_name")))]
+          ),
+          _vm._v(" "),
           _c(
             "div",
             { staticClass: "mt-4" },
@@ -1052,91 +1023,6 @@ var render = function() {
               )
             ],
             1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "mt-4" },
-            [
-              _c("label", { staticClass: "vs-input--label" }, [_vm._v("Role")]),
-              _vm._v(" "),
-              _c("v-select", {
-                directives: [
-                  {
-                    name: "validate",
-                    rawName: "v-validate",
-                    value: "required",
-                    expression: "'required'"
-                  }
-                ],
-                attrs: {
-                  clearable: false,
-                  options: _vm.roleOptions,
-                  name: "role",
-                  dir: _vm.$vs.rtl ? "rtl" : "ltr"
-                },
-                model: {
-                  value: _vm.role_local,
-                  callback: function($$v) {
-                    _vm.role_local = $$v
-                  },
-                  expression: "role_local"
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "span",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.errors.has("role"),
-                      expression: "errors.has('role')"
-                    }
-                  ],
-                  staticClass: "text-danger text-sm"
-                },
-                [_vm._v(_vm._s(_vm.errors.first("role")))]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("vs-input", {
-            directives: [
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "alpha_spaces",
-                expression: "'alpha_spaces'"
-              }
-            ],
-            staticClass: "w-full mt-4",
-            attrs: { label: "Company", name: "company" },
-            model: {
-              value: _vm.data_local.company,
-              callback: function($$v) {
-                _vm.$set(_vm.data_local, "company", $$v)
-              },
-              expression: "data_local.company"
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.errors.has("company"),
-                  expression: "errors.has('company')"
-                }
-              ],
-              staticClass: "text-danger text-sm"
-            },
-            [_vm._v(_vm._s(_vm.errors.first("company")))]
           )
         ],
         1
@@ -2162,7 +2048,7 @@ __webpack_require__.r(__webpack_exports__);
   fetchUsers: function fetchUsers(_ref) {
     var commit = _ref.commit;
     var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id'); //  User Reward Card
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
 
     var requestOptions = {
       'type': 'teacher',
@@ -2171,7 +2057,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + user_id, requestOptions).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);
@@ -2183,7 +2069,7 @@ __webpack_require__.r(__webpack_exports__);
   fetchStudents: function fetchStudents(_ref2) {
     var commit = _ref2.commit;
     var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id'); //  User Reward Card
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
 
     var requestOptions = {
       'type': 'student',
@@ -2192,7 +2078,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + user_id, requestOptions).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);
@@ -2204,7 +2090,7 @@ __webpack_require__.r(__webpack_exports__);
   fetchParents: function fetchParents(_ref3) {
     var commit = _ref3.commit;
     var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id'); //  User Reward Card
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
 
     var requestOptions = {
       'type': 'parents',
@@ -2213,7 +2099,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + user_id, requestOptions).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);

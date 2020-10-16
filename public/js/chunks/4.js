@@ -467,7 +467,7 @@ __webpack_require__.r(__webpack_exports__);
   name: 'CellRendererLink',
   computed: {
     url: function url() {
-      // return '/apps/user/user-view/268'
+      //return '/apps/user/user-view/268'
       // Below line will be for actual product
       // Currently it's commented due to demo purpose - Above url is for demo purpose
       return "/apps/user/user-view/" + this.params.data.id;
