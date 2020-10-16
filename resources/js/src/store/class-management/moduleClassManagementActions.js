@@ -69,7 +69,7 @@ export default {
             axios.post(`/api/auth/edit-class-code`, code)
                 .then((response) => {
                     console.log("reee", response)
-                    if (response) {
+                    if (response.data.class) {
                         resolve(response)
                     } else {
                         reject(response.data.message)
