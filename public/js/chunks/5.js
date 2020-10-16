@@ -1528,68 +1528,6 @@ var render = function() {
         [
           _c(
             "vx-card",
-            { attrs: { title: "Sales Stats", subtitle: "Last 6 Months" } },
-            [
-              _c(
-                "template",
-                { slot: "actions" },
-                [
-                  _c("feather-icon", {
-                    attrs: {
-                      icon: "MoreVerticalIcon",
-                      svgClasses: "w-6 h-6 text-grey"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "flex" }, [
-                _c("span", { staticClass: "flex items-center" }, [
-                  _c("div", {
-                    staticClass: "h-3 w-3 rounded-full mr-1 bg-primary"
-                  }),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("Sales")])
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "flex items-center ml-4" }, [
-                  _c("div", {
-                    staticClass: "h-3 w-3 rounded-full mr-1 bg-success"
-                  }),
-                  _vm._v(" "),
-                  _c("span", [_vm._v("Visits")])
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { attrs: { slot: "no-body-bottom" }, slot: "no-body-bottom" },
-                [
-                  _c("vue-apex-charts", {
-                    attrs: {
-                      type: "radar",
-                      height: "385",
-                      options: _vm.analyticsData.statisticsRadar.chartOptions,
-                      series: _vm.salesRadar.series
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            2
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "vx-col w-full lg:w-1/3 mb-base" },
-        [
-          _c(
-            "vx-card",
             { attrs: { title: "Activity Timeline" } },
             [_c("vx-timeline", { attrs: { data: _vm.timelineData } })],
             1

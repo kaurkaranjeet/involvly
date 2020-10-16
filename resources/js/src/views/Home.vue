@@ -220,7 +220,7 @@
       </div>
 
       <!-- CARD 7: Sales Stats -->
-      <div class="vx-col w-full lg:w-1/3 mb-base">
+     <!--  <div class="vx-col w-full lg:w-1/3 mb-base">
         <vx-card title="Sales Stats" subtitle="Last 6 Months">
           <template slot="actions">
             <feather-icon icon="MoreVerticalIcon" svgClasses="w-6 h-6 text-grey"></feather-icon>
@@ -245,7 +245,7 @@
           </div>
         </vx-card>
       </div>
-
+ -->
       <!-- CARD 8: Activity Timeline -->
       <div class="vx-col w-full lg:w-1/3 mb-base">
         <vx-card title="Activity Timeline">
