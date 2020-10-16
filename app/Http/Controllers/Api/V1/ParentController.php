@@ -179,7 +179,6 @@ class ParentController extends Controller {
                     'task_name' => 'required',
                     'task_date' => 'required',
                     'task_time' => 'required',
-                    'task_description' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
