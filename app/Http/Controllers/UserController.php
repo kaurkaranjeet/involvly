@@ -24,7 +24,7 @@
                 return response()->json(['error' => 'could_not_create_token'], 500);
             }
 
-          $userData = User::where('email', '=', $request->input('email'))->whereIn('role_id', [5,1])->select('name AS displayName','email','id AS uid')->first();
+          $userData = User::where('email', '=', $request->input('email'))->whereIn('role_id', [5,1])->first();
             return response()->json(compact('accessToken','userData'));
         }
         
