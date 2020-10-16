@@ -108,6 +108,51 @@ const router = new Router({
                         rule: 'editor'
                     }
                 },
+                {
+                    path: '/apps/class/subject-add/:classId',
+                    name: 'app-subject-add',
+                    component: () =>
+                        import ('@/views/apps/class/subject-add/SubjectAdd.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Subject' },
+                            { title: 'Add', active: true }
+                        ],
+                        pageTitle: 'Subject Add',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/class/subject-view/:subjectId',
+                    name: 'app-subject-view',
+                    component: () =>
+                        import ('@/views/apps/class/subject-view/SubjectView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Subject' },
+                            { title: 'View', active: true }
+                        ],
+                        pageTitle: 'Subject View',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/class/subject-edit/:subjectId',
+                    name: 'app-subject-edit',
+                    component: () =>
+                        import ('@/views/apps/class/subject-edit/SubjectEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Subject' },
+                            { title: 'Edit', active: true }
+                        ],
+                        pageTitle: 'Subject Edit',
+                        rule: 'editor'
+                    }
+                },
                 //users menu path
                 {
                     path: '/apps/user/user-list',

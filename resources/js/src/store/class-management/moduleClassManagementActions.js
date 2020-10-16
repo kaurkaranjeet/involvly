@@ -10,16 +10,6 @@
 import axios from '@/axios.js'
 
 export default {
-    // addItem({ commit }, item) {
-    //   return new Promise((resolve, reject) => {
-    //     axios.post("/api/data-list/products/", {item: item})
-    //       .then((response) => {
-    //         commit('ADD_ITEM', Object.assign(item, {id: response.data.id}))
-    //         resolve(response)
-    //       })
-    //       .catch((error) => { reject(error) })
-    //   })
-    // },
     fetchClassCode({ commit }) {
         var x = localStorage.getItem('accessToken');
         var user_id = localStorage.getItem('user_id');
@@ -88,6 +78,75 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+    fetchSubjects({ commit }, classId) {
+        var x = localStorage.getItem('accessToken');
+        var user_id = localStorage.getItem('user_id');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'teacher',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-subjects/' + classId)
+                .then((response) => {
+                    console.log(response.data.subjects);
+                    commit('SET_SUBJECTS', response.data.subjects)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    saveSubject({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/save-subject`, code)
+                .then((response) => {
+                    if (response.data.subject) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
+        })
+    },
+    removeSubject({ commit }, id) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`/api/auth/delete-subject/${id}`)
+                .then((response) => {
+                    commit('REMOVE_SUBJECTS', id)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    fetchSubjectDetail(context, id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/auth/fetch-subject-detail/${id}`)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    editSubject({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/edit-subject`, code)
+                .then((response) => {
+                    if (response) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+
+
 
     fetchAllItems({ commit }) {
         return new Promise((resolve, reject) => {
