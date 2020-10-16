@@ -122,7 +122,7 @@ public function GetPostHomefeed(Request $request){
         $flight->post_id=(int) $request->post_id;
 
          $comments=  Comment::with('User')->withCount('replycomments')->with('replycomments')->where('id' , $flight->id)->first();
-         $comments->id=(int) $comments->id;
+         $comments->id=(int) $comments->comment_id;
 
         $this->pusher->trigger('comment-channel', 'add_comment', $comments);
 
