@@ -120,7 +120,9 @@ public function GetPostHomefeed(Request $request){
 
         $flight->user_id=(int) $request->user_id;
         $flight->post_id=(int) $request->post_id;
+
          $comments=  Comment::with('User')->withCount('replycomments')->with('replycomments')->where('id' , $flight->id)->first();
+         $comments->id=(int) $comments->id;
 
         $this->pusher->trigger('comment-channel', 'add_comment', $comments);
 
@@ -132,6 +134,7 @@ public function GetPostHomefeed(Request $request){
       ) THEN TRUE
       ELSE FALSE END)
       AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('id', $request->post_id)->orderBy('id', 'DESC')->first();
+
     $this->pusher->trigger('count-channel', 'comment_count', $posts);
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
