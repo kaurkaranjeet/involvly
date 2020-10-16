@@ -369,10 +369,10 @@ __webpack_require__.r(__webpack_exports__);
       However, we given fix to this issue. If you want more robust solution please contact them at gitHub
     ================================================================= */
 
-    if (this.$vs.rtl) {
-      var header = this.$refs.agGridTable.$el.querySelector('.ag-header-container');
-      header.style.left = "-".concat(String(Number(header.style.transform.slice(11, -3)) + 9), "px");
-    }
+    /*if (this.$vs.rtl) {
+      const header = this.$refs.agGridTable.$el.querySelector('.ag-header-container')
+      header.style.left = `-${  String(Number(header.style.transform.slice(11, -3)) + 9)  }px`
+    }*/
   },
   created: function created() {
     if (!_store_user_management_moduleUserManagement_js__WEBPACK_IMPORTED_MODULE_3__["default"].isRegistered) {

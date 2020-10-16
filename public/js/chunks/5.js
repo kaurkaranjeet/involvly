@@ -549,6 +549,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      styleObject: {
+        padding: "1.4rem"
+      },
       checkpointReward: {},
       subscribersGained: {},
       ordersRecevied: {},
@@ -643,6 +646,58 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {
       console.log(error);
     });
+  },
+  methods: {
+    Approveteacher: function Approveteacher(id, el) {
+      var _this2 = this;
+
+      var x = localStorage.getItem('accessToken'); //  User Reward Card
+
+      var requestOptions = {
+        headers: {
+          'Authorization': 'Bearer ' + x
+        }
+      };
+      this.$http.post("api/auth/approve_teacher/" + id, requestOptions).then(function (response) {
+        _this2.$vs.notify({
+          title: 'Approve',
+          text: 'Approved Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        });
+
+        location.reload(); // el.target.getElementsByClassName('tr-values').style.display='none';
+        // el.parentNode.style.display='none';
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    Rejectteacher: function Rejectteacher(id, el) {
+      var _this3 = this;
+
+      var x = localStorage.getItem('accessToken'); //  User Reward Card
+
+      var requestOptions = {
+        headers: {
+          'Authorization': 'Bearer ' + x
+        }
+      };
+      this.$http.post("api/auth/disapprove_teacher/" + id, requestOptions).then(function (response) {
+        _this3.$vs.notify({
+          title: 'Rejected',
+          text: 'Rejected Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        });
+
+        location.reload(); // el.target.getElementsByClassName('tr-values').style.display='none';
+        // el.parentNode.style.display='none';
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
   }
 });
 
@@ -1011,6 +1066,7 @@ var render = function() {
             "vx-card",
             {
               staticClass: "text-center bg-primary-gradient greet-user",
+              style: _vm.styleObject,
               attrs: { slot: "no-body" },
               slot: "no-body"
             },
@@ -1548,7 +1604,7 @@ var render = function() {
         "div",
         { staticClass: "vx-col w-full" },
         [
-          _c("vx-card", { attrs: { title: "Approve Teachers" } }, [
+          _c("vx-card", { attrs: { title: "Teachers Requests" } }, [
             _c(
               "div",
               {
@@ -1608,12 +1664,10 @@ var render = function() {
                                 _vm._v(" "),
                                 _c(
                                   "vs-td",
-                                  {
-                                    attrs: { data: data[indextr].created_date }
-                                  },
+                                  { attrs: { data: data[indextr].date } },
                                   [
                                     _c("span", [
-                                      _vm._v(_vm._s(data[indextr].created_at))
+                                      _vm._v(_vm._s(data[indextr].date))
                                     ])
                                   ]
                                 ),
@@ -1633,9 +1687,20 @@ var render = function() {
                                           "div",
                                           {},
                                           [
-                                            _c("vs-button", [
-                                              _vm._v(" Approve")
-                                            ])
+                                            _c(
+                                              "vs-button",
+                                              {
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.Approveteacher(
+                                                      data[indextr].id,
+                                                      $event
+                                                    )
+                                                  }
+                                                }
+                                              },
+                                              [_vm._v(" Approve")]
+                                            )
                                           ],
                                           1
                                         )
@@ -1661,7 +1726,17 @@ var render = function() {
                                           [
                                             _c(
                                               "vs-button",
-                                              { staticClass: "bg-danger" },
+                                              {
+                                                staticClass: "bg-danger",
+                                                on: {
+                                                  click: function($event) {
+                                                    return _vm.Rejectteacher(
+                                                      data[indextr].id,
+                                                      $event
+                                                    )
+                                                  }
+                                                }
+                                              },
                                               [_vm._v(" Reject")]
                                             )
                                           ],

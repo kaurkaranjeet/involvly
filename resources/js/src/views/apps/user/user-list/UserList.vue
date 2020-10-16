@@ -331,10 +331,10 @@ export default {
       Header is not aligned properly in RTL version of agGrid table.
       However, we given fix to this issue. If you want more robust solution please contact them at gitHub
     ================================================================= */
-    if (this.$vs.rtl) {
+    /*if (this.$vs.rtl) {
       const header = this.$refs.agGridTable.$el.querySelector('.ag-header-container')
       header.style.left = `-${  String(Number(header.style.transform.slice(11, -3)) + 9)  }px`
-    }
+    }*/
   },
   created () {
     if (!moduleUserManagement.isRegistered) {

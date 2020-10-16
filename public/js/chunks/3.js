@@ -3435,39 +3435,14 @@ var render = function(_h, _vm) {
         _vm._v(" "),
         _c("span", [_vm._v(_vm._s(new Date().getFullYear()) + " ")]),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            attrs: {
-              href: "https://1.envato.market/vuexy_admin",
-              target: "_blank",
-              rel: "nofollow"
-            }
-          },
-          [_vm._v("Pixinvent")]
-        ),
+        _c("a", { attrs: { href: "/", target: "_blank", rel: "nofollow" } }, [
+          _vm._v("Involvvely")
+        ]),
         _vm._v(" "),
         _c("span", { staticClass: "hidden sm:inline-block" }, [
           _vm._v(", All rights Reserved")
         ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "span",
-        { staticClass: "md:flex hidden items-center" },
-        [
-          _c("span", [_vm._v("Hand-crafted & Made with")]),
-          _vm._v(" "),
-          _c("feather-icon", {
-            staticClass: "ml-2",
-            attrs: {
-              icon: "HeartIcon",
-              svgClasses: "stroke-current text-danger w-6 h-6"
-            }
-          })
-        ],
-        1
-      )
+      ])
     ]
   )
 }
@@ -5362,7 +5337,7 @@ var render = function() {
       _c("v-nav-menu", {
         attrs: {
           navMenuItems: _vm.navMenuItems,
-          title: "Vuexy",
+          title: "Involvvely",
           parent: ".layout--main"
         }
       }),
@@ -5492,62 +5467,6 @@ var render = function() {
                                           }),
                                           _vm._v(" "),
                                           _c("span", [_vm._v("Profile")])
-                                        ],
-                                        1
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("vs-dropdown-item", [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass: "flex items-center",
-                                          on: {
-                                            click: function($event) {
-                                              _vm.$router
-                                                .push("/apps/todo")
-                                                .catch(function() {})
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("feather-icon", {
-                                            staticClass: "inline-block mr-2",
-                                            attrs: {
-                                              icon: "CheckSquareIcon",
-                                              svgClasses: "w-4 h-4"
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("span", [_vm._v("Tasks")])
-                                        ],
-                                        1
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("vs-dropdown-item", [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass: "flex items-center",
-                                          on: {
-                                            click: function($event) {
-                                              _vm.$router
-                                                .push("/apps/email")
-                                                .catch(function() {})
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("feather-icon", {
-                                            staticClass: "inline-block mr-2",
-                                            attrs: {
-                                              icon: "MailIcon",
-                                              svgClasses: "w-4 h-4"
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("span", [_vm._v("Inbox")])
                                         ],
                                         1
                                       )

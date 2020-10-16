@@ -13,7 +13,7 @@
 
     <v-nav-menu
       :navMenuItems = "navMenuItems"
-      title         = "Vuexy"
+      title         = "Involvvely"
       parent        = ".layout--main" />
 
     <div id="content-area" :class="[contentAreaClass, {'show-overlay': bodyOverlay}]">
@@ -76,7 +76,7 @@
                         <span>Profile</span>
                       </div>
                     </vs-dropdown-item>
-                    <vs-dropdown-item>
+                  <!--   <vs-dropdown-item>
                       <div @click="$router.push('/apps/todo').catch(() => {})" class="flex items-center">
                         <feather-icon icon="CheckSquareIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />
                         <span>Tasks</span>
@@ -87,7 +87,7 @@
                         <feather-icon icon="MailIcon" class="inline-block mr-2" svgClasses="w-4 h-4" />
                         <span>Inbox</span>
                       </div>
-                    </vs-dropdown-item>
+                    </vs-dropdown-item> -->
                   </vs-dropdown-menu>
 
                 </vs-dropdown>

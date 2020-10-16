@@ -20,12 +20,8 @@ __webpack_require__.r(__webpack_exports__);
   name: 'CellRendererActions',
   methods: {
     editRecord: function editRecord() {
-      this.$router.push("/apps/user/user-edit/".concat(268))["catch"](function () {});
-      /*
-              Below line will be for actual product
-              Currently it's commented due to demo purpose - Above url is for demo purpose
-               this.$router.push("/apps/user/user-edit/" + this.params.data.id).catch(() => {})
-            */
+      // this.$router.push(`/apps/user/user-edit/${  268}`).catch(() => {})
+      this.$router.push("/apps/user/user-edit/" + this.params.data.id)["catch"](function () {});
     },
     confirmDeleteRecord: function confirmDeleteRecord() {
       this.$vs.dialog({
@@ -416,7 +412,7 @@ __webpack_require__.r(__webpack_exports__);
   fetchUsers: function fetchUsers(_ref) {
     var commit = _ref.commit;
     var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id'); //  User Reward Card
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
 
     var requestOptions = {
       'type': 'teacher',
@@ -425,7 +421,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + user_id, requestOptions).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);
@@ -437,7 +433,7 @@ __webpack_require__.r(__webpack_exports__);
   fetchStudents: function fetchStudents(_ref2) {
     var commit = _ref2.commit;
     var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id'); //  User Reward Card
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
 
     var requestOptions = {
       'type': 'student',
@@ -446,7 +442,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + user_id, requestOptions).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);
@@ -458,7 +454,7 @@ __webpack_require__.r(__webpack_exports__);
   fetchParents: function fetchParents(_ref3) {
     var commit = _ref3.commit;
     var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id'); //  User Reward Card
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
 
     var requestOptions = {
       'type': 'parents',
@@ -467,7 +463,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + user_id, requestOptions).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);

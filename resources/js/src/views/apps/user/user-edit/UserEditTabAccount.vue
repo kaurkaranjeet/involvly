@@ -11,7 +11,7 @@
   <div id="user-edit-tab-info">
 
     <!-- Avatar Row -->
-    <div class="vx-row">
+    <div class="vx-row" style="display:none">
       <div class="vx-col w-full">
         <div class="flex items-start flex-col sm:flex-row">
           <img :src="data.avatar" class="mr-8 rounded h-24 w-24" />
@@ -33,33 +33,28 @@
     <!-- Content Row -->
     <div class="vx-row">
       <div class="vx-col md:w-1/2 w-full">
-        <vs-input class="w-full mt-4" label="Username" v-model="data_local.username" v-validate="'required|alpha_num'" name="username" />
-        <span class="text-danger text-sm"  v-show="errors.has('username')">{{ errors.first('username') }}</span>
+       
 
-        <vs-input class="w-full mt-4" label="Name" v-model="data_local.name" v-validate="'required|alpha_spaces'" name="name" />
-        <span class="text-danger text-sm"  v-show="errors.has('name')">{{ errors.first('name') }}</span>
+        <vs-input class="w-full mt-4" label="First name" v-model="data_local.first_name" v-validate="'required'" name="first_name" />
+        <span class="text-danger text-sm"  v-show="errors.has('first_name')">{{ errors.first('first_name') }}</span>
+         <vs-input class="w-full mt-4" label="Email" v-model="data_local.email" type="email" v-validate="'required|email'" name="email" readonly />
+        <span class="text-danger text-sm"  disabled v-show="errors.has('email')">{{ errors.first('email') }}</span>
 
-        <vs-input class="w-full mt-4" label="Email" v-model="data_local.email" type="email" v-validate="'required|email'" name="email" />
-        <span class="text-danger text-sm"  v-show="errors.has('email')">{{ errors.first('email') }}</span>
+       
       </div>
 
       <div class="vx-col md:w-1/2 w-full">
 
+ <vs-input class="w-full mt-4" label="last name" v-model="data_local.last_name" v-validate="'required'" name="last_name" />
+        <span class="text-danger text-sm"  v-show="errors.has('last_name')">{{ errors.first('last_name') }}</span>
         <div class="mt-4">
           <label class="vs-input--label">Status</label>
           <v-select v-model="status_local" :clearable="false" :options="statusOptions" v-validate="'required'" name="status" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
           <span class="text-danger text-sm"  v-show="errors.has('status')">{{ errors.first('status') }}</span>
         </div>
 
-        <div class="mt-4">
-          <label class="vs-input--label">Role</label>
-          <v-select v-model="role_local" :clearable="false" :options="roleOptions" v-validate="'required'" name="role" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
-          <span class="text-danger text-sm"  v-show="errors.has('role')">{{ errors.first('role') }}</span>
-        </div>
-
-        <vs-input class="w-full mt-4" label="Company" v-model="data_local.company" v-validate="'alpha_spaces'" name="company" />
-        <span class="text-danger text-sm"  v-show="errors.has('company')">{{ errors.first('company') }}</span>
-
+      
+       
       </div>
     </div>
 
@@ -125,9 +120,11 @@ export default {
 
       data_local: JSON.parse(JSON.stringify(this.data)),
 
+
+
       statusOptions: [
-        { label: 'ACTIVE',  value: 'ACTIVE' },
-        { label: 'INACTIVE',  value: 'INACTIVE' },
+        { label: 'ACTIVE',  value: '1' },
+        { label: 'INACTIVE',  value: '0' },
         
       ],
       roleOptions: [
@@ -139,8 +136,13 @@ export default {
   },
   computed: {
     status_local: {
+
       get () {
-        return { label: this.capitalize(this.data_local.status),  value: this.data_local.status  }
+          let status='INACTIVE';
+          if(this.data_local.status==1){
+            status='ACTIVE';
+          }
+        return { label: status,  value: this.data_local.status  }
       },
       set (obj) {
         this.data_local.status = obj.value
@@ -162,14 +164,27 @@ export default {
   },
   methods: {
     capitalize (str) {
-      return str.slice(0, 1).toUpperCase() + str.slice(1, str.length)
+    //  return str.slice(0, 1).toUpperCase() + str.slice(1, str.length)
     },
     save_changes () {
       /* eslint-disable */
       if (!this.validateForm) return
         var local= this.data_local;
         this.$store.dispatch('userManagement/UpdateUser',local)
-        .then(res => { this.user_data = res.data.data })
+        .then(res => { this.user_data = res.data.data
+
+this.$vs.notify({
+          title: 'Success',
+          text: 'Updated Successfully' ,
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        })
+//alert(res.data.data.role_id)
+if(res.data.data.role_id=='4'){
+     this.$router.push('/apps/user/user-list').catch(() => {})
+}
+         })
         .catch(err => {
           if (err.response.status === 404) {
             this.user_not_found = true

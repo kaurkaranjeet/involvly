@@ -12,7 +12,7 @@
     <div class="vx-row">
       <!-- CARD 1: CONGRATS -->
       <div class="vx-col w-full lg:w-1/2 mb-base">
-        <vx-card slot="no-body" class="text-center bg-primary-gradient greet-user">
+        <vx-card slot="no-body" class="text-center bg-primary-gradient greet-user" v-bind:style="styleObject" >
           <img
             src="@assets/images/elements/decore-left.png"
             class="decore-left"
@@ -257,7 +257,7 @@
     <div class="vx-row">
       <!-- CARD 9: DISPATCHED ORDERS -->
       <div class="vx-col w-full">
-        <vx-card title="Approve Teachers">
+        <vx-card title="Teachers Requests">
           <div slot="no-body" class="mt-4">
             <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
@@ -282,8 +282,8 @@
                   <vs-td :data="data[indextr].email">
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
-                  <vs-td :data="data[indextr].created_date">
-                    <span>{{data[indextr].created_at}}</span>
+                  <vs-td :data="data[indextr].date">
+                    <span>{{data[indextr].date}}</span>
                   </vs-td>
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
@@ -291,7 +291,7 @@
                       
                      <div class="">
                       
-             <vs-button> Approve</vs-button>
+             <vs-button @click="Approveteacher(data[indextr].id,$event)"> Approve</vs-button>
                      </div>
                    
                      
@@ -305,7 +305,7 @@
                       
                      <div class="bg-danger">
                       
-             <vs-button class="bg-danger"> Reject</vs-button>
+             <vs-button class="bg-danger" @click="Rejectteacher(data[indextr].id,$event)"> Reject</vs-button>
                      </div>
                    
                      
@@ -333,7 +333,13 @@ import VxTimeline from "@/components/timeline/VxTimeline";
 
 export default {
   data() {
+
+
     return {
+
+        styleObject: {
+      padding: "1.4rem"
+  },
       checkpointReward: {},
       subscribersGained: {},
       ordersRecevied: {},
@@ -465,6 +471,67 @@ export default {
       .catch(error => {
         console.log(error);
       });
+  },
+
+    methods: {
+       Approveteacher (id,el) {
+
+        var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+       this.$http
+      .post("api/auth/approve_teacher/"+id,requestOptions)
+      .then(response => {
+         this.$vs.notify({
+          title: 'Approve',
+          text: 'Approved Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        })
+         location.reload();
+
+        // el.target.getElementsByClassName('tr-values').style.display='none';
+// el.parentNode.style.display='none';
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    },
+
+
+     Rejectteacher (id,el) {
+
+        var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+       this.$http
+      .post("api/auth/disapprove_teacher/"+id,requestOptions)
+      .then(response => {
+         this.$vs.notify({
+          title: 'Rejected',
+          text: 'Rejected Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        })
+         location.reload();
+
+        // el.target.getElementsByClassName('tr-values').style.display='none';
+// el.parentNode.style.display='none';
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    }
   }
 };
 </script>
