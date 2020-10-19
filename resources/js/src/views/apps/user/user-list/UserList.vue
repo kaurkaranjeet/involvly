@@ -150,7 +150,7 @@ import moduleUserManagement from '@/store/user-management/moduleUserManagement.j
 import CellRendererLink from './cell-renderer/CellRendererLink.vue'
 import CellRendererStatus from './cell-renderer/CellRendererStatus.vue'
 import CellRendererVerified from './cell-renderer/CellRendererVerified.vue'
-import CellRendererActions from './cell-renderer/CellRendererActions.vue'
+import CellRendererActionsUsers from './cell-renderer/CellRendererActionsUsers.vue'
 
 
 export default {
@@ -162,7 +162,7 @@ export default {
     CellRendererLink,
     CellRendererStatus,
     CellRendererVerified,
-    CellRendererActions
+    CellRendererActionsUsers
   },
   data () {
     return {
@@ -235,7 +235,7 @@ export default {
        
       
         {
-          headerName: 'Status',
+          headerName: 'Assigned Classes',
           field: 'status',
           filter: true,
           width: 150,
@@ -246,7 +246,7 @@ export default {
           headerName: 'Actions',
           field: 'transactions',
           width: 150,
-          cellRendererFramework: 'CellRendererActions'
+          cellRendererFramework: 'CellRendererActionsUsers'
         }
       ],
 
@@ -255,7 +255,7 @@ export default {
         CellRendererLink,
         CellRendererStatus,
         CellRendererVerified,
-        CellRendererActions
+        CellRendererActionsUsers
       }
     }
   },
