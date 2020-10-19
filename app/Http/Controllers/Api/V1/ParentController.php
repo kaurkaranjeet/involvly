@@ -203,21 +203,20 @@ class ParentController extends Controller {
             $user_data_by = User::where('id', $request->task_assigned_by)->first();
             $user_data_to = User::where('id', $single)->first();
             //email notification 
-            // $user_details = array(
-            //     'name' => $user_data_to->name,
-            //     'email' => $user_data_to->email,
-            //     'task_creator' => $user_data_by->name
-            // );
-            // dd($user_details);
-            // Mail::send('email.assigned-task', $user_details, function ($message) use ($user_details) {
-            //     $message->to('bharti.lakhotra@digimantra.com', 'Task Assigned by '.$user_details['task_creator'])->subject('Assigned task');
-            // });
-               $data=array("name"=>$user_data_to->name,"email"=>$user_data_to->email,"task_creator" => $user_data_by->name);
-               Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
-               $m->from('involvvely@gmail.com','Involvvely');
-               $m->to($user_data_to->email);
-               $m->subject('Assigned Task');
-               }); 
+            $user_details = array(
+                'name' => $user_data_to->name,
+                'email' => $user_data_to->email,
+                'task_creator' => $user_data_by->name
+            );
+            Mail::send('email.assigned-task', $user_details, function ($message) use ($user_details) {
+                $message->to('bharti.lakhotra@digimantra.com', 'Task Assigned by '.$user_details['task_creator'])->subject('Assigned task');
+            });
+            //    $data=array("name"=>$user_data_to->name,"email"=>$user_data_to->email,"task_creator" => $user_data_by->name);
+            //    Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
+            //    $m->from('involvvely@gmail.com','Involvvely');
+            //    $m->to($user_data_to->email);
+            //    $m->subject('Assigned Task');
+            //    }); 
             }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
         }
