@@ -204,8 +204,7 @@ export default {
                     headerName: 'Subject Name',
                     field: 'subject_name',
                     filter: true,
-                    width: 210,
-                    cellRendererFramework: 'CellRendererLink'
+                    width: 210
                 },
               
 

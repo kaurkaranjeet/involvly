@@ -68,7 +68,7 @@ export default {
 
       AddClassSubjects({ commit }, code) {
         return new Promise((resolve, reject) => {
-            axios.post(`/api/auth/add_subject`, code)
+            axios.post(`/api/auth/add-subject`, code)
                 .then((response) => {
                     if (response.data.class) {
                         resolve(response)

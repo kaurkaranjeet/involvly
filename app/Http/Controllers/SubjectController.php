@@ -65,6 +65,24 @@ class SubjectController extends Controller {
       }
     }
 
+     public function AddSubject(Request $request)
+    {
+      $validator = Validator::make($request->all(), [
+        'subject_id' => 'required',
+        'class_id' => 'required',
+    ]);
+
+    if($validator->fails()){
+            return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
+    }
+  
+      $data = Subject::where('id',$request->subject_id)->update([
+        'class_id' => $request->class_id
+    ]);
+    return response()->json(compact('data'),200);
+      
+    }
+
     //delete subject
   public function deleteSubject($id)
   {
