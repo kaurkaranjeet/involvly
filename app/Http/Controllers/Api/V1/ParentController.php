@@ -218,6 +218,7 @@ class ParentController extends Controller {
                $m->to($user_data_to->email);
                $m->subject('Assigned Task');
                }); 
+               $arr = array("error"=>false, "message" =>'mail sent', "data" => $data);
             }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
         }
