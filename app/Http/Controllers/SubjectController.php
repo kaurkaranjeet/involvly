@@ -19,7 +19,25 @@ class SubjectController extends Controller {
     public function manageSubjects(Request $request , $id) {
         DB::enableQueryLog();
         $subjects = Subject::where('class_id', $id)->get();
-        if (isset($subjects) && count($subjects) > 0) {
+        if (!empty($subjects)) {
+            return response()->json(compact('subjects'), 200);
+        } else {
+            return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
+        }
+    }
+
+    public function manageSchoolSubjects(Request $request , $id) {
+        DB::enableQueryLog();
+        // if ($request->type == 'teacher') {
+        //     $users = User::where('role_id', 4)->where('status', 1)->with('role')->get();
+        // } else if ($request->type == 'students') {
+        //     $users = User::where('role_id', 2)->where('status', 1)->get();
+        // } else {
+        //     $users = User::where('role_id', 3)->where('status', 1)->get();
+        // }
+        //  print_r(DB::getQueryLog());die;
+        $subjects = Subject::where('school_id',$id)->get();
+        if (!empty($subjects)) {
             return response()->json(compact('subjects'), 200);
         } else {
             return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
