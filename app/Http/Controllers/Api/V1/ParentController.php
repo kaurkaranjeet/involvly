@@ -212,7 +212,15 @@ class ParentController extends Controller {
             // Mail::send('email.assigned-task', $user_details, function ($message) use ($user_details) {
             //     $message->to('bharti.lakhotra@digimantra.com', 'Task Assigned by '.$user_details['task_creator'])->subject('Assigned task');
             // });
-               $data=array('name'=>$user_data_to->name,'email'=>$user_data_to->email,'task_creator' => $user_data_by->name);
+               $data=array(
+                   'name'=>$user_data_to->name,
+                   'email'=>$user_data_to->email,
+                   'task_creator' => $user_data_by->name,
+                   'task_name' => $request->task_name,
+                   'task_date' => $request->task_date,
+                   'task_time' => $request->task_time,
+                   'task_description' => $request->task_description,
+                );
                Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
                $m->from('involvvely@gmail.com','Involvvely');
                $m->to($user_data_to->email);
