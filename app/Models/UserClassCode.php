@@ -16,7 +16,7 @@ class UserClassCode extends Model
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
-    public function Class()
+    public function AssignedClass()
     {
         return $this->belongsTo('App\Models\ClassCode', 'class_id', 'id');
     }
