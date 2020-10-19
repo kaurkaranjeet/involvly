@@ -66,7 +66,7 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $class = UserClassCode::with('Class')->where('user_id', $request->teacher_id)->get();
+            $class = UserClassCode::with('AssignedClass')->where('user_id', $request->teacher_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
