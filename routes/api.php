@@ -27,18 +27,22 @@ Route::prefix('auth')->group(function () {
   Route::get('user', 'UserController@getAuthenticatedUser');
   Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
   Route::get('requests/{id}', 'UserController@getRequest');
+  Route::get('student_requests/{id}', 'UserController@getStudentRequest');
+Route::get('parent_requests/{id}', 'UserController@getParentRequest');
+
   Route::post('approve_teacher/{id}', 'TeacherController@Approveteacher');
     Route::post('disapprove_teacher/{id}', 'TeacherController@DisApproveteacher');
     //classes
 
    
     Route::any('/manage-classes/{id}', ['as' => 'manage.classes', 'uses' => 'ClassController@manageClasses']);
+    Route::any('/list_of_subjects/{id}', ['as' => 'manage.list_of_subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
     Route::any('/save-class-code', ['as' => 'save.classes', 'uses' => 'ClassController@saveClassCode']);
     Route::any('/delete-class-code/{id}', ['as' => 'delete.classes', 'uses' => 'ClassController@deleteClassCode']);
     Route::any('/fetch-class-detail/{id}', ['as' => 'fetch.classes', 'uses' => 'ClassController@fetchClassCodeDetail']);
     Route::any('/edit-class-code', ['as' => 'edit.classes', 'uses' => 'ClassController@editClassCode']);
     //classes - subjects
-    Route::any('/manage-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSubjects']);
+    Route::any('/manage-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
     Route::any('/save-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSubject']);
     Route::any('/delete-subject/{id}', ['as' => 'delete.subjects', 'uses' => 'SubjectController@deleteSubject']);
     Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);

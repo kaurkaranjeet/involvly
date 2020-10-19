@@ -257,8 +257,11 @@
     <div class="vx-row">
       <!-- CARD 9: DISPATCHED ORDERS -->
       <div class="vx-col w-full">
-        <vx-card title="Teachers Requests">
+        <vx-card title="Requests">
           <div slot="no-body" class="mt-4">
+            <vs-tabs  class="tab-action-btn-fill-conatiner">
+      <vs-tab  label="Teachers">
+         <div class="tab-text">
             <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
@@ -318,6 +321,133 @@
               </template>
             </vs-table>
           </div>
+          </vs-tab>
+ <vs-tab  label="Students">
+         <div class="tab-text">
+            <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" ref="table" >
+              <template slot="thead">
+                <vs-th>Id</vs-th>
+                <vs-th>Name</vs-th>
+                <vs-th>Email</vs-th>                            
+                <vs-th>Registration Date</vs-th>
+                <vs-th>Approve</vs-th>  
+                <vs-th>Reject</vs-th>  
+              </template>
+
+              <template slot-scope="{data}">
+                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                  <vs-td :data="data[indextr].id">
+                    <span>#{{data[indextr].id}}</span>
+                  </vs-td>
+
+                    <vs-td :data="data[indextr].name">
+                    <span>{{data[indextr].name}}</span>
+                  </vs-td>
+
+                  <vs-td :data="data[indextr].email">
+                    <span>{{data[indextr].email}}</span>
+                  </vs-td>
+                  <vs-td :data="data[indextr].date">
+                    <span>{{data[indextr].date}}</span>
+                  </vs-td>
+                  <vs-td :data="data[indextr].status">
+                    <span class="flex items-center px-2 py-1 rounded">
+                    
+                      
+                     <div class="">
+                      
+             <vs-button @click="Approveteacher(data[indextr].id,$event)"> Approve</vs-button>
+                     </div>
+                   
+                     
+                     
+                    </span>
+                  </vs-td>
+
+                   <vs-td :data="data[indextr].status">
+                    <span class="flex items-center px-2 py-1 rounded">
+                    
+                      
+                     <div class="bg-danger">
+                      
+             <vs-button class="bg-danger" @click="Rejectteacher(data[indextr].id,$event)"> Reject</vs-button>
+                     </div>
+                   
+                     
+                     
+                    </span>
+                  </vs-td>
+                  
+              
+                </vs-tr>
+              </template>
+            </vs-table>
+          </div>
+          </vs-tab>
+           <vs-tab  label="Parents">
+         <div class="tab-text">
+            <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" >
+              <template slot="thead">
+                <vs-th>Id</vs-th>
+                <vs-th>Name</vs-th>
+                <vs-th>Email</vs-th>                            
+                <vs-th>Registration Date</vs-th>
+                <vs-th>Approve</vs-th>  
+                <vs-th>Reject</vs-th>  
+              </template>
+
+              <template slot-scope="{data}">
+                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                  <vs-td :data="data[indextr].id">
+                    <span>#{{data[indextr].id}}</span>
+                  </vs-td>
+
+                    <vs-td :data="data[indextr].name">
+                    <span>{{data[indextr].name}}</span>
+                  </vs-td>
+
+                  <vs-td :data="data[indextr].email">
+                    <span>{{data[indextr].email}}</span>
+                  </vs-td>
+                  <vs-td :data="data[indextr].date">
+                    <span>{{data[indextr].date}}</span>
+                  </vs-td>
+                  <vs-td :data="data[indextr].status">
+                    <span class="flex items-center px-2 py-1 rounded">
+                    
+                      
+                     <div class="">
+                      
+             <vs-button @click="Approveteacher(data[indextr].id,$event)"> Approve</vs-button>
+                     </div>
+                   
+                     
+                     
+                    </span>
+                  </vs-td>
+
+                   <vs-td :data="data[indextr].status">
+                    <span class="flex items-center px-2 py-1 rounded">
+                    
+                      
+                     <div class="bg-danger">
+                      
+             <vs-button class="bg-danger" @click="Rejectteacher(data[indextr].id,$event)"> Reject</vs-button>
+                     </div>
+                   
+                     
+                     
+                    </span>
+                  </vs-td>
+                  
+              
+                </vs-tr>
+              </template>
+            </vs-table>
+          </div>
+          </vs-tab>
+        </vs-tabs>
+          </div>
         </vx-card>
       </div>
     </div>
@@ -341,7 +471,7 @@ export default {
       padding: "1.4rem"
   },
       checkpointReward: {},
-      subscribersGained: {},
+      subscribersGained: {"teachers":0,"students":0},
       ordersRecevied: {},
       salesBarSession: {},
       supportTracker: {},
@@ -388,7 +518,9 @@ export default {
       ],
 
       analyticsData,
-      teacherRequests: []
+      teacherRequests: [],
+      studentRequests:[],
+      parentRequests:[]
     };
   },
   components: {
@@ -437,43 +569,62 @@ export default {
         console.log(error);
       });
 
-    // Orders - Statistics
-    this.$http
-      .get("/api/card/card-statistics/orders")
-      .then(response => {
-        this.ordersRecevied = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+ this.GetStuRequests(school_id);
+ this.GetRequests(school_id);
+   this.GetparentRequests(school_id);
 
-    // Sales bar - Analytics
-    this.$http
-      .get("/api/card/card-analytics/sales/bar")
-      .then(response => {
-        this.salesBarSession = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-   
-
-    
-
-
-    // Dispatched Orders
-    this.$http
-      .get("api/auth/requests/"+school_id,requestOptions)
-      .then(response => {
-        this.teacherRequests = response.data.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
   },
 
     methods: {
+ GetRequests (school_id) {
+ var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+       this.$http
+      .get("api/auth/requests/"+school_id,requestOptions)
+      .then(response => {
+        this.teacherRequests = response.data.data;
+      
+      })
+      .catch(error => {
+        console.log(error);
+      });
+},
+ GetStuRequests (school_id) {
+ var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+       this.$http
+      .get("api/auth/student_requests/"+school_id,requestOptions)
+      .then(response => {
+        this.studentRequests = response.data.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+},
+ GetparentRequests (school_id) {
+ var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+       this.$http
+      .get("api/auth/parent_requests/"+school_id,requestOptions)
+      .then(response => {
+        this.parentRequests = response.data.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
        Approveteacher (id,el) {
 
         var x = localStorage.getItem('accessToken');
@@ -492,7 +643,8 @@ export default {
           icon: 'icon-alert-circle',
           color: 'success'
         })
-         location.reload();
+        // location.reload();
+         this.GetStuRequests();
 
         // el.target.getElementsByClassName('tr-values').style.display='none';
 // el.parentNode.style.display='none';
