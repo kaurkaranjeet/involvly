@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
 use App\User;
-use App\Models\ClassCode;
+use App\Models\UserClassCode;
 use App\Models\Assignment;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
@@ -46,6 +46,7 @@ class AssignmentController extends Controller {
             {
                 foreach($request->file('assignments_attachement') as $key=>$file)
                 {
+                    dd($file);
                 $name=time().$key.'.'.$file->getClientOriginalExtension();    
                 $file->move(public_path().'/assignment_doc/', $name);      
                 $data[$key] = URL::to('/').'/assignment_doc/'.$name;  
@@ -57,16 +58,16 @@ class AssignmentController extends Controller {
         }
     }
 
-    //Get tasks
-    public function GetScheduleTask(Request $request) {
+    //Get ClassesByTeacher
+    public function GetClassesByTeacher(Request $request) {
         $validator = Validator::make($request->all(), [
-                    'user_id' => 'required|exists:users,id'
+                    'teacher_id' => 'required|exists:users,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::with('User')->where('task_assigned_by', $request->user_id)->get();
-            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
+            $class = UserClassCode::with('Class')->where('user_id', $request->teacher_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
     
