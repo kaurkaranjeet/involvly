@@ -4,10 +4,9 @@
     <title>Assigned task</title>
   </head>
   <body>
-    <h2>Hello {{ $name}}, </h2>
+    <h2>Hello </h2>
     <br/>
-   You have assigned a new task placed by {{ $task_creator }} .
-
+   You have assigned a new task 
 <br/>
    
 

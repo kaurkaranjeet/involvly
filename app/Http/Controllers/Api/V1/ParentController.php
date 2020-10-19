@@ -202,12 +202,12 @@ class ParentController extends Controller {
             //get data according to user id
             $user_data_by = User::where('id', $request->task_assigned_by)->first();
             $user_data_to = User::where('id', $single)->first();
-            //admin email notification 
-            $user_details = array(
-                'name' => $user_data_to->name,
-                'email' => $user_data_to->email,
-                'task_creator' => $user_data_by->name
-            );
+            //email notification 
+            // $user_details = array(
+            //     'name' => $user_data_to->name,
+            //     'email' => $user_data_to->email,
+            //     'task_creator' => $user_data_by->name
+            // );
             // dd($user_details);
             // Mail::send('email.assigned-task', $user_details, function ($message) use ($user_details) {
             //     $message->to('bharti.lakhotra@digimantra.com', 'Task Assigned by '.$user_details['task_creator'])->subject('Assigned task');
