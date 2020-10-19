@@ -42,7 +42,7 @@ Route::get('parent_requests/{id}', 'UserController@getParentRequest');
     Route::any('/fetch-class-detail/{id}', ['as' => 'fetch.classes', 'uses' => 'ClassController@fetchClassCodeDetail']);
     Route::any('/edit-class-code', ['as' => 'edit.classes', 'uses' => 'ClassController@editClassCode']);
     //classes - subjects
-    Route::any('/manage-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
+    Route::any('/manage-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSubjects']);
     Route::any('/save-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSubject']);
     Route::any('/delete-subject/{id}', ['as' => 'delete.subjects', 'uses' => 'SubjectController@deleteSubject']);
     Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);
