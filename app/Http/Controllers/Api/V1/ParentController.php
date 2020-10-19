@@ -212,7 +212,7 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::with('User')->where('task_assigned_by', $request->user_id)->get();
+            $tasks = ParentTask::with('User')->where('task_assigned_by', $request->user_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
