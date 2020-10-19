@@ -70,6 +70,22 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
+
+    //Get StudentsByClass
+    public function GetStudentsByClass(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'class_id' => 'required|exists:class_code,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $value = '2';
+            $class = UserClassCode::with(['User' => function($q) use($value){
+                $q->where('role_id', '=', $value);
+            }])->where('class_id', $request->class_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
+        }
+    }
     
     public function GetScheduleTaskDetail(Request $request){
         $validator = Validator::make($request->all(), [
