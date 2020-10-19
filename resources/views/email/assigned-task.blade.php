@@ -21,8 +21,8 @@
     You have assigned a new task placed by {{ $task_creator}} .
 
     <br/>
+	  Task Details as follow 
     <div class="container">
-	   <h6>Task Details as follow</h6>
 		<div>Name:  {{$task_name}}</div>		
 		<div>Description:  {{$task_description}}</div>
 		<div>Date:  {{$task_date}}</div>
