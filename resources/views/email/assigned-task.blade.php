@@ -21,24 +21,12 @@
     You have assigned a new task placed by {{ $task_creator}} .
 
     <br/>
-    <p>Task details  are as Follows , <br>
-                    <table class="ucenter">
-                        <tr>
-                            <td>Name</td>
-                            <td>Date</td>
-                            <td>Time</td>
-                            <td>Description</td>
-                        </tr>
-                        <tr>
-                            <td>{{$task_name}}</td>
-                            <td>{{$task_date}}</td>
-                            <td>{{$task_time}}</td>
-                            <td>{{$task_description}}</td>
-                        </tr>
-
-                    </table><br><br>
-                    <p>Thankyou!</p>
-   
-
+    <div class="container">
+	
+		<div>Name:  {{$task_name}}</div>		
+		<div>Description:  {{$task_description}}</div>
+		<div>Date:  {{$task_date}}</div>
+		<div>Time:  {{$task_time}}</div>
+	 </div>
   </body>
 </html>
