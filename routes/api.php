@@ -83,6 +83,7 @@ Route::prefix('v1')->group(function () {
     Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
+    Route::post('add_assignment', 'Api\V1\AssignmentController@AddAssignment');
 //    Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
         Route::post('delete_post', 'Api\V1\PostController@RemovePost');
