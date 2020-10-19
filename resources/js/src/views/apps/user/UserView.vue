@@ -57,10 +57,10 @@
                 <td class="font-semibold">Status</td>
                 <td>{{ user_data.status }}</td>
               </tr>
-              <tr>
+             <!--  <tr>
                 <td class="font-semibold">Role</td>
                 <td>{{ user_data.roles[0].name }}</td>
-              </tr>
+              </tr> -->
              <!--  <tr>
                 <td class="font-semibold">Company</td>
                 <td>{{ user_data.company }}</td>
