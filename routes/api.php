@@ -80,9 +80,12 @@ Route::prefix('v1')->group(function () {
 
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
+    //task
     Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
+    Route::post('delete_schedule_task', 'Api\V1\ParentController@RemoveScheduleTask');
+    //Assignment
     Route::post('add_assignment', 'Api\V1\AssignmentController@AddAssignment');
     Route::post('get_classes_by_teacher', 'Api\V1\AssignmentController@GetClassesByTeacher');
     Route::post('get_students_by_classes', 'Api\V1\AssignmentController@GetStudentsByClass');

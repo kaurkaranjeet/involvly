@@ -166,9 +166,7 @@ class ParentController extends Controller {
    } catch (\Exception $e) {
      return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
-
- 
-}
+   }
 
     // Create task 
     public function AddScheduleTask(Request $request) {
@@ -217,6 +215,7 @@ class ParentController extends Controller {
         }
     }
     
+    //task detail
     public function GetScheduleTaskDetail(Request $request){
         $validator = Validator::make($request->all(), [
                     'task_id' => 'required|exists:parent_tasks,id'
@@ -228,6 +227,26 @@ class ParentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+
+    //remove task
+    public function RemoveScheduleTask(Request $request){
+
+        $validator = Validator::make($request->all(), [
+         'task_id' => 'required|exists:parent_tasks,id',
+ 
+     ]);
+         if ($validator->fails()) {
+             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+         } else {
+               $delete= ParentTask::where('id',$request->task_id)->delete();
+               $delete_assigned =  ParentTaskAssigned::where('task_id',$request->task_id)->delete();                 
+             if ($delete) {
+                 return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+             } else {
+                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+             }
+         }
+     }
 
     public function GetRelatedParents(Request $request) {
         try {
