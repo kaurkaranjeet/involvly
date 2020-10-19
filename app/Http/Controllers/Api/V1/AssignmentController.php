@@ -29,7 +29,7 @@ class AssignmentController extends Controller {
                     'assignments_description' => 'required',
                     'assignments_special_instruction' => 'required',
                     'assignments_date' => 'required',
-                    'assignments_attachement' => 'required',
+                    // 'assignments_attachement' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -74,15 +74,19 @@ class AssignmentController extends Controller {
     //Get StudentsByClass
     public function GetStudentsByClass(Request $request) {
         $validator = Validator::make($request->all(), [
+                    'school_id' => 'required|exists:schools,id',
                     'class_id' => 'required|exists:class_code,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $value = '2';
-            $class = UserClassCode::with(['User' => function($q) use($value){
-                $q->where('role_id', '=', $value);
-            }])->where('class_id', $request->class_id)->get();
+            // $value = '2';
+            // $class = UserClassCode::with(['User' => function($q) use($value){
+            //     $q->where('role_id', '=', $value);
+            // }])->where('class_id', $request->class_id)->get();
+            $class = User::with('SchoolDetail:id,school_name')
+                            ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
+                            ->select('users.*')->where('role_id', 2)->where('user_class_code.class_id', $request->class_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
