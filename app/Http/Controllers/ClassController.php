@@ -15,17 +15,10 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 class ClassController extends Controller {
 
     //class code listing
-    public function manageClasses(Request $request) {
-        DB::enableQueryLog();
-        // if ($request->type == 'teacher') {
-        //     $users = User::where('role_id', 4)->where('status', 1)->with('role')->get();
-        // } else if ($request->type == 'students') {
-        //     $users = User::where('role_id', 2)->where('status', 1)->get();
-        // } else {
-        //     $users = User::where('role_id', 3)->where('status', 1)->get();
-        // }
-        //  print_r(DB::getQueryLog());die;
-        $classes = ClassCode::get();
+    public function manageClasses(Request $request,$id) {
+        
+   $school= User::find($id);
+        $classes = ClassCode::where('school_id',$school->school_id)->get();
         if (isset($classes) && count($classes) > 0) {
             return response()->json(compact('classes'), 200);
         } else {

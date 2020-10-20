@@ -115,6 +115,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
  // Store Module
@@ -228,19 +259,27 @@ __webpack_require__.r(__webpack_exports__);
         filter: true,
         width: 210,
         cellRendererFramework: 'CellRendererLink'
-      }, // {
+      }, {
+        headerName: 'Assign/Reassign',
+        field: 'assign/reassign',
+        filter: false,
+        width: 210 // cellRendererFramework: 'CellRendererLink'
+
+      } // {
       //   headerName: 'Status',
       //   field: 'approved',
       //   filter: true,
       //   width: 150,
       //   cellRendererFramework: 'CellRendererStatus'
       // },
-      {
-        headerName: 'Actions',
-        field: 'transactions',
-        width: 150,
-        cellRendererFramework: 'CellRendererActions'
-      }],
+
+      /*{
+          headerName: 'Actions',
+          field: 'transactions',
+          width: 150,
+          cellRendererFramework: 'CellRendererActions'
+      }*/
+      ],
       // Cell Renderer Components
       components: {
         CellRendererLink: _cell_renderer_CellRendererLink_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
@@ -707,7 +746,7 @@ var render = function() {
               attrs: { color: "primary", type: "filled" },
               on: { click: _vm.addSubjectdata }
             },
-            [_vm._v("Add Subjects")]
+            [_vm._v("Add New Subject")]
           )
         ],
         1
@@ -754,171 +793,253 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "vx-card p-6" },
-        [
+      _c("div", { staticClass: "vx-card p-6" }, [
+        _c(
+          "div",
+          { staticClass: "flex flex-wrap items-center" },
+          [
+            _c(
+              "div",
+              { staticClass: "flex-grow" },
+              [
+                _c(
+                  "vs-dropdown",
+                  {
+                    staticClass: "cursor-pointer",
+                    attrs: { "vs-trigger-click": "" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
+                      },
+                      [
+                        _c("span", { staticClass: "mr-2" }, [
+                          _vm._v(
+                            _vm._s(
+                              _vm.currentPage * _vm.paginationPageSize -
+                                (_vm.paginationPageSize - 1)
+                            ) +
+                              " - " +
+                              _vm._s(
+                                _vm.usersData.length -
+                                  _vm.currentPage * _vm.paginationPageSize >
+                                  0
+                                  ? _vm.currentPage * _vm.paginationPageSize
+                                  : _vm.usersData.length
+                              ) +
+                              " of " +
+                              _vm._s(_vm.usersData.length)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("feather-icon", {
+                          attrs: {
+                            icon: "ChevronDownIcon",
+                            svgClasses: "h-4 w-4"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "vs-dropdown-menu",
+                      [
+                        _c(
+                          "vs-dropdown-item",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.gridApi.paginationSetPageSize(10)
+                              }
+                            }
+                          },
+                          [_c("span", [_vm._v("10")])]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "vs-dropdown-item",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.gridApi.paginationSetPageSize(20)
+                              }
+                            }
+                          },
+                          [_c("span", [_vm._v("20")])]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "vs-dropdown-item",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.gridApi.paginationSetPageSize(25)
+                              }
+                            }
+                          },
+                          [_c("span", [_vm._v("25")])]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "vs-dropdown-item",
+                          {
+                            on: {
+                              click: function($event) {
+                                return _vm.gridApi.paginationSetPageSize(30)
+                              }
+                            }
+                          },
+                          [_c("span", [_vm._v("30")])]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("vs-input", {
+              staticClass:
+                "sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4",
+              attrs: { placeholder: "Search..." },
+              on: { input: _vm.updateSearchQuery },
+              model: {
+                value: _vm.searchQuery,
+                callback: function($$v) {
+                  _vm.searchQuery = $$v
+                },
+                expression: "searchQuery"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "vx-row" }, [
           _c(
             "div",
-            { staticClass: "flex flex-wrap items-center" },
+            { staticClass: "vx-col w-full" },
             [
-              _c(
-                "div",
-                { staticClass: "flex-grow" },
-                [
-                  _c(
-                    "vs-dropdown",
-                    {
-                      staticClass: "cursor-pointer",
-                      attrs: { "vs-trigger-click": "" }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
-                        },
-                        [
-                          _c("span", { staticClass: "mr-2" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm.currentPage * _vm.paginationPageSize -
-                                  (_vm.paginationPageSize - 1)
-                              ) +
-                                " - " +
-                                _vm._s(
-                                  _vm.usersData.length -
-                                    _vm.currentPage * _vm.paginationPageSize >
-                                    0
-                                    ? _vm.currentPage * _vm.paginationPageSize
-                                    : _vm.usersData.length
-                                ) +
-                                " of " +
-                                _vm._s(_vm.usersData.length)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("feather-icon", {
-                            attrs: {
-                              icon: "ChevronDownIcon",
-                              svgClasses: "h-4 w-4"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "vs-dropdown-menu",
-                        [
-                          _c(
-                            "vs-dropdown-item",
-                            {
-                              on: {
-                                click: function($event) {
-                                  return _vm.gridApi.paginationSetPageSize(10)
-                                }
-                              }
-                            },
-                            [_c("span", [_vm._v("10")])]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "vs-dropdown-item",
-                            {
-                              on: {
-                                click: function($event) {
-                                  return _vm.gridApi.paginationSetPageSize(20)
-                                }
-                              }
-                            },
-                            [_c("span", [_vm._v("20")])]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "vs-dropdown-item",
-                            {
-                              on: {
-                                click: function($event) {
-                                  return _vm.gridApi.paginationSetPageSize(25)
-                                }
-                              }
-                            },
-                            [_c("span", [_vm._v("25")])]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "vs-dropdown-item",
-                            {
-                              on: {
-                                click: function($event) {
-                                  return _vm.gridApi.paginationSetPageSize(30)
-                                }
-                              }
-                            },
-                            [_c("span", [_vm._v("30")])]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("vs-input", {
-                staticClass:
-                  "sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4",
-                attrs: { placeholder: "Search..." },
-                on: { input: _vm.updateSearchQuery },
-                model: {
-                  value: _vm.searchQuery,
-                  callback: function($$v) {
-                    _vm.searchQuery = $$v
+              _c("vx-card", { attrs: { title: "Subject Lists" } }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "mt-4",
+                    attrs: { slot: "no-body" },
+                    slot: "no-body"
                   },
-                  expression: "searchQuery"
-                }
-              })
+                  [
+                    _c(
+                      "vs-table",
+                      {
+                        staticClass: "table-dark-inverted",
+                        attrs: {
+                          "max-items": "5",
+                          pagination: "",
+                          data: _vm.usersData
+                        },
+                        scopedSlots: _vm._u([
+                          {
+                            key: "default",
+                            fn: function(ref) {
+                              var data = ref.data
+                              return _vm._l(data, function(tr, indextr) {
+                                return _c(
+                                  "vs-tr",
+                                  { key: indextr },
+                                  [
+                                    _c(
+                                      "vs-td",
+                                      { attrs: { data: data[indextr].id } },
+                                      [
+                                        _c("span", [
+                                          _vm._v("#" + _vm._s(data[indextr].id))
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "vs-td",
+                                      {
+                                        attrs: {
+                                          data: data[indextr].subject_name
+                                        }
+                                      },
+                                      [
+                                        _c("span", [
+                                          _vm._v(
+                                            _vm._s(data[indextr].subject_name)
+                                          )
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("vs-td", [
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "flex items-center px-2 py-1 rounded"
+                                        },
+                                        [
+                                          _c(
+                                            "vs-button",
+                                            {
+                                              on: {
+                                                click: function($event) {
+                                                  return _vm.AssignClass(
+                                                    _vm.$route.params.classId,
+                                                    $event
+                                                  )
+                                                }
+                                              }
+                                            },
+                                            [_vm._v(" Approve")]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                )
+                              })
+                            }
+                          }
+                        ])
+                      },
+                      [
+                        _c(
+                          "template",
+                          { slot: "thead" },
+                          [
+                            _c("vs-th", [_vm._v("Id")]),
+                            _vm._v(" "),
+                            _c("vs-th", [_vm._v("Name")]),
+                            _vm._v(" "),
+                            _c("vs-th", [_vm._v("Add/Remove")])
+                          ],
+                          1
+                        )
+                      ],
+                      2
+                    )
+                  ],
+                  1
+                )
+              ])
             ],
             1
-          ),
-          _vm._v(" "),
-          _c("ag-grid-vue", {
-            ref: "agGridTable",
-            staticClass: "ag-theme-material w-100 my-4 ag-grid-table",
-            attrs: {
-              components: _vm.components,
-              gridOptions: _vm.gridOptions,
-              columnDefs: _vm.columnDefs,
-              defaultColDef: _vm.defaultColDef,
-              rowData: _vm.usersData,
-              rowSelection: "multiple",
-              colResizeDefault: "shift",
-              animateRows: true,
-              floatingFilter: true,
-              pagination: true,
-              paginationPageSize: _vm.paginationPageSize,
-              suppressPaginationPanel: true,
-              enableRtl: _vm.$vs.rtl
-            }
-          }),
-          _vm._v(" "),
-          _c("vs-pagination", {
-            attrs: { total: _vm.totalPages, max: 7 },
-            model: {
-              value: _vm.currentPage,
-              callback: function($$v) {
-                _vm.currentPage = $$v
-              },
-              expression: "currentPage"
-            }
-          })
-        ],
-        1
-      )
+          )
+        ])
+      ])
     ],
     1
   )

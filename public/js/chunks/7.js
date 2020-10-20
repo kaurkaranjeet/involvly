@@ -541,6 +541,136 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -553,7 +683,10 @@ __webpack_require__.r(__webpack_exports__);
         padding: "1.4rem"
       },
       checkpointReward: {},
-      subscribersGained: {},
+      subscribersGained: {
+        "teachers": 0,
+        "students": 0
+      },
       ordersRecevied: {},
       salesBarSession: {},
       supportTracker: {},
@@ -591,7 +724,9 @@ __webpack_require__.r(__webpack_exports__);
         time: "28 days ago"
       }],
       analyticsData: _ui_elements_card_analyticsData_js__WEBPACK_IMPORTED_MODULE_2__["default"],
-      teacherRequests: []
+      teacherRequests: [],
+      studentRequests: [],
+      parentRequests: []
     };
   },
   components: {
@@ -627,28 +762,13 @@ __webpack_require__.r(__webpack_exports__);
       _this.subscribersGained = response.data;
     })["catch"](function (error) {
       console.log(error);
-    }); // Orders - Statistics
-
-    this.$http.get("/api/card/card-statistics/orders").then(function (response) {
-      _this.ordersRecevied = response.data;
-    })["catch"](function (error) {
-      console.log(error);
-    }); // Sales bar - Analytics
-
-    this.$http.get("/api/card/card-analytics/sales/bar").then(function (response) {
-      _this.salesBarSession = response.data;
-    })["catch"](function (error) {
-      console.log(error);
-    }); // Dispatched Orders
-
-    this.$http.get("api/auth/requests/" + school_id, requestOptions).then(function (response) {
-      _this.teacherRequests = response.data.data;
-    })["catch"](function (error) {
-      console.log(error);
     });
+    this.GetStuRequests(school_id);
+    this.GetRequests(school_id);
+    this.GetparentRequests(school_id);
   },
   methods: {
-    Approveteacher: function Approveteacher(id, el) {
+    GetRequests: function GetRequests(school_id) {
       var _this2 = this;
 
       var x = localStorage.getItem('accessToken'); //  User Reward Card
@@ -658,22 +778,13 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + x
         }
       };
-      this.$http.post("api/auth/approve_teacher/" + id, requestOptions).then(function (response) {
-        _this2.$vs.notify({
-          title: 'Approve',
-          text: 'Approved Successfully',
-          iconPack: 'feather',
-          icon: 'icon-alert-circle',
-          color: 'success'
-        });
-
-        location.reload(); // el.target.getElementsByClassName('tr-values').style.display='none';
-        // el.parentNode.style.display='none';
+      this.$http.get("api/auth/requests/" + school_id, requestOptions).then(function (response) {
+        _this2.teacherRequests = response.data.data;
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    Rejectteacher: function Rejectteacher(id, el) {
+    GetStuRequests: function GetStuRequests(school_id) {
       var _this3 = this;
 
       var x = localStorage.getItem('accessToken'); //  User Reward Card
@@ -683,8 +794,67 @@ __webpack_require__.r(__webpack_exports__);
           'Authorization': 'Bearer ' + x
         }
       };
+      this.$http.get("api/auth/student_requests/" + school_id, requestOptions).then(function (response) {
+        _this3.studentRequests = response.data.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    GetparentRequests: function GetparentRequests(school_id) {
+      var _this4 = this;
+
+      var x = localStorage.getItem('accessToken'); //  User Reward Card
+
+      var requestOptions = {
+        headers: {
+          'Authorization': 'Bearer ' + x
+        }
+      };
+      this.$http.get("api/auth/parent_requests/" + school_id, requestOptions).then(function (response) {
+        _this4.parentRequests = response.data.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    Approveteacher: function Approveteacher(id, el) {
+      var _this5 = this;
+
+      var x = localStorage.getItem('accessToken'); //  User Reward Card
+
+      var requestOptions = {
+        headers: {
+          'Authorization': 'Bearer ' + x
+        }
+      };
+      this.$http.post("api/auth/approve_teacher/" + id, requestOptions).then(function (response) {
+        _this5.$vs.notify({
+          title: 'Approve',
+          text: 'Approved Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        }); // location.reload();
+
+
+        _this5.GetStuRequests(); // el.target.getElementsByClassName('tr-values').style.display='none';
+        // el.parentNode.style.display='none';
+
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    Rejectteacher: function Rejectteacher(id, el) {
+      var _this6 = this;
+
+      var x = localStorage.getItem('accessToken'); //  User Reward Card
+
+      var requestOptions = {
+        headers: {
+          'Authorization': 'Bearer ' + x
+        }
+      };
       this.$http.post("api/auth/disapprove_teacher/" + id, requestOptions).then(function (response) {
-        _this3.$vs.notify({
+        _this6.$vs.notify({
           title: 'Rejected',
           text: 'Rejected Successfully',
           iconPack: 'feather',
@@ -1542,7 +1712,7 @@ var render = function() {
         "div",
         { staticClass: "vx-col w-full" },
         [
-          _c("vx-card", { attrs: { title: "Teachers Requests" } }, [
+          _c("vx-card", { attrs: { title: "Requests" } }, [
             _c(
               "div",
               {
@@ -1552,167 +1722,647 @@ var render = function() {
               },
               [
                 _c(
-                  "vs-table",
-                  {
-                    staticClass: "table-dark-inverted",
-                    attrs: {
-                      "max-items": "5",
-                      pagination: "",
-                      data: _vm.teacherRequests
-                    },
-                    scopedSlots: _vm._u([
-                      {
-                        key: "default",
-                        fn: function(ref) {
-                          var data = ref.data
-                          return _vm._l(data, function(tr, indextr) {
-                            return _c(
-                              "vs-tr",
-                              { key: indextr },
-                              [
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].id } },
-                                  [
-                                    _c("span", [
-                                      _vm._v("#" + _vm._s(data[indextr].id))
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].name } },
-                                  [
-                                    _c("span", [
-                                      _vm._v(_vm._s(data[indextr].name))
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].email } },
-                                  [
-                                    _c("span", [
-                                      _vm._v(_vm._s(data[indextr].email))
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].date } },
-                                  [
-                                    _c("span", [
-                                      _vm._v(_vm._s(data[indextr].date))
-                                    ])
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].status } },
-                                  [
-                                    _c(
-                                      "span",
-                                      {
-                                        staticClass:
-                                          "flex items-center px-2 py-1 rounded"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {},
-                                          [
-                                            _c(
-                                              "vs-button",
-                                              {
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.Approveteacher(
-                                                      data[indextr].id,
-                                                      $event
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v(" Approve")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ]
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-td",
-                                  { attrs: { data: data[indextr].status } },
-                                  [
-                                    _c(
-                                      "span",
-                                      {
-                                        staticClass:
-                                          "flex items-center px-2 py-1 rounded"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          { staticClass: "bg-danger" },
-                                          [
-                                            _c(
-                                              "vs-button",
-                                              {
-                                                staticClass: "bg-danger",
-                                                on: {
-                                                  click: function($event) {
-                                                    return _vm.Rejectteacher(
-                                                      data[indextr].id,
-                                                      $event
-                                                    )
-                                                  }
-                                                }
-                                              },
-                                              [_vm._v(" Reject")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      ]
-                                    )
-                                  ]
-                                )
-                              ],
-                              1
-                            )
-                          })
-                        }
-                      }
-                    ])
-                  },
+                  "vs-tabs",
+                  { staticClass: "tab-action-btn-fill-conatiner" },
                   [
-                    _c(
-                      "template",
-                      { slot: "thead" },
-                      [
-                        _c("vs-th", [_vm._v("Id")]),
-                        _vm._v(" "),
-                        _c("vs-th", [_vm._v("Name")]),
-                        _vm._v(" "),
-                        _c("vs-th", [_vm._v("Email")]),
-                        _vm._v(" "),
-                        _c("vs-th", [_vm._v("Registration Date")]),
-                        _vm._v(" "),
-                        _c("vs-th", [_vm._v("Approve")]),
-                        _vm._v(" "),
-                        _c("vs-th", [_vm._v("Reject")])
-                      ],
-                      1
-                    )
+                    _c("vs-tab", { attrs: { label: "Teachers" } }, [
+                      _c(
+                        "div",
+                        { staticClass: "tab-text" },
+                        [
+                          _c(
+                            "vs-table",
+                            {
+                              staticClass: "table-dark-inverted",
+                              attrs: {
+                                "max-items": "5",
+                                pagination: "",
+                                data: _vm.teacherRequests
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "default",
+                                  fn: function(ref) {
+                                    var data = ref.data
+                                    return _vm._l(data, function(tr, indextr) {
+                                      return _c(
+                                        "vs-tr",
+                                        { key: indextr },
+                                        [
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: { data: data[indextr].id }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  "#" + _vm._s(data[indextr].id)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].name
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].name)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].email
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].email)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].date
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].date)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].status
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "flex items-center px-2 py-1 rounded"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {},
+                                                    [
+                                                      _c(
+                                                        "vs-button",
+                                                        {
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.Approveteacher(
+                                                                data[indextr]
+                                                                  .id,
+                                                                $event
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v(" Approve")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].status
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "flex items-center px-2 py-1 rounded"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass: "bg-danger"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "vs-button",
+                                                        {
+                                                          staticClass:
+                                                            "bg-danger",
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.Rejectteacher(
+                                                                data[indextr]
+                                                                  .id,
+                                                                $event
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v(" Reject")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    })
+                                  }
+                                }
+                              ])
+                            },
+                            [
+                              _c(
+                                "template",
+                                { slot: "thead" },
+                                [
+                                  _c("vs-th", [_vm._v("Id")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Name")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Email")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Registration Date")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Approve")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Reject")])
+                                ],
+                                1
+                              )
+                            ],
+                            2
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("vs-tab", { attrs: { label: "Students" } }, [
+                      _c(
+                        "div",
+                        { staticClass: "tab-text" },
+                        [
+                          _c(
+                            "vs-table",
+                            {
+                              ref: "table",
+                              staticClass: "table-dark-inverted",
+                              attrs: {
+                                "max-items": "5",
+                                pagination: "",
+                                data: _vm.studentRequests
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "default",
+                                  fn: function(ref) {
+                                    var data = ref.data
+                                    return _vm._l(data, function(tr, indextr) {
+                                      return _c(
+                                        "vs-tr",
+                                        { key: indextr },
+                                        [
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: { data: data[indextr].id }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  "#" + _vm._s(data[indextr].id)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].name
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].name)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].email
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].email)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].date
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].date)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].status
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "flex items-center px-2 py-1 rounded"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {},
+                                                    [
+                                                      _c(
+                                                        "vs-button",
+                                                        {
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.Approveteacher(
+                                                                data[indextr]
+                                                                  .id,
+                                                                $event
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v(" Approve")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].status
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "flex items-center px-2 py-1 rounded"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass: "bg-danger"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "vs-button",
+                                                        {
+                                                          staticClass:
+                                                            "bg-danger",
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.Rejectteacher(
+                                                                data[indextr]
+                                                                  .id,
+                                                                $event
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v(" Reject")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    })
+                                  }
+                                }
+                              ])
+                            },
+                            [
+                              _c(
+                                "template",
+                                { slot: "thead" },
+                                [
+                                  _c("vs-th", [_vm._v("Id")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Name")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Email")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Registration Date")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Approve")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Reject")])
+                                ],
+                                1
+                              )
+                            ],
+                            2
+                          )
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("vs-tab", { attrs: { label: "Parents" } }, [
+                      _c(
+                        "div",
+                        { staticClass: "tab-text" },
+                        [
+                          _c(
+                            "vs-table",
+                            {
+                              staticClass: "table-dark-inverted",
+                              attrs: {
+                                "max-items": "5",
+                                pagination: "",
+                                data: _vm.studentRequests
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "default",
+                                  fn: function(ref) {
+                                    var data = ref.data
+                                    return _vm._l(data, function(tr, indextr) {
+                                      return _c(
+                                        "vs-tr",
+                                        { key: indextr },
+                                        [
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: { data: data[indextr].id }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  "#" + _vm._s(data[indextr].id)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].name
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].name)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].email
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].email)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].date
+                                              }
+                                            },
+                                            [
+                                              _c("span", [
+                                                _vm._v(
+                                                  _vm._s(data[indextr].date)
+                                                )
+                                              ])
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].status
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "flex items-center px-2 py-1 rounded"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {},
+                                                    [
+                                                      _c(
+                                                        "vs-button",
+                                                        {
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.Approveteacher(
+                                                                data[indextr]
+                                                                  .id,
+                                                                $event
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v(" Approve")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "vs-td",
+                                            {
+                                              attrs: {
+                                                data: data[indextr].status
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "flex items-center px-2 py-1 rounded"
+                                                },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass: "bg-danger"
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "vs-button",
+                                                        {
+                                                          staticClass:
+                                                            "bg-danger",
+                                                          on: {
+                                                            click: function(
+                                                              $event
+                                                            ) {
+                                                              return _vm.Rejectteacher(
+                                                                data[indextr]
+                                                                  .id,
+                                                                $event
+                                                              )
+                                                            }
+                                                          }
+                                                        },
+                                                        [_vm._v(" Reject")]
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    })
+                                  }
+                                }
+                              ])
+                            },
+                            [
+                              _c(
+                                "template",
+                                { slot: "thead" },
+                                [
+                                  _c("vs-th", [_vm._v("Id")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Name")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Email")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Registration Date")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Approve")]),
+                                  _vm._v(" "),
+                                  _c("vs-th", [_vm._v("Reject")])
+                                ],
+                                1
+                              )
+                            ],
+                            2
+                          )
+                        ],
+                        1
+                      )
+                    ])
                   ],
-                  2
+                  1
                 )
               ],
               1
