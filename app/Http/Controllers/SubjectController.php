@@ -6,6 +6,7 @@ use App\User;
 use App\Models\Role;
 use App\Models\ClassCode;
 use App\Models\Subject;
+use App\Models\ClassSubject;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,7 @@ class SubjectController extends Controller {
     //subject listing
     public function manageSubjects(Request $request , $id) {
         DB::enableQueryLog();
-        $subjects = Subject::where('class_id', $id)->get();
+        $subjects = Subject::join('class_code_subject', 'class_code_subject.subject_id', '=', 'subjects.id')->where('class_code_id', $id)->get();
         if (!empty($subjects)) {
             return response()->json(compact('subjects'), 200);
         } else {
@@ -43,6 +44,24 @@ class SubjectController extends Controller {
             return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
         }
     }
+      public function RemoveSubject(Request $request)
+    {
+      $validator = Validator::make($request->all(), [
+        'subject_id' => 'required',
+        'class_id' => 'required',
+    ]);
+
+    if($validator->fails()){
+            return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
+    }
+  
+      /*$data = Subject::where('id',$request->subject_id)->update([
+        'class_id' => 
+    ]);*/
+    return response()->json(compact('data'),200);
+      
+    }
+
 
     // Add subject
     public function saveSubject(Request $request)

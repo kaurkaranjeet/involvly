@@ -13,12 +13,12 @@ class CreateClassSubjects extends Migration
      */
     public function up()
     {
-        Schema::create('class_subjects', function (Blueprint $table) {
+        Schema::create('class_code_subject', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('class_id');
-            $table->foreign('class_id')->references('id')->on('class_code')->onDelete('cascade')->nullable(); 
+            $table->unsignedBigInteger('class_code_id');
+            $table->foreign('class_code_id')->references('id')->on('class_code')->onDelete('cascade')->nullable(); 
             $table->unsignedBigInteger('subject_id');
-            $table->foreign('subject_id')->references('id')->on('class_code')->onDelete('cascade')->nullable(); 
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade')->nullable(); 
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateClassSubjects extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_subjects');
+        Schema::dropIfExists('class_code_subject');
     }
 }
