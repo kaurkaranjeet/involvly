@@ -75647,25 +75647,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         rule: 'editor'
       }
     }, {
-      path: '/apps/class/subject-add/:classId',
-      name: 'app-subject-add',
-      component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/class/subject-add/SubjectAdd.vue"));
-      },
-      meta: {
-        breadcrumb: [{
-          title: 'Home',
-          url: '/'
-        }, {
-          title: 'Subject'
-        }, {
-          title: 'Add',
-          active: true
-        }],
-        pageTitle: 'Subject Add',
-        rule: 'editor'
-      }
-    }, {
       path: '/apps/class/subject-view/:subjectId',
       name: 'app-subject-view',
       component: function component() {
@@ -75705,26 +75686,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         rule: 'editor'
       }
     }, //subjects menu path
-    {
-      path: '/apps/subject/subject-list',
-      name: 'app-subject-list',
-      component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-list/SubjectList.vue */ "./resources/js/src/views/apps/subject/subject-list/SubjectList.vue"));
-      },
-      meta: {
-        breadcrumb: [{
-          title: 'Home',
-          url: '/'
-        }, {
-          title: 'Subject'
-        }, {
-          title: 'List',
-          active: true
-        }],
-        pageTitle: 'Subjects List',
-        rule: 'editor'
-      }
-    }, {
+    , {
       path: '/apps/subject/subject-add/',
       name: 'app-subject-add',
       component: function component() {
@@ -75762,26 +75724,6 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         pageTitle: 'Subject View',
         rule: 'editor'
       }
-    }, {
-      path: '/apps/subject/subject-edit/:subjectId',
-      name: 'app-subject-edit',
-      component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(24)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
-      },
-      meta: {
-        breadcrumb: [{
-          title: 'Home',
-          url: '/'
-        }, {
-          title: 'Subjects',
-          url: '/apps/subject/subject-list'
-        }, {
-          title: 'Edit',
-          active: true
-        }],
-        pageTitle: 'Subject Edit',
-        rule: 'editor'
-      }
     }, //subjects menu path
     {
       path: '/apps/subject/subject-list',
@@ -75803,47 +75745,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         pageTitle: 'Subjects List',
         rule: 'editor'
       }
-    }, {
-      path: '/apps/subject/subject-add/',
-      name: 'app-subject-add',
-      component: function component() {
-        return __webpack_require__.e(/*! import() */ 27).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/subject/subject-add/SubjectAdd.vue"));
-      },
-      meta: {
-        breadcrumb: [{
-          title: 'Home',
-          url: '/'
-        }, {
-          title: 'Subjects',
-          url: '/apps/subject/subject-list'
-        }, {
-          title: 'Add',
-          active: true
-        }],
-        pageTitle: 'Subject Add',
-        rule: 'editor'
-      }
-    }, {
-      path: '/apps/subject/subject-view/:subjectId',
-      name: 'app-subject-view',
-      component: function component() {
-        return __webpack_require__.e(/*! import() */ 28).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/subject/subject-view/SubjectView.vue"));
-      },
-      meta: {
-        breadcrumb: [{
-          title: 'Home',
-          url: '/'
-        }, {
-          title: 'Subjects',
-          url: '/apps/subject/subject-list'
-        }, {
-          title: 'View',
-          active: true
-        }],
-        pageTitle: 'Subject View',
-        rule: 'editor'
-      }
-    }, {
+    },
+     {
       path: '/apps/subject/subject-edit/:subjectId',
       name: 'app-subject-edit',
       component: function component() {
