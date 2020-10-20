@@ -277,11 +277,11 @@ __webpack_require__.r(__webpack_exports__);
         filter: true,
         width: 225
       }, {
-        headerName: 'Status',
-        field: 'status',
+        headerName: 'Classes',
+        field: 'class_codes',
         filter: true,
-        width: 150,
-        cellRendererFramework: 'CellRendererStatus'
+        width: 150 // cellRendererFramework: 'CellRendererStatus'
+
       }, {
         headerName: 'Actions',
         field: 'transactions',
