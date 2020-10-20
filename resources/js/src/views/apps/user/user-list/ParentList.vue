@@ -235,11 +235,11 @@ export default {
        
       
         {
-          headerName: 'Status',
-          field: 'status',
+          headerName: 'Associated child',
+          field: 'associated_child',
           filter: true,
           width: 150,
-          cellRendererFramework: 'CellRendererStatus'
+          //cellRendererFramework: 'CellRendererStatus'
         },
         
         {

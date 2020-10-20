@@ -50,8 +50,124 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   data: function data() {
     return {
+
+      // Filter Options
+      roleFilter: {
+        label: 'All',
+        value: 'all'
+      },
+      roleOptions: [{
+        label: 'All',
+        value: 'all'
+      }, {
+        label: 'Admin',
+        value: 'admin'
+      }, {
+        label: 'User',
+        value: 'user'
+      }, {
+        label: 'Staff',
+        value: 'staff'
+      }],
+      statusFilter: {
+        label: 'All',
+        value: 'all'
+      },
+      statusOptions: [{
+        label: 'All',
+        value: 'all'
+      }, {
+        label: 'Active',
+        value: 'active'
+      }, {
+        label: 'Deactivated',
+        value: 'deactivated'
+      }, {
+        label: 'Blocked',
+        value: 'blocked'
+      }],
+      isVerifiedFilter: {
+        label: 'All',
+        value: 'all'
+      },
+      isVerifiedOptions: [{
+        label: 'All',
+        value: 'all'
+      }, {
+        label: 'Yes',
+        value: 'yes'
+      }, {
+        label: 'No',
+        value: 'no'
+      }],
+      departmentFilter: {
+        label: 'All',
+        value: 'all'
+      },
+      departmentOptions: [{
+        label: 'All',
+        value: 'all'
+      }, {
+        label: 'Sales',
+        value: 'sales'
+      }, {
+        label: 'Development',
+        value: 'development'
+      }, {
+        label: 'Management',
+        value: 'management'
+      }],
+      searchQuery: '',
+      // AgGrid
+      gridApi: null,
+      gridOptions: {},
+      defaultColDef: {
+        sortable: true,
+        resizable: true,
+        suppressMenu: true
+      },
+      columnDefs: [{
+        headerName: 'ID',
+        field: 'id',
+        width: 125,
+        filter: true,
+        checkboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+        headerCheckboxSelection: true
+      }, {
+        headerName: 'Name',
+        field: 'name',
+        filter: true,
+        width: 210,
+        cellRendererFramework: 'CellRendererLink'
+      }, {
+        headerName: 'Email',
+        field: 'email',
+        filter: true,
+        width: 225
+      }, {
+        headerName: 'Associated child',
+        field: 'associated_child',
+        filter: true,
+        width: 150 //cellRendererFramework: 'CellRendererStatus'
+
+      }, {
+        headerName: 'Actions',
+        field: 'transactions',
+        width: 150,
+        cellRendererFramework: 'CellRendererActionsUsers'
+      }],
+      // Cell Renderer Components
+      components: {
+        CellRendererLink: _cell_renderer_CellRendererLink_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+        CellRendererStatus: _cell_renderer_CellRendererStatus_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+        CellRendererVerified: _cell_renderer_CellRendererVerified_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+        CellRendererActionsUsers: _cell_renderer_CellRendererActionsUsers_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+      }
+
       subject_name: "",
       school_id: ""
+
     };
   },
   computed: {
