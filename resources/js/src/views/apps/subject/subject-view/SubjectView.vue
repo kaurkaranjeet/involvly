@@ -14,28 +14,13 @@
     <vs-input
       v-validate="'required'"
       data-vv-validate-on="blur"
-      label-placeholder="Class Name"
-      name="Class Name"
-      v-model="class_name"
+      label-placeholder="Subject Name"
+      name="Subject Name"
+      v-model="subject_name"
       class="w-full"
       readonly
     />
-    <span class="text-danger text-xs">{{ errors.first("Class Name") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vs-input
-      v-validate="'required'"
-      data-vv-validate-on="blur"
-      label-placeholder="Class Code"
-      name="Class Code"
-      placeholder="Class Code"
-      v-model="class_code"
-      class="w-full"
-      readonly
-    />
-    <span class="text-danger text-xs">{{ errors.first("Class Code") }}</span>
+    <span class="text-danger text-xs">{{ errors.first("Subject Name") }}</span>
     </div>
   </div>
   </vx-card>
@@ -44,15 +29,14 @@
 
 <script>
 // Store Module
-import moduleClassManagement from '@/store/class-management/moduleClassManagement.js'
+import moduleSubjectManagement from '@/store/subject-management/moduleSubjectManagement.js'
 
 export default {
   components: {
   },
   data () {
     return {
-      class_name: "",
-      class_code: "",
+      subject_name: "",
       activeTab: 0
     }
   },
@@ -62,30 +46,25 @@ export default {
     }
   },
   methods: {
-    fetch_Class_data (classId) {
-      this.$store.dispatch('classManagement/fetchClassCodeDetail', classId)
+    fetch_subject_data (subjectId) {
+      this.$store.dispatch('subjectManagement/fetchSchoolSubjectDetail', subjectId)
         .then(res => { 
-          this.class_data = res.data.class
-          console.log(this.class_data)
-          this.class_name = this.class_data.class_name;
-          this.class_code = this.class_data.class_code;
+          this.subject_data = res.data.subject
+          console.log(this.subject_data)
+          this.subject_name = this.subject_data.subject_name;
          })
         .catch(err => {
-          if (err.response.status === 404) {
-            this.class_not_found = true
-            return
-          }
           console.error(err) 
         })
     }
   },
   created () {
     // Register Module UserManagement Module
-    if (!moduleClassManagement.isRegistered) {
-      this.$store.registerModule('classManagement', moduleClassManagement)
-      moduleClassManagement.isRegistered = true
+    if (!moduleSubjectManagement.isRegistered) {
+      this.$store.registerModule('SubjectManagement', moduleSubjectManagement)
+      moduleSubjectManagement.isRegistered = true
     }
-    this.fetch_Class_data(this.$route.params.classId)
+    this.fetch_subject_data(localStorage.getItem('school_id'))
   }
 }
 
