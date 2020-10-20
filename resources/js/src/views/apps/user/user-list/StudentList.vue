@@ -235,11 +235,11 @@ export default {
        
       
         {
-          headerName: 'Status',
-          field: 'status',
+          headerName: 'Classes',
+          field: 'class_codes',
           filter: true,
           width: 150,
-          cellRendererFramework: 'CellRendererStatus'
+         // cellRendererFramework: 'CellRendererStatus'
         },
         
         {
