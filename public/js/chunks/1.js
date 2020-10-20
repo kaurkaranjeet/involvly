@@ -44889,7 +44889,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /**
-  * vue-class-component v7.2.5
+  * vue-class-component v7.2.3
   * (c) 2015-present Evan You
   * @license MIT
   */
@@ -45033,15 +45033,17 @@ function collectDataFromConstructor(vm, Component) {
     }
 
     keys.forEach(function (key) {
-      Object.defineProperty(_this, key, {
-        get: function get() {
-          return vm[key];
-        },
-        set: function set(value) {
-          vm[key] = value;
-        },
-        configurable: true
-      });
+      if (key.charAt(0) !== '_') {
+        Object.defineProperty(_this, key, {
+          get: function get() {
+            return vm[key];
+          },
+          set: function set(value) {
+            vm[key] = value;
+          },
+          configurable: true
+        });
+      }
     });
   }; // should be acquired class property values
 

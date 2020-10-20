@@ -238,7 +238,7 @@ export default {
           headerName: 'Associated child',
           field: 'associated_child',
           filter: true,
-          width: 150,
+          width: 225,
           //cellRendererFramework: 'CellRendererStatus'
         },
         
