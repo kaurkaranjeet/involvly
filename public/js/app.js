@@ -75675,7 +75675,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Home',
           url: '/'
         }, {
-          title: 'Subject'
+          title: 'Subjects',
+          url: '/apps/subject/subject-list'
         }, {
           title: 'View',
           active: true
@@ -75771,7 +75772,89 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Home',
           url: '/'
         }, {
-          title: 'Subject'
+          title: 'Subjects',
+          url: '/apps/subject/subject-list'
+        }, {
+          title: 'Edit',
+          active: true
+        }],
+        pageTitle: 'Subject Edit',
+        rule: 'editor'
+      }
+    }, //subjects menu path
+    {
+      path: '/apps/subject/subject-list',
+      name: 'app-subject-list',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(26)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-list/SubjectList.vue */ "./resources/js/src/views/apps/subject/subject-list/SubjectList.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Subjects',
+          url: '/apps/subject/subject-list'
+        }, {
+          title: 'List',
+          active: true
+        }],
+        pageTitle: 'Subjects List',
+        rule: 'editor'
+      }
+    }, {
+      path: '/apps/subject/subject-add/',
+      name: 'app-subject-add',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 27).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/subject/subject-add/SubjectAdd.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Subjects',
+          url: '/apps/subject/subject-list'
+        }, {
+          title: 'Add',
+          active: true
+        }],
+        pageTitle: 'Subject Add',
+        rule: 'editor'
+      }
+    }, {
+      path: '/apps/subject/subject-view/:subjectId',
+      name: 'app-subject-view',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 28).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/subject/subject-view/SubjectView.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Subjects',
+          url: '/apps/subject/subject-list'
+        }, {
+          title: 'View',
+          active: true
+        }],
+        pageTitle: 'Subject View',
+        rule: 'editor'
+      }
+    }, {
+      path: '/apps/subject/subject-edit/:subjectId',
+      name: 'app-subject-edit',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(29)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Subjects',
+          url: '/apps/subject/subject-list'
         }, {
           title: 'Edit',
           active: true
@@ -75791,7 +75874,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Home',
           url: '/'
         }, {
-          title: 'Teachers'
+          title: 'Teachers',
+          url: '/apps/user/user-list'
         }, {
           title: 'List',
           active: true
@@ -75810,7 +75894,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Home',
           url: '/'
         }, {
-          title: 'Teachers'
+          title: 'Teachers',
+          url: '/apps/user/user-list'
         }, {
           title: 'Teacher',
           active: true
@@ -75829,7 +75914,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Home',
           url: '/'
         }, {
-          title: 'Teacher'
+          title: 'Teachers',
+          url: '/apps/user/user-list'
         }, {
           title: 'Edit',
           active: true
@@ -75848,7 +75934,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Home',
           url: '/'
         }, {
-          title: 'Students'
+          title: 'Students',
+          url: '/apps/user/listofstudents'
         }, {
           title: 'List',
           active: true
@@ -75867,7 +75954,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Home',
           url: '/'
         }, {
-          title: 'Parents'
+          title: 'Parents',
+          url: '/apps/user/listofparents'
         }, {
           title: 'List',
           active: true
