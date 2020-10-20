@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Exception;
 use App\User;
-use App\Models\Class;
+use App\Models\ClassCode;
 use App\Models\Subject;
 use App\Models\State;
 use App\Models\Cities;
@@ -59,7 +59,7 @@ class CommonController extends Controller {
         return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
     }
     else{
-        $states=Class::where('school_id',$request->school_id)->get();
+        $states=ClassCode::where('school_id',$request->school_id)->get();
         if(!empty( $states )){
            return response()->json(array('error' => false, 'data' =>$states ), 200);
        }
