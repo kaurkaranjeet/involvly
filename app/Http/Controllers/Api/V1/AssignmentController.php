@@ -46,7 +46,6 @@ class AssignmentController extends Controller {
             {
                 foreach($request->file('assignments_attachement') as $key=>$file)
                 {
-                    dd($file);
                 $name=time().$key.'.'.$file->getClientOriginalExtension();    
                 $file->move(public_path().'/assignment_doc/', $name);      
                 $data[$key] = URL::to('/').'/assignment_doc/'.$name;  
