@@ -29,9 +29,63 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+
+     fetchSchoolSubjects({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        var school_id = localStorage.getItem('school_id');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'teacher',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/list_of_subjects/' + school_id, requestOptions)
+                .then((response) => {
+                    //console.log(response.data.classes);
+                    commit('SET_SCHOOL_SUBJECTS', response.data.subjects)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
     saveClassCode({ commit }, code) {
         return new Promise((resolve, reject) => {
             axios.post(`/api/auth/save-class-code`, code)
+                .then((response) => {
+                    if (response.data.class) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
+        })
+    },
+
+      AddClassSubjects({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/add-subject`, code)
+                .then((response) => {
+                    if (response.data.class) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
+        })
+    },
+
+    removeClassSubjects({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/remove-subject`, code)
                 .then((response) => {
                     if (response.data.class) {
                         resolve(response)

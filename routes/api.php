@@ -27,10 +27,14 @@ Route::prefix('auth')->group(function () {
   Route::get('user', 'UserController@getAuthenticatedUser');
   Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
   Route::get('requests/{id}', 'UserController@getRequest');
+  Route::get('student_requests/{id}', 'UserController@getStudentRequest');
+Route::get('parent_requests/{id}', 'UserController@getParentRequest');
+
   Route::post('approve_teacher/{id}', 'TeacherController@Approveteacher');
     Route::post('disapprove_teacher/{id}', 'TeacherController@DisApproveteacher');
     //classes
     Route::any('/manage-classes/{id}', ['as' => 'manage.classes', 'uses' => 'ClassController@manageClasses']);
+    Route::any('/list_of_subjects/{id}', ['as' => 'manage.list_of_subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
     Route::any('/save-class-code', ['as' => 'save.classes', 'uses' => 'ClassController@saveClassCode']);
     Route::any('/delete-class-code/{id}', ['as' => 'delete.classes', 'uses' => 'ClassController@deleteClassCode']);
     Route::any('/fetch-class-detail/{id}', ['as' => 'fetch.classes', 'uses' => 'ClassController@fetchClassCodeDetail']);
@@ -41,9 +45,14 @@ Route::prefix('auth')->group(function () {
     Route::any('/delete-subject/{id}', ['as' => 'delete.subjects', 'uses' => 'SubjectController@deleteSubject']);
     Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);
     Route::any('/edit-subject', ['as' => 'edit.subjects', 'uses' => 'SubjectController@editSubject']);
+
     //school - subjects
     Route::any('/manage-school-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
     Route::any('/save-school-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSchoolSubject']);
+
+   Route::post('/add-subject', ['as' => 'add.subject', 'uses' => 'SubjectController@AddSubject']);
+      Route::post('/remove-subject', ['as' => 'remove.subject', 'uses' => 'SubjectController@RemoveSubject']);
+
 });
 // Mobile Apis
 
@@ -93,5 +102,7 @@ Route::prefix('v1')->group(function () {
 //    Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
         Route::post('delete_post', 'Api\V1\PostController@RemovePost');
+ Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
+
 });
 

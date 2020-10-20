@@ -189,5 +189,15 @@ public function getRequest($school_id){
   $data= User::where('role_id',4)->where('school_id',$school_id)->where('status',0)->select('id','name','email',DB::raw('DATE(created_at) as date'),'id','status')->get();
   return response()->json(compact('data'), 200);
 }
+
+public function getStudentRequest($school_id){
+  $data= User::where('role_id',2)->where('school_id',$school_id)->where('status',0)->select('id','name','email',DB::raw('DATE(created_at) as date'),'id','status')->get();
+  return response()->json(compact('data'), 200);
+}
+
+public function getParentRequest($school_id){
+  $data= User::where('role_id',3)->where('school_id',$school_id)->where('status',0)->select('id','name','email',DB::raw('DATE(created_at) as date'),'id','status')->get();
+  return response()->json(compact('data'), 200);
+}
   }
     ?>

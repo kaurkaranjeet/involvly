@@ -36,7 +36,7 @@ export default [{
             },
             {
                 url: '/apps/user/listofparents',
-                name: 'Parent List',
+                name: 'Parents List',
                 slug: 'list-parents',
                 i18n: 'List'
             }
@@ -50,7 +50,7 @@ export default [{
         i18n: 'Class',
         submenu: [{
                 url: '/apps/class/class-list',
-                name: 'Class Code List',
+                name: 'List of classes',
                 slug: 'app-class-list',
                 i18n: 'List'
             },

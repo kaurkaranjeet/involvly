@@ -3,6 +3,7 @@
 /***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/lib/index.js?!./node_modules/flatpickr/dist/flatpickr.css":
 /*!***********************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--7-1!./node_modules/postcss-loader/lib??ref--7-2!./node_modules/flatpickr/dist/flatpickr.css ***!
+>>>>>>> 2c79dfbdaaca1498006099af5a60c44acf13d517
   \***********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -25,6 +26,7 @@ exports.push([module.i, ".flatpickr-calendar {\n  opacity: 0;\n  display: none;\
   \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
+
 
 
 var content = __webpack_require__(/*! !../../css-loader??ref--7-1!../../postcss-loader/lib??ref--7-2!./flatpickr.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/lib/index.js?!./node_modules/flatpickr/dist/flatpickr.css");
@@ -62,6 +64,23 @@ if(false) {}
     undefined;
 }(this, function () { 'use strict';
 
+<<<<<<< HEAD
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+
+   
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
     Licensed under the Apache License, Version 2.0 (the "License"); you may not use

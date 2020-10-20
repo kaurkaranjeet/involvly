@@ -59,7 +59,7 @@ const router = new Router({
                             { title: 'Class Code' },
                             { title: 'List', active: true }
                         ],
-                        pageTitle: 'Class Code List',
+                        pageTitle: 'List Of Classes',
                         rule: 'editor'
                     }
                 },
@@ -238,10 +238,10 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'User' },
-                            { title: 'View', active: true }
+                            { title: 'Teachers' },
+                            { title: 'Teacher', active: true }
                         ],
-                        pageTitle: 'User View',
+                        pageTitle: 'Teacher View',
                         rule: 'editor'
                     }
                 },
@@ -253,10 +253,10 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'User' },
+                            { title: 'Teacher' },
                             { title: 'Edit', active: true }
                         ],
-                        pageTitle: 'User Edit',
+                        pageTitle: 'Teacher Edit',
                         rule: 'editor'
                     }
                 },

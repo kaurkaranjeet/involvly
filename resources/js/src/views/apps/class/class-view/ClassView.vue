@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-md-12 bg-light text-right pd-bt">
-            <vs-button color="primary" type="filled" @click="addSubjectdata">Add Subjects</vs-button>
+            <vs-button color="primary" type="filled" @click="addSubjectdata">Add New Subject</vs-button>
         </div>
         <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters" style="display: none">
             <div class="vx-row">
@@ -82,12 +82,43 @@
             </div>
     
     
-            <!-- AgGrid Table -->
-            <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions" class="ag-theme-material w-100 my-4 ag-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef" :rowData="usersData" rowSelection="multiple" colResizeDefault="shift"
-                :animateRows="true" :floatingFilter="true" :pagination="true" :paginationPageSize="paginationPageSize" :suppressPaginationPanel="true" :enableRtl="$vs.rtl">
-            </ag-grid-vue>
-    
-            <vs-pagination :total="totalPages" :max="7" v-model="currentPage" />
+           <div class="vx-row">
+      <!-- CARD 9: DISPATCHED ORDERS -->
+      <div class="vx-col w-full">
+        <vx-card title="Subject Lists">
+          <div slot="no-body" class="mt-4">
+            <vs-table max-items="5" pagination :data="usersData" class="table-dark-inverted" >
+              <template slot="thead">
+                <vs-th>Id</vs-th>
+                <vs-th>Name</vs-th>
+                <vs-th>Add/Remove</vs-th>  
+               
+              </template>
+
+              <template slot-scope="{data}">
+                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                  <vs-td :data="data[indextr].id">
+                    <span>#{{data[indextr].id}}</span>
+                  </vs-td>
+
+                    <vs-td :data="data[indextr].subject_name">
+                    <span>{{data[indextr].subject_name}}</span>
+                  </vs-td>                                  
+                  <vs-td>
+                    <span class="flex items-center px-2 py-1 rounded"> 
+                     <vs-button @click="AssignClass($route.params.classId,$event)"> Approve</vs-button>
+                                        </span>
+                 
+                  </vs-td>
+              
+                </vs-tr>
+              </template>
+            </vs-table>
+          </div>
+        </vx-card>
+      </div>
+    </div>
+            
     
         </div>
     </div>
@@ -181,6 +212,14 @@ export default {
                     width: 210,
                     cellRendererFramework: 'CellRendererLink'
                 },
+
+                 {
+                    headerName: 'Assign/Reassign',
+                    field: 'assign/reassign',
+                    filter: false,
+                    width: 210,
+                   // cellRendererFramework: 'CellRendererLink'
+                },
                 // {
                 //   headerName: 'Status',
                 //   field: 'approved',
@@ -188,12 +227,12 @@ export default {
                 //   width: 150,
                 //   cellRendererFramework: 'CellRendererStatus'
                 // },
-                {
+                /*{
                     headerName: 'Actions',
                     field: 'transactions',
                     width: 150,
                     cellRendererFramework: 'CellRendererActions'
-                }
+                }*/
             ],
 
             // Cell Renderer Components

@@ -9,5 +9,5 @@
 
 export default {
     classes: [],
-    subjects: []
+    subjects: [], school_subjects: []
 }
