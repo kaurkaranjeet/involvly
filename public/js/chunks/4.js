@@ -6817,8 +6817,13 @@ __webpack_require__.r(__webpack_exports__);
   i18n: 'Class',
   submenu: [{
     url: '/apps/class/class-list',
-    name: 'List of classes',
+    name: 'List of Classes',
     slug: 'app-class-list',
+    i18n: 'List'
+  }, {
+    url: '/apps/subject/subject-list',
+    name: 'List of Subjects',
+    slug: 'app-subject-list',
     i18n: 'List'
   }]
 }]);
