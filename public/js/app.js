@@ -1,203 +1,202 @@
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	function webpackJsonpCallback(data) {
-/******/ 		var chunkIds = data[0];
-/******/ 		var moreModules = data[1];
+/******/    // install a JSONP callback for chunk loading
+/******/    function webpackJsonpCallback(data) {
+/******/        var chunkIds = data[0];
+/******/        var moreModules = data[1];
 /******/
 /******/
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, resolves = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
+/******/        // add "moreModules" to the modules object,
+/******/        // then flag all "chunkIds" as loaded and fire callback
+/******/        var moduleId, chunkId, i = 0, resolves = [];
+/******/        for(;i < chunkIds.length; i++) {
+/******/            chunkId = chunkIds[i];
+/******/            if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/                resolves.push(installedChunks[chunkId][0]);
+/******/            }
+/******/            installedChunks[chunkId] = 0;
+/******/        }
+/******/        for(moduleId in moreModules) {
+/******/            if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/                modules[moduleId] = moreModules[moduleId];
+/******/            }
+/******/        }
+/******/        if(parentJsonpFunction) parentJsonpFunction(data);
 /******/
-/******/ 		while(resolves.length) {
-/******/ 			resolves.shift()();
-/******/ 		}
+/******/        while(resolves.length) {
+/******/            resolves.shift()();
+/******/        }
 /******/
-/******/ 	};
-/******/
-/******/
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 	// Promise = chunk loading, 0 = chunk loaded
-/******/ 	var installedChunks = {
-/******/ 		"/js/app": 0
-/******/ 	};
+/******/    };
 /******/
 /******/
+/******/    // The module cache
+/******/    var installedModules = {};
 /******/
-/******/ 	// script path function
-/******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "js/chunks/" + ({}[chunkId]||chunkId) + ".js"
-/******/ 	}
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/ 	// This file contains only the entry chunk.
-/******/ 	// The chunk loading function for additional chunks
-/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
-/******/ 		var promises = [];
+/******/    // object to store loaded and loading chunks
+/******/    // undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/    // Promise = chunk loading, 0 = chunk loaded
+/******/    var installedChunks = {
+/******/        "/js/app": 0
+/******/    };
 /******/
 /******/
-/******/ 		// JSONP chunk loading for javascript
 /******/
-/******/ 		var installedChunkData = installedChunks[chunkId];
-/******/ 		if(installedChunkData !== 0) { // 0 means "already installed".
+/******/    // script path function
+/******/    function jsonpScriptSrc(chunkId) {
+/******/        return __webpack_require__.p + "js/chunks/" + ({}[chunkId]||chunkId) + ".js"
+/******/    }
 /******/
-/******/ 			// a Promise means "currently loading".
-/******/ 			if(installedChunkData) {
-/******/ 				promises.push(installedChunkData[2]);
-/******/ 			} else {
-/******/ 				// setup Promise in chunk cache
-/******/ 				var promise = new Promise(function(resolve, reject) {
-/******/ 					installedChunkData = installedChunks[chunkId] = [resolve, reject];
-/******/ 				});
-/******/ 				promises.push(installedChunkData[2] = promise);
+/******/    // The require function
+/******/    function __webpack_require__(moduleId) {
 /******/
-/******/ 				// start chunk loading
-/******/ 				var script = document.createElement('script');
-/******/ 				var onScriptComplete;
+/******/        // Check if module is in cache
+/******/        if(installedModules[moduleId]) {
+/******/            return installedModules[moduleId].exports;
+/******/        }
+/******/        // Create a new module (and put it into the cache)
+/******/        var module = installedModules[moduleId] = {
+/******/            i: moduleId,
+/******/            l: false,
+/******/            exports: {}
+/******/        };
 /******/
-/******/ 				script.charset = 'utf-8';
-/******/ 				script.timeout = 120;
-/******/ 				if (__webpack_require__.nc) {
-/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
-/******/ 				}
-/******/ 				script.src = jsonpScriptSrc(chunkId);
+/******/        // Execute the module function
+/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/ 				// create error before stack unwound to get useful stacktrace later
-/******/ 				var error = new Error();
-/******/ 				onScriptComplete = function (event) {
-/******/ 					// avoid mem leaks in IE.
-/******/ 					script.onerror = script.onload = null;
-/******/ 					clearTimeout(timeout);
-/******/ 					var chunk = installedChunks[chunkId];
-/******/ 					if(chunk !== 0) {
-/******/ 						if(chunk) {
-/******/ 							var errorType = event && (event.type === 'load' ? 'missing' : event.type);
-/******/ 							var realSrc = event && event.target && event.target.src;
-/******/ 							error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
-/******/ 							error.name = 'ChunkLoadError';
-/******/ 							error.type = errorType;
-/******/ 							error.request = realSrc;
-/******/ 							chunk[1](error);
-/******/ 						}
-/******/ 						installedChunks[chunkId] = undefined;
-/******/ 					}
-/******/ 				};
-/******/ 				var timeout = setTimeout(function(){
-/******/ 					onScriptComplete({ type: 'timeout', target: script });
-/******/ 				}, 120000);
-/******/ 				script.onerror = script.onload = onScriptComplete;
-/******/ 				document.head.appendChild(script);
-/******/ 			}
-/******/ 		}
-/******/ 		return Promise.all(promises);
-/******/ 	};
+/******/        // Flag the module as loaded
+/******/        module.l = true;
 /******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
+/******/        // Return the exports of the module
+/******/        return module.exports;
+/******/    }
 /******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
-/******/
-/******/ 	// on error function for async loading
-/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
-/******/
-/******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
-/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
-/******/ 	jsonpArray.push = webpackJsonpCallback;
-/******/ 	jsonpArray = jsonpArray.slice();
-/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-/******/ 	var parentJsonpFunction = oldJsonpFunction;
+/******/    // This file contains only the entry chunk.
+/******/    // The chunk loading function for additional chunks
+/******/    __webpack_require__.e = function requireEnsure(chunkId) {
+/******/        var promises = [];
 /******/
 /******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/        // JSONP chunk loading for javascript
+/******/
+/******/        var installedChunkData = installedChunks[chunkId];
+/******/        if(installedChunkData !== 0) { // 0 means "already installed".
+/******/
+/******/            // a Promise means "currently loading".
+/******/            if(installedChunkData) {
+/******/                promises.push(installedChunkData[2]);
+/******/            } else {
+/******/                // setup Promise in chunk cache
+/******/                var promise = new Promise(function(resolve, reject) {
+/******/                    installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/                });
+/******/                promises.push(installedChunkData[2] = promise);
+/******/
+/******/                // start chunk loading
+/******/                var script = document.createElement('script');
+/******/                var onScriptComplete;
+/******/
+/******/                script.charset = 'utf-8';
+/******/                script.timeout = 120;
+/******/                if (__webpack_require__.nc) {
+/******/                    script.setAttribute("nonce", __webpack_require__.nc);
+/******/                }
+/******/                script.src = jsonpScriptSrc(chunkId);
+/******/
+/******/                // create error before stack unwound to get useful stacktrace later
+/******/                var error = new Error();
+/******/                onScriptComplete = function (event) {
+/******/                    // avoid mem leaks in IE.
+/******/                    script.onerror = script.onload = null;
+/******/                    clearTimeout(timeout);
+/******/                    var chunk = installedChunks[chunkId];
+/******/                    if(chunk !== 0) {
+/******/                        if(chunk) {
+/******/                            var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/                            var realSrc = event && event.target && event.target.src;
+/******/                            error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/                            error.name = 'ChunkLoadError';
+/******/                            error.type = errorType;
+/******/                            error.request = realSrc;
+/******/                            chunk[1](error);
+/******/                        }
+/******/                        installedChunks[chunkId] = undefined;
+/******/                    }
+/******/                };
+/******/                var timeout = setTimeout(function(){
+/******/                    onScriptComplete({ type: 'timeout', target: script });
+/******/                }, 120000);
+/******/                script.onerror = script.onload = onScriptComplete;
+/******/                document.head.appendChild(script);
+/******/            }
+/******/        }
+/******/        return Promise.all(promises);
+/******/    };
+/******/
+/******/    // expose the modules object (__webpack_modules__)
+/******/    __webpack_require__.m = modules;
+/******/
+/******/    // expose the module cache
+/******/    __webpack_require__.c = installedModules;
+/******/
+/******/    // define getter function for harmony exports
+/******/    __webpack_require__.d = function(exports, name, getter) {
+/******/        if(!__webpack_require__.o(exports, name)) {
+/******/            Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/        }
+/******/    };
+/******/
+/******/    // define __esModule on exports
+/******/    __webpack_require__.r = function(exports) {
+/******/        if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/            Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/        }
+/******/        Object.defineProperty(exports, '__esModule', { value: true });
+/******/    };
+/******/
+/******/    // create a fake namespace object
+/******/    // mode & 1: value is a module id, require it
+/******/    // mode & 2: merge all properties of value into the ns
+/******/    // mode & 4: return value when already ns object
+/******/    // mode & 8|1: behave like require
+/******/    __webpack_require__.t = function(value, mode) {
+/******/        if(mode & 1) value = __webpack_require__(value);
+/******/        if(mode & 8) return value;
+/******/        if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/        var ns = Object.create(null);
+/******/        __webpack_require__.r(ns);
+/******/        Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/        if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/        return ns;
+/******/    };
+/******/
+/******/    // getDefaultExport function for compatibility with non-harmony modules
+/******/    __webpack_require__.n = function(module) {
+/******/        var getter = module && module.__esModule ?
+/******/            function getDefault() { return module['default']; } :
+/******/            function getModuleExports() { return module; };
+/******/        __webpack_require__.d(getter, 'a', getter);
+/******/        return getter;
+/******/    };
+/******/
+/******/    // Object.prototype.hasOwnProperty.call
+/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/    // __webpack_public_path__
+/******/    __webpack_require__.p = "/";
+/******/
+/******/    // on error function for async loading
+/******/    __webpack_require__.oe = function(err) { console.error(err); throw err; };
+/******/
+/******/    var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
+/******/    var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+/******/    jsonpArray.push = webpackJsonpCallback;
+/******/    jsonpArray = jsonpArray.slice();
+/******/    for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+/******/    var parentJsonpFunction = oldJsonpFunction;
+/******/
+/******/
+/******/    // Load entry module and return exports
+/******/    return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -10104,80 +10103,80 @@ exports.push([module.i, "/**\n * prism.js tomorrow night eighties for JavaScript
 /***/ (function(module, exports) {
 
 /*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
+    MIT License http://www.opensource.org/licenses/mit-license.php
+    Author Tobias Koppers @sokra
 */
 // css base code, injected by the css-loader
 module.exports = function(useSourceMap) {
-	var list = [];
+    var list = [];
 
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
+    // return the list of modules as css string
+    list.toString = function toString() {
+        return this.map(function (item) {
+            var content = cssWithMappingToString(item, useSourceMap);
+            if(item[2]) {
+                return "@media " + item[2] + "{" + content + "}";
+            } else {
+                return content;
+            }
+        }).join("");
+    };
 
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
+    // import a list of modules into the list
+    list.i = function(modules, mediaQuery) {
+        if(typeof modules === "string")
+            modules = [[null, modules, ""]];
+        var alreadyImportedModules = {};
+        for(var i = 0; i < this.length; i++) {
+            var id = this[i][0];
+            if(typeof id === "number")
+                alreadyImportedModules[id] = true;
+        }
+        for(i = 0; i < modules.length; i++) {
+            var item = modules[i];
+            // skip already imported module
+            // this implementation is not 100% perfect for weird media query combinations
+            //  when a module is imported multiple times with different media queries.
+            //  I hope this will never occur (Hey this way we have smaller bundles)
+            if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+                if(mediaQuery && !item[2]) {
+                    item[2] = mediaQuery;
+                } else if(mediaQuery) {
+                    item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+                }
+                list.push(item);
+            }
+        }
+    };
+    return list;
 };
 
 function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
+    var content = item[1] || '';
+    var cssMapping = item[3];
+    if (!cssMapping) {
+        return content;
+    }
 
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
+    if (useSourceMap && typeof btoa === 'function') {
+        var sourceMapping = toComment(cssMapping);
+        var sourceURLs = cssMapping.sources.map(function (source) {
+            return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+        });
 
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
+        return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+    }
 
-	return [content].join('\n');
+    return [content].join('\n');
 }
 
 // Adapted from convert-source-map (MIT)
 function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+    // eslint-disable-next-line no-undef
+    var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+    var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
-	return '/*# ' + data + ' */';
+    return '/*# ' + data + ' */';
 }
 
 
@@ -12883,7 +12882,7 @@ if (true) {
     !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
         return Hammer;
     }).call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+                __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else {}
 
 })(window, document, 'Hammer');
@@ -13362,12 +13361,12 @@ function unwrapListeners(arr) {
 ********************************************** */
 
 var _self = (typeof window !== 'undefined')
-	? window   // if in browser
-	: (
-		(typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope)
-		? self // if in worker
-		: {}   // if in node js
-	);
+    ? window   // if in browser
+    : (
+        (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope)
+        ? self // if in worker
+        : {}   // if in node js
+    );
 
 /**
  * Prism: Lightweight, robust, elegant syntax highlighting
@@ -13383,411 +13382,411 @@ var uniqueId = 0;
 
 
 var _ = {
-	manual: _self.Prism && _self.Prism.manual,
-	disableWorkerMessageHandler: _self.Prism && _self.Prism.disableWorkerMessageHandler,
-	util: {
-		encode: function encode(tokens) {
-			if (tokens instanceof Token) {
-				return new Token(tokens.type, encode(tokens.content), tokens.alias);
-			} else if (Array.isArray(tokens)) {
-				return tokens.map(encode);
-			} else {
-				return tokens.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
-			}
-		},
-
-		type: function (o) {
-			return Object.prototype.toString.call(o).slice(8, -1);
-		},
-
-		objId: function (obj) {
-			if (!obj['__id']) {
-				Object.defineProperty(obj, '__id', { value: ++uniqueId });
-			}
-			return obj['__id'];
-		},
-
-		// Deep clone a language definition (e.g. to extend it)
-		clone: function deepClone(o, visited) {
-			var clone, id, type = _.util.type(o);
-			visited = visited || {};
-
-			switch (type) {
-				case 'Object':
-					id = _.util.objId(o);
-					if (visited[id]) {
-						return visited[id];
-					}
-					clone = {};
-					visited[id] = clone;
-
-					for (var key in o) {
-						if (o.hasOwnProperty(key)) {
-							clone[key] = deepClone(o[key], visited);
-						}
-					}
-
-					return clone;
-
-				case 'Array':
-					id = _.util.objId(o);
-					if (visited[id]) {
-						return visited[id];
-					}
-					clone = [];
-					visited[id] = clone;
-
-					o.forEach(function (v, i) {
-						clone[i] = deepClone(v, visited);
-					});
-
-					return clone;
-
-				default:
-					return o;
-			}
-		},
-
-		/**
-		 * Returns the Prism language of the given element set by a `language-xxxx` or `lang-xxxx` class.
-		 *
-		 * If no language is set for the element or the element is `null` or `undefined`, `none` will be returned.
-		 *
-		 * @param {Element} element
-		 * @returns {string}
-		 */
-		getLanguage: function (element) {
-			while (element && !lang.test(element.className)) {
-				element = element.parentElement;
-			}
-			if (element) {
-				return (element.className.match(lang) || [, 'none'])[1].toLowerCase();
-			}
-			return 'none';
-		},
-
-		/**
-		 * Returns the script element that is currently executing.
-		 *
-		 * This does __not__ work for line script element.
-		 *
-		 * @returns {HTMLScriptElement | null}
-		 */
-		currentScript: function () {
-			if (typeof document === 'undefined') {
-				return null;
-			}
-			if ('currentScript' in document) {
-				return document.currentScript;
-			}
-
-			// IE11 workaround
-			// we'll get the src of the current script by parsing IE11's error stack trace
-			// this will not work for inline scripts
-
-			try {
-				throw new Error();
-			} catch (err) {
-				// Get file src url from stack. Specifically works with the format of stack traces in IE.
-				// A stack will look like this:
-				//
-				// Error
-				//    at _.util.currentScript (http://localhost/components/prism-core.js:119:5)
-				//    at Global code (http://localhost/components/prism-core.js:606:1)
-
-				var src = (/at [^(\r\n]*\((.*):.+:.+\)$/i.exec(err.stack) || [])[1];
-				if (src) {
-					var scripts = document.getElementsByTagName('script');
-					for (var i in scripts) {
-						if (scripts[i].src == src) {
-							return scripts[i];
-						}
-					}
-				}
-				return null;
-			}
-		}
-	},
-
-	languages: {
-		extend: function (id, redef) {
-			var lang = _.util.clone(_.languages[id]);
-
-			for (var key in redef) {
-				lang[key] = redef[key];
-			}
-
-			return lang;
-		},
-
-		/**
-		 * Insert a token before another token in a language literal
-		 * As this needs to recreate the object (we cannot actually insert before keys in object literals),
-		 * we cannot just provide an object, we need an object and a key.
-		 * @param inside The key (or language id) of the parent
-		 * @param before The key to insert before.
-		 * @param insert Object with the key/value pairs to insert
-		 * @param root The object that contains `inside`. If equal to Prism.languages, it can be omitted.
-		 */
-		insertBefore: function (inside, before, insert, root) {
-			root = root || _.languages;
-			var grammar = root[inside];
-			var ret = {};
-
-			for (var token in grammar) {
-				if (grammar.hasOwnProperty(token)) {
-
-					if (token == before) {
-						for (var newToken in insert) {
-							if (insert.hasOwnProperty(newToken)) {
-								ret[newToken] = insert[newToken];
-							}
-						}
-					}
-
-					// Do not insert token which also occur in insert. See #1525
-					if (!insert.hasOwnProperty(token)) {
-						ret[token] = grammar[token];
-					}
-				}
-			}
-
-			var old = root[inside];
-			root[inside] = ret;
-
-			// Update references in other language definitions
-			_.languages.DFS(_.languages, function(key, value) {
-				if (value === old && key != inside) {
-					this[key] = ret;
-				}
-			});
-
-			return ret;
-		},
-
-		// Traverse a language definition with Depth First Search
-		DFS: function DFS(o, callback, type, visited) {
-			visited = visited || {};
-
-			var objId = _.util.objId;
-
-			for (var i in o) {
-				if (o.hasOwnProperty(i)) {
-					callback.call(o, i, o[i], type || i);
-
-					var property = o[i],
-					    propertyType = _.util.type(property);
-
-					if (propertyType === 'Object' && !visited[objId(property)]) {
-						visited[objId(property)] = true;
-						DFS(property, callback, null, visited);
-					}
-					else if (propertyType === 'Array' && !visited[objId(property)]) {
-						visited[objId(property)] = true;
-						DFS(property, callback, i, visited);
-					}
-				}
-			}
-		}
-	},
-	plugins: {},
-
-	highlightAll: function(async, callback) {
-		_.highlightAllUnder(document, async, callback);
-	},
-
-	highlightAllUnder: function(container, async, callback) {
-		var env = {
-			callback: callback,
-			container: container,
-			selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
-		};
-
-		_.hooks.run('before-highlightall', env);
-
-		env.elements = Array.prototype.slice.apply(env.container.querySelectorAll(env.selector));
-
-		_.hooks.run('before-all-elements-highlight', env);
-
-		for (var i = 0, element; element = env.elements[i++];) {
-			_.highlightElement(element, async === true, env.callback);
-		}
-	},
-
-	highlightElement: function(element, async, callback) {
-		// Find language
-		var language = _.util.getLanguage(element);
-		var grammar = _.languages[language];
-
-		// Set language on the element, if not present
-		element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
-
-		// Set language on the parent, for styling
-		var parent = element.parentNode;
-		if (parent && parent.nodeName.toLowerCase() === 'pre') {
-			parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
-		}
-
-		var code = element.textContent;
-
-		var env = {
-			element: element,
-			language: language,
-			grammar: grammar,
-			code: code
-		};
-
-		function insertHighlightedCode(highlightedCode) {
-			env.highlightedCode = highlightedCode;
-
-			_.hooks.run('before-insert', env);
-
-			env.element.innerHTML = env.highlightedCode;
-
-			_.hooks.run('after-highlight', env);
-			_.hooks.run('complete', env);
-			callback && callback.call(env.element);
-		}
-
-		_.hooks.run('before-sanity-check', env);
-
-		if (!env.code) {
-			_.hooks.run('complete', env);
-			callback && callback.call(env.element);
-			return;
-		}
-
-		_.hooks.run('before-highlight', env);
-
-		if (!env.grammar) {
-			insertHighlightedCode(_.util.encode(env.code));
-			return;
-		}
-
-		if (async && _self.Worker) {
-			var worker = new Worker(_.filename);
-
-			worker.onmessage = function(evt) {
-				insertHighlightedCode(evt.data);
-			};
-
-			worker.postMessage(JSON.stringify({
-				language: env.language,
-				code: env.code,
-				immediateClose: true
-			}));
-		}
-		else {
-			insertHighlightedCode(_.highlight(env.code, env.grammar, env.language));
-		}
-	},
-
-	highlight: function (text, grammar, language) {
-		var env = {
-			code: text,
-			grammar: grammar,
-			language: language
-		};
-		_.hooks.run('before-tokenize', env);
-		env.tokens = _.tokenize(env.code, env.grammar);
-		_.hooks.run('after-tokenize', env);
-		return Token.stringify(_.util.encode(env.tokens), env.language);
-	},
-
-	tokenize: function(text, grammar) {
-		var rest = grammar.rest;
-		if (rest) {
-			for (var token in rest) {
-				grammar[token] = rest[token];
-			}
-
-			delete grammar.rest;
-		}
-
-		var tokenList = new LinkedList();
-		addAfter(tokenList, tokenList.head, text);
-
-		matchGrammar(text, tokenList, grammar, tokenList.head, 0);
-
-		return toArray(tokenList);
-	},
-
-	hooks: {
-		all: {},
-
-		add: function (name, callback) {
-			var hooks = _.hooks.all;
-
-			hooks[name] = hooks[name] || [];
-
-			hooks[name].push(callback);
-		},
-
-		run: function (name, env) {
-			var callbacks = _.hooks.all[name];
-
-			if (!callbacks || !callbacks.length) {
-				return;
-			}
-
-			for (var i=0, callback; callback = callbacks[i++];) {
-				callback(env);
-			}
-		}
-	},
-
-	Token: Token
+    manual: _self.Prism && _self.Prism.manual,
+    disableWorkerMessageHandler: _self.Prism && _self.Prism.disableWorkerMessageHandler,
+    util: {
+        encode: function encode(tokens) {
+            if (tokens instanceof Token) {
+                return new Token(tokens.type, encode(tokens.content), tokens.alias);
+            } else if (Array.isArray(tokens)) {
+                return tokens.map(encode);
+            } else {
+                return tokens.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+            }
+        },
+
+        type: function (o) {
+            return Object.prototype.toString.call(o).slice(8, -1);
+        },
+
+        objId: function (obj) {
+            if (!obj['__id']) {
+                Object.defineProperty(obj, '__id', { value: ++uniqueId });
+            }
+            return obj['__id'];
+        },
+
+        // Deep clone a language definition (e.g. to extend it)
+        clone: function deepClone(o, visited) {
+            var clone, id, type = _.util.type(o);
+            visited = visited || {};
+
+            switch (type) {
+                case 'Object':
+                    id = _.util.objId(o);
+                    if (visited[id]) {
+                        return visited[id];
+                    }
+                    clone = {};
+                    visited[id] = clone;
+
+                    for (var key in o) {
+                        if (o.hasOwnProperty(key)) {
+                            clone[key] = deepClone(o[key], visited);
+                        }
+                    }
+
+                    return clone;
+
+                case 'Array':
+                    id = _.util.objId(o);
+                    if (visited[id]) {
+                        return visited[id];
+                    }
+                    clone = [];
+                    visited[id] = clone;
+
+                    o.forEach(function (v, i) {
+                        clone[i] = deepClone(v, visited);
+                    });
+
+                    return clone;
+
+                default:
+                    return o;
+            }
+        },
+
+        /**
+         * Returns the Prism language of the given element set by a `language-xxxx` or `lang-xxxx` class.
+         *
+         * If no language is set for the element or the element is `null` or `undefined`, `none` will be returned.
+         *
+         * @param {Element} element
+         * @returns {string}
+         */
+        getLanguage: function (element) {
+            while (element && !lang.test(element.className)) {
+                element = element.parentElement;
+            }
+            if (element) {
+                return (element.className.match(lang) || [, 'none'])[1].toLowerCase();
+            }
+            return 'none';
+        },
+
+        /**
+         * Returns the script element that is currently executing.
+         *
+         * This does __not__ work for line script element.
+         *
+         * @returns {HTMLScriptElement | null}
+         */
+        currentScript: function () {
+            if (typeof document === 'undefined') {
+                return null;
+            }
+            if ('currentScript' in document) {
+                return document.currentScript;
+            }
+
+            // IE11 workaround
+            // we'll get the src of the current script by parsing IE11's error stack trace
+            // this will not work for inline scripts
+
+            try {
+                throw new Error();
+            } catch (err) {
+                // Get file src url from stack. Specifically works with the format of stack traces in IE.
+                // A stack will look like this:
+                //
+                // Error
+                //    at _.util.currentScript (http://localhost/components/prism-core.js:119:5)
+                //    at Global code (http://localhost/components/prism-core.js:606:1)
+
+                var src = (/at [^(\r\n]*\((.*):.+:.+\)$/i.exec(err.stack) || [])[1];
+                if (src) {
+                    var scripts = document.getElementsByTagName('script');
+                    for (var i in scripts) {
+                        if (scripts[i].src == src) {
+                            return scripts[i];
+                        }
+                    }
+                }
+                return null;
+            }
+        }
+    },
+
+    languages: {
+        extend: function (id, redef) {
+            var lang = _.util.clone(_.languages[id]);
+
+            for (var key in redef) {
+                lang[key] = redef[key];
+            }
+
+            return lang;
+        },
+
+        /**
+         * Insert a token before another token in a language literal
+         * As this needs to recreate the object (we cannot actually insert before keys in object literals),
+         * we cannot just provide an object, we need an object and a key.
+         * @param inside The key (or language id) of the parent
+         * @param before The key to insert before.
+         * @param insert Object with the key/value pairs to insert
+         * @param root The object that contains `inside`. If equal to Prism.languages, it can be omitted.
+         */
+        insertBefore: function (inside, before, insert, root) {
+            root = root || _.languages;
+            var grammar = root[inside];
+            var ret = {};
+
+            for (var token in grammar) {
+                if (grammar.hasOwnProperty(token)) {
+
+                    if (token == before) {
+                        for (var newToken in insert) {
+                            if (insert.hasOwnProperty(newToken)) {
+                                ret[newToken] = insert[newToken];
+                            }
+                        }
+                    }
+
+                    // Do not insert token which also occur in insert. See #1525
+                    if (!insert.hasOwnProperty(token)) {
+                        ret[token] = grammar[token];
+                    }
+                }
+            }
+
+            var old = root[inside];
+            root[inside] = ret;
+
+            // Update references in other language definitions
+            _.languages.DFS(_.languages, function(key, value) {
+                if (value === old && key != inside) {
+                    this[key] = ret;
+                }
+            });
+
+            return ret;
+        },
+
+        // Traverse a language definition with Depth First Search
+        DFS: function DFS(o, callback, type, visited) {
+            visited = visited || {};
+
+            var objId = _.util.objId;
+
+            for (var i in o) {
+                if (o.hasOwnProperty(i)) {
+                    callback.call(o, i, o[i], type || i);
+
+                    var property = o[i],
+                        propertyType = _.util.type(property);
+
+                    if (propertyType === 'Object' && !visited[objId(property)]) {
+                        visited[objId(property)] = true;
+                        DFS(property, callback, null, visited);
+                    }
+                    else if (propertyType === 'Array' && !visited[objId(property)]) {
+                        visited[objId(property)] = true;
+                        DFS(property, callback, i, visited);
+                    }
+                }
+            }
+        }
+    },
+    plugins: {},
+
+    highlightAll: function(async, callback) {
+        _.highlightAllUnder(document, async, callback);
+    },
+
+    highlightAllUnder: function(container, async, callback) {
+        var env = {
+            callback: callback,
+            container: container,
+            selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
+        };
+
+        _.hooks.run('before-highlightall', env);
+
+        env.elements = Array.prototype.slice.apply(env.container.querySelectorAll(env.selector));
+
+        _.hooks.run('before-all-elements-highlight', env);
+
+        for (var i = 0, element; element = env.elements[i++];) {
+            _.highlightElement(element, async === true, env.callback);
+        }
+    },
+
+    highlightElement: function(element, async, callback) {
+        // Find language
+        var language = _.util.getLanguage(element);
+        var grammar = _.languages[language];
+
+        // Set language on the element, if not present
+        element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+
+        // Set language on the parent, for styling
+        var parent = element.parentNode;
+        if (parent && parent.nodeName.toLowerCase() === 'pre') {
+            parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+        }
+
+        var code = element.textContent;
+
+        var env = {
+            element: element,
+            language: language,
+            grammar: grammar,
+            code: code
+        };
+
+        function insertHighlightedCode(highlightedCode) {
+            env.highlightedCode = highlightedCode;
+
+            _.hooks.run('before-insert', env);
+
+            env.element.innerHTML = env.highlightedCode;
+
+            _.hooks.run('after-highlight', env);
+            _.hooks.run('complete', env);
+            callback && callback.call(env.element);
+        }
+
+        _.hooks.run('before-sanity-check', env);
+
+        if (!env.code) {
+            _.hooks.run('complete', env);
+            callback && callback.call(env.element);
+            return;
+        }
+
+        _.hooks.run('before-highlight', env);
+
+        if (!env.grammar) {
+            insertHighlightedCode(_.util.encode(env.code));
+            return;
+        }
+
+        if (async && _self.Worker) {
+            var worker = new Worker(_.filename);
+
+            worker.onmessage = function(evt) {
+                insertHighlightedCode(evt.data);
+            };
+
+            worker.postMessage(JSON.stringify({
+                language: env.language,
+                code: env.code,
+                immediateClose: true
+            }));
+        }
+        else {
+            insertHighlightedCode(_.highlight(env.code, env.grammar, env.language));
+        }
+    },
+
+    highlight: function (text, grammar, language) {
+        var env = {
+            code: text,
+            grammar: grammar,
+            language: language
+        };
+        _.hooks.run('before-tokenize', env);
+        env.tokens = _.tokenize(env.code, env.grammar);
+        _.hooks.run('after-tokenize', env);
+        return Token.stringify(_.util.encode(env.tokens), env.language);
+    },
+
+    tokenize: function(text, grammar) {
+        var rest = grammar.rest;
+        if (rest) {
+            for (var token in rest) {
+                grammar[token] = rest[token];
+            }
+
+            delete grammar.rest;
+        }
+
+        var tokenList = new LinkedList();
+        addAfter(tokenList, tokenList.head, text);
+
+        matchGrammar(text, tokenList, grammar, tokenList.head, 0);
+
+        return toArray(tokenList);
+    },
+
+    hooks: {
+        all: {},
+
+        add: function (name, callback) {
+            var hooks = _.hooks.all;
+
+            hooks[name] = hooks[name] || [];
+
+            hooks[name].push(callback);
+        },
+
+        run: function (name, env) {
+            var callbacks = _.hooks.all[name];
+
+            if (!callbacks || !callbacks.length) {
+                return;
+            }
+
+            for (var i=0, callback; callback = callbacks[i++];) {
+                callback(env);
+            }
+        }
+    },
+
+    Token: Token
 };
 
 _self.Prism = _;
 
 function Token(type, content, alias, matchedStr, greedy) {
-	this.type = type;
-	this.content = content;
-	this.alias = alias;
-	// Copy of the full string this token was created from
-	this.length = (matchedStr || '').length|0;
-	this.greedy = !!greedy;
+    this.type = type;
+    this.content = content;
+    this.alias = alias;
+    // Copy of the full string this token was created from
+    this.length = (matchedStr || '').length|0;
+    this.greedy = !!greedy;
 }
 
 Token.stringify = function stringify(o, language) {
-	if (typeof o == 'string') {
-		return o;
-	}
-	if (Array.isArray(o)) {
-		var s = '';
-		o.forEach(function (e) {
-			s += stringify(e, language);
-		});
-		return s;
-	}
+    if (typeof o == 'string') {
+        return o;
+    }
+    if (Array.isArray(o)) {
+        var s = '';
+        o.forEach(function (e) {
+            s += stringify(e, language);
+        });
+        return s;
+    }
 
-	var env = {
-		type: o.type,
-		content: stringify(o.content, language),
-		tag: 'span',
-		classes: ['token', o.type],
-		attributes: {},
-		language: language
-	};
+    var env = {
+        type: o.type,
+        content: stringify(o.content, language),
+        tag: 'span',
+        classes: ['token', o.type],
+        attributes: {},
+        language: language
+    };
 
-	var aliases = o.alias;
-	if (aliases) {
-		if (Array.isArray(aliases)) {
-			Array.prototype.push.apply(env.classes, aliases);
-		} else {
-			env.classes.push(aliases);
-		}
-	}
+    var aliases = o.alias;
+    if (aliases) {
+        if (Array.isArray(aliases)) {
+            Array.prototype.push.apply(env.classes, aliases);
+        } else {
+            env.classes.push(aliases);
+        }
+    }
 
-	_.hooks.run('wrap', env);
+    _.hooks.run('wrap', env);
 
-	var attributes = '';
-	for (var name in env.attributes) {
-		attributes += ' ' + name + '="' + (env.attributes[name] || '').replace(/"/g, '&quot;') + '"';
-	}
+    var attributes = '';
+    for (var name in env.attributes) {
+        attributes += ' ' + name + '="' + (env.attributes[name] || '').replace(/"/g, '&quot;') + '"';
+    }
 
-	return '<' + env.tag + ' class="' + env.classes.join(' ') + '"' + attributes + '>' + env.content + '</' + env.tag + '>';
+    return '<' + env.tag + ' class="' + env.classes.join(' ') + '"' + attributes + '>' + env.content + '</' + env.tag + '>';
 };
 
 /**
@@ -13800,142 +13799,142 @@ Token.stringify = function stringify(o, language) {
  * @param {string} [target]
  */
 function matchGrammar(text, tokenList, grammar, startNode, startPos, oneshot, target) {
-	for (var token in grammar) {
-		if (!grammar.hasOwnProperty(token) || !grammar[token]) {
-			continue;
-		}
+    for (var token in grammar) {
+        if (!grammar.hasOwnProperty(token) || !grammar[token]) {
+            continue;
+        }
 
-		var patterns = grammar[token];
-		patterns = Array.isArray(patterns) ? patterns : [patterns];
+        var patterns = grammar[token];
+        patterns = Array.isArray(patterns) ? patterns : [patterns];
 
-		for (var j = 0; j < patterns.length; ++j) {
-			if (target && target == token + ',' + j) {
-				return;
-			}
+        for (var j = 0; j < patterns.length; ++j) {
+            if (target && target == token + ',' + j) {
+                return;
+            }
 
-			var pattern = patterns[j],
-				inside = pattern.inside,
-				lookbehind = !!pattern.lookbehind,
-				greedy = !!pattern.greedy,
-				lookbehindLength = 0,
-				alias = pattern.alias;
+            var pattern = patterns[j],
+                inside = pattern.inside,
+                lookbehind = !!pattern.lookbehind,
+                greedy = !!pattern.greedy,
+                lookbehindLength = 0,
+                alias = pattern.alias;
 
-			if (greedy && !pattern.pattern.global) {
-				// Without the global flag, lastIndex won't work
-				var flags = pattern.pattern.toString().match(/[imsuy]*$/)[0];
-				pattern.pattern = RegExp(pattern.pattern.source, flags + 'g');
-			}
+            if (greedy && !pattern.pattern.global) {
+                // Without the global flag, lastIndex won't work
+                var flags = pattern.pattern.toString().match(/[imsuy]*$/)[0];
+                pattern.pattern = RegExp(pattern.pattern.source, flags + 'g');
+            }
 
-			pattern = pattern.pattern || pattern;
+            pattern = pattern.pattern || pattern;
 
-			for ( // iterate the token list and keep track of the current token/string position
-				var currentNode = startNode.next, pos = startPos;
-				currentNode !== tokenList.tail;
-				pos += currentNode.value.length, currentNode = currentNode.next
-			) {
+            for ( // iterate the token list and keep track of the current token/string position
+                var currentNode = startNode.next, pos = startPos;
+                currentNode !== tokenList.tail;
+                pos += currentNode.value.length, currentNode = currentNode.next
+            ) {
 
-				var str = currentNode.value;
+                var str = currentNode.value;
 
-				if (tokenList.length > text.length) {
-					// Something went terribly wrong, ABORT, ABORT!
-					return;
-				}
+                if (tokenList.length > text.length) {
+                    // Something went terribly wrong, ABORT, ABORT!
+                    return;
+                }
 
-				if (str instanceof Token) {
-					continue;
-				}
+                if (str instanceof Token) {
+                    continue;
+                }
 
-				var removeCount = 1; // this is the to parameter of removeBetween
+                var removeCount = 1; // this is the to parameter of removeBetween
 
-				if (greedy && currentNode != tokenList.tail.prev) {
-					pattern.lastIndex = pos;
-					var match = pattern.exec(text);
-					if (!match) {
-						break;
-					}
+                if (greedy && currentNode != tokenList.tail.prev) {
+                    pattern.lastIndex = pos;
+                    var match = pattern.exec(text);
+                    if (!match) {
+                        break;
+                    }
 
-					var from = match.index + (lookbehind && match[1] ? match[1].length : 0);
-					var to = match.index + match[0].length;
-					var p = pos;
+                    var from = match.index + (lookbehind && match[1] ? match[1].length : 0);
+                    var to = match.index + match[0].length;
+                    var p = pos;
 
-					// find the node that contains the match
-					p += currentNode.value.length;
-					while (from >= p) {
-						currentNode = currentNode.next;
-						p += currentNode.value.length;
-					}
-					// adjust pos (and p)
-					p -= currentNode.value.length;
-					pos = p;
+                    // find the node that contains the match
+                    p += currentNode.value.length;
+                    while (from >= p) {
+                        currentNode = currentNode.next;
+                        p += currentNode.value.length;
+                    }
+                    // adjust pos (and p)
+                    p -= currentNode.value.length;
+                    pos = p;
 
-					// the current node is a Token, then the match starts inside another Token, which is invalid
-					if (currentNode.value instanceof Token) {
-						continue;
-					}
+                    // the current node is a Token, then the match starts inside another Token, which is invalid
+                    if (currentNode.value instanceof Token) {
+                        continue;
+                    }
 
-					// find the last node which is affected by this match
-					for (
-						var k = currentNode;
-						k !== tokenList.tail && (p < to || (typeof k.value === 'string' && !k.prev.value.greedy));
-						k = k.next
-					) {
-						removeCount++;
-						p += k.value.length;
-					}
-					removeCount--;
+                    // find the last node which is affected by this match
+                    for (
+                        var k = currentNode;
+                        k !== tokenList.tail && (p < to || (typeof k.value === 'string' && !k.prev.value.greedy));
+                        k = k.next
+                    ) {
+                        removeCount++;
+                        p += k.value.length;
+                    }
+                    removeCount--;
 
-					// replace with the new match
-					str = text.slice(pos, p);
-					match.index -= pos;
-				} else {
-					pattern.lastIndex = 0;
+                    // replace with the new match
+                    str = text.slice(pos, p);
+                    match.index -= pos;
+                } else {
+                    pattern.lastIndex = 0;
 
-					var match = pattern.exec(str);
-				}
+                    var match = pattern.exec(str);
+                }
 
-				if (!match) {
-					if (oneshot) {
-						break;
-					}
+                if (!match) {
+                    if (oneshot) {
+                        break;
+                    }
 
-					continue;
-				}
+                    continue;
+                }
 
-				if (lookbehind) {
-					lookbehindLength = match[1] ? match[1].length : 0;
-				}
+                if (lookbehind) {
+                    lookbehindLength = match[1] ? match[1].length : 0;
+                }
 
-				var from = match.index + lookbehindLength,
-					match = match[0].slice(lookbehindLength),
-					to = from + match.length,
-					before = str.slice(0, from),
-					after = str.slice(to);
+                var from = match.index + lookbehindLength,
+                    match = match[0].slice(lookbehindLength),
+                    to = from + match.length,
+                    before = str.slice(0, from),
+                    after = str.slice(to);
 
-				var removeFrom = currentNode.prev;
+                var removeFrom = currentNode.prev;
 
-				if (before) {
-					removeFrom = addAfter(tokenList, removeFrom, before);
-					pos += before.length;
-				}
+                if (before) {
+                    removeFrom = addAfter(tokenList, removeFrom, before);
+                    pos += before.length;
+                }
 
-				removeRange(tokenList, removeFrom, removeCount);
+                removeRange(tokenList, removeFrom, removeCount);
 
-				var wrapped = new Token(token, inside ? _.tokenize(match, inside) : match, alias, match, greedy);
-				currentNode = addAfter(tokenList, removeFrom, wrapped);
+                var wrapped = new Token(token, inside ? _.tokenize(match, inside) : match, alias, match, greedy);
+                currentNode = addAfter(tokenList, removeFrom, wrapped);
 
-				if (after) {
-					addAfter(tokenList, currentNode, after);
-				}
+                if (after) {
+                    addAfter(tokenList, currentNode, after);
+                }
 
 
-				if (removeCount > 1)
-					matchGrammar(text, tokenList, grammar, currentNode.prev, pos, true, token + ',' + j);
+                if (removeCount > 1)
+                    matchGrammar(text, tokenList, grammar, currentNode.prev, pos, true, token + ',' + j);
 
-				if (oneshot)
-					break;
-			}
-		}
-	}
+                if (oneshot)
+                    break;
+            }
+        }
+    }
 }
 
 /**
@@ -13950,17 +13949,17 @@ function matchGrammar(text, tokenList, grammar, startNode, startPos, oneshot, ta
  * @template T
  */
 function LinkedList() {
-	/** @type {LinkedListNode<T>} */
-	var head = { value: null, prev: null, next: null };
-	/** @type {LinkedListNode<T>} */
-	var tail = { value: null, prev: head, next: null };
-	head.next = tail;
+    /** @type {LinkedListNode<T>} */
+    var head = { value: null, prev: null, next: null };
+    /** @type {LinkedListNode<T>} */
+    var tail = { value: null, prev: head, next: null };
+    head.next = tail;
 
-	/** @type {LinkedListNode<T>} */
-	this.head = head;
-	/** @type {LinkedListNode<T>} */
-	this.tail = tail;
-	this.length = 0;
+    /** @type {LinkedListNode<T>} */
+    this.head = head;
+    /** @type {LinkedListNode<T>} */
+    this.tail = tail;
+    this.length = 0;
 }
 
 /**
@@ -13972,15 +13971,15 @@ function LinkedList() {
  * @template T
  */
 function addAfter(list, node, value) {
-	// assumes that node != list.tail && values.length >= 0
-	var next = node.next;
+    // assumes that node != list.tail && values.length >= 0
+    var next = node.next;
 
-	var newNode = { value: value, prev: node, next: next };
-	node.next = newNode;
-	next.prev = newNode;
-	list.length++;
+    var newNode = { value: value, prev: node, next: next };
+    node.next = newNode;
+    next.prev = newNode;
+    list.length++;
 
-	return newNode;
+    return newNode;
 }
 /**
  * Removes `count` nodes after the given node. The given node will not be removed.
@@ -13990,13 +13989,13 @@ function addAfter(list, node, value) {
  * @template T
  */
 function removeRange(list, node, count) {
-	var next = node.next;
-	for (var i = 0; i < count && next !== list.tail; i++) {
-		next = next.next;
-	}
-	node.next = next;
-	next.prev = node;
-	list.length -= i;
+    var next = node.next;
+    for (var i = 0; i < count && next !== list.tail; i++) {
+        next = next.next;
+    }
+    node.next = next;
+    next.prev = node;
+    list.length -= i;
 }
 /**
  * @param {LinkedList<T>} list
@@ -14004,74 +14003,74 @@ function removeRange(list, node, count) {
  * @template T
  */
 function toArray(list) {
-	var array = [];
-	var node = list.head.next;
-	while (node !== list.tail) {
-		array.push(node.value);
-		node = node.next;
-	}
-	return array;
+    var array = [];
+    var node = list.head.next;
+    while (node !== list.tail) {
+        array.push(node.value);
+        node = node.next;
+    }
+    return array;
 }
 
 
 if (!_self.document) {
-	if (!_self.addEventListener) {
-		// in Node.js
-		return _;
-	}
+    if (!_self.addEventListener) {
+        // in Node.js
+        return _;
+    }
 
-	if (!_.disableWorkerMessageHandler) {
-		// In worker
-		_self.addEventListener('message', function (evt) {
-			var message = JSON.parse(evt.data),
-				lang = message.language,
-				code = message.code,
-				immediateClose = message.immediateClose;
+    if (!_.disableWorkerMessageHandler) {
+        // In worker
+        _self.addEventListener('message', function (evt) {
+            var message = JSON.parse(evt.data),
+                lang = message.language,
+                code = message.code,
+                immediateClose = message.immediateClose;
 
-			_self.postMessage(_.highlight(code, _.languages[lang], lang));
-			if (immediateClose) {
-				_self.close();
-			}
-		}, false);
-	}
+            _self.postMessage(_.highlight(code, _.languages[lang], lang));
+            if (immediateClose) {
+                _self.close();
+            }
+        }, false);
+    }
 
-	return _;
+    return _;
 }
 
 //Get current script and highlight
 var script = _.util.currentScript();
 
 if (script) {
-	_.filename = script.src;
+    _.filename = script.src;
 
-	if (script.hasAttribute('data-manual')) {
-		_.manual = true;
-	}
+    if (script.hasAttribute('data-manual')) {
+        _.manual = true;
+    }
 }
 
 function highlightAutomaticallyCallback() {
-	if (!_.manual) {
-		_.highlightAll();
-	}
+    if (!_.manual) {
+        _.highlightAll();
+    }
 }
 
 if (!_.manual) {
-	// If the document state is "loading", then we'll use DOMContentLoaded.
-	// If the document state is "interactive" and the prism.js script is deferred, then we'll also use the
-	// DOMContentLoaded event because there might be some plugins or languages which have also been deferred and they
-	// might take longer one animation frame to execute which can create a race condition where only some plugins have
-	// been loaded when Prism.highlightAll() is executed, depending on how fast resources are loaded.
-	// See https://github.com/PrismJS/prism/issues/2102
-	var readyState = document.readyState;
-	if (readyState === 'loading' || readyState === 'interactive' && script && script.defer) {
-		document.addEventListener('DOMContentLoaded', highlightAutomaticallyCallback);
-	} else {
-		if (window.requestAnimationFrame) {
-			window.requestAnimationFrame(highlightAutomaticallyCallback);
-		} else {
-			window.setTimeout(highlightAutomaticallyCallback, 16);
-		}
-	}
+    // If the document state is "loading", then we'll use DOMContentLoaded.
+    // If the document state is "interactive" and the prism.js script is deferred, then we'll also use the
+    // DOMContentLoaded event because there might be some plugins or languages which have also been deferred and they
+    // might take longer one animation frame to execute which can create a race condition where only some plugins have
+    // been loaded when Prism.highlightAll() is executed, depending on how fast resources are loaded.
+    // See https://github.com/PrismJS/prism/issues/2102
+    var readyState = document.readyState;
+    if (readyState === 'loading' || readyState === 'interactive' && script && script.defer) {
+        document.addEventListener('DOMContentLoaded', highlightAutomaticallyCallback);
+    } else {
+        if (window.requestAnimationFrame) {
+            window.requestAnimationFrame(highlightAutomaticallyCallback);
+        } else {
+            window.setTimeout(highlightAutomaticallyCallback, 16);
+        }
+    }
 }
 
 return _;
@@ -14079,12 +14078,12 @@ return _;
 })(_self);
 
 if ( true && module.exports) {
-	module.exports = Prism;
+    module.exports = Prism;
 }
 
 // hack for components to work correctly in node.js
 if (typeof global !== 'undefined') {
-	global.Prism = Prism;
+    global.Prism = Prism;
 }
 
 
@@ -14093,102 +14092,102 @@ if (typeof global !== 'undefined') {
 ********************************************** */
 
 Prism.languages.markup = {
-	'comment': /<!--[\s\S]*?-->/,
-	'prolog': /<\?[\s\S]+?\?>/,
-	'doctype': {
-		pattern: /<!DOCTYPE(?:[^>"'[\]]|"[^"]*"|'[^']*')+(?:\[(?:(?!<!--)[^"'\]]|"[^"]*"|'[^']*'|<!--[\s\S]*?-->)*\]\s*)?>/i,
-		greedy: true
-	},
-	'cdata': /<!\[CDATA\[[\s\S]*?]]>/i,
-	'tag': {
-		pattern: /<\/?(?!\d)[^\s>\/=$<%]+(?:\s(?:\s*[^\s>\/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/i,
-		greedy: true,
-		inside: {
-			'tag': {
-				pattern: /^<\/?[^\s>\/]+/i,
-				inside: {
-					'punctuation': /^<\/?/,
-					'namespace': /^[^\s>\/:]+:/
-				}
-			},
-			'attr-value': {
-				pattern: /=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/i,
-				inside: {
-					'punctuation': [
-						/^=/,
-						{
-							pattern: /^(\s*)["']|["']$/,
-							lookbehind: true
-						}
-					]
-				}
-			},
-			'punctuation': /\/?>/,
-			'attr-name': {
-				pattern: /[^\s>\/]+/,
-				inside: {
-					'namespace': /^[^\s>\/:]+:/
-				}
-			}
+    'comment': /<!--[\s\S]*?-->/,
+    'prolog': /<\?[\s\S]+?\?>/,
+    'doctype': {
+        pattern: /<!DOCTYPE(?:[^>"'[\]]|"[^"]*"|'[^']*')+(?:\[(?:(?!<!--)[^"'\]]|"[^"]*"|'[^']*'|<!--[\s\S]*?-->)*\]\s*)?>/i,
+        greedy: true
+    },
+    'cdata': /<!\[CDATA\[[\s\S]*?]]>/i,
+    'tag': {
+        pattern: /<\/?(?!\d)[^\s>\/=$<%]+(?:\s(?:\s*[^\s>\/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/i,
+        greedy: true,
+        inside: {
+            'tag': {
+                pattern: /^<\/?[^\s>\/]+/i,
+                inside: {
+                    'punctuation': /^<\/?/,
+                    'namespace': /^[^\s>\/:]+:/
+                }
+            },
+            'attr-value': {
+                pattern: /=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+)/i,
+                inside: {
+                    'punctuation': [
+                        /^=/,
+                        {
+                            pattern: /^(\s*)["']|["']$/,
+                            lookbehind: true
+                        }
+                    ]
+                }
+            },
+            'punctuation': /\/?>/,
+            'attr-name': {
+                pattern: /[^\s>\/]+/,
+                inside: {
+                    'namespace': /^[^\s>\/:]+:/
+                }
+            }
 
-		}
-	},
-	'entity': /&#?[\da-z]{1,8};/i
+        }
+    },
+    'entity': /&#?[\da-z]{1,8};/i
 };
 
 Prism.languages.markup['tag'].inside['attr-value'].inside['entity'] =
-	Prism.languages.markup['entity'];
+    Prism.languages.markup['entity'];
 
 // Plugin to make entity title show the real entity, idea by Roman Komarov
 Prism.hooks.add('wrap', function(env) {
 
-	if (env.type === 'entity') {
-		env.attributes['title'] = env.content.replace(/&amp;/, '&');
-	}
+    if (env.type === 'entity') {
+        env.attributes['title'] = env.content.replace(/&amp;/, '&');
+    }
 });
 
 Object.defineProperty(Prism.languages.markup.tag, 'addInlined', {
-	/**
-	 * Adds an inlined language to markup.
-	 *
-	 * An example of an inlined language is CSS with `<style>` tags.
-	 *
-	 * @param {string} tagName The name of the tag that contains the inlined language. This name will be treated as
-	 * case insensitive.
-	 * @param {string} lang The language key.
-	 * @example
-	 * addInlined('style', 'css');
-	 */
-	value: function addInlined(tagName, lang) {
-		var includedCdataInside = {};
-		includedCdataInside['language-' + lang] = {
-			pattern: /(^<!\[CDATA\[)[\s\S]+?(?=\]\]>$)/i,
-			lookbehind: true,
-			inside: Prism.languages[lang]
-		};
-		includedCdataInside['cdata'] = /^<!\[CDATA\[|\]\]>$/i;
+    /**
+     * Adds an inlined language to markup.
+     *
+     * An example of an inlined language is CSS with `<style>` tags.
+     *
+     * @param {string} tagName The name of the tag that contains the inlined language. This name will be treated as
+     * case insensitive.
+     * @param {string} lang The language key.
+     * @example
+     * addInlined('style', 'css');
+     */
+    value: function addInlined(tagName, lang) {
+        var includedCdataInside = {};
+        includedCdataInside['language-' + lang] = {
+            pattern: /(^<!\[CDATA\[)[\s\S]+?(?=\]\]>$)/i,
+            lookbehind: true,
+            inside: Prism.languages[lang]
+        };
+        includedCdataInside['cdata'] = /^<!\[CDATA\[|\]\]>$/i;
 
-		var inside = {
-			'included-cdata': {
-				pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
-				inside: includedCdataInside
-			}
-		};
-		inside['language-' + lang] = {
-			pattern: /[\s\S]+/,
-			inside: Prism.languages[lang]
-		};
+        var inside = {
+            'included-cdata': {
+                pattern: /<!\[CDATA\[[\s\S]*?\]\]>/i,
+                inside: includedCdataInside
+            }
+        };
+        inside['language-' + lang] = {
+            pattern: /[\s\S]+/,
+            inside: Prism.languages[lang]
+        };
 
-		var def = {};
-		def[tagName] = {
-			pattern: RegExp(/(<__[\s\S]*?>)(?:<!\[CDATA\[[\s\S]*?\]\]>\s*|[\s\S])*?(?=<\/__>)/.source.replace(/__/g, function () { return tagName; }), 'i'),
-			lookbehind: true,
-			greedy: true,
-			inside: inside
-		};
+        var def = {};
+        def[tagName] = {
+            pattern: RegExp(/(<__[\s\S]*?>)(?:<!\[CDATA\[[\s\S]*?\]\]>\s*|[\s\S])*?(?=<\/__>)/.source.replace(/__/g, function () { return tagName; }), 'i'),
+            lookbehind: true,
+            greedy: true,
+            inside: inside
+        };
 
-		Prism.languages.insertBefore('markup', 'cdata', def);
-	}
+        Prism.languages.insertBefore('markup', 'cdata', def);
+    }
 });
 
 Prism.languages.xml = Prism.languages.extend('markup', {});
@@ -14203,65 +14202,65 @@ Prism.languages.svg = Prism.languages.markup;
 
 (function (Prism) {
 
-	var string = /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/;
+    var string = /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/;
 
-	Prism.languages.css = {
-		'comment': /\/\*[\s\S]*?\*\//,
-		'atrule': {
-			pattern: /@[\w-]+[\s\S]*?(?:;|(?=\s*\{))/,
-			inside: {
-				'rule': /^@[\w-]+/,
-				'selector-function-argument': {
-					pattern: /(\bselector\s*\((?!\s*\))\s*)(?:[^()]|\((?:[^()]|\([^()]*\))*\))+?(?=\s*\))/,
-					lookbehind: true,
-					alias: 'selector'
-				}
-				// See rest below
-			}
-		},
-		'url': {
-			pattern: RegExp('url\\((?:' + string.source + '|[^\n\r()]*)\\)', 'i'),
-			greedy: true,
-			inside: {
-				'function': /^url/i,
-				'punctuation': /^\(|\)$/
-			}
-		},
-		'selector': RegExp('[^{}\\s](?:[^{};"\']|' + string.source + ')*?(?=\\s*\\{)'),
-		'string': {
-			pattern: string,
-			greedy: true
-		},
-		'property': /[-_a-z\xA0-\uFFFF][-\w\xA0-\uFFFF]*(?=\s*:)/i,
-		'important': /!important\b/i,
-		'function': /[-a-z0-9]+(?=\()/i,
-		'punctuation': /[(){};:,]/
-	};
+    Prism.languages.css = {
+        'comment': /\/\*[\s\S]*?\*\//,
+        'atrule': {
+            pattern: /@[\w-]+[\s\S]*?(?:;|(?=\s*\{))/,
+            inside: {
+                'rule': /^@[\w-]+/,
+                'selector-function-argument': {
+                    pattern: /(\bselector\s*\((?!\s*\))\s*)(?:[^()]|\((?:[^()]|\([^()]*\))*\))+?(?=\s*\))/,
+                    lookbehind: true,
+                    alias: 'selector'
+                }
+                // See rest below
+            }
+        },
+        'url': {
+            pattern: RegExp('url\\((?:' + string.source + '|[^\n\r()]*)\\)', 'i'),
+            greedy: true,
+            inside: {
+                'function': /^url/i,
+                'punctuation': /^\(|\)$/
+            }
+        },
+        'selector': RegExp('[^{}\\s](?:[^{};"\']|' + string.source + ')*?(?=\\s*\\{)'),
+        'string': {
+            pattern: string,
+            greedy: true
+        },
+        'property': /[-_a-z\xA0-\uFFFF][-\w\xA0-\uFFFF]*(?=\s*:)/i,
+        'important': /!important\b/i,
+        'function': /[-a-z0-9]+(?=\()/i,
+        'punctuation': /[(){};:,]/
+    };
 
-	Prism.languages.css['atrule'].inside.rest = Prism.languages.css;
+    Prism.languages.css['atrule'].inside.rest = Prism.languages.css;
 
-	var markup = Prism.languages.markup;
-	if (markup) {
-		markup.tag.addInlined('style', 'css');
+    var markup = Prism.languages.markup;
+    if (markup) {
+        markup.tag.addInlined('style', 'css');
 
-		Prism.languages.insertBefore('inside', 'attr-value', {
-			'style-attr': {
-				pattern: /\s*style=("|')(?:\\[\s\S]|(?!\1)[^\\])*\1/i,
-				inside: {
-					'attr-name': {
-						pattern: /^\s*style/i,
-						inside: markup.tag.inside
-					},
-					'punctuation': /^\s*=\s*['"]|['"]\s*$/,
-					'attr-value': {
-						pattern: /.+/i,
-						inside: Prism.languages.css
-					}
-				},
-				alias: 'language-css'
-			}
-		}, markup.tag);
-	}
+        Prism.languages.insertBefore('inside', 'attr-value', {
+            'style-attr': {
+                pattern: /\s*style=("|')(?:\\[\s\S]|(?!\1)[^\\])*\1/i,
+                inside: {
+                    'attr-name': {
+                        pattern: /^\s*style/i,
+                        inside: markup.tag.inside
+                    },
+                    'punctuation': /^\s*=\s*['"]|['"]\s*$/,
+                    'attr-value': {
+                        pattern: /.+/i,
+                        inside: Prism.languages.css
+                    }
+                },
+                alias: 'language-css'
+            }
+        }, markup.tag);
+    }
 
 }(Prism));
 
@@ -14271,34 +14270,34 @@ Prism.languages.svg = Prism.languages.markup;
 ********************************************** */
 
 Prism.languages.clike = {
-	'comment': [
-		{
-			pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
-			lookbehind: true
-		},
-		{
-			pattern: /(^|[^\\:])\/\/.*/,
-			lookbehind: true,
-			greedy: true
-		}
-	],
-	'string': {
-		pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
-		greedy: true
-	},
-	'class-name': {
-		pattern: /(\b(?:class|interface|extends|implements|trait|instanceof|new)\s+|\bcatch\s+\()[\w.\\]+/i,
-		lookbehind: true,
-		inside: {
-			'punctuation': /[.\\]/
-		}
-	},
-	'keyword': /\b(?:if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
-	'boolean': /\b(?:true|false)\b/,
-	'function': /\w+(?=\()/,
-	'number': /\b0x[\da-f]+\b|(?:\b\d+\.?\d*|\B\.\d+)(?:e[+-]?\d+)?/i,
-	'operator': /[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,
-	'punctuation': /[{}[\];(),.:]/
+    'comment': [
+        {
+            pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
+            lookbehind: true
+        },
+        {
+            pattern: /(^|[^\\:])\/\/.*/,
+            lookbehind: true,
+            greedy: true
+        }
+    ],
+    'string': {
+        pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+        greedy: true
+    },
+    'class-name': {
+        pattern: /(\b(?:class|interface|extends|implements|trait|instanceof|new)\s+|\bcatch\s+\()[\w.\\]+/i,
+        lookbehind: true,
+        inside: {
+            'punctuation': /[.\\]/
+        }
+    },
+    'keyword': /\b(?:if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
+    'boolean': /\b(?:true|false)\b/,
+    'function': /\w+(?=\()/,
+    'number': /\b0x[\da-f]+\b|(?:\b\d+\.?\d*|\B\.\d+)(?:e[+-]?\d+)?/i,
+    'operator': /[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,
+    'punctuation': /[{}[\];(),.:]/
 };
 
 
@@ -14307,93 +14306,93 @@ Prism.languages.clike = {
 ********************************************** */
 
 Prism.languages.javascript = Prism.languages.extend('clike', {
-	'class-name': [
-		Prism.languages.clike['class-name'],
-		{
-			pattern: /(^|[^$\w\xA0-\uFFFF])[_$A-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\.(?:prototype|constructor))/,
-			lookbehind: true
-		}
-	],
-	'keyword': [
-		{
-			pattern: /((?:^|})\s*)(?:catch|finally)\b/,
-			lookbehind: true
-		},
-		{
-			pattern: /(^|[^.]|\.\.\.\s*)\b(?:as|async(?=\s*(?:function\b|\(|[$\w\xA0-\uFFFF]|$))|await|break|case|class|const|continue|debugger|default|delete|do|else|enum|export|extends|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)\b/,
-			lookbehind: true
-		},
-	],
-	'number': /\b(?:(?:0[xX](?:[\dA-Fa-f](?:_[\dA-Fa-f])?)+|0[bB](?:[01](?:_[01])?)+|0[oO](?:[0-7](?:_[0-7])?)+)n?|(?:\d(?:_\d)?)+n|NaN|Infinity)\b|(?:\b(?:\d(?:_\d)?)+\.?(?:\d(?:_\d)?)*|\B\.(?:\d(?:_\d)?)+)(?:[Ee][+-]?(?:\d(?:_\d)?)+)?/,
-	// Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
-	'function': /#?[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,
-	'operator': /--|\+\+|\*\*=?|=>|&&|\|\||[!=]==|<<=?|>>>?=?|[-+*/%&|^!=<>]=?|\.{3}|\?[.?]?|[~:]/
+    'class-name': [
+        Prism.languages.clike['class-name'],
+        {
+            pattern: /(^|[^$\w\xA0-\uFFFF])[_$A-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\.(?:prototype|constructor))/,
+            lookbehind: true
+        }
+    ],
+    'keyword': [
+        {
+            pattern: /((?:^|})\s*)(?:catch|finally)\b/,
+            lookbehind: true
+        },
+        {
+            pattern: /(^|[^.]|\.\.\.\s*)\b(?:as|async(?=\s*(?:function\b|\(|[$\w\xA0-\uFFFF]|$))|await|break|case|class|const|continue|debugger|default|delete|do|else|enum|export|extends|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)\b/,
+            lookbehind: true
+        },
+    ],
+    'number': /\b(?:(?:0[xX](?:[\dA-Fa-f](?:_[\dA-Fa-f])?)+|0[bB](?:[01](?:_[01])?)+|0[oO](?:[0-7](?:_[0-7])?)+)n?|(?:\d(?:_\d)?)+n|NaN|Infinity)\b|(?:\b(?:\d(?:_\d)?)+\.?(?:\d(?:_\d)?)*|\B\.(?:\d(?:_\d)?)+)(?:[Ee][+-]?(?:\d(?:_\d)?)+)?/,
+    // Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
+    'function': /#?[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,
+    'operator': /--|\+\+|\*\*=?|=>|&&|\|\||[!=]==|<<=?|>>>?=?|[-+*/%&|^!=<>]=?|\.{3}|\?[.?]?|[~:]/
 });
 
 Prism.languages.javascript['class-name'][0].pattern = /(\b(?:class|interface|extends|implements|instanceof|new)\s+)[\w.\\]+/;
 
 Prism.languages.insertBefore('javascript', 'keyword', {
-	'regex': {
-		pattern: /((?:^|[^$\w\xA0-\uFFFF."'\])\s])\s*)\/(?:\[(?:[^\]\\\r\n]|\\.)*]|\\.|[^/\\\[\r\n])+\/[gimyus]{0,6}(?=(?:\s|\/\*[\s\S]*?\*\/)*(?:$|[\r\n,.;:})\]]|\/\/))/,
-		lookbehind: true,
-		greedy: true
-	},
-	// This must be declared before keyword because we use "function" inside the look-forward
-	'function-variable': {
-		pattern: /#?[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/,
-		alias: 'function'
-	},
-	'parameter': [
-		{
-			pattern: /(function(?:\s+[_$A-Za-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)?\s*\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\))/,
-			lookbehind: true,
-			inside: Prism.languages.javascript
-		},
-		{
-			pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=>)/i,
-			inside: Prism.languages.javascript
-		},
-		{
-			pattern: /(\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\)\s*=>)/,
-			lookbehind: true,
-			inside: Prism.languages.javascript
-		},
-		{
-			pattern: /((?:\b|\s|^)(?!(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)(?![$\w\xA0-\uFFFF]))(?:[_$A-Za-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*\s*)\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\)\s*\{)/,
-			lookbehind: true,
-			inside: Prism.languages.javascript
-		}
-	],
-	'constant': /\b[A-Z](?:[A-Z_]|\dx?)*\b/
+    'regex': {
+        pattern: /((?:^|[^$\w\xA0-\uFFFF."'\])\s])\s*)\/(?:\[(?:[^\]\\\r\n]|\\.)*]|\\.|[^/\\\[\r\n])+\/[gimyus]{0,6}(?=(?:\s|\/\*[\s\S]*?\*\/)*(?:$|[\r\n,.;:})\]]|\/\/))/,
+        lookbehind: true,
+        greedy: true
+    },
+    // This must be declared before keyword because we use "function" inside the look-forward
+    'function-variable': {
+        pattern: /#?[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|[_$a-zA-Z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/,
+        alias: 'function'
+    },
+    'parameter': [
+        {
+            pattern: /(function(?:\s+[_$A-Za-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)?\s*\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\))/,
+            lookbehind: true,
+            inside: Prism.languages.javascript
+        },
+        {
+            pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=>)/i,
+            inside: Prism.languages.javascript
+        },
+        {
+            pattern: /(\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\)\s*=>)/,
+            lookbehind: true,
+            inside: Prism.languages.javascript
+        },
+        {
+            pattern: /((?:\b|\s|^)(?!(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)(?![$\w\xA0-\uFFFF]))(?:[_$A-Za-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*\s*)\(\s*)(?!\s)(?:[^()]|\([^()]*\))+?(?=\s*\)\s*\{)/,
+            lookbehind: true,
+            inside: Prism.languages.javascript
+        }
+    ],
+    'constant': /\b[A-Z](?:[A-Z_]|\dx?)*\b/
 });
 
 Prism.languages.insertBefore('javascript', 'string', {
-	'template-string': {
-		pattern: /`(?:\\[\s\S]|\${(?:[^{}]|{(?:[^{}]|{[^}]*})*})+}|(?!\${)[^\\`])*`/,
-		greedy: true,
-		inside: {
-			'template-punctuation': {
-				pattern: /^`|`$/,
-				alias: 'string'
-			},
-			'interpolation': {
-				pattern: /((?:^|[^\\])(?:\\{2})*)\${(?:[^{}]|{(?:[^{}]|{[^}]*})*})+}/,
-				lookbehind: true,
-				inside: {
-					'interpolation-punctuation': {
-						pattern: /^\${|}$/,
-						alias: 'punctuation'
-					},
-					rest: Prism.languages.javascript
-				}
-			},
-			'string': /[\s\S]+/
-		}
-	}
+    'template-string': {
+        pattern: /`(?:\\[\s\S]|\${(?:[^{}]|{(?:[^{}]|{[^}]*})*})+}|(?!\${)[^\\`])*`/,
+        greedy: true,
+        inside: {
+            'template-punctuation': {
+                pattern: /^`|`$/,
+                alias: 'string'
+            },
+            'interpolation': {
+                pattern: /((?:^|[^\\])(?:\\{2})*)\${(?:[^{}]|{(?:[^{}]|{[^}]*})*})+}/,
+                lookbehind: true,
+                inside: {
+                    'interpolation-punctuation': {
+                        pattern: /^\${|}$/,
+                        alias: 'punctuation'
+                    },
+                    rest: Prism.languages.javascript
+                }
+            },
+            'string': /[\s\S]+/
+        }
+    }
 });
 
 if (Prism.languages.markup) {
-	Prism.languages.markup.tag.addInlined('script', 'javascript');
+    Prism.languages.markup.tag.addInlined('script', 'javascript');
 }
 
 Prism.languages.js = Prism.languages.javascript;
@@ -14404,92 +14403,92 @@ Prism.languages.js = Prism.languages.javascript;
 ********************************************** */
 
 (function () {
-	if (typeof self === 'undefined' || !self.Prism || !self.document || !document.querySelector) {
-		return;
-	}
+    if (typeof self === 'undefined' || !self.Prism || !self.document || !document.querySelector) {
+        return;
+    }
 
-	/**
-	 * @param {Element} [container=document]
-	 */
-	self.Prism.fileHighlight = function(container) {
-		container = container || document;
+    /**
+     * @param {Element} [container=document]
+     */
+    self.Prism.fileHighlight = function(container) {
+        container = container || document;
 
-		var Extensions = {
-			'js': 'javascript',
-			'py': 'python',
-			'rb': 'ruby',
-			'ps1': 'powershell',
-			'psm1': 'powershell',
-			'sh': 'bash',
-			'bat': 'batch',
-			'h': 'c',
-			'tex': 'latex'
-		};
+        var Extensions = {
+            'js': 'javascript',
+            'py': 'python',
+            'rb': 'ruby',
+            'ps1': 'powershell',
+            'psm1': 'powershell',
+            'sh': 'bash',
+            'bat': 'batch',
+            'h': 'c',
+            'tex': 'latex'
+        };
 
-		Array.prototype.slice.call(container.querySelectorAll('pre[data-src]')).forEach(function (pre) {
-			// ignore if already loaded
-			if (pre.hasAttribute('data-src-loaded')) {
-				return;
-			}
+        Array.prototype.slice.call(container.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            // ignore if already loaded
+            if (pre.hasAttribute('data-src-loaded')) {
+                return;
+            }
 
-			// load current
-			var src = pre.getAttribute('data-src');
+            // load current
+            var src = pre.getAttribute('data-src');
 
-			var language, parent = pre;
-			var lang = /\blang(?:uage)?-([\w-]+)\b/i;
-			while (parent && !lang.test(parent.className)) {
-				parent = parent.parentNode;
-			}
+            var language, parent = pre;
+            var lang = /\blang(?:uage)?-([\w-]+)\b/i;
+            while (parent && !lang.test(parent.className)) {
+                parent = parent.parentNode;
+            }
 
-			if (parent) {
-				language = (pre.className.match(lang) || [, ''])[1];
-			}
+            if (parent) {
+                language = (pre.className.match(lang) || [, ''])[1];
+            }
 
-			if (!language) {
-				var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-				language = Extensions[extension] || extension;
-			}
+            if (!language) {
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                language = Extensions[extension] || extension;
+            }
 
-			var code = document.createElement('code');
-			code.className = 'language-' + language;
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
 
-			pre.textContent = '';
+            pre.textContent = '';
 
-			code.textContent = 'Loading…';
+            code.textContent = 'Loading…';
 
-			pre.appendChild(code);
+            pre.appendChild(code);
 
-			var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest();
 
-			xhr.open('GET', src, true);
+            xhr.open('GET', src, true);
 
-			xhr.onreadystatechange = function () {
-				if (xhr.readyState == 4) {
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
 
-					if (xhr.status < 400 && xhr.responseText) {
-						code.textContent = xhr.responseText;
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
 
-						Prism.highlightElement(code);
-						// mark as loaded
-						pre.setAttribute('data-src-loaded', '');
-					}
-					else if (xhr.status >= 400) {
-						code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-					}
-					else {
-						code.textContent = '✖ Error: File does not exist or is empty';
-					}
-				}
-			};
+                        Prism.highlightElement(code);
+                        // mark as loaded
+                        pre.setAttribute('data-src-loaded', '');
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
 
-			xhr.send(null);
-		});
-	};
+            xhr.send(null);
+        });
+    };
 
-	document.addEventListener('DOMContentLoaded', function () {
-		// execute inside handler, for dropping Event as argument
-		self.Prism.fileHighlight();
-	});
+    document.addEventListener('DOMContentLoaded', function () {
+        // execute inside handler, for dropping Event as argument
+        self.Prism.fileHighlight();
+    });
 
 })();
 
@@ -15832,28 +15831,28 @@ if(false) {}
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
+    MIT License http://www.opensource.org/licenses/mit-license.php
+    Author Tobias Koppers @sokra
 */
 
 var stylesInDom = {};
 
-var	memoize = function (fn) {
-	var memo;
+var memoize = function (fn) {
+    var memo;
 
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
+    return function () {
+        if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+        return memo;
+    };
 };
 
 var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
+    // Test for IE <= 9 as proposed by Browserhacks
+    // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+    // Tests for existence of standard globals is to allow style-loader
+    // to operate correctly into non-standard environments
+    // @see https://github.com/webpack-contrib/style-loader/issues/177
+    return window && document && document.all && !window.atob;
 });
 
 var getTarget = function (target, parent) {
@@ -15864,9 +15863,9 @@ var getTarget = function (target, parent) {
 };
 
 var getElement = (function (fn) {
-	var memo = {};
+    var memo = {};
 
-	return function(target, parent) {
+    return function(target, parent) {
                 // If passing function in options, then use it for resolve "head" element.
                 // Useful for Shadow Root style i.e
                 // {
@@ -15876,358 +15875,358 @@ var getElement = (function (fn) {
                         return target();
                 }
                 if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target, parent);
-			// Special case to return head of iframe instead of iframe itself
-			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[target] = styleTarget;
-		}
-		return memo[target]
-	};
+            var styleTarget = getTarget.call(this, target, parent);
+            // Special case to return head of iframe instead of iframe itself
+            if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+                try {
+                    // This will throw an exception if access to iframe is blocked
+                    // due to cross-origin restrictions
+                    styleTarget = styleTarget.contentDocument.head;
+                } catch(e) {
+                    styleTarget = null;
+                }
+            }
+            memo[target] = styleTarget;
+        }
+        return memo[target]
+    };
 })();
 
 var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
+var singletonCounter = 0;
+var stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(/*! ./urls */ "./node_modules/style-loader/lib/urls.js");
+var fixUrls = __webpack_require__(/*! ./urls */ "./node_modules/style-loader/lib/urls.js");
 
 module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
+    if (typeof DEBUG !== "undefined" && DEBUG) {
+        if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+    }
 
-	options = options || {};
+    options = options || {};
 
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+    options.attrs = typeof options.attrs === "object" ? options.attrs : {};
 
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
+    // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+    // tags it will allow on a page
+    if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
 
-	// By default, add <style> tags to the <head> element
+    // By default, add <style> tags to the <head> element
         if (!options.insertInto) options.insertInto = "head";
 
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
+    // By default, add <style> tags to the bottom of the target
+    if (!options.insertAt) options.insertAt = "bottom";
 
-	var styles = listToStyles(list, options);
+    var styles = listToStyles(list, options);
 
-	addStylesToDom(styles, options);
+    addStylesToDom(styles, options);
 
-	return function update (newList) {
-		var mayRemove = [];
+    return function update (newList) {
+        var mayRemove = [];
 
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
+        for (var i = 0; i < styles.length; i++) {
+            var item = styles[i];
+            var domStyle = stylesInDom[item.id];
 
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
+            domStyle.refs--;
+            mayRemove.push(domStyle);
+        }
 
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
+        if(newList) {
+            var newStyles = listToStyles(newList, options);
+            addStylesToDom(newStyles, options);
+        }
 
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
+        for (var i = 0; i < mayRemove.length; i++) {
+            var domStyle = mayRemove[i];
 
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+            if(domStyle.refs === 0) {
+                for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
 
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
+                delete stylesInDom[domStyle.id];
+            }
+        }
+    };
 };
 
 function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
+    for (var i = 0; i < styles.length; i++) {
+        var item = styles[i];
+        var domStyle = stylesInDom[item.id];
 
-		if(domStyle) {
-			domStyle.refs++;
+        if(domStyle) {
+            domStyle.refs++;
 
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
+            for(var j = 0; j < domStyle.parts.length; j++) {
+                domStyle.parts[j](item.parts[j]);
+            }
 
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
+            for(; j < item.parts.length; j++) {
+                domStyle.parts.push(addStyle(item.parts[j], options));
+            }
+        } else {
+            var parts = [];
 
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
+            for(var j = 0; j < item.parts.length; j++) {
+                parts.push(addStyle(item.parts[j], options));
+            }
 
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
+            stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+        }
+    }
 }
 
 function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
+    var styles = [];
+    var newStyles = {};
 
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
+    for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var id = options.base ? item[0] + options.base : item[0];
+        var css = item[1];
+        var media = item[2];
+        var sourceMap = item[3];
+        var part = {css: css, media: media, sourceMap: sourceMap};
 
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
+        if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+        else newStyles[id].parts.push(part);
+    }
 
-	return styles;
+    return styles;
 }
 
 function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
+    var target = getElement(options.insertInto)
 
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
+    if (!target) {
+        throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+    }
 
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+    var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
 
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertAt.before, target);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
+    if (options.insertAt === "top") {
+        if (!lastStyleElementInsertedAtTop) {
+            target.insertBefore(style, target.firstChild);
+        } else if (lastStyleElementInsertedAtTop.nextSibling) {
+            target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+        } else {
+            target.appendChild(style);
+        }
+        stylesInsertedAtTop.push(style);
+    } else if (options.insertAt === "bottom") {
+        target.appendChild(style);
+    } else if (typeof options.insertAt === "object" && options.insertAt.before) {
+        var nextSibling = getElement(options.insertAt.before, target);
+        target.insertBefore(style, nextSibling);
+    } else {
+        throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
+    }
 }
 
 function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
+    if (style.parentNode === null) return false;
+    style.parentNode.removeChild(style);
 
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
+    var idx = stylesInsertedAtTop.indexOf(style);
+    if(idx >= 0) {
+        stylesInsertedAtTop.splice(idx, 1);
+    }
 }
 
 function createStyleElement (options) {
-	var style = document.createElement("style");
+    var style = document.createElement("style");
 
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
+    if(options.attrs.type === undefined) {
+        options.attrs.type = "text/css";
+    }
 
-	if(options.attrs.nonce === undefined) {
-		var nonce = getNonce();
-		if (nonce) {
-			options.attrs.nonce = nonce;
-		}
-	}
+    if(options.attrs.nonce === undefined) {
+        var nonce = getNonce();
+        if (nonce) {
+            options.attrs.nonce = nonce;
+        }
+    }
 
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
+    addAttrs(style, options.attrs);
+    insertStyleElement(options, style);
 
-	return style;
+    return style;
 }
 
 function createLinkElement (options) {
-	var link = document.createElement("link");
+    var link = document.createElement("link");
 
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-	options.attrs.rel = "stylesheet";
+    if(options.attrs.type === undefined) {
+        options.attrs.type = "text/css";
+    }
+    options.attrs.rel = "stylesheet";
 
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
+    addAttrs(link, options.attrs);
+    insertStyleElement(options, link);
 
-	return link;
+    return link;
 }
 
 function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
+    Object.keys(attrs).forEach(function (key) {
+        el.setAttribute(key, attrs[key]);
+    });
 }
 
 function getNonce() {
-	if (false) {}
+    if (false) {}
 
-	return __webpack_require__.nc;
+    return __webpack_require__.nc;
 }
 
 function addStyle (obj, options) {
-	var style, update, remove, result;
+    var style, update, remove, result;
 
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = typeof options.transform === 'function'
-		 ? options.transform(obj.css) 
-		 : options.transform.default(obj.css);
+    // If a transform function was defined, run it on the css
+    if (options.transform && obj.css) {
+        result = typeof options.transform === 'function'
+         ? options.transform(obj.css) 
+         : options.transform.default(obj.css);
 
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
+        if (result) {
+            // If transform returns a value, use that instead of the original css.
+            // This allows running runtime transformations on the css.
+            obj.css = result;
+        } else {
+            // If the transform function returns a falsy value, don't add this css.
+            // This allows conditional loading of css
+            return function() {
+                // noop
+            };
+        }
+    }
 
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
+    if (options.singleton) {
+        var styleIndex = singletonCounter++;
 
-		style = singleton || (singleton = createStyleElement(options));
+        style = singleton || (singleton = createStyleElement(options));
 
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+        update = applyToSingletonTag.bind(null, style, styleIndex, false);
+        remove = applyToSingletonTag.bind(null, style, styleIndex, true);
 
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
+    } else if (
+        obj.sourceMap &&
+        typeof URL === "function" &&
+        typeof URL.createObjectURL === "function" &&
+        typeof URL.revokeObjectURL === "function" &&
+        typeof Blob === "function" &&
+        typeof btoa === "function"
+    ) {
+        style = createLinkElement(options);
+        update = updateLink.bind(null, style, options);
+        remove = function () {
+            removeStyleElement(style);
 
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
+            if(style.href) URL.revokeObjectURL(style.href);
+        };
+    } else {
+        style = createStyleElement(options);
+        update = applyToTag.bind(null, style);
+        remove = function () {
+            removeStyleElement(style);
+        };
+    }
 
-	update(obj);
+    update(obj);
 
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
+    return function updateStyle (newObj) {
+        if (newObj) {
+            if (
+                newObj.css === obj.css &&
+                newObj.media === obj.media &&
+                newObj.sourceMap === obj.sourceMap
+            ) {
+                return;
+            }
 
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
+            update(obj = newObj);
+        } else {
+            remove();
+        }
+    };
 }
 
 var replaceText = (function () {
-	var textStore = [];
+    var textStore = [];
 
-	return function (index, replacement) {
-		textStore[index] = replacement;
+    return function (index, replacement) {
+        textStore[index] = replacement;
 
-		return textStore.filter(Boolean).join('\n');
-	};
+        return textStore.filter(Boolean).join('\n');
+    };
 })();
 
 function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
+    var css = remove ? "" : obj.css;
 
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
+    if (style.styleSheet) {
+        style.styleSheet.cssText = replaceText(index, css);
+    } else {
+        var cssNode = document.createTextNode(css);
+        var childNodes = style.childNodes;
 
-		if (childNodes[index]) style.removeChild(childNodes[index]);
+        if (childNodes[index]) style.removeChild(childNodes[index]);
 
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
+        if (childNodes.length) {
+            style.insertBefore(cssNode, childNodes[index]);
+        } else {
+            style.appendChild(cssNode);
+        }
+    }
 }
 
 function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
+    var css = obj.css;
+    var media = obj.media;
 
-	if(media) {
-		style.setAttribute("media", media)
-	}
+    if(media) {
+        style.setAttribute("media", media)
+    }
 
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
+    if(style.styleSheet) {
+        style.styleSheet.cssText = css;
+    } else {
+        while(style.firstChild) {
+            style.removeChild(style.firstChild);
+        }
 
-		style.appendChild(document.createTextNode(css));
-	}
+        style.appendChild(document.createTextNode(css));
+    }
 }
 
 function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
+    var css = obj.css;
+    var sourceMap = obj.sourceMap;
 
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+    /*
+        If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+        and there is no publicPath defined then lets turn convertToAbsoluteUrls
+        on by default.  Otherwise default to the convertToAbsoluteUrls option
+        directly
+    */
+    var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
 
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
+    if (options.convertToAbsoluteUrls || autoFixUrls) {
+        css = fixUrls(css);
+    }
 
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
+    if (sourceMap) {
+        // http://stackoverflow.com/a/26603875
+        css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+    }
 
-	var blob = new Blob([css], { type: "text/css" });
+    var blob = new Blob([css], { type: "text/css" });
 
-	var oldSrc = link.href;
+    var oldSrc = link.href;
 
-	link.href = URL.createObjectURL(blob);
+    link.href = URL.createObjectURL(blob);
 
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
+    if(oldSrc) URL.revokeObjectURL(oldSrc);
 }
 
 
@@ -16262,72 +16261,72 @@ module.exports = function (css) {
     throw new Error("fixUrls requires window.location");
   }
 
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
+    // blank or null?
+    if (!css || typeof css !== "string") {
+      return css;
   }
 
   var baseUrl = location.protocol + "//" + location.host;
   var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
 
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
+    // convert each url(...)
+    /*
+    This regular expression is just a way to recursively match brackets within
+    a string.
 
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
+     /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+       (  = Start a capturing group
+         (?:  = Start a non-capturing group
+             [^)(]  = Match anything that isn't a parentheses
+             |  = OR
+             \(  = Match a start parentheses
+                 (?:  = Start another non-capturing groups
+                     [^)(]+  = Match anything that isn't a parentheses
+                     |  = OR
+                     \(  = Match a start parentheses
+                         [^)(]*  = Match anything that isn't a parentheses
+                     \)  = Match a end parentheses
+                 )  = End Group
               *\) = Match anything and then a close parens
           )  = Close non-capturing group
           *  = Match anything
        )  = Close capturing group
-	 \)  = Match a close parens
+     \)  = Match a close parens
 
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+     /gi  = Get all matches, not the first.  Be case insensitive.
+     */
+    var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+        // strip quotes (if they exist)
+        var unquotedOrigUrl = origUrl
+            .trim()
+            .replace(/^"(.*)"$/, function(o, $1){ return $1; })
+            .replace(/^'(.*)'$/, function(o, $1){ return $1; });
 
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
+        // already a full url? no change
+        if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
+          return fullMatch;
+        }
 
-		// convert the url to a full url
-		var newUrl;
+        // convert the url to a full url
+        var newUrl;
 
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
+        if (unquotedOrigUrl.indexOf("//") === 0) {
+            //TODO: should we add protocol?
+            newUrl = unquotedOrigUrl;
+        } else if (unquotedOrigUrl.indexOf("/") === 0) {
+            // path should be relative to the base url
+            newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+        } else {
+            // path should be relative to current directory
+            newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+        }
 
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
+        // send back the fixed url(...)
+        return "url(" + JSON.stringify(newUrl) + ")";
+    });
 
-	// send back the fixed css
-	return fixedCss;
+    // send back the fixed css
+    return fixedCss;
 };
 
 
@@ -25656,11 +25655,11 @@ var confirmed = {
 };
 
 function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+    return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
 function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
+    return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
 var assertString_1 = createCommonjsModule(function (module, exports) {
@@ -57955,89 +57954,89 @@ Object.defineProperty(exports,"__esModule",{value:true});exports.VueHammer=undef
 
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
+/******/    // The module cache
+/******/    var installedModules = {};
 /******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
+/******/    // The require function
+/******/    function __webpack_require__(moduleId) {
 /******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
+/******/        // Check if module is in cache
+/******/        if(installedModules[moduleId]) {
+/******/            return installedModules[moduleId].exports;
+/******/        }
+/******/        // Create a new module (and put it into the cache)
+/******/        var module = installedModules[moduleId] = {
+/******/            i: moduleId,
+/******/            l: false,
+/******/            exports: {}
+/******/        };
 /******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/        // Execute the module function
+/******/        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
+/******/        // Flag the module as loaded
+/******/        module.l = true;
 /******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/        // Return the exports of the module
+/******/        return module.exports;
+/******/    }
 /******/
 /******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "fb15");
+/******/    // expose the modules object (__webpack_modules__)
+/******/    __webpack_require__.m = modules;
+/******/
+/******/    // expose the module cache
+/******/    __webpack_require__.c = installedModules;
+/******/
+/******/    // define getter function for harmony exports
+/******/    __webpack_require__.d = function(exports, name, getter) {
+/******/        if(!__webpack_require__.o(exports, name)) {
+/******/            Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/        }
+/******/    };
+/******/
+/******/    // define __esModule on exports
+/******/    __webpack_require__.r = function(exports) {
+/******/        if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/            Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/        }
+/******/        Object.defineProperty(exports, '__esModule', { value: true });
+/******/    };
+/******/
+/******/    // create a fake namespace object
+/******/    // mode & 1: value is a module id, require it
+/******/    // mode & 2: merge all properties of value into the ns
+/******/    // mode & 4: return value when already ns object
+/******/    // mode & 8|1: behave like require
+/******/    __webpack_require__.t = function(value, mode) {
+/******/        if(mode & 1) value = __webpack_require__(value);
+/******/        if(mode & 8) return value;
+/******/        if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/        var ns = Object.create(null);
+/******/        __webpack_require__.r(ns);
+/******/        Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/        if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/        return ns;
+/******/    };
+/******/
+/******/    // getDefaultExport function for compatibility with non-harmony modules
+/******/    __webpack_require__.n = function(module) {
+/******/        var getter = module && module.__esModule ?
+/******/            function getDefault() { return module['default']; } :
+/******/            function getModuleExports() { return module; };
+/******/        __webpack_require__.d(getter, 'a', getter);
+/******/        return getter;
+/******/    };
+/******/
+/******/    // Object.prototype.hasOwnProperty.call
+/******/    __webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/    // __webpack_public_path__
+/******/    __webpack_require__.p = "";
+/******/
+/******/
+/******/    // Load entry module and return exports
+/******/    return __webpack_require__(__webpack_require__.s = "fb15");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -59126,7 +59125,7 @@ exports.tmpdir = exports.tmpDir = function () {
 exports.EOL = '\n';
 
 exports.homedir = function () {
-	return '/'
+    return '/'
 };
 
 
@@ -74097,15 +74096,15 @@ var g;
 
 // This works in non-strict mode
 g = (function() {
-	return this;
+    return this;
 })();
 
 try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
+    // This works if eval is allowed (see CSP)
+    g = g || new Function("return this")();
 } catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
+    // This works if the window reference is available
+    if (typeof window === "object") g = window;
 }
 
 // g can still be undefined, but nothing to do about it...
@@ -75545,7 +75544,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     // =============================================================================
     path: '',
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(11), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! ./layouts/main/Main.vue */ "./resources/js/src/layouts/main/Main.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(10), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! ./layouts/main/Main.vue */ "./resources/js/src/layouts/main/Main.vue"));
     },
     children: [// =============================================================================
     // Theme Routes
@@ -75554,7 +75553,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/',
       name: 'home',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(25), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, /*! ./views/Home.vue */ "./resources/js/src/views/Home.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(26), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, /*! ./views/Home.vue */ "./resources/js/src/views/Home.vue"));
       },
       meta: {
         authRequired: true
@@ -75563,7 +75562,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/page2',
       name: 'page-2',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 29).then(__webpack_require__.bind(null, /*! ./views/Page2.vue */ "./resources/js/src/views/Page2.vue"));
+        return __webpack_require__.e(/*! import() */ 30).then(__webpack_require__.bind(null, /*! ./views/Page2.vue */ "./resources/js/src/views/Page2.vue"));
       }
     }, //classes menu path
     {
@@ -75590,7 +75589,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/class-add',
       name: 'app-class-add',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(20)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-add/ClassAdd.vue */ "./resources/js/src/views/apps/class/class-add/ClassAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-add/ClassAdd.vue */ "./resources/js/src/views/apps/class/class-add/ClassAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -75610,7 +75609,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/class-view/:classId',
       name: 'app-class-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-view/ClassView.vue */ "./resources/js/src/views/apps/class/class-view/ClassView.vue"));
+        return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-view/ClassView.vue */ "./resources/js/src/views/apps/class/class-view/ClassView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -75630,7 +75629,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/class-edit/:classId',
       name: 'app-class-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-edit/ClassEdit.vue */ "./resources/js/src/views/apps/class/class-edit/ClassEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(22)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-edit/ClassEdit.vue */ "./resources/js/src/views/apps/class/class-edit/ClassEdit.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -75647,18 +75646,36 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         rule: 'editor'
       }
     }, {
-      path: '/apps/class/subject-view/:subjectId',
-      name: 'app-subject-view',
+      path: '/apps/class/subject-add/:classId',
+      name: 'app-subject-add',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(23)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/class/subject-view/SubjectView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(8)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/class/subject-add/SubjectAdd.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
         }, {
-          title: 'Subjects',
-          url: '/apps/subject/subject-list'
+          title: 'Subject'
+        }, {
+          title: 'Add',
+          active: true
+        }],
+        pageTitle: 'Subject Add',
+        rule: 'editor'
+      }
+    }, {
+      path: '/apps/class/subject-view/:subjectId',
+      name: 'app-subject-view',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(24)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/class/subject-view/SubjectView.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Subject'
         }, {
           title: 'View',
           active: true
@@ -75670,7 +75687,27 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/subject-edit/:subjectId',
       name: 'app-subject-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(22)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/class/subject-edit/SubjectEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(23)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/class/subject-edit/SubjectEdit.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Subject'
+        }, {
+          title: 'Edit',
+          active: true
+        }],
+        pageTitle: 'Subject Edit',
+        rule: 'editor'
+      }
+    }, //assign teacher to subjects
+    {
+      path: '/apps/class/assign-teacher/:classId/:subjectId',
+      name: 'app-assign-teacher',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/assign-teacher/AssignTeacher.vue */ "./resources/js/src/views/apps/class/assign-teacher/AssignTeacher.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -75686,11 +75723,30 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         rule: 'editor'
       }
     }, //subjects menu path
-    , {
+    {
+      path: '/apps/subject/subject-list',
+      name: 'app-subject-list',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-list/SubjectList.vue */ "./resources/js/src/views/apps/subject/subject-list/SubjectList.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Subject'
+        }, {
+          title: 'List',
+          active: true
+        }],
+        pageTitle: 'Subjects List',
+        rule: 'editor'
+      }
+    }, {
       path: '/apps/subject/subject-add/',
       name: 'app-subject-add',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/subject/subject-add/SubjectAdd.vue"));
+        return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/subject/subject-add/SubjectAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -75709,7 +75765,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/subject/subject-view/:subjectId',
       name: 'app-subject-view',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/subject/subject-view/SubjectView.vue"));
+        return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/subject/subject-view/SubjectView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -75724,41 +75780,18 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         pageTitle: 'Subject View',
         rule: 'editor'
       }
-    }, //subjects menu path
-    {
-      path: '/apps/subject/subject-list',
-      name: 'app-subject-list',
-      component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(26)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-list/SubjectList.vue */ "./resources/js/src/views/apps/subject/subject-list/SubjectList.vue"));
-      },
-      meta: {
-        breadcrumb: [{
-          title: 'Home',
-          url: '/'
-        }, {
-          title: 'Subjects',
-          url: '/apps/subject/subject-list'
-        }, {
-          title: 'List',
-          active: true
-        }],
-        pageTitle: 'Subjects List',
-        rule: 'editor'
-      }
-    },
-     {
+    }, {
       path: '/apps/subject/subject-edit/:subjectId',
       name: 'app-subject-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(29)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(25)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
         }, {
-          title: 'Subjects',
-          url: '/apps/subject/subject-list'
+          title: 'Subject'
         }, {
           title: 'Edit',
           active: true
@@ -75771,15 +75804,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/user-list',
       name: 'app-user-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(19)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/UserList.vue */ "./resources/js/src/views/apps/user/user-list/UserList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(20)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/UserList.vue */ "./resources/js/src/views/apps/user/user-list/UserList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
         }, {
-          title: 'Teachers',
-          url: '/apps/user/user-list'
+          title: 'Teachers'
         }, {
           title: 'List',
           active: true
@@ -75791,15 +75823,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/user-view/:userId',
       name: 'app-user-view',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! @/views/apps/user/UserView.vue */ "./resources/js/src/views/apps/user/UserView.vue"));
+        return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! @/views/apps/user/UserView.vue */ "./resources/js/src/views/apps/user/UserView.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
         }, {
-          title: 'Teachers',
-          url: '/apps/user/user-list'
+          title: 'Teachers'
         }, {
           title: 'Teacher',
           active: true
@@ -75811,15 +75842,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/user-edit/:userId',
       name: 'app-user-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(26), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-edit/UserEdit.vue */ "./resources/js/src/views/apps/user/user-edit/UserEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(27), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-edit/UserEdit.vue */ "./resources/js/src/views/apps/user/user-edit/UserEdit.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
         }, {
-          title: 'Teachers',
-          url: '/apps/user/user-list'
+          title: 'Teacher'
         }, {
           title: 'Edit',
           active: true
@@ -75831,15 +75861,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/listofstudents',
       name: 'list-students',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(18)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentList.vue */ "./resources/js/src/views/apps/user/user-list/StudentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(19)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentList.vue */ "./resources/js/src/views/apps/user/user-list/StudentList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
         }, {
-          title: 'Students',
-          url: '/apps/user/listofstudents'
+          title: 'Students'
         }, {
           title: 'List',
           active: true
@@ -75851,15 +75880,14 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/listofparents',
       name: 'list-parents',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentList.vue */ "./resources/js/src/views/apps/user/user-list/ParentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(18)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentList.vue */ "./resources/js/src/views/apps/user/user-list/ParentList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
         }, {
-          title: 'Parents',
-          url: '/apps/user/listofparents'
+          title: 'Parents'
         }, {
           title: 'List',
           active: true
@@ -75874,7 +75902,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   {
     path: '',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 28).then(__webpack_require__.bind(null, /*! @/layouts/full-page/FullPage.vue */ "./resources/js/src/layouts/full-page/FullPage.vue"));
+      return __webpack_require__.e(/*! import() */ 29).then(__webpack_require__.bind(null, /*! @/layouts/full-page/FullPage.vue */ "./resources/js/src/layouts/full-page/FullPage.vue"));
     },
     children: [// =============================================================================
     // PAGES
@@ -75883,13 +75911,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/pages/login',
       name: 'page-login',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 16).then(__webpack_require__.bind(null, /*! @/views/pages/Login.vue */ "./resources/js/src/views/pages/Login.vue"));
+        return __webpack_require__.e(/*! import() */ 15).then(__webpack_require__.bind(null, /*! @/views/pages/Login.vue */ "./resources/js/src/views/pages/Login.vue"));
       }
     }, {
       path: '/pages/register',
       name: 'page-register',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! @/views/pages/register/Register.vue */ "./resources/js/src/views/pages/register/Register.vue"));
+        return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! @/views/pages/register/Register.vue */ "./resources/js/src/views/pages/register/Register.vue"));
       },
       meta: {
         rule: 'editor'
@@ -75898,7 +75926,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/pages/error-404',
       name: 'page-error-404',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 27).then(__webpack_require__.bind(null, /*! @/views/pages/Error404.vue */ "./resources/js/src/views/pages/Error404.vue"));
+        return __webpack_require__.e(/*! import() */ 28).then(__webpack_require__.bind(null, /*! @/views/pages/Error404.vue */ "./resources/js/src/views/pages/Error404.vue"));
       }
     }]
   }, // Redirect to 404 page, if no match found
