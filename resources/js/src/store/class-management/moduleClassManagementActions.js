@@ -30,12 +30,13 @@ export default {
         })
     },
 
-     fetchSchoolSubjects({ commit }) {
+     fetchSchoolSubjects({ commit },payload) {
         var x = localStorage.getItem('accessToken');
         var school_id = localStorage.getItem('school_id');
         //  User Reward Card
         const requestOptions = {
-            'type': 'teacher',
+           type: 'teacher',
+            class_id: payload.class_id,
             headers: { 'Authorization': 'Bearer ' + x },
 
         };

@@ -56,7 +56,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Class Code' },
+                            { title: 'Classes', url: '/apps/class/class-list' },
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'List Of Classes',
@@ -71,10 +71,10 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Class Code' },
+                            { title: 'Classes', url: '/apps/class/class-list' },
                             { title: 'Add', active: true }
                         ],
-                        pageTitle: 'Class Code Add',
+                        pageTitle: 'Add ClassCode',
                         rule: 'editor'
                     }
                 },
@@ -86,10 +86,10 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Class Code' },
+                            { title: 'Classes', url: '/apps/class/class-list' },
                             { title: 'View', active: true }
                         ],
-                        pageTitle: 'Class Code View',
+                        pageTitle: 'View ClassCode',
                         rule: 'editor'
                     }
                 },
@@ -101,7 +101,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Class Code' },
+                            { title: 'Classes', url: '/apps/class/class-list' },
                             { title: 'Edit', active: true }
                         ],
                         pageTitle: 'Class Code Edit',
