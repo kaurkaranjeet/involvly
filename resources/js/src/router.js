@@ -153,6 +153,67 @@ const router = new Router({
                         rule: 'editor'
                     }
                 },
+                //subjects menu path
+                {
+                    path: '/apps/subject/subject-list',
+                    name: 'app-subject-list',
+                    component: () =>
+                        import ('@/views/apps/subject/subject-list/SubjectList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Subject' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Subjects List',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/subject/subject-add/',
+                    name: 'app-subject-add',
+                    component: () =>
+                        import ('@/views/apps/subject/subject-add/SubjectAdd.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Subject' },
+                            { title: 'Add', active: true }
+                        ],
+                        pageTitle: 'Subject Add',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/subject/subject-view/:subjectId',
+                    name: 'app-subject-view',
+                    component: () =>
+                        import ('@/views/apps/subject/subject-view/SubjectView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Subject' },
+                            { title: 'View', active: true }
+                        ],
+                        pageTitle: 'Subject View',
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/apps/subject/subject-edit/:subjectId',
+                    name: 'app-subject-edit',
+                    component: () =>
+                        import ('@/views/apps/subject/subject-edit/SubjectEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Subject' },
+                            { title: 'Edit', active: true }
+                        ],
+                        pageTitle: 'Subject Edit',
+                        rule: 'editor'
+                    }
+                },
                 //users menu path
                 {
                     path: '/apps/user/user-list',

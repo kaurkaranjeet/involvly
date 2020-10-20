@@ -93,6 +93,43 @@ class SubjectController extends Controller {
       return response()->json(['message' => 'id not found'], 200);
     }
     }
+
+    //school subject listing
+    public function manageSchoolSubjects(Request $request , $id) {
+      DB::enableQueryLog();
+      $subjects = Subject::where('school_id', $id)->get();
+      // //get subjects
+      // $subjects = School::leftJoin('class_code', 'schools.id', '=', 'class_code.school_id')
+      //                       ->leftJoin('subjects', 'class_code.id', '=', 'subjects.class_id')
+      //                       ->select('schools.*','subjects.id as subjectsid','subjects.subject_name','class_code.id as classid','class_code.class_name')->where('class_code.school_id', $id)->get(); 
+      //                       dd($subjects);
+      if (isset($subjects) && count($subjects) > 0) {
+          return response()->json(compact('subjects'), 200);
+      } else {
+          return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
+      }
+  }
+  // Add school subject
+  public function saveSchoolSubject(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'subject_name' => 'required|min:3',
+      'school_id' => 'required|exists:schools,id',
+  ]);
+
+  if($validator->fails()){
+          return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
+  }
+  if(!empty($request->get('class_id'))){
+    $subject = Subject::create([
+      'subject_name' => $request->get('subject_name'),
+      'school_id' => $request->get('school_id'),
+  ]);
+  return response()->json(compact('subject'),201);
+    }else{
+      return response()->json(['message' => 'id not found'], 200);
+    }
+  }
 }
 
 ?>

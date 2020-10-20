@@ -54,6 +54,12 @@ export default [{
                 slug: 'app-class-list',
                 i18n: 'List'
             },
+            {
+                url: '/apps/subject/subject-list',
+                name: 'Subject List',
+                slug: 'app-subject-list',
+                i18n: 'List'
+            },
 
         ]
     }
