@@ -149,6 +149,7 @@ export default {
     data() {
         return {
 
+
             // Filter Options
             roleFilter: { label: 'All', value: 'all' },
             roleOptions: [
@@ -211,7 +212,7 @@ export default {
 
                 {
                     headerName: 'Add/Remove',
-                    field: 'transactions',
+                    field: 'is_added',
                    
                     width: 150,
                     cellRendererFramework: 'CellRendererStatus',
@@ -319,7 +320,10 @@ export default {
             this.$store.registerModule('classManagement', moduleClassManagement)
             moduleClassManagement.isRegistered = true
         }
-        this.$store.dispatch('classManagement/fetchSchoolSubjects').catch(err => { console.error(err) })
+        const payload={
+            class_id:this.$route.params.classId
+        }
+        this.$store.dispatch('classManagement/fetchSchoolSubjects',payload).catch(err => { console.error(err) })
     }
 }
 </script>

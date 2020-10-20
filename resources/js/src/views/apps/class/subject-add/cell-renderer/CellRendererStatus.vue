@@ -1,7 +1,7 @@
 <template>
     <div>
-     <vs-button @click="AddClass(params.value)"> Add</vs-button>
-     <vs-button @click="RemoveClass(params.value)"> Add</vs-button>
+     <vs-button v-if="params.value==0" @click="AddClass(params.value)"> Add</vs-button>
+     <vs-button v-if="params.value==1" @click="RemoveClass(params.value)"> Remove</vs-button>
                      </div>
     </div>
 </template>
@@ -19,7 +19,7 @@ export default {
       class_id:this.$route.params.classId,
     }
       this.$store.dispatch("classManagement/AddClassSubjects", payload)
-        .then(()   => { this.showDeleteSuccess() })
+        .then(()   => { this.showAddSuccess(); location.reload(true) })
         .catch(err => { console.error(err)       })
     },
      RemoveClass () {
@@ -28,7 +28,7 @@ export default {
       class_id:this.$route.params.classId,
     }
       this.$store.dispatch("classManagement/RemoveClassSubjects", payload)
-        .then(()   => { this.showDeleteSuccess() })
+        .then(()   => { this.showRemoveSuccess() ; location.reload(true)})
         .catch(err => { console.error(err)       })
     },
     showDeleteSuccess () {
@@ -36,6 +36,22 @@ export default {
         color: 'success',
         title: 'Deleted',
         text: 'Data deleted successfully'
+      })
+    }
+    ,
+     showAddSuccess () {
+      this.$vs.notify({
+        color: 'success',
+        title: 'Added',
+        text: 'Added successfully'
+      })
+    }
+    ,
+     showRemoveSuccess () {
+      this.$vs.notify({
+        color: 'danger',
+        title: 'Removed',
+        text: 'Removed successfully'
       })
     }
   }
