@@ -59,7 +59,7 @@ const router = new Router({
                             { title: 'Class Code' },
                             { title: 'List', active: true }
                         ],
-                        pageTitle: 'List Of Classes',
+                        pageTitle: 'Classes List',
                         rule: 'editor'
                     }
                 },
