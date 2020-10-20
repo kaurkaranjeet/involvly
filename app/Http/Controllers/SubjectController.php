@@ -150,7 +150,7 @@ class SubjectController extends Controller {
     }
 
     //school subject listing
-    public function manageSchoolSubjects(Request $request , $id) {
+    public function manageSubjectsAccToSchool(Request $request , $id) {
       DB::enableQueryLog();
       $subjects = Subject::where('school_id', $id)->get();
       // //get subjects
@@ -175,7 +175,7 @@ class SubjectController extends Controller {
   if($validator->fails()){
           return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
   }
-  if(!empty($request->get('class_id'))){
+  if(!empty($request->get('school_id'))){
     $subject = Subject::create([
       'subject_name' => $request->get('subject_name'),
       'school_id' => $request->get('school_id'),

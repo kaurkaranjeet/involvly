@@ -94,7 +94,7 @@ export default {
         .then((res) => {
           this.$vs.loading.close();
           this.$router
-            .push(`/apps/class/class-view/` + this.class_id)
+            .push(`/apps/subject/subject-list/`)
             .catch(() => {});
           this.$vs.notify({
             color: "success",
