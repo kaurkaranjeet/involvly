@@ -45,7 +45,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
+/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/core-js/promise */ "./node_modules/@babel/runtime/core-js/promise.js");
+/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
+
+
 /*=========================================================================================
   File Name: moduleCalendarActions.js
   Description: Calendar Module Actions
@@ -67,12 +71,12 @@ __webpack_require__.r(__webpack_exports__);
         'Authorization': 'Bearer ' + x
       }
     };
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-classes/' + user_id, requestOptions).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/manage-classes/' + user_id, requestOptions).then(function (response) {
         console.log(response.data.classes);
         commit('SET_CLASSES', response.data.classes);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
@@ -89,90 +93,90 @@ __webpack_require__.r(__webpack_exports__);
         'Authorization': 'Bearer ' + x
       }
     };
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/list_of_subjects/' + school_id, requestOptions).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/list_of_subjects/' + school_id, requestOptions).then(function (response) {
         //console.log(response.data.classes);
         commit('SET_SCHOOL_SUBJECTS', response.data.subjects);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   saveClassCode: function saveClassCode(_ref3, code) {
     var commit = _ref3.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/save-class-code", code).then(function (response) {
-        if (response.data["class"]) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/save-class-code", code).then(function (response) {
+        if (response.data.class) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   AddClassSubjects: function AddClassSubjects(_ref4, code) {
     var commit = _ref4.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/add-subject", code).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/add-subject", code).then(function (response) {
         if (response.data.data) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   RemoveClassSubjects: function RemoveClassSubjects(_ref5, code) {
     var commit = _ref5.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/remove-subject", code).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/remove-subject", code).then(function (response) {
         if (response.data.data) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   removeClassCode: function removeClassCode(_ref6, id) {
     var commit = _ref6.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-class-code/".concat(id)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].delete("/api/auth/delete-class-code/".concat(id)).then(function (response) {
         commit('REMOVE_RECORD', id);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   fetchClassCodeDetail: function fetchClassCodeDetail(context, id) {
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/fetch-class-detail/".concat(id)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/auth/fetch-class-detail/".concat(id)).then(function (response) {
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   editClassCode: function editClassCode(_ref7, code) {
     var commit = _ref7.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-class-code", code).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/edit-class-code", code).then(function (response) {
         console.log("reee", response);
 
-        if (response.data["class"]) {
+        if (response.data.class) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
@@ -188,122 +192,122 @@ __webpack_require__.r(__webpack_exports__);
         'Authorization': 'Bearer ' + x
       }
     };
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-subjects/' + classId).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/manage-subjects/' + classId).then(function (response) {
         console.log(response.data.subjects);
         commit('SET_SUBJECTS', response.data.subjects);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   saveSubject: function saveSubject(_ref9, code) {
     var commit = _ref9.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/save-subject", code).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/save-subject", code).then(function (response) {
         if (response.data.subject) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   removeSubject: function removeSubject(_ref10, id) {
     var commit = _ref10.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-subject/".concat(id)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].delete("/api/auth/delete-subject/".concat(id)).then(function (response) {
         commit('REMOVE_SUBJECTS', id);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   fetchSubjectDetail: function fetchSubjectDetail(context, id) {
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/fetch-subject-detail/".concat(id)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/auth/fetch-subject-detail/".concat(id)).then(function (response) {
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   editSubject: function editSubject(_ref11, code) {
     var commit = _ref11.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-subject", code).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/edit-subject", code).then(function (response) {
         if (response) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   fetchAllItems: function fetchAllItems(_ref12) {
     var commit = _ref12.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/all-items").then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/all-items").then(function (response) {
         commit('SET_ITEMS', response.data.response);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   fetchItems: function fetchItems(_ref13, userId) {
     var commit = _ref13.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/view-items/".concat(userId)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/view-items/".concat(userId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   fetchItem: function fetchItem(context, userId) {
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/item-user/".concat(userId)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/item-user/".concat(userId)).then(function (response) {
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   getItem: function getItem(_ref14, itemId) {
     var commit = _ref14.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/get-item/".concat(itemId)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/get-item/".concat(itemId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   saveItem: function saveItem(context, userId) {
     console.log(userId);
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/update-item/".concat(userId.id), userId).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/update-item/".concat(userId.id), userId).then(function (response) {
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   uploadImage: function uploadImage(context, userId) {
     console.log(userId);
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/update-image", userId).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/update-image", userId).then(function (response) {
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
@@ -311,21 +315,21 @@ __webpack_require__.r(__webpack_exports__);
   createItem: function createItem(context, userId) {
     console.log('userId');
     console.log(userId);
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/create-item", userId).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/create-item", userId).then(function (response) {
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
   },
   removeRecord: function removeRecord(_ref15, ItemId) {
     var commit = _ref15.commit;
-    return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/delete-item/".concat(ItemId)).then(function (response) {
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].delete("/api/delete-item/".concat(ItemId)).then(function (response) {
         commit('REMOVE_RECORD', ItemId);
         resolve(response);
-      })["catch"](function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     });
