@@ -147,7 +147,9 @@
                  $users = User::where('role_id', 2)->where('status', 1)->where('school_id', $id)->get();
               }
               else{
-                 $users = User::where('role_id', 3)->where('status', 1)->where('school_id', $id)->get();
+
+                 $users = User::where('role_id', 3)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->get();
+
               }
             //  print_r(DB::getQueryLog());die;
        
