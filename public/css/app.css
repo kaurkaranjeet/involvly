@@ -95,7 +95,7 @@ body {
 
 [dir=ltr] .vx-logo .vx-logo-text {
   -webkit-animation: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0s normal forwards 1 fadein;
-          animation: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0s normal forwards 1 fadein;
+  animation: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0s normal forwards 1 fadein;
 }
 
 [dir=rtl] .vx-logo .vx-logo-text {
@@ -1262,16 +1262,6 @@ i.wizard-icon {
   }
 }
 
-@keyframes vSelectSpinner-ltr {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @-webkit-keyframes vSelectSpinner-rtl {
   0% {
     transform: rotate(0deg);
@@ -1279,6 +1269,16 @@ i.wizard-icon {
 
   100% {
     transform: rotate(-360deg);
+  }
+}
+
+@keyframes vSelectSpinner-ltr {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -1705,7 +1705,7 @@ i.wizard-icon {
   border-right: 0.9em solid rgba(100, 100, 100, 0.1);
   border-left: 0.9em solid rgba(60, 60, 60, 0.45);
   -webkit-animation:  vSelectSpinner-ltr 1.1s infinite linear;
-          animation:  vSelectSpinner-ltr 1.1s infinite linear;
+  animation:  vSelectSpinner-ltr 1.1s infinite linear;
 }
 
 [dir=rtl] .vs__spinner {
@@ -2277,6 +2277,10 @@ i.wizard-icon {
 }
 
 [dir] .theme-dark .flatpickr-calendar .flatpickr-time ::-moz-selection {
+  background: transparent;
+}
+
+.theme-dark .flatpickr-calendar .flatpickr-time ::-moz-selection {
   background: transparent;
 }
 

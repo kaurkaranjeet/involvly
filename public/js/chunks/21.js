@@ -88,14 +88,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.dispatch('classManagement/fetchClassCodeDetail', classId).then(function (res) {
-        _this.class_data = res.data.class;
+        _this.class_data = res.data["class"];
         console.log(_this.class_data);
         _this.className = _this.class_data.class_name;
         _this.classCode = _this.class_data.class_code;
         _this.class_name = _this.className;
         _this.class_code = _this.classCode;
         _this.class_id = _this.class_data.id;
-      }).catch(function (err) {
+      })["catch"](function (err) {
         if (err.response.status === 404) {
           _this.class_not_found = true;
           return;
@@ -119,14 +119,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("classManagement/editClassCode", code).then(function (res) {
         _this2.$vs.loading.close();
 
-        _this2.$router.push("/apps/class/class-list").catch(function () {});
+        _this2.$router.push("/apps/class/class-list")["catch"](function () {});
 
         _this2.$vs.notify({
           color: "success",
           title: "Success",
           text: "Data updated successfully!"
         });
-      }).catch(function (error) {
+      })["catch"](function (error) {
         _this2.$vs.loading.close();
 
         _this2.$vs.notify({

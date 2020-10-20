@@ -75,11 +75,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.dispatch('classManagement/fetchClassCodeDetail', classId).then(function (res) {
-        _this.class_data = res.data.class;
+        _this.class_data = res.data["class"];
         console.log(_this.class_data);
         _this.class_name = _this.class_data.class_name;
         _this.class_code = _this.class_data.class_code;
-      }).catch(function (err) {
+      })["catch"](function (err) {
         if (err.response.status === 404) {
           _this.class_not_found = true;
           return;

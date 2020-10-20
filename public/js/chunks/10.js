@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$store.dispatch('userManagement/fetchUser', userId).then(function (res) {
         _this.user_data = res.data.data;
-      }).catch(function (err) {
+      })["catch"](function (err) {
         if (err.response.status === 404) {
           _this.user_not_found = true;
           return;
@@ -126,11 +126,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/core-js/json/stringify */ "./node_modules/@babel/runtime/core-js/json/stringify.js");
-/* harmony import */ var _babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
-
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -238,7 +235,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_1___default.a
+    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   props: {
     data: {
@@ -248,7 +245,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      data_local: JSON.parse(_babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(this.data)),
+      data_local: JSON.parse(JSON.stringify(this.data)),
       statusOptions: [{
         label: 'ACTIVE',
         value: '1'
@@ -262,7 +259,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         label: 'User',
         value: 'user'
-      }]
+      }
+      /*   { label: 'Staff',  value: 'staff' }*/
+      ]
     };
   },
   computed: {
@@ -317,9 +316,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
         if (res.data.data.role_id == '4') {
-          _this.$router.push('/apps/user/user-list').catch(function () {});
+          _this.$router.push('/apps/user/user-list')["catch"](function () {});
         }
-      }).catch(function (err) {
+      })["catch"](function (err) {
         if (err.response.status === 404) {
           _this.user_not_found = true;
           return;
@@ -332,7 +331,7 @@ __webpack_require__.r(__webpack_exports__);
       /* eslint-enable */
     },
     reset_data: function reset_data() {
-      this.data_local = JSON.parse(_babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(this.data));
+      this.data_local = JSON.parse(JSON.stringify(this.data));
     },
     update_avatar: function update_avatar() {// You can update avatar Here
       // For reference you can check dataList example
@@ -352,18 +351,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/core-js/object/assign */ "./node_modules/@babel/runtime/core-js/object/assign.js");
-/* harmony import */ var _babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/core-js/json/stringify */ "./node_modules/@babel/runtime/core-js/json/stringify.js");
-/* harmony import */ var _babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-flatpickr-component */ "./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js");
-/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flatpickr/dist/flatpickr.css */ "./node_modules/flatpickr/dist/flatpickr.css");
-/* harmony import */ var flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_4__);
-
-
+/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-flatpickr-component */ "./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js");
+/* harmony import */ var vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flatpickr/dist/flatpickr.css */ "./node_modules/flatpickr/dist/flatpickr.css");
+/* harmony import */ var flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flatpickr_dist_flatpickr_css__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -477,8 +470,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_4___default.a,
-    flatPickr: vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_2___default.a
+    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_2___default.a,
+    flatPickr: vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   props: {
     data: {
@@ -488,7 +481,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      data_local: JSON.parse(_babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default()(this.data)),
+      data_local: JSON.parse(JSON.stringify(this.data)),
       langOptions: [{
         label: 'English',
         value: 'english'
@@ -527,7 +520,7 @@ __webpack_require__.r(__webpack_exports__);
       /* eslint-enable */
     },
     reset_data: function reset_data() {
-      this.data_local = _babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0___default()({}, this.data);
+      this.data_local = Object.assign({}, this.data);
     }
   }
 });
@@ -543,12 +536,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/core-js/object/assign */ "./node_modules/@babel/runtime/core-js/object/assign.js");
-/* harmony import */ var _babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/core-js/json/stringify */ "./node_modules/@babel/runtime/core-js/json/stringify.js");
-/* harmony import */ var _babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1__);
-
-
 //
 //
 //
@@ -658,7 +645,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      data_local: JSON.parse(_babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_1___default()(this.data))
+      data_local: JSON.parse(JSON.stringify(this.data))
     };
   },
   computed: {
@@ -675,7 +662,7 @@ __webpack_require__.r(__webpack_exports__);
       /* eslint-enable */
     },
     reset_data: function reset_data() {
-      this.data_local = _babel_runtime_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0___default()({}, this.data);
+      this.data_local = Object.assign({}, this.data);
     }
   }
 });
@@ -2037,11 +2024,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/core-js/promise */ "./node_modules/@babel/runtime/core-js/promise.js");
-/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
-
-
+/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
 /*=========================================================================================
   File Name: moduleCalendarActions.js
   Description: Calendar Module Actions
@@ -2073,12 +2056,12 @@ __webpack_require__.r(__webpack_exports__);
         'Authorization': 'Bearer ' + x
       }
     };
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
@@ -2094,12 +2077,12 @@ __webpack_require__.r(__webpack_exports__);
         'Authorization': 'Bearer ' + x
       }
     };
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
@@ -2115,21 +2098,21 @@ __webpack_require__.r(__webpack_exports__);
         'Authorization': 'Bearer ' + x
       }
     };
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-users/' + school_id, requestOptions).then(function (response) {
         console.log(response.data.users);
         commit('SET_USERS', response.data.users);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   fetchUser: function fetchUser(context, userId) {
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/auth/fetch-user/".concat(userId)).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/fetch-user/".concat(userId)).then(function (response) {
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
@@ -2137,21 +2120,21 @@ __webpack_require__.r(__webpack_exports__);
   UpdateUser: function UpdateUser(_ref4, data) {
     var commit = _ref4.commit;
     console.log(data);
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/update-profile/", data).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/update-profile/", data).then(function (response) {
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   removeRecord: function removeRecord(_ref5, userId) {
     var commit = _ref5.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/auth/delete-user/".concat(userId)).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/delete-user/".concat(userId)).then(function (response) {
         commit('REMOVE_RECORD', userId);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });

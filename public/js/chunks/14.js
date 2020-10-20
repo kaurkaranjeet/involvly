@@ -50,124 +50,8 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   data: function data() {
     return {
-
-      // Filter Options
-      roleFilter: {
-        label: 'All',
-        value: 'all'
-      },
-      roleOptions: [{
-        label: 'All',
-        value: 'all'
-      }, {
-        label: 'Admin',
-        value: 'admin'
-      }, {
-        label: 'User',
-        value: 'user'
-      }, {
-        label: 'Staff',
-        value: 'staff'
-      }],
-      statusFilter: {
-        label: 'All',
-        value: 'all'
-      },
-      statusOptions: [{
-        label: 'All',
-        value: 'all'
-      }, {
-        label: 'Active',
-        value: 'active'
-      }, {
-        label: 'Deactivated',
-        value: 'deactivated'
-      }, {
-        label: 'Blocked',
-        value: 'blocked'
-      }],
-      isVerifiedFilter: {
-        label: 'All',
-        value: 'all'
-      },
-      isVerifiedOptions: [{
-        label: 'All',
-        value: 'all'
-      }, {
-        label: 'Yes',
-        value: 'yes'
-      }, {
-        label: 'No',
-        value: 'no'
-      }],
-      departmentFilter: {
-        label: 'All',
-        value: 'all'
-      },
-      departmentOptions: [{
-        label: 'All',
-        value: 'all'
-      }, {
-        label: 'Sales',
-        value: 'sales'
-      }, {
-        label: 'Development',
-        value: 'development'
-      }, {
-        label: 'Management',
-        value: 'management'
-      }],
-      searchQuery: '',
-      // AgGrid
-      gridApi: null,
-      gridOptions: {},
-      defaultColDef: {
-        sortable: true,
-        resizable: true,
-        suppressMenu: true
-      },
-      columnDefs: [{
-        headerName: 'ID',
-        field: 'id',
-        width: 125,
-        filter: true,
-        checkboxSelection: true,
-        headerCheckboxSelectionFilteredOnly: true,
-        headerCheckboxSelection: true
-      }, {
-        headerName: 'Name',
-        field: 'name',
-        filter: true,
-        width: 210,
-        cellRendererFramework: 'CellRendererLink'
-      }, {
-        headerName: 'Email',
-        field: 'email',
-        filter: true,
-        width: 225
-      }, {
-        headerName: 'Associated child',
-        field: 'associated_child',
-        filter: true,
-        width: 150 //cellRendererFramework: 'CellRendererStatus'
-
-      }, {
-        headerName: 'Actions',
-        field: 'transactions',
-        width: 150,
-        cellRendererFramework: 'CellRendererActionsUsers'
-      }],
-      // Cell Renderer Components
-      components: {
-        CellRendererLink: _cell_renderer_CellRendererLink_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-        CellRendererStatus: _cell_renderer_CellRendererStatus_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-        CellRendererVerified: _cell_renderer_CellRendererVerified_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
-        CellRendererActionsUsers: _cell_renderer_CellRendererActionsUsers_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
-      }
-
       subject_name: "",
       school_id: ""
-
     };
   },
   computed: {
@@ -192,14 +76,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("subjectManagement/saveSchoolSubject", code).then(function (res) {
         _this.$vs.loading.close();
 
-        _this.$router.push("/apps/subject/subject-list").catch(function () {});
+        _this.$router.push("/apps/subject/subject-list")["catch"](function () {});
 
         _this.$vs.notify({
           color: "success",
           title: "Success",
           text: "Data add successfully!"
         });
-      }).catch(function (error) {
+      })["catch"](function (error) {
         _this.$vs.loading.close();
 
         _this.$vs.notify({
@@ -367,11 +251,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/core-js/promise */ "./node_modules/@babel/runtime/core-js/promise.js");
-/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
-
-
+/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
 /*=========================================================================================
   File Name: moduleCalendarActions.js
   Description: Calendar Module Actions
@@ -384,60 +264,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   fetchSchoolSubjects: function fetchSchoolSubjects(_ref, schoolId) {
     var commit = _ref.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/manage-school-subjects/' + schoolId).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-school-subjects/' + schoolId).then(function (response) {
         console.log(response.data.subjects);
         commit('SET_SCHOOL_SUBJECTS', response.data.subjects);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   saveSchoolSubject: function saveSchoolSubject(_ref2, code) {
     var commit = _ref2.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/save-school-subject", code).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/save-school-subject", code).then(function (response) {
         if (response.data.subject) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   removeSchoolSubject: function removeSchoolSubject(_ref3, id) {
     var commit = _ref3.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].delete("/api/auth/delete-subject/".concat(id)).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-subject/".concat(id)).then(function (response) {
         commit('REMOVE_SCHOOL_SUBJECTS', id);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   fetchSchoolSubjectDetail: function fetchSchoolSubjectDetail(context, id) {
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/auth/fetch-subject-detail/".concat(id)).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/fetch-subject-detail/".concat(id)).then(function (response) {
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   editSchoolSubject: function editSchoolSubject(_ref4, code) {
     var commit = _ref4.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/edit-subject", code).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-subject", code).then(function (response) {
         if (response) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });

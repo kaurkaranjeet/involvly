@@ -62,7 +62,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.subject_data = res.data.subject;
         console.log(_this.subject_data);
         _this.subject_name = _this.subject_data.subject_name;
-      }).catch(function (err) {
+      })["catch"](function (err) {
         console.error(err);
       });
     }
@@ -187,11 +187,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/core-js/promise */ "./node_modules/@babel/runtime/core-js/promise.js");
-/* harmony import */ var _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
-
-
+/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
 /*=========================================================================================
   File Name: moduleCalendarActions.js
   Description: Calendar Module Actions
@@ -204,60 +200,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   fetchSchoolSubjects: function fetchSchoolSubjects(_ref, schoolId) {
     var commit = _ref.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/manage-school-subjects/' + schoolId).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/manage-school-subjects/' + schoolId).then(function (response) {
         console.log(response.data.subjects);
         commit('SET_SCHOOL_SUBJECTS', response.data.subjects);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   saveSchoolSubject: function saveSchoolSubject(_ref2, code) {
     var commit = _ref2.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/save-school-subject", code).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/save-school-subject", code).then(function (response) {
         if (response.data.subject) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   removeSchoolSubject: function removeSchoolSubject(_ref3, id) {
     var commit = _ref3.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].delete("/api/auth/delete-subject/".concat(id)).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-subject/".concat(id)).then(function (response) {
         commit('REMOVE_SCHOOL_SUBJECTS', id);
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   fetchSchoolSubjectDetail: function fetchSchoolSubjectDetail(context, id) {
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/auth/fetch-subject-detail/".concat(id)).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/fetch-subject-detail/".concat(id)).then(function (response) {
         resolve(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });
   },
   editSchoolSubject: function editSchoolSubject(_ref4, code) {
     var commit = _ref4.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/edit-subject", code).then(function (response) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-subject", code).then(function (response) {
         if (response) {
           resolve(response);
         } else {
           reject(response.data.message);
         }
-      }).catch(function (error) {
+      })["catch"](function (error) {
         reject(error);
       });
     });

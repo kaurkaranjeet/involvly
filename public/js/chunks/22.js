@@ -78,7 +78,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.subject_name = _this.subjectName;
         _this.subject_id = _this.subject_data.id;
         _this.class_id = _this.subject_data.class_id;
-      }).catch(function (err) {
+      })["catch"](function (err) {
         if (err.response.status === 404) {
           _this.class_not_found = true;
           return;
@@ -101,14 +101,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("classManagement/editSubject", code).then(function (res) {
         _this2.$vs.loading.close();
 
-        _this2.$router.push("/apps/class/class-view/" + _this2.class_id).catch(function () {});
+        _this2.$router.push("/apps/class/class-view/" + _this2.class_id)["catch"](function () {});
 
         _this2.$vs.notify({
           color: "success",
           title: "Success",
           text: "Data updated successfully!"
         });
-      }).catch(function (error) {
+      })["catch"](function (error) {
         _this2.$vs.loading.close();
 
         _this2.$vs.notify({

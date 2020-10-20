@@ -89,14 +89,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("classManagement/saveClassCode", code).then(function (res) {
         _this.$vs.loading.close();
 
-        _this.$router.push("/apps/class/class-list").catch(function () {});
+        _this.$router.push("/apps/class/class-list")["catch"](function () {});
 
         _this.$vs.notify({
           color: "success",
           title: "Success",
           text: "Data add successfully!"
         });
-      }).catch(function (error) {
+      })["catch"](function (error) {
         _this.$vs.loading.close();
 
         _this.$vs.notify({
