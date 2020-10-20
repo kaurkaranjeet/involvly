@@ -6,7 +6,7 @@ use App\User;
 use App\Models\Role;
 use App\Models\ClassCode;
 use App\Models\Subject;
-use App\Models\ClassSubject;
+use App\Models\ClassSubjects;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -37,7 +37,16 @@ class SubjectController extends Controller {
         //     $users = User::where('role_id', 3)->where('status', 1)->get();
         // }
         //  print_r(DB::getQueryLog());die;
+
         $subjects = Subject::where('school_id',$id)->get();
+        foreach($subjects as $subject){
+           $is_added = ClassSubjects::where('subject_id',$subject->id)->where('class_code_id',$request->class_id)->count();
+            if( $is_added>0){
+               $subject->is_added=1;
+            }else{
+               $subject->is_added=0;
+            }
+        }
         if (!empty($subjects)) {
             return response()->json(compact('subjects'), 200);
         } else {
@@ -54,10 +63,8 @@ class SubjectController extends Controller {
     if($validator->fails()){
             return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
     }
-  
-      /*$data = Subject::where('id',$request->subject_id)->update([
-        'class_id' => 
-    ]);*/
+   $data = ClassSubjects::where( 'class_id' , $request->class_id)->where('subject_id', $request->subject_id)->delete();
+   $data->is_added=1;
     return response()->json(compact('data'),200);
       
     }
@@ -93,11 +100,15 @@ class SubjectController extends Controller {
 
     if($validator->fails()){
             return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
-    }
-  
-      $data = Subject::where('id',$request->subject_id)->update([
-        'class_id' => $request->class_id
-    ]);
+    }  
+
+    $data=new   ClassSubjects;
+    $data->class_code_id=$request->class_id;
+    $data->subject_id=$request->subject_id;
+
+    $data->save();
+
+      $data->is_added=0;
     return response()->json(compact('data'),200);
       
     }
@@ -150,7 +161,7 @@ class SubjectController extends Controller {
     }
 
     //school subject listing
-    public function manageSchoolSubjects(Request $request , $id) {
+    public function manageSubjectsAccToSchool(Request $request , $id) {
       DB::enableQueryLog();
       $subjects = Subject::where('school_id', $id)->get();
       // //get subjects
@@ -175,7 +186,7 @@ class SubjectController extends Controller {
   if($validator->fails()){
           return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
   }
-  if(!empty($request->get('class_id'))){
+  if(!empty($request->get('school_id'))){
     $subject = Subject::create([
       'subject_name' => $request->get('subject_name'),
       'school_id' => $request->get('school_id'),

@@ -70,7 +70,7 @@ export default {
         return new Promise((resolve, reject) => {
             axios.post(`/api/auth/add-subject`, code)
                 .then((response) => {
-                    if (response.data.class) {
+                    if (response.data.data) {
                         resolve(response)
                     } else {
                         reject(response.data.message)
@@ -83,11 +83,11 @@ export default {
         })
     },
 
-    removeClassSubjects({ commit }, code) {
+    RemoveClassSubjects({ commit }, code) {
         return new Promise((resolve, reject) => {
             axios.post(`/api/auth/remove-subject`, code)
                 .then((response) => {
-                    if (response.data.class) {
+                    if (response.data.data) {
                         resolve(response)
                     } else {
                         reject(response.data.message)
