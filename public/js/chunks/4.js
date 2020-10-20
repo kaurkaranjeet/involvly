@@ -6806,7 +6806,7 @@ __webpack_require__.r(__webpack_exports__);
     i18n: 'List'
   }, {
     url: '/apps/user/listofparents',
-    name: 'Parent List',
+    name: 'Parents List',
     slug: 'list-parents',
     i18n: 'List'
   }]
@@ -6817,7 +6817,7 @@ __webpack_require__.r(__webpack_exports__);
   i18n: 'Class',
   submenu: [{
     url: '/apps/class/class-list',
-    name: 'Class Code List',
+    name: 'List of classes',
     slug: 'app-class-list',
     i18n: 'List'
   }]

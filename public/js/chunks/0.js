@@ -77,8 +77,30 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  saveClassCode: function saveClassCode(_ref2, code) {
+  fetchSchoolSubjects: function fetchSchoolSubjects(_ref2, payload) {
     var commit = _ref2.commit;
+    var x = localStorage.getItem('accessToken');
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
+
+    var requestOptions = {
+      type: 'teacher',
+      class_id: payload.class_id,
+      headers: {
+        'Authorization': 'Bearer ' + x
+      }
+    };
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/list_of_subjects/' + school_id, requestOptions).then(function (response) {
+        //console.log(response.data.classes);
+        commit('SET_SCHOOL_SUBJECTS', response.data.subjects);
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  saveClassCode: function saveClassCode(_ref3, code) {
+    var commit = _ref3.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/save-class-code", code).then(function (response) {
         if (response.data["class"]) {
@@ -91,8 +113,36 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  removeClassCode: function removeClassCode(_ref3, id) {
-    var commit = _ref3.commit;
+  AddClassSubjects: function AddClassSubjects(_ref4, code) {
+    var commit = _ref4.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/add-subject", code).then(function (response) {
+        if (response.data.data) {
+          resolve(response);
+        } else {
+          reject(response.data.message);
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  RemoveClassSubjects: function RemoveClassSubjects(_ref5, code) {
+    var commit = _ref5.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/remove-subject", code).then(function (response) {
+        if (response.data.data) {
+          resolve(response);
+        } else {
+          reject(response.data.message);
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  removeClassCode: function removeClassCode(_ref6, id) {
+    var commit = _ref6.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-class-code/".concat(id)).then(function (response) {
         commit('REMOVE_RECORD', id);
@@ -111,13 +161,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  editClassCode: function editClassCode(_ref4, code) {
-    var commit = _ref4.commit;
+  editClassCode: function editClassCode(_ref7, code) {
+    var commit = _ref7.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-class-code", code).then(function (response) {
         console.log("reee", response);
 
-        if (response) {
+        if (response.data["class"]) {
           resolve(response);
         } else {
           reject(response.data.message);
@@ -127,8 +177,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchSubjects: function fetchSubjects(_ref5, classId) {
-    var commit = _ref5.commit;
+  fetchSubjects: function fetchSubjects(_ref8, classId) {
+    var commit = _ref8.commit;
     var x = localStorage.getItem('accessToken');
     var user_id = localStorage.getItem('user_id'); //  User Reward Card
 
@@ -148,8 +198,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  saveSubject: function saveSubject(_ref6, code) {
-    var commit = _ref6.commit;
+  saveSubject: function saveSubject(_ref9, code) {
+    var commit = _ref9.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/save-subject", code).then(function (response) {
         if (response.data.subject) {
@@ -162,8 +212,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  removeSubject: function removeSubject(_ref7, id) {
-    var commit = _ref7.commit;
+  removeSubject: function removeSubject(_ref10, id) {
+    var commit = _ref10.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/auth/delete-subject/".concat(id)).then(function (response) {
         commit('REMOVE_SUBJECTS', id);
@@ -182,8 +232,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  editSubject: function editSubject(_ref8, code) {
-    var commit = _ref8.commit;
+  editSubject: function editSubject(_ref11, code) {
+    var commit = _ref11.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/edit-subject", code).then(function (response) {
         if (response) {
@@ -196,8 +246,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchAllItems: function fetchAllItems(_ref9) {
-    var commit = _ref9.commit;
+  fetchAllItems: function fetchAllItems(_ref12) {
+    var commit = _ref12.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/all-items").then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -207,8 +257,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchItems: function fetchItems(_ref10, userId) {
-    var commit = _ref10.commit;
+  fetchItems: function fetchItems(_ref13, userId) {
+    var commit = _ref13.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/view-items/".concat(userId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -227,8 +277,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  getItem: function getItem(_ref11, itemId) {
-    var commit = _ref11.commit;
+  getItem: function getItem(_ref14, itemId) {
+    var commit = _ref14.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/get-item/".concat(itemId)).then(function (response) {
         commit('SET_ITEMS', response.data.response);
@@ -269,8 +319,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  removeRecord: function removeRecord(_ref12, ItemId) {
-    var commit = _ref12.commit;
+  removeRecord: function removeRecord(_ref15, ItemId) {
+    var commit = _ref15.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/delete-item/".concat(ItemId)).then(function (response) {
         commit('REMOVE_RECORD', ItemId);
@@ -338,6 +388,9 @@ __webpack_require__.r(__webpack_exports__);
   SET_SUBJECTS: function SET_SUBJECTS(state, subjects) {
     state.subjects = subjects;
   },
+  SET_SCHOOL_SUBJECTS: function SET_SCHOOL_SUBJECTS(state, school_subjects) {
+    state.school_subjects = school_subjects;
+  },
   REMOVE_SUBJECTS: function REMOVE_SUBJECTS(state, subjectId) {
     var subjectIndex = state.subjects.findIndex(function (u) {
       return u.id === subjectId;
@@ -367,7 +420,8 @@ __webpack_require__.r(__webpack_exports__);
 ==========================================================================================*/
 /* harmony default export */ __webpack_exports__["default"] = ({
   classes: [],
-  subjects: []
+  subjects: [],
+  school_subjects: []
 });
 
 /***/ })
