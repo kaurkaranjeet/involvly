@@ -82,6 +82,23 @@ export default {
 
         })
     },
+
+    removeClassSubjects({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/remove-subject`, code)
+                .then((response) => {
+                    if (response.data.class) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
+        })
+    },
     removeClassCode({ commit }, id) {
         return new Promise((resolve, reject) => {
             axios.delete(`/api/auth/delete-class-code/${id}`)

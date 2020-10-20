@@ -48,6 +48,7 @@ Route::get('parent_requests/{id}', 'UserController@getParentRequest');
     Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);
     Route::any('/edit-subject', ['as' => 'edit.subjects', 'uses' => 'SubjectController@editSubject']);
    Route::post('/add-subject', ['as' => 'add.subject', 'uses' => 'SubjectController@AddSubject']);
+      Route::post('/remove-subject', ['as' => 'remove.subject', 'uses' => 'SubjectController@RemoveSubject']);
 });
 // Mobile Apis
 
@@ -91,5 +92,7 @@ Route::prefix('v1')->group(function () {
 //    Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
         Route::post('delete_post', 'Api\V1\PostController@RemovePost');
+ Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
+
 });
 

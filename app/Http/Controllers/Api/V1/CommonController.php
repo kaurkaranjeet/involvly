@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Exception;
 use App\User;
+use App\Models\Class;
 use App\Models\Subject;
 use App\Models\State;
 use App\Models\Cities;
@@ -44,6 +45,34 @@ class CommonController extends Controller {
    catch (\Exception $e) {
        return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
    }
+}
+
+
+  public function GetClasses(Request $request) {
+      try {
+      $input = $request->all();
+      $validator = Validator::make($input, [
+        'school_id' => 'required|exists:schools,id'
+  
+    ]);    
+       if ($validator->fails()) {
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+    }
+    else{
+        $states=Class::where('school_id',$request->school_id)->get();
+        if(!empty( $states )){
+           return response()->json(array('error' => false, 'data' =>$states ), 200);
+       }
+       else{
+           throw new Exception('No class in this school.');
+       }
+
+   }
+ }
+   catch (\Exception $e) {
+       return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data'=>[]), 200);
+   }
+
 }
 
 

@@ -196,9 +196,9 @@ export default {
                     field: 'id',
                     width: 125,
                     filter: true,
-                    checkboxSelection: true,
-                    headerCheckboxSelectionFilteredOnly: true,
-                    headerCheckboxSelection: true
+                    checkboxSelection: false,
+                    headerCheckboxSelectionFilteredOnly: false,
+                    headerCheckboxSelection: false
                 },
                 {
                     headerName: 'Subject Name',
@@ -211,7 +211,7 @@ export default {
 
                 {
                     headerName: 'Add/Remove',
-                    field: 'add_remove',
+                    field: 'transactions',
                    
                     width: 150,
                     cellRendererFramework: 'CellRendererStatus',
@@ -220,12 +220,12 @@ export default {
                     headerCheckboxSelection: false
                 },
 
-                {
+               /* {
                     headerName: 'Actions',
                     field: 'transactions',
                     width: 150,
                     cellRendererFramework: 'CellRendererActions'
-                }
+                }*/
             ],
 
             // Cell Renderer Components
