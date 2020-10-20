@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateSubjectSchoolId extends Migration
+class DeleteClassSubjects extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,10 @@ class UpdateSubjectSchoolId extends Migration
     public function up()
     {
         //
-   Schema::table('subjects', function (Blueprint $table) {
-      //  $table->unsignedBigInteger('school_id');
-     // $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade')->nullable(); 
+
+         Schema::table('subjects', function (Blueprint $table) {
+            
+     $table->dropForeign('subjects_class_id_foreign');
        });
     }
 

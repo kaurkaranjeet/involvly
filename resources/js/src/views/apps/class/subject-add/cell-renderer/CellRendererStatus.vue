@@ -1,6 +1,7 @@
 <template>
     <div>
      <vs-button @click="AddClass(params.value)"> Add</vs-button>
+     <vs-button @click="RemoveClass(params.value)"> Add</vs-button>
                      </div>
     </div>
 </template>
@@ -18,6 +19,15 @@ export default {
       class_id:this.$route.params.classId,
     }
       this.$store.dispatch("classManagement/AddClassSubjects", payload)
+        .then(()   => { this.showDeleteSuccess() })
+        .catch(err => { console.error(err)       })
+    },
+     RemoveClass () {
+      const payload={
+      subject_id:this.params.data.id,
+      class_id:this.$route.params.classId,
+    }
+      this.$store.dispatch("classManagement/RemoveClassSubjects", payload)
         .then(()   => { this.showDeleteSuccess() })
         .catch(err => { console.error(err)       })
     },

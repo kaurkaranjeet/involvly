@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-md-12 bg-light text-right pd-bt">
-            <vs-button color="primary" type="filled" @click="addSubjectdata">Add Subjects</vs-button>
+            <vs-button color="primary" type="filled" @click="addSubjectdata">Add New Subject</vs-button>
         </div>
         <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters" style="display: none">
             <div class="vx-row">
