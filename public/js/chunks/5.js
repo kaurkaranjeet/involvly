@@ -260,13 +260,15 @@ __webpack_require__.r(__webpack_exports__);
         field: 'class_code',
         filter: true,
         width: 225
-      }, {
-        headerName: 'Status',
-        field: 'approved',
-        filter: true,
-        width: 150,
-        cellRendererFramework: 'CellRendererStatus'
-      }, {
+      },
+      /* {
+           headerName: 'Status',
+           field: 'approved',
+           filter: true,
+           width: 150,
+           cellRendererFramework: 'CellRendererStatus'
+       },*/
+      {
         headerName: 'Actions',
         field: 'transactions',
         width: 150,

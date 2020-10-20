@@ -217,13 +217,13 @@ export default {
                 },
 
 
-                {
+               /* {
                     headerName: 'Status',
                     field: 'approved',
                     filter: true,
                     width: 150,
                     cellRendererFramework: 'CellRendererStatus'
-                },
+                },*/
 
                 {
                     headerName: 'Actions',
