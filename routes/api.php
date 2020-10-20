@@ -33,8 +33,6 @@ Route::get('parent_requests/{id}', 'UserController@getParentRequest');
   Route::post('approve_teacher/{id}', 'TeacherController@Approveteacher');
     Route::post('disapprove_teacher/{id}', 'TeacherController@DisApproveteacher');
     //classes
-
-   
     Route::any('/manage-classes/{id}', ['as' => 'manage.classes', 'uses' => 'ClassController@manageClasses']);
     Route::any('/list_of_subjects/{id}', ['as' => 'manage.list_of_subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
     Route::any('/save-class-code', ['as' => 'save.classes', 'uses' => 'ClassController@saveClassCode']);
@@ -47,8 +45,14 @@ Route::get('parent_requests/{id}', 'UserController@getParentRequest');
     Route::any('/delete-subject/{id}', ['as' => 'delete.subjects', 'uses' => 'SubjectController@deleteSubject']);
     Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);
     Route::any('/edit-subject', ['as' => 'edit.subjects', 'uses' => 'SubjectController@editSubject']);
+
+    //school - subjects
+    Route::any('/manage-school-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
+    Route::any('/save-school-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSchoolSubject']);
+
    Route::post('/add-subject', ['as' => 'add.subject', 'uses' => 'SubjectController@AddSubject']);
       Route::post('/remove-subject', ['as' => 'remove.subject', 'uses' => 'SubjectController@RemoveSubject']);
+
 });
 // Mobile Apis
 
