@@ -33,8 +33,6 @@ Route::get('parent_requests/{id}', 'UserController@getParentRequest');
   Route::post('approve_teacher/{id}', 'TeacherController@Approveteacher');
     Route::post('disapprove_teacher/{id}', 'TeacherController@DisApproveteacher');
     //classes
-
-   
     Route::any('/manage-classes/{id}', ['as' => 'manage.classes', 'uses' => 'ClassController@manageClasses']);
     Route::any('/list_of_subjects/{id}', ['as' => 'manage.list_of_subjects', 'uses' => 'SubjectController@manageSchoolSubjects']);
     Route::any('/save-class-code', ['as' => 'save.classes', 'uses' => 'ClassController@saveClassCode']);
@@ -47,8 +45,14 @@ Route::get('parent_requests/{id}', 'UserController@getParentRequest');
     Route::any('/delete-subject/{id}', ['as' => 'delete.subjects', 'uses' => 'SubjectController@deleteSubject']);
     Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);
     Route::any('/edit-subject', ['as' => 'edit.subjects', 'uses' => 'SubjectController@editSubject']);
+
+    //school - subjects
+    Route::any('/manage-school-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSubjectsAccToSchool']);
+    Route::any('/save-school-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSchoolSubject']);
+
    Route::post('/add-subject', ['as' => 'add.subject', 'uses' => 'SubjectController@AddSubject']);
       Route::post('/remove-subject', ['as' => 'remove.subject', 'uses' => 'SubjectController@RemoveSubject']);
+
 });
 // Mobile Apis
 
@@ -86,9 +90,15 @@ Route::prefix('v1')->group(function () {
 
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
+    //task
     Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
+    Route::post('delete_schedule_task', 'Api\V1\ParentController@RemoveScheduleTask');
+    //Assignment
+    Route::post('add_assignment', 'Api\V1\AssignmentController@AddAssignment');
+    Route::post('get_classes_by_teacher', 'Api\V1\AssignmentController@GetClassesByTeacher');
+    Route::post('get_students_by_classes', 'Api\V1\AssignmentController@GetStudentsByClass');
 //    Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
         Route::post('delete_post', 'Api\V1\PostController@RemovePost');

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMailable;
 use App\User;
 use App\Models\ClassCode;
 use App\Models\ParentTask;
@@ -166,9 +168,7 @@ class ParentController extends Controller {
    } catch (\Exception $e) {
      return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
    }
-
- 
-}
+   }
 
     // Create task 
     public function AddScheduleTask(Request $request) {
@@ -199,6 +199,24 @@ class ParentController extends Controller {
             $task_assigned->task_assigned_to = $single; 
             $task_assigned->save();
             array_push($tasks , $task_assigned);
+            //get data according to user id
+            $user_data_by = User::where('id', $request->task_assigned_by)->first();
+            $user_data_to = User::where('id', $single)->first();
+            //email notification 
+               $data=array(
+                   'name'=>$user_data_to->name,
+                   'email'=>$user_data_to->email,
+                   'task_creator' => $user_data_by->name,
+                   'task_name' => $request->task_name,
+                   'task_date' => $request->task_date,
+                   'task_time' => $request->task_time,
+                   'task_description' => $request->task_description,
+                );
+               Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
+               $m->from('involvvely@gmail.com','Involvvely');
+               $m->to($user_data_to->email);
+               $m->subject('Assigned Task');
+               }); 
             }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
         }
@@ -212,11 +230,12 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::with('User')->where('task_assigned_by', $request->user_id)->get();
+            $tasks = ParentTask::with('User')->where('task_assigned_by', $request->user_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
     
+    //task detail
     public function GetScheduleTaskDetail(Request $request){
         $validator = Validator::make($request->all(), [
                     'task_id' => 'required|exists:parent_tasks,id'
@@ -228,6 +247,26 @@ class ParentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+
+    //remove task
+    public function RemoveScheduleTask(Request $request){
+
+        $validator = Validator::make($request->all(), [
+         'task_id' => 'required|exists:parent_tasks,id',
+ 
+     ]);
+         if ($validator->fails()) {
+             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+         } else {
+               $delete= ParentTask::where('id',$request->task_id)->delete();
+               $delete_assigned =  ParentTaskAssigned::where('task_id',$request->task_id)->delete();                 
+             if ($delete) {
+                 return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+             } else {
+                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+             }
+         }
+     }
 
     public function GetRelatedParents(Request $request) {
         try {
