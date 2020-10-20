@@ -63,7 +63,8 @@ class SubjectController extends Controller {
     if($validator->fails()){
             return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
     }
-   $data = ClassSubjects::where( 'class_id' , $request->class_id)->where('subject_id', $request->subject_id)->delete();
+   $data = ClassSubjects::where( 'class_code_id' , $request->class_id)->where('subject_id', $request->subject_id)->delete();
+   $data=new SubjectController;
    $data->is_added=1;
     return response()->json(compact('data'),200);
       
