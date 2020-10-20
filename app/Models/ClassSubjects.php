@@ -8,5 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ClassSubjects extends Model
 { 
- protected $table ='class_subjects';
+ protected $table ='class_code_subject';
+
+  
 }

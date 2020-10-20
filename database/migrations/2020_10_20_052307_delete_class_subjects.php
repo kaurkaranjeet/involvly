@@ -17,7 +17,8 @@ class DeleteClassSubjects extends Migration
 
          Schema::table('subjects', function (Blueprint $table) {
             
-     $table->dropForeign('subjects_class_id_foreign');
+    $table->dropForeign('subjects_class_id_foreign');
+       $table->dropColumn('class_id');
        });
     }
 

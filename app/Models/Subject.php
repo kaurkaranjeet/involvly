@@ -10,4 +10,9 @@ class Subject extends Model
 { 
     protected $table= 'subjects';
     protected $fillable = ['class_id','subject_name'];
+
+    public function subjects()
+    {
+        return $this->belongsToMany(ClassCode::class);
+    }
 }
