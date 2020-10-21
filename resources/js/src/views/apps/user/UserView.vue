@@ -25,19 +25,19 @@
         <div class="vx-row">
 
           <!-- Avatar Col -->
-          <div class="vx-col" id="avatar-col">
+          <!-- <div class="vx-col" id="avatar-col">
             <div class="img-container mb-4">
-            <!--   <img :src="user_data.avatar" class="rounded w-full" /> -->
+          <img :src="user_data.avatar" class="rounded w-full" /> 
             </div>
-          </div>
+          </div> -->
 
           <!-- Information - Col 1 -->
           <div class="vx-col flex-1" id="account-info-col-1">
             <table>
-              <tr>
+           <!--    <tr>
                 <td class="font-semibold">Username</td>
                 <td>{{ user_data.username }}</td>
-              </tr>
+              </tr> -->
               <tr>
                 <td class="font-semibold">Name</td>
                 <td>{{ user_data.name }}</td>
@@ -55,7 +55,9 @@
             <table>
               <tr>
                 <td class="font-semibold">Status</td>
-                <td>{{ user_data.status }}</td>
+                <td v-if="user_data.status==1"> ACTIVE</td>
+                  <td v-if="user_data.status==0"> INACTIVE</td>
+              </tr>
               </tr>
              <!--  <tr>
                 <td class="font-semibold">Role</td>
