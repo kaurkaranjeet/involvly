@@ -116,7 +116,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Subject' },
+                            { title: 'Subjects', url: '/apps/subject/subject-list' },
                             { title: 'Add', active: true }
                         ],
                         pageTitle: 'Subject Add',
