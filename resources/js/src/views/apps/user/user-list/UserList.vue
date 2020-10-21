@@ -215,9 +215,9 @@ export default {
           field: 'id',
           width: 125,
           filter: true,
-          checkboxSelection: true,
-          headerCheckboxSelectionFilteredOnly: true,
-          headerCheckboxSelection: true
+          checkboxSelection: false,
+          headerCheckboxSelectionFilteredOnly: false,
+          headerCheckboxSelection: false
         },
         {
           headerName: 'Name',
@@ -236,10 +236,10 @@ export default {
       
         {
           headerName: 'Assigned Classes',
-          field: 'status',
+          field: 'class_codes',
           filter: true,
-          width: 150,
-          cellRendererFramework: 'CellRendererStatus'
+          width: 225,
+          //cellRendererFramework: 'CellRendererStatus'
         },
         
         {
