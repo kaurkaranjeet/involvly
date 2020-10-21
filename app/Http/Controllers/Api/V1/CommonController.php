@@ -165,6 +165,44 @@ class CommonController extends Controller {
    }
 }
 
+public function UpdateUserProfile(Request $request) {
+    $input = $request->all();
+    $validator = Validator::make($input, [
+                'first_name' => 'required',
+                'user_id' => 'required|exists:users,id'
+    ]);
+   
+   if ($validator->fails()) {
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+    }  
+    else{ 
+   $count_user=User::where('id','!=', $request->user_id)->where('first_name','=',$request->first_name)->count();
+     
+      if($count_user==0){
+        $updateData = User::where('id', $request->user_id)->update([
+            'first_name' => $request->first_name,
+        ]);
+        // upload image file
+        if ($request->hasfile('image')) {
+            $video = $request->file('image');
+            $name = time() . '.' . trim($video->getClientOriginalExtension());
+            $destinationPath = public_path('/uploads');
+            $video->move($destinationPath, $name);
+            $videourl = url('/') . '/uploads/' . $name;
+            $updateData = User::where('id', $request->user_id)->update([
+              'profile_image' => $videourl
+            ]);
+          }
+        $update= User::find( $request->user_id);
+        return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $update), 200);
+      }
+    else{
+       return response()->json(array('error' => true, 'message' => 'Username already exist', 'data' => []), 200);
+    }
+  }
+   
+}
+
 public function  RunMigration(){
   Artisan::call('migrate');
 }

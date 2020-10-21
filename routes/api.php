@@ -107,7 +107,8 @@ Route::prefix('v1')->group(function () {
 //    Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
         Route::post('delete_post', 'Api\V1\PostController@RemovePost');
- Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
+    Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
+    Route::post('update_user_profile', 'Api\V1\CommonController@UpdateUserProfile');
 
 });
 
