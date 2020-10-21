@@ -104,11 +104,14 @@ Route::prefix('v1')->group(function () {
     Route::post('add_assignment', 'Api\V1\AssignmentController@AddAssignment');
     Route::post('get_classes_by_teacher', 'Api\V1\AssignmentController@GetClassesByTeacher');
     Route::post('get_students_by_classes', 'Api\V1\AssignmentController@GetStudentsByClass');
+
 //    Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
         Route::post('delete_post', 'Api\V1\PostController@RemovePost');
     Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
+
     Route::post('update_user_profile', 'Api\V1\CommonController@UpdateUserProfile');
+    Route::post('update_user_password', 'Api\V1\CommonController@UpdateUserPassword');
 
 });
 

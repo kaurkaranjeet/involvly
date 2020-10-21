@@ -14,6 +14,7 @@ use App\Models\School;
 use Illuminate\Support\Facades\Validator;
 use Pusher\Pusher;
 use DB;
+use Hash;
 use Illuminate\Support\Facades\Artisan;
 class CommonController extends Controller {
 
@@ -196,6 +197,39 @@ public function UpdateUserProfile(Request $request) {
      
   }
    
+}
+public function UpdateUserPassword(Request $request)
+{
+  $input = $request->all();
+         $validator = Validator::make($input, [
+            'user_id' => 'required|exists:users,id',
+            'old_password' => 'required',
+            'confirm_password' => 'required',                  
+            'new_password' => 'required',
+                  
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        }  else {       
+        try {          
+            if($request->confirm_password==$request->new_password){
+              $user = User::where('id', '=', $request->user_id)->first();
+              if(Hash::check($request->old_password, $user->password)){
+             $datauser=  User::where("id",$request->user_id)->update([
+                 "password" =>Hash::make($request->new_password)
+                 ]);
+             $arr = array("error"=>false, "message" =>'Your password is changed', "data" => $datauser);
+              }else{
+                throw new Exception('Old password do not match');
+              } 
+            }else{
+                  throw new Exception('Confirm password do not match');
+            }            
+        } catch (Exception $ex) {
+            $arr = array("error"=>true, "message" => $ex->getMessage(), "data" => []);
+        }
+    }
+    return \Response::json($arr);
 }
 
 public function  RunMigration(){
