@@ -175,9 +175,6 @@ public function UpdateUserProfile(Request $request) {
         return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
     }  
     else{ 
-   $count_user=User::where('id','!=', $request->user_id)->where('first_name','=',$request->first_name)->count();
-     
-      if($count_user==0){
         if(!empty($request->first_name)){
         $updateData = User::where('id', $request->user_id)->update([
             'first_name' => $request->first_name,
@@ -196,10 +193,7 @@ public function UpdateUserProfile(Request $request) {
           }
         $update= User::find( $request->user_id);
         return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $update), 200);
-      }
-    else{
-       return response()->json(array('error' => true, 'message' => 'Username already exist', 'data' => []), 200);
-    }
+     
   }
    
 }
