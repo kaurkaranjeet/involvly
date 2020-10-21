@@ -1,6 +1,6 @@
 <template>
     <div>
-     <vs-button v-if="params.value==0" @click="AddTeacher(params.value)"> {{params}}Assign</vs-button>
+     <vs-button v-if="params.value==0" @click="AddTeacher(params.value)">Assign</vs-button>
      <vs-button v-if="params.value==1" @click="RemoveTeacher(params.value)"> Re-Assign</vs-button>
                      </div>
     </div>
@@ -13,8 +13,10 @@ export default {
   methods: {
     AddTeacher () {
       const payload={
-      subject_id:this.params.data.id,
-      class_id:this.$route.params.classId,
+      teacher_id: this.params.data.id,
+      class_id: this.$route.params.classId,
+      subject_id: this.$route.params.subjectId,
+      school_id:localStorage.getItem('school_id'),
     }
       this.$store.dispatch("classManagement/AddTeacherToClassSubjects", payload)
         .then(()   => { this.showAddSuccess(); location.reload(true) })
@@ -22,8 +24,10 @@ export default {
     },
      RemoveTeacher () {
       const payload={
-      subject_id:this.params.data.id,
-      class_id:this.$route.params.classId,
+      teacher_id: this.params.data.id,
+      class_id: this.$route.params.classId,
+      subject_id: this.$route.params.subjectId,
+      school_id:localStorage.getItem('school_id'),
     }
       this.$store.dispatch("classManagement/RemoveTeacherToClassSubjects", payload)
         .then(()   => { this.showRemoveSuccess() ; location.reload(true)})

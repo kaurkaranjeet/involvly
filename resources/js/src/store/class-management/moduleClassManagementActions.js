@@ -201,15 +201,49 @@ export default {
         })
     },
     //fetch assigned teachers to classes
-    fetchAssignedTeachersToClasses({ commit }, classId) {
+    fetchAssignedTeachersToClasses({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/fetch-assigned-teachers/' + classId)
+            axios.post('/api/auth/fetch-assigned-teachers', payload)
                 .then((response) => {
                     console.log(response.data.teachers);
                     commit('SET_TEACHERS', response.data.teachers)
                     resolve(response)
                 })
                 .catch((error) => { reject(error) })
+        })
+    },
+    //AddTeacherToClassSubjects
+    AddTeacherToClassSubjects({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/add-teacher-subject`, code)
+                .then((response) => {
+                    if (response.data.data) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
+        })
+    },
+
+    RemoveTeacherToClassSubjects({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/remove-teacher-subject`, code)
+                .then((response) => {
+                    if (response.data.data) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
         })
     },
 }

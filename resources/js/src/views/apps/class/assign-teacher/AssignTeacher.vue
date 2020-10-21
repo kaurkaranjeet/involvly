@@ -315,7 +315,13 @@ export default {
             this.$store.registerModule('classManagement', moduleClassManagement)
             moduleClassManagement.isRegistered = true
         }
-        this.$store.dispatch('classManagement/fetchAssignedTeachersToClasses', this.$route.params.classId).catch(err => { console.error(err) })
+        var payload = {
+        class_id: this.$route.params.classId,
+        subject_id: this.$route.params.subjectId,
+        school_id: localStorage.getItem('school_id')
+      };
+      console.log("payload",payload)
+        this.$store.dispatch('classManagement/fetchAssignedTeachersToClasses', payload).catch(err => { console.error(err) })
     }
 }
 </script>

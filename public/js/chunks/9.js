@@ -358,7 +358,13 @@ __webpack_require__.r(__webpack_exports__);
       _store_class_management_moduleClassManagement_js__WEBPACK_IMPORTED_MODULE_3__["default"].isRegistered = true;
     }
 
-    this.$store.dispatch('classManagement/fetchAssignedTeachersToClasses', this.$route.params.classId).catch(function (err) {
+    var payload = {
+      class_id: this.$route.params.classId,
+      subject_id: this.$route.params.subjectId,
+      school_id: localStorage.getItem('school_id')
+    };
+    console.log("payload", payload);
+    this.$store.dispatch('classManagement/fetchAssignedTeachersToClasses', payload).catch(function (err) {
       console.error(err);
     });
   }
@@ -481,8 +487,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var payload = {
-        subject_id: this.params.data.id,
-        class_id: this.$route.params.classId
+        teacher_id: this.params.data.id,
+        class_id: this.$route.params.classId,
+        subject_id: this.$route.params.subjectId,
+        school_id: localStorage.getItem('school_id')
       };
       this.$store.dispatch("classManagement/AddTeacherToClassSubjects", payload).then(function () {
         _this.showAddSuccess();
@@ -496,8 +504,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var payload = {
-        subject_id: this.params.data.id,
-        class_id: this.$route.params.classId
+        teacher_id: this.params.data.id,
+        class_id: this.$route.params.classId,
+        subject_id: this.$route.params.subjectId,
+        school_id: localStorage.getItem('school_id')
       };
       this.$store.dispatch("classManagement/RemoveTeacherToClassSubjects", payload).then(function () {
         _this2.showRemoveSuccess();
@@ -969,7 +979,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v(" " + _vm._s(_vm.params) + "Assign")]
+            [_vm._v("Assign")]
           )
         : _vm._e(),
       _vm._v(" "),

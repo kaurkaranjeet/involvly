@@ -251,13 +251,42 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   //fetch assigned teachers to classes
-  fetchAssignedTeachersToClasses: function fetchAssignedTeachersToClasses(_ref12, classId) {
+  fetchAssignedTeachersToClasses: function fetchAssignedTeachersToClasses(_ref12, payload) {
     var commit = _ref12.commit;
     return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/fetch-assigned-teachers/' + classId).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/fetch-assigned-teachers', payload).then(function (response) {
         console.log(response.data.teachers);
         commit('SET_TEACHERS', response.data.teachers);
         resolve(response);
+      }).catch(function (error) {
+        reject(error);
+      });
+    });
+  },
+  //AddTeacherToClassSubjects
+  AddTeacherToClassSubjects: function AddTeacherToClassSubjects(_ref13, code) {
+    var commit = _ref13.commit;
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/add-teacher-subject", code).then(function (response) {
+        if (response.data.data) {
+          resolve(response);
+        } else {
+          reject(response.data.message);
+        }
+      }).catch(function (error) {
+        reject(error);
+      });
+    });
+  },
+  RemoveTeacherToClassSubjects: function RemoveTeacherToClassSubjects(_ref14, code) {
+    var commit = _ref14.commit;
+    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/remove-teacher-subject", code).then(function (response) {
+        if (response.data.data) {
+          resolve(response);
+        } else {
+          reject(response.data.message);
+        }
       }).catch(function (error) {
         reject(error);
       });
