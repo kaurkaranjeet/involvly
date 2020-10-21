@@ -9,21 +9,7 @@
 
 <template>
     <div id="page-user-list">
-        <div class="vx-row mb-2">
-            <div class="vx-col w-full">
-                <vs-input v-validate="'required'" data-vv-validate-on="blur" label-placeholder="Class Name" name="Class Name" v-model="class_name" class="w-full" readonly />
-                <span class="text-danger text-xs">{{ errors.first("Class Name") }}</span>
-            </div>
-        </div>
-        <div class="vx-row mb-2">
-            <div class="vx-col w-full">
-                <vs-input v-validate="'required'" data-vv-validate-on="blur" label-placeholder="Class Code" name="Class Code" placeholder="Class Code" v-model="class_code" class="w-full" readonly />
-                <span class="text-danger text-xs">{{ errors.first("Class Code") }}</span>
-            </div>
-        </div>
-        <div class="col-md-12 bg-light text-right pd-bt">
-            <vs-button color="primary" type="filled" @click="addSubjectdata">Add New Subject</vs-button>
-        </div>
+       
         <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters" style="display: none">
             <div class="vx-row">
                 <!--  <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
@@ -79,46 +65,56 @@
                 <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." />
                 <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
     
+                <!-- ACTION - DROPDOWN 
+              <vs-dropdown vs-trigger-click class="cursor-pointer">
+    
+                <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-medium w-32">
+                  <span class="mr-2 leading-none">Actions</span>
+                  <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+                </div>
+    
+                <vs-dropdown-menu>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>Delete</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>Archive</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>Print</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="SaveIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>CSV</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                </vs-dropdown-menu>
+              </vs-dropdown>
+              -->
             </div>
     
     
-           <div class="vx-row">
-      <!-- CARD 9: DISPATCHED ORDERS -->
-      <div class="vx-col w-full">
-        <vx-card title="Subject Lists">
-          <div slot="no-body" class="mt-4">
-            <vs-table max-items="5" pagination :data="usersData" class="table-dark-inverted" >
-              <template slot="thead">
-                <vs-th>Id</vs-th>
-                <vs-th>Name</vs-th>
-                <vs-th>Assign/Re-assign</vs-th>  
-               
-              </template>
-
-              <template slot-scope="{data}">
-                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                  <vs-td :data="data[indextr].id">
-                    <span>#{{data[indextr].id}}</span>
-                  </vs-td>
-
-                    <vs-td :data="data[indextr].subject_name">
-                    <span>{{data[indextr].subject_name}}</span>
-                  </vs-td>                                  
-                  <vs-td>
-                    <span class="flex items-center px-2 py-1 rounded"> 
-                     <vs-button @click="assignedTeacherToClass($route.params.classId,data[indextr].id)"> Assign/Re-assign</vs-button>
-                                        </span>
-                 
-                  </vs-td>
-              
-                </vs-tr>
-              </template>
-            </vs-table>
-          </div>
-        </vx-card>
-      </div>
-    </div>
-            
+            <!-- AgGrid Table -->
+            <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions" class="ag-theme-material w-100 my-4 ag-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef" :rowData="usersData" rowSelection="single" colResizeDefault="shift"
+                :animateRows="true" :floatingFilter="true" :pagination="true" :paginationPageSize="paginationPageSize" :suppressPaginationPanel="true" :enableRtl="$vs.rtl">
+            </ag-grid-vue>
+    
+            <vs-pagination :total="totalPages" :max="7" v-model="currentPage" />
     
         </div>
     </div>
@@ -152,8 +148,8 @@ export default {
     },
     data() {
         return {
-            class_name: "",
-            class_code: "",
+
+
             // Filter Options
             roleFilter: { label: 'All', value: 'all' },
             roleOptions: [
@@ -201,38 +197,31 @@ export default {
                     field: 'id',
                     width: 125,
                     filter: true,
-                    checkboxSelection: true,
-                    headerCheckboxSelectionFilteredOnly: true,
-                    headerCheckboxSelection: true
+                    checkboxSelection: false,
+                    headerCheckboxSelectionFilteredOnly: false,
+                    headerCheckboxSelection: false
                 },
                 {
-                    headerName: 'Subject Name',
-                    field: 'subject_name',
+                    headerName: 'Name',
+                    field: 'name',
                     filter: true,
-                    width: 210,
-                    cellRendererFramework: 'CellRendererLink'
+                    width: 210
                 },
-
-                 {
-                    headerName: 'Assign/Reassign',
-                    field: 'assign/reassign',
-                    filter: false,
-                    width: 210,
-                   // cellRendererFramework: 'CellRendererLink'
+                {
+                    headerName: 'Email',
+                    field: 'email',
+                    filter: true,
+                    width: 210
                 },
-                // {
-                //   headerName: 'Status',
-                //   field: 'approved',
-                //   filter: true,
-                //   width: 150,
-                //   cellRendererFramework: 'CellRendererStatus'
-                // },
-                /*{
-                    headerName: 'Actions',
-                    field: 'transactions',
-                    width: 150,
-                    cellRendererFramework: 'CellRendererActions'
-                }*/
+                {
+                    headerName: 'Assign/Re-assign',
+                    field: 'is_added',
+                    width: 210,
+                    cellRendererFramework: 'CellRendererStatus',
+                      checkboxSelection: false,
+                    headerCheckboxSelectionFilteredOnly: false,
+                    headerCheckboxSelection: false
+                },
             ],
 
             // Cell Renderer Components
@@ -262,7 +251,7 @@ export default {
     computed: {
 
         usersData() {
-            return this.$store.state.classManagement.subjects
+            return this.$store.state.classManagement.teachers
         },
         paginationPageSize() {
             if (this.gridApi) return this.gridApi.paginationGetPageSize()
@@ -283,34 +272,6 @@ export default {
         }
     },
     methods: {
-        fetch_Class_data(classId) {
-            this.$store.dispatch('classManagement/fetchClassCodeDetail', classId)
-                .then(res => {
-                    this.class_data = res.data.class
-                    console.log(this.class_data)
-                    this.class_name = this.class_data.class_name;
-                    this.class_code = this.class_data.class_code;
-                })
-                .catch(err => {
-                    if (err.response.status === 404) {
-                        this.class_not_found = true
-                        return
-                    }
-                    console.error(err)
-                })
-        },
-        addSubjectdata() {
-            this.$router
-                .push(`/apps/class/subject-add/` + this.$route.params.classId)
-                .catch(() => {});
-        },
-        assignedTeacherToClass(classId , subjectId){
-           console.log("classId",classId) 
-           console.log("subjectId",subjectId) 
-           this.$router
-                .push(`/apps/class/assign-teacher/` + classId + `/` + subjectId)
-                .catch(() => {});
-        },
         setColumnFilter(column, val) {
             const filter = this.gridApi.getFilterInstance(column)
             let modelObj = null
@@ -354,8 +315,13 @@ export default {
             this.$store.registerModule('classManagement', moduleClassManagement)
             moduleClassManagement.isRegistered = true
         }
-        this.fetch_Class_data(this.$route.params.classId)
-        this.$store.dispatch('classManagement/fetchSubjects', this.$route.params.classId).catch(err => { console.error(err) })
+        var payload = {
+        class_id: this.$route.params.classId,
+        subject_id: this.$route.params.subjectId,
+        school_id: localStorage.getItem('school_id')
+      };
+      console.log("payload",payload)
+        this.$store.dispatch('classManagement/fetchAssignedTeachersToClasses', payload).catch(err => { console.error(err) })
     }
 }
 </script>
@@ -375,3 +341,4 @@ export default {
   padding-bottom: 10px;
 }
 </style>
+

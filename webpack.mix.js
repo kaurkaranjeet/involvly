@@ -25,7 +25,7 @@ mix.js('resources/js/app.js', 'public/js')
         }
     })
     .sass('resources/sass/app.scss', 'public/css').options({
-        postCss:[require('autoprefixer'), require('postcss-rtl')]
+        postCss: [require('autoprefixer'), require('postcss-rtl')]
     })
     .postCss('resources/assets/css/main.css', 'public/css', [
         tailwindcss('tailwind.js'), require('postcss-rtl')()
@@ -58,9 +58,10 @@ mix.js('resources/js/app.js', 'public/js')
 //     });
 // }
 
-/*mix.webpackConfig({
-    output: {
-        chunkFilename: 'js/chunks/[name].js',
-    }
-});*/
+
+// mix.webpackConfig({
+//     output: {
+//         chunkFilename: 'js/chunks/[name].js',
+//     }
+// });
 
