@@ -73139,7 +73139,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Add',
           active: true
         }],
-        pageTitle: 'Subject Add',
+        pageTitle: 'Add Class subject',
         rule: 'editor'
       }
     }, {
