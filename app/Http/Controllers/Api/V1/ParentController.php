@@ -115,9 +115,8 @@ class ParentController extends Controller {
             DB::enableQueryLog();
             //  $students=User::with('SchoolDetail')
 
-            $students = User::leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
-                            ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
-                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('users.type_of_schooling', 'home')->where('users.city', $request->city_id)->get();
+            $students = User::where('role_id', 2)->where('users.type_of_schooling', 'home')->where('users.city', $request->city_id)->get();
+            
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $students), 200);
         }
     }
