@@ -218,7 +218,7 @@ public function UpdateUserPassword(Request $request)
              $datauser=  User::where("id",$request->user_id)->update([
                  "password" =>Hash::make($request->new_password)
                  ]);
-             $arr = array("error"=>false, "message" =>'Your password is changed', "data" => $datauser);
+             $arr = array("error"=>false, "message" =>'Your password is changed', "data" => $user);
               }else{
                 throw new Exception('Old password do not match');
               } 
