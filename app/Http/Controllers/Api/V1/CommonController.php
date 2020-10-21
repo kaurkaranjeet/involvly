@@ -131,7 +131,7 @@ class CommonController extends Controller {
  public function GetSubjects(Request $request) {
       try {
 
-        $Subject=Subject::whereNull('class_id')->get();
+        $Subject=Subject::whereNull('school_id')->get();
         if(!empty( $Subject )){
            return response()->json(array('error' => false, 'data' =>$Subject ), 200);
        }
