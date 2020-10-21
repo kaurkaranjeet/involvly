@@ -166,7 +166,7 @@ class CommonController extends Controller {
    }
 }
 
-public function UpdateUserProfile(Request $request) {
+public function UpdateUserImage(Request $request) {
     $input = $request->all();
     $validator = Validator::make($input, [
                 'user_id' => 'required|exists:users,id'
@@ -176,11 +176,6 @@ public function UpdateUserProfile(Request $request) {
         return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
     }  
     else{ 
-        if(!empty($request->first_name)){
-        $updateData = User::where('id', $request->user_id)->update([
-            'first_name' => $request->first_name,
-        ]);
-        }
         // upload image file
         if ($request->hasfile('image')) {
             $video = $request->file('image');
@@ -197,6 +192,27 @@ public function UpdateUserProfile(Request $request) {
      
   }
    
+}
+public function UpdateUserName(Request $request) {
+  $input = $request->all();
+  $validator = Validator::make($input, [
+              'user_id' => 'required|exists:users,id'
+  ]);
+ 
+ if ($validator->fails()) {
+      return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+  }  
+  else{ 
+      if(!empty($request->first_name)){
+      $updateData = User::where('id', $request->user_id)->update([
+          'first_name' => $request->first_name,
+      ]);
+      }
+      $update= User::find( $request->user_id);
+      return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $update), 200);
+   
+}
+ 
 }
 public function UpdateUserPassword(Request $request)
 {

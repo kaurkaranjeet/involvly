@@ -110,7 +110,8 @@ Route::prefix('v1')->group(function () {
         Route::post('delete_post', 'Api\V1\PostController@RemovePost');
     Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
 
-    Route::post('update_user_profile', 'Api\V1\CommonController@UpdateUserProfile');
+    Route::post('update_user_image', 'Api\V1\CommonController@UpdateUserImage');
+    Route::post('update_user_name', 'Api\V1\CommonController@UpdateUserName');
     Route::post('update_user_password', 'Api\V1\CommonController@UpdateUserPassword');
 
 });
