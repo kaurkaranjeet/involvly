@@ -9,9 +9,6 @@
 
 
 export default {
-    // SET_ITEMS(state, items) {
-    //     state.items = items
-    // },
     SET_CLASSES(state, classes) {
         state.classes = classes
     },
@@ -22,12 +19,15 @@ export default {
     SET_SUBJECTS(state, subjects) {
         state.subjects = subjects
     },
-
-     SET_SCHOOL_SUBJECTS(state, school_subjects) {
-        state.school_subjects = school_subjects
-    },
     REMOVE_SUBJECTS(state, subjectId) {
         const subjectIndex = state.subjects.findIndex((u) => u.id === subjectId)
         state.subjects.splice(subjectIndex, 1)
-    }
+    },
+    SET_SCHOOL_SUBJECTS(state, school_subjects) {
+        state.school_subjects = school_subjects
+    },
+    SET_TEACHERS(state, teachers) {
+        state.teachers = teachers
+    },
+
 }

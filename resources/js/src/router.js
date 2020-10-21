@@ -153,6 +153,22 @@ const router = new Router({
                         rule: 'editor'
                     }
                 },
+                //assign teacher to subjects
+                {
+                    path: '/apps/class/assign-teacher/:classId/:subjectId',
+                    name: 'app-assign-teacher',
+                    component: () =>
+                        import ('@/views/apps/class/assign-teacher/AssignTeacher.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Class' },
+                            { title: 'Assigned Teacher', active: true }
+                        ],
+                        pageTitle: 'Assigned Teacher',
+                        rule: 'editor'
+                    }
+                },
                 //subjects menu path
                 {
                     path: '/apps/subject/subject-list',

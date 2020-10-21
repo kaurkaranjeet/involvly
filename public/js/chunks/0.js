@@ -250,84 +250,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchAllItems: function fetchAllItems(_ref12) {
+  //fetch assigned teachers to classes
+  fetchAssignedTeachersToClasses: function fetchAssignedTeachersToClasses(_ref12, classId) {
     var commit = _ref12.commit;
     return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/all-items").then(function (response) {
-        commit('SET_ITEMS', response.data.response);
-        resolve(response);
-      }).catch(function (error) {
-        reject(error);
-      });
-    });
-  },
-  fetchItems: function fetchItems(_ref13, userId) {
-    var commit = _ref13.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/view-items/".concat(userId)).then(function (response) {
-        commit('SET_ITEMS', response.data.response);
-        resolve(response);
-      }).catch(function (error) {
-        reject(error);
-      });
-    });
-  },
-  fetchItem: function fetchItem(context, userId) {
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/item-user/".concat(userId)).then(function (response) {
-        resolve(response);
-      }).catch(function (error) {
-        reject(error);
-      });
-    });
-  },
-  getItem: function getItem(_ref14, itemId) {
-    var commit = _ref14.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/get-item/".concat(itemId)).then(function (response) {
-        commit('SET_ITEMS', response.data.response);
-        resolve(response);
-      }).catch(function (error) {
-        reject(error);
-      });
-    });
-  },
-  saveItem: function saveItem(context, userId) {
-    console.log(userId);
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/update-item/".concat(userId.id), userId).then(function (response) {
-        resolve(response);
-      }).catch(function (error) {
-        reject(error);
-      });
-    });
-  },
-  uploadImage: function uploadImage(context, userId) {
-    console.log(userId);
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/update-image", userId).then(function (response) {
-        resolve(response);
-      }).catch(function (error) {
-        reject(error);
-      });
-    });
-  },
-  createItem: function createItem(context, userId) {
-    console.log('userId');
-    console.log(userId);
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/create-item", userId).then(function (response) {
-        resolve(response);
-      }).catch(function (error) {
-        reject(error);
-      });
-    });
-  },
-  removeRecord: function removeRecord(_ref15, ItemId) {
-    var commit = _ref15.commit;
-    return new _babel_runtime_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].delete("/api/delete-item/".concat(ItemId)).then(function (response) {
-        commit('REMOVE_RECORD', ItemId);
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post('/api/auth/fetch-assigned-teachers/' + classId).then(function (response) {
+        console.log(response.data.teachers);
+        commit('SET_TEACHERS', response.data.teachers);
         resolve(response);
       }).catch(function (error) {
         reject(error);
@@ -377,9 +306,6 @@ __webpack_require__.r(__webpack_exports__);
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 /* harmony default export */ __webpack_exports__["default"] = ({
-  // SET_ITEMS(state, items) {
-  //     state.items = items
-  // },
   SET_CLASSES: function SET_CLASSES(state, classes) {
     state.classes = classes;
   },
@@ -392,14 +318,17 @@ __webpack_require__.r(__webpack_exports__);
   SET_SUBJECTS: function SET_SUBJECTS(state, subjects) {
     state.subjects = subjects;
   },
-  SET_SCHOOL_SUBJECTS: function SET_SCHOOL_SUBJECTS(state, school_subjects) {
-    state.school_subjects = school_subjects;
-  },
   REMOVE_SUBJECTS: function REMOVE_SUBJECTS(state, subjectId) {
     var subjectIndex = state.subjects.findIndex(function (u) {
       return u.id === subjectId;
     });
     state.subjects.splice(subjectIndex, 1);
+  },
+  SET_SCHOOL_SUBJECTS: function SET_SCHOOL_SUBJECTS(state, school_subjects) {
+    state.school_subjects = school_subjects;
+  },
+  SET_TEACHERS: function SET_TEACHERS(state, teachers) {
+    state.teachers = teachers;
   }
 });
 
@@ -425,6 +354,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   classes: [],
   subjects: [],
+  teachers: [],
   school_subjects: []
 });
 
