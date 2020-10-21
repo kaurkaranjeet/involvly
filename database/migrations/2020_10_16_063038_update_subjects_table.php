@@ -14,8 +14,8 @@ class UpdateSubjectsTable extends Migration
     public function up()
     {
         Schema::table('subjects', function (Blueprint $table) {
-           $table->unsignedBigInteger('class_id')->after('id');
-      $table->foreign('class_id')->references('id')->on('class_code')->onDelete('cascade'); 
+           $table->unsignedBigInteger('school_id')->after('id');
+      $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade'); 
         });
     }
 
