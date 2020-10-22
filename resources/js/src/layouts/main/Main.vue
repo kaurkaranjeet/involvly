@@ -205,10 +205,8 @@ export default {
     windowWidth ()          { return this.$store.state.windowWidth },
     accessRole() {
       if (localStorage.getItem("role_id") == '1') {
-        alert(localStorage.getItem("role_id"))
         return true;
       } else {
-        alert("else")
         return false;
       }
     },

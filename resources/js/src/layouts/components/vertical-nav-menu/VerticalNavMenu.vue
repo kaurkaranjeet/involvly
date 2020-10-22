@@ -134,7 +134,7 @@ export default {
     parent:           { type: String },
     reduceNotRebound: { type: Boolean, default: true },
     navMenuItems:     { type: Array,   required: true },
-    adminNavMenuItems:     { type: Array,   required: true },
+    adminNavMenuItems:{ type: Array,   required: true },
     title:            { type: String }
   },
   data: () => ({
@@ -169,7 +169,6 @@ export default {
     },
     menuItemsUpdated () {
       if (localStorage.getItem("role_id") == '1') {
-      alert("asdad"); 
       const clone = this.adminNavMenuItems.slice()
 
       for (const [index, item] of this.adminNavMenuItems.entries()) {
@@ -183,7 +182,6 @@ export default {
 
       return clone
       } else {
-      alert("bharti"); 
       const clone = this.navMenuItems.slice()
 
       for (const [index, item] of this.navMenuItems.entries()) {
