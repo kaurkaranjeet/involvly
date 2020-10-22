@@ -46,6 +46,10 @@
                 <td class="font-semibold">Email</td>
                 <td>{{ user_data.email }}</td>
               </tr>
+               <tr>
+                <td class="font-semibold">City</td>
+                <td>{{ user_data.city }}</td>
+              </tr>
             </table>
           </div>
           <!-- /Information - Col 1 -->
@@ -59,13 +63,13 @@
                   <td v-if="user_data.status==0"> INACTIVE</td>
               </tr>
               </tr>
+              <tr>
+                <td class="font-semibold">State</td>
+                <td>{{ user_data.state_name }}</td>
+              </tr>
              <!--  <tr>
-                <td class="font-semibold">Role</td>
-                <td>{{ user_data.roles[0].name }}</td>
-              </tr> -->
-             <!--  <tr>
-                <td class="font-semibold">Company</td>
-                <td>{{ user_data.company }}</td>
+                <td class="font-semibold">City</td>
+                <td>{{ user_data.city }}</td>
               </tr> -->
             </table>
           </div>

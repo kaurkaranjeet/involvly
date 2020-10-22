@@ -190,6 +190,9 @@ class UserController extends Controller {
 
     public function fetchUser($id) {
         $data = User::fetchUser($id);
+    // print_r($data->StateDetail);die;
+       $data->state_name= $data->StateDetail->state_name;
+        $data->city= $data->CityDetail->city;
         if (isset($data)) {
             return response()->json(compact('data'), 200);
         } else {
