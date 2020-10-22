@@ -163,7 +163,7 @@ class CommonController extends Controller {
                 ]);
             }
             $update = User::find($request->user_id);
-            return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $update), 200);
+            return response()->json(array('error' => false, 'message' => 'Profile updated successfully', 'data' => $update), 200);
         }
     }
 
@@ -187,7 +187,7 @@ class CommonController extends Controller {
                 ]);
             }
             $update = User::find($request->user_id);
-            return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $update), 200);
+            return response()->json(array('error' => false, 'message' => 'Profile updated successfully', 'data' => $update), 200);
         }
     }
 
@@ -233,7 +233,7 @@ class CommonController extends Controller {
         } else {
             $delete= User::where('id',$request->user_id)->delete();                   
             if ($delete) {
-                return response()->json(array('error' => false, 'message' => 'account deleted successfully', 'data' => []), 200);
+                return response()->json(array('error' => false, 'message' => 'Account deleted successfully', 'data' => []), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
             }
