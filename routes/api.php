@@ -113,6 +113,7 @@ Route::prefix('v1')->group(function () {
     Route::post('update_user_image', 'Api\V1\CommonController@UpdateUserImage');
     Route::post('update_user_name', 'Api\V1\CommonController@UpdateUserName');
     Route::post('update_user_password', 'Api\V1\CommonController@UpdateUserPassword');
+    Route::post('delete_my_account', 'Api\V1\CommonController@DeleteAccount');
 
 });
 
