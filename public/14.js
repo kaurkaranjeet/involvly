@@ -193,6 +193,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -218,7 +231,7 @@ __webpack_require__.r(__webpack_exports__);
         type: 'confirm',
         color: 'danger',
         title: 'Confirm Delete',
-        text: "You are about to delete \"".concat(this.user_data.username, "\""),
+        text: "You are about to delete \"".concat(this.user_data.name, "\""),
         accept: this.deleteRecord,
         acceptText: 'Delete'
       });
@@ -423,6 +436,16 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(_vm.user_data.city))])
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _vm.user_data.position != null
+                              ? _c("td", { staticClass: "font-semibold" }, [
+                                  _vm._v("Position")
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(_vm.user_data.position))])
                           ])
                         ])
                       ]
@@ -450,13 +473,61 @@ var render = function() {
                               : _vm._e()
                           ]),
                           _vm._v(" "),
+                          _vm.user_data.school_id > 0
+                            ? _c("tr", [
+                                _c("td", { staticClass: "font-semibold" }, [
+                                  _vm._v("School Name")
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.user_data.school_detail.school_name
+                                    )
+                                  )
+                                ])
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
                           _c("tr", [
                             _c("td", { staticClass: "font-semibold" }, [
                               _vm._v("State")
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(_vm.user_data.state_name))])
-                          ])
+                          ]),
+                          _vm._v(" "),
+                          _vm.user_data.is_document == 1
+                            ? _c("tr", [
+                                _c("td", { staticClass: "font-semibold" }, [
+                                  _vm._v("Documents")
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "ul",
+                                    { attrs: { id: "example-1" } },
+                                    _vm._l(_vm.user_data.documents, function(
+                                      item
+                                    ) {
+                                      return _c("li", { key: item.id }, [
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: {
+                                              href: item.document_url,
+                                              target: "_blank"
+                                            }
+                                          },
+                                          [_vm._v(_vm._s(item.document_name))]
+                                        )
+                                      ])
+                                    }),
+                                    0
+                                  )
+                                ])
+                              ])
+                            : _vm._e()
                         ])
                       ]
                     ),
@@ -468,22 +539,6 @@ var render = function() {
                         attrs: { id: "account-manage-buttons" }
                       },
                       [
-                        _c(
-                          "vs-button",
-                          {
-                            staticClass: "mr-4",
-                            attrs: {
-                              "icon-pack": "feather",
-                              icon: "icon-edit",
-                              to: {
-                                name: "app-user-edit",
-                                params: { userId: _vm.$route.params.userId }
-                              }
-                            }
-                          },
-                          [_vm._v("Edit")]
-                        ),
-                        _vm._v(" "),
                         _c(
                           "vs-button",
                           {

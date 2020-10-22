@@ -423,7 +423,13 @@ router.beforeEach((to, from, next) => {
        
     }
 
-    return next()
+    if (to.name == 'page-admin-login') {
+   return next({ name: 'dashboard' });
+  } else {
+   return  next();
+  }
+
+   // return next()
 
 
   

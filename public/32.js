@@ -1462,13 +1462,7 @@ var render = function() {
                                                 data: data[indextr].date
                                               }
                                             },
-                                            [
-                                              _c("span", [
-                                                _vm._v(
-                                                  _vm._s(data[indextr].date)
-                                                )
-                                              ])
-                                            ]
+                                            [_c("span")]
                                           ),
                                           _vm._v(" "),
                                           _c(
@@ -1581,7 +1575,7 @@ var render = function() {
                                   _vm._v(" "),
                                   _c("vs-th", [_vm._v("Email")]),
                                   _vm._v(" "),
-                                  _c("vs-th", [_vm._v("Registration Date")]),
+                                  _c("vs-th", [_vm._v("View Details")]),
                                   _vm._v(" "),
                                   _c("vs-th", [_vm._v("Approve")]),
                                   _vm._v(" "),

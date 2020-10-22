@@ -193,6 +193,9 @@ class UserController extends Controller {
     // print_r($data->StateDetail);die;
        $data->state_name= $data->StateDetail->state_name;
         $data->city= $data->CityDetail->city;
+        if(count($data->documents)){
+             $data->is_document= 1;
+        }
         if (isset($data)) {
             return response()->json(compact('data'), 200);
         } else {

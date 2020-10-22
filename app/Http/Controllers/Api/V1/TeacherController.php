@@ -45,6 +45,7 @@ class TeacherController extends Controller {
        // DB::commit();
         $token = JWTAuth::fromUser($addUser);
          $addUser->token=$token;
+         $addUser->documents= $addUser->documents;
          if($request->type_of_schooling=='home'){
           if(Subject::where('id', '=',$request->subject_id)->exists()) {
           $this->AddteacherSubject($request->subject_id, $addUser->id);
