@@ -146,7 +146,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                           { title: 'Subjects', url: '/apps/subject/subject-list' },
+                            { title: 'Subjects', url: '/apps/subject/subject-list' },
                             { title: 'Edit', active: true }
                         ],
                         pageTitle: 'Subject Edit',
@@ -208,7 +208,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                           { title: 'Subjects', url: '/apps/subject/subject-list' },
+                            { title: 'Subjects', url: '/apps/subject/subject-list' },
                             { title: 'View', active: true }
                         ],
                         pageTitle: 'Subject View',
@@ -239,7 +239,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Teachers' ,url: '/apps/user/user-list'},
+                            { title: 'Teachers', url: '/apps/user/user-list' },
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Teachers List',
@@ -254,7 +254,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Teachers' ,url: '/apps/user/user-list'},
+                            { title: 'Teachers', url: '/apps/user/user-list' },
                             { title: 'Teacher', active: true }
                         ],
                         pageTitle: 'Teacher View',
@@ -269,7 +269,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                              { title: 'Teachers' ,url: '/apps/user/user-list'},
+                            { title: 'Teachers', url: '/apps/user/user-list' },
                             { title: 'Edit', active: true }
                         ],
                         pageTitle: 'Teacher Edit',
@@ -285,7 +285,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Students', url: '/apps/user/listofstudents'  },
+                            { title: 'Students', url: '/apps/user/listofstudents' },
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Students List',
@@ -300,7 +300,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Parents',url: '/apps/user/listofparents' },
+                            { title: 'Parents', url: '/apps/user/listofparents' },
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Parents List',
@@ -320,6 +320,13 @@ const router = new Router({
                 // =============================================================================
                 // PAGES
                 // =============================================================================
+                {
+                    path: '/pages/admin/login',
+                    name: 'page-admin-login',
+                    component: () =>
+                        import ('@/views/pages/AdminLogin.vue')
+                },
+
                 {
                     path: '/pages/login',
                     name: 'page-login',
