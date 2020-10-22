@@ -181,6 +181,11 @@ class CommonController extends Controller {
                     'first_name' => $request->first_name,
                 ]);
             }
+            if (!empty($request->last_name)) {
+                $updateData = User::where('id', $request->user_id)->update([
+                    'last_name' => $request->last_name,
+                ]);
+            }
             $update = User::find($request->user_id);
             return response()->json(array('error' => false, 'message' => 'profile update successfully', 'data' => $update), 200);
         }
