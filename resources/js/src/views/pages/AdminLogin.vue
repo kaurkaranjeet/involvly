@@ -58,7 +58,7 @@
                       <vs-checkbox v-model="checkbox_remember_me" class="mb-3">Remember Me</vs-checkbox>
                       <router-link to="">Forgot Password?</router-link>
                   </div>
-                  <!-- <vs-button  type="border" @click="registerUser">Register</vs-button> -->
+                  <vs-button  type="hidden"></vs-button>
                   <vs-button  :disabled="!validateForm" @click="loginJWT" class="float-right">Login</vs-button>
                   <div class="social-login-buttons flex flex-wrap items-center mt-4">
 

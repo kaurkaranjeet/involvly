@@ -23,7 +23,9 @@ export default {
             const originalRequest = config
 
             // if (status === 401) {
-            if (response && response.status === 401) {
+            if (response && response.status === 500) {
+                //alert(8)
+                 this.$store.state.auth.logout();
                 if (!isAlreadyFetchingAccessToken) {
                     isAlreadyFetchingAccessToken = true
                     store.dispatch('auth/fetchAccessToken')
@@ -64,6 +66,6 @@ export default {
         })
     },
     refreshToken() {
-        return axios.post('/api/auth/refresh-token', { accessToken: localStorage.getItem('accessToKen') })
+        return axios.post('/api/auth/refresh-token', { accessToken: localStorage.getItem('accessToken') })
     }
 }

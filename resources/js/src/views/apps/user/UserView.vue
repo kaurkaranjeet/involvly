@@ -46,6 +46,14 @@
                 <td class="font-semibold">Email</td>
                 <td>{{ user_data.email }}</td>
               </tr>
+               <tr>
+                <td class="font-semibold">City</td>
+                <td>{{ user_data.city }}</td>
+              </tr>
+               <tr>
+                <td class="font-semibold"  v-if="user_data.position!=null">Position</td>
+                <td>{{ user_data.position }}</td>
+              </tr>
             </table>
           </div>
           <!-- /Information - Col 1 -->
@@ -59,19 +67,28 @@
                   <td v-if="user_data.status==0"> INACTIVE</td>
               </tr>
               </tr>
-             <!--  <tr>
-                <td class="font-semibold">Role</td>
-                <td>{{ user_data.roles[0].name }}</td>
-              </tr> -->
-             <!--  <tr>
-                <td class="font-semibold">Company</td>
-                <td>{{ user_data.company }}</td>
-              </tr> -->
+
+               <tr  v-if="user_data.school_id>0">
+                <td class="font-semibold">School Name</td>
+                <td>{{ user_data.school_detail.school_name }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">State</td>
+                <td>{{ user_data.state_name }}</td>
+              </tr>
+              <tr v-if="user_data.is_document==1">
+                <td class="font-semibold">Documents</td>
+                <td><ul id="example-1">
+                  <li v-for="item in user_data.documents" :key="item.id">
+                   <a :href="item.document_url" target="_blank">{{item.document_name}}</a>
+                 </li>
+               </ul></td>
+             </tr>
             </table>
           </div>
           <!-- /Information - Col 2 -->
           <div class="vx-col w-full flex" id="account-manage-buttons">
-            <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-user-edit', params: { userId: $route.params.userId }}">Edit</vs-button>
+         <!--    <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-user-edit', params: { userId: $route.params.userId }}">Edit</vs-button> -->
             <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Delete</vs-button>
           </div>
 
@@ -202,7 +219,7 @@ export default {
         type: 'confirm',
         color: 'danger',
         title: 'Confirm Delete',
-        text: `You are about to delete "${this.user_data.username}"`,
+        text: `You are about to delete "${this.user_data.name}"`,
         accept: this.deleteRecord,
         acceptText: 'Delete'
       })
