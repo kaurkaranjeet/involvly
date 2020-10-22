@@ -16,21 +16,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     // Below mention routes are public, user can access those without any restriction.
+    // Super admin
+    Route::post('admin-login', 'UserController@adminLogin');
     // Create New User
-  Route::post('register', 'UserController@register');
+    Route::post('register', 'UserController@register');
     // Login User
-  Route::post('login', 'UserController@login');
-  Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
-  Route::any('/fetch-user/{id}', ['as' => 'fetch.user', 'uses' => 'UserController@fetchUser']);
-  Route::post('update-profile', 'UserController@UpdateProfile');
-  Route::get('delete-user/{id}', 'UserController@RemoveUser');
-  Route::get('user', 'UserController@getAuthenticatedUser');
-  Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
-  Route::get('requests/{id}', 'UserController@getRequest');
-  Route::get('student_requests/{id}', 'UserController@getStudentRequest');
-Route::get('parent_requests/{id}', 'UserController@getParentRequest');
+    Route::post('login', 'UserController@login');
+    Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
+    Route::any('/fetch-user/{id}', ['as' => 'fetch.user', 'uses' => 'UserController@fetchUser']);
+    Route::post('update-profile', 'UserController@UpdateProfile');
+    Route::get('delete-user/{id}', 'UserController@RemoveUser');
+    Route::get('user', 'UserController@getAuthenticatedUser');
+    Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
+    Route::get('requests/{id}', 'UserController@getRequest');
+    Route::get('student_requests/{id}', 'UserController@getStudentRequest');
+    Route::get('parent_requests/{id}', 'UserController@getParentRequest');
 
-  Route::post('approve_teacher/{id}', 'TeacherController@Approveteacher');
+    Route::post('approve_teacher/{id}', 'TeacherController@Approveteacher');
     Route::post('disapprove_teacher/{id}', 'TeacherController@DisApproveteacher');
     //classes
     Route::any('/manage-classes/{id}', ['as' => 'manage.classes', 'uses' => 'ClassController@manageClasses']);
@@ -50,14 +52,12 @@ Route::get('parent_requests/{id}', 'UserController@getParentRequest');
     Route::any('/manage-school-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSubjectsAccToSchool']);
     Route::any('/save-school-subject', ['as' => 'save.subjects', 'uses' => 'Controller@saveSchoolSubject']);
 
-      Route::post('/add-subject', ['as' => 'add.subject', 'uses' => 'SubjectController@AddSubject']);
-      Route::post('/remove-subject', ['as' => 'remove.subject', 'uses' => 'SubjectController@RemoveSubject']);
+    Route::post('/add-subject', ['as' => 'add.subject', 'uses' => 'SubjectController@AddSubject']);
+    Route::post('/remove-subject', ['as' => 'remove.subject', 'uses' => 'SubjectController@RemoveSubject']);
 
-      Route::any('/fetch-assigned-teachers', ['as' => 'assigned.teachers', 'uses' => 'TeacherController@fetchAssignedTeachersToClasses']);
-      Route::post('/add-teacher-subject', ['as' => 'add.teacher', 'uses' => 'TeacherController@AddTeacherSubject']);
-      Route::post('/remove-teacher-subject', ['as' => 'remove.teacher', 'uses' => 'TeacherController@RemoveTeacherSubject']);
-
-
+    Route::any('/fetch-assigned-teachers', ['as' => 'assigned.teachers', 'uses' => 'TeacherController@fetchAssignedTeachersToClasses']);
+    Route::post('/add-teacher-subject', ['as' => 'add.teacher', 'uses' => 'TeacherController@AddTeacherSubject']);
+    Route::post('/remove-teacher-subject', ['as' => 'remove.teacher', 'uses' => 'TeacherController@RemoveTeacherSubject']);
 });
 // Mobile Apis
 
@@ -107,12 +107,12 @@ Route::prefix('v1')->group(function () {
 
 //    Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
-        Route::post('delete_post', 'Api\V1\PostController@RemovePost');
+    Route::post('delete_post', 'Api\V1\PostController@RemovePost');
     Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
 
     Route::post('update_user_image', 'Api\V1\CommonController@UpdateUserImage');
     Route::post('update_user_name', 'Api\V1\CommonController@UpdateUserName');
     Route::post('update_user_password', 'Api\V1\CommonController@UpdateUserPassword');
-
+    Route::post('delete_my_account', 'Api\V1\CommonController@DeleteAccount');
 });
 
