@@ -8,6 +8,7 @@ use JWTAuth;
 use Exception;
 use App\User;
 use App\Models\UserClassCode;
+use App\Models\AssignedTeacher;
 use App\Models\Assignment;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ class AssignmentController extends Controller {
                     'assignments_description' => 'required',
                     'assignments_special_instruction' => 'required',
                     'assignments_date' => 'required',
-                    // 'assignments_attachement' => 'required',
+                        // 'assignments_attachement' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -40,15 +41,13 @@ class AssignmentController extends Controller {
             $task->assignments_description = $request->assignments_description;
             $task->assignments_special_instruction = $request->assignments_special_instruction;
             $task->assignments_date = $request->assignments_date;
-            
+
             $data = [];
-            if($request->hasfile('assignments_attachement'))
-            {
-                foreach($request->file('assignments_attachement') as $key=>$file)
-                {
-                $name=time().$key.'.'.$file->getClientOriginalExtension();    
-                $file->move(public_path().'/assignment_doc/', $name);      
-                $data[$key] = URL::to('/').'/assignment_doc/'.$name;  
+            if ($request->hasfile('assignments_attachement')) {
+                foreach ($request->file('assignments_attachement') as $key => $file) {
+                    $name = time() . $key . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path() . '/assignment_doc/', $name);
+                    $data[$key] = URL::to('/') . '/assignment_doc/' . $name;
                 }
             }
             $task->assignments_attachement = $data;
@@ -65,7 +64,11 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $class = UserClassCode::with('AssignedClass')->where('user_id', $request->teacher_id)->get();
+//            $class = AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->distinct('class_id')->get();
+            $classes = collect(AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->get());
+            $class = $classes->unique('class_id');
+            $class->values()->all();
+
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
@@ -86,12 +89,12 @@ class AssignmentController extends Controller {
             $class = User::with('SchoolDetail:id,school_name')
                             ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
                             ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
-                            ->select('users.*','class_code.class_name')->where('role_id', 2)->where('user_class_code.class_id', $request->class_id)->get();
+                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('user_class_code.class_id', $request->class_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
-    
-    public function GetScheduleTaskDetail(Request $request){
+
+    public function GetScheduleTaskDetail(Request $request) {
         $validator = Validator::make($request->all(), [
                     'task_id' => 'required|exists:parent_tasks,id'
         ]);
@@ -113,24 +116,21 @@ class AssignmentController extends Controller {
 
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
-       }  
-       else{ 
-  $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id',$request->parent_id)->first();
-   $childrens= $results->childrens;
-  if(!empty($childrens)){
- $results= ParentChildrens::select('parent_id')->with('ParentDetails')->whereIn('children_id', array($childrens))->get();
-if(!empty($results)){
-   return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
-}else{
+            } else {
+                $results = ParentChildrens::select(DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id', $request->parent_id)->first();
+                $childrens = $results->childrens;
+                if (!empty($childrens)) {
+                    $results = ParentChildrens::select('parent_id')->with('ParentDetails')->whereIn('children_id', array($childrens))->get();
+                    if (!empty($results)) {
+                        return response()->json(array('error' => false, 'data' => $results, 'message' => 'Parents fetched successfully.'), 200);
+                    } else {
                         throw new Exception('No another parents');
                     }
-  }
-  else{
+                } else {
                     throw new Exception('No childrens');
                 }
             }
-}
- catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
     }
