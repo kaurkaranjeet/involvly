@@ -356,6 +356,7 @@ export default {
     },
     fetchAccessToken() {
         return new Promise((resolve) => {
+
             jwt.refreshToken().then(response => { resolve(response) })
         })
     },
@@ -365,7 +366,7 @@ export default {
         return new Promise((resolve, reject) => {
             jwt.adminlogin(payload.userDetails.email, payload.userDetails.password)
                 .then(response => {
-                    alert("123")
+                    
                         // If there's user data in response
                     if (response.data.user) {
                         // Navigate User to homepage
@@ -373,8 +374,7 @@ export default {
 
                         // Set accessToken
                         localStorage.setItem('accessToken', response.data.accessToken)
-                        localStorage.setItem('user_id', response.data.user.id);
-                        localStorage.setItem('school_id', response.data.user.school_id);
+                      
                         // Update user details
                         commit('UPDATE_USER_INFO', response.data.user, { root: true })
 
