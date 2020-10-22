@@ -73500,10 +73500,18 @@ router.beforeEach(function (to, from, next) {
     }
   }
 
-  return next(); // Specify the current path as the customState parameter, meaning it
+  if (to.name == 'page-admin-login') {
+    return next({
+      name: 'dashboard'
+    });
+  } else {
+    return next();
+  } // return next()
+  // Specify the current path as the customState parameter, meaning it
   // will be returned to the application after auth
   // auth.login({ target: to.path });
   //})
+
 });
 /* harmony default export */ __webpack_exports__["default"] = (router);
 

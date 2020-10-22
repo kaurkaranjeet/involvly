@@ -101,9 +101,14 @@ class User extends Authenticatable implements JWTSubject {
     {
         return User::select('id as user_id', 'first_name', 'last_name', 'company_name','image', 'status', 'is_blocked', 'email', 'user_type')->with('roles')->get();
     }
+
+    public function documents()
+    {
+        return $this->hasMany('App\Models\Document', 'user_id', 'id');
+    }
     protected function fetchUser($id)
     {
-        return User::with('role')->with('StateDetail')->with('CityDetail')->where('id', $id)->first();
+        return User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->where('id', $id)->first();
     }
     protected function FollowedUsers($id){
 

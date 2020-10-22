@@ -332,7 +332,7 @@
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
-                <vs-th>Registration Date</vs-th>
+                <vs-th>View Details</vs-th>
                 <vs-th>Approve</vs-th>  
                 <vs-th>Reject</vs-th>  
               </template>
@@ -351,7 +351,7 @@
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
                   <vs-td :data="data[indextr].date">
-                    <span>{{data[indextr].date}}</span>
+                    <span></span>
                   </vs-td>
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
