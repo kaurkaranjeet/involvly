@@ -91,7 +91,7 @@
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
-                <vs-th>Assign/Re-assign</vs-th>  
+                <vs-th>Assign/Re-assign Teacher</vs-th>  
                
               </template>
 

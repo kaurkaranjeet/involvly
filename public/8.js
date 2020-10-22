@@ -752,7 +752,8 @@ __webpack_require__.r(__webpack_exports__);
       //   localStorage.setItem('school_id',response.data.user.school_id);
     })["catch"](function (error) {
       //   console.log(error);
-      // auto logout if 401 response returned from api
+      localStorage.removeItem('userInfo'); // auto logout if 401 response returned from api
+
       _this.$store.state.auth.logout(); // location.reload(true);
 
     });

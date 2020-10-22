@@ -549,7 +549,7 @@ export default {
       .catch(error => {
      //   console.log(error);
 
-
+          localStorage.removeItem('userInfo')
                 // auto logout if 401 response returned from api
                 this.$store.state.auth.logout();
                // location.reload(true);

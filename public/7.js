@@ -1029,7 +1029,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("vs-th", [_vm._v("Name")]),
                             _vm._v(" "),
-                            _c("vs-th", [_vm._v("Assign/Re-assign")])
+                            _c("vs-th", [_vm._v("Assign/Re-assign Teacher")])
                           ],
                           1
                         )
