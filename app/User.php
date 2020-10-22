@@ -101,9 +101,14 @@ class User extends Authenticatable implements JWTSubject {
     {
         return User::select('id as user_id', 'first_name', 'last_name', 'company_name','image', 'status', 'is_blocked', 'email', 'user_type')->with('roles')->get();
     }
+
+    public function documents()
+    {
+        return $this->hasMany('App\Models\Document', 'user_id', 'id');
+    }
     protected function fetchUser($id)
     {
-        return User::with('role')->where('id', $id)->first();
+        return User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->where('id', $id)->first();
     }
     protected function FollowedUsers($id){
 
@@ -130,6 +135,19 @@ class User extends Authenticatable implements JWTSubject {
         return $this->belongsTo('App\Models\School','school_id');
 
     }
+
+     public function StateDetail()
+    {
+        return $this->belongsTo('App\Models\State','state_id');
+
+    }
+
+     public function CityDetail()
+    {
+        return $this->belongsTo('App\Models\Cities','city');
+
+    }
+
 
    protected function getstudents($id){
    return  User::where('school_id',$id)->where('role_id',2)->where('status',1);

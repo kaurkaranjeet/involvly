@@ -41,6 +41,16 @@ const router = new Router({
                         authRequired: true
                     }
                 },
+
+                 {
+                    path: '/dashboard',
+                    name: 'dashboard',
+                    component: () =>
+                        import ('./views/Dashboard.vue'),
+                    meta: {
+                        authRequired: true
+                    }
+                },
                 {
                     path: '/page2',
                     name: 'page-2',
@@ -60,7 +70,8 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Classes List',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -75,7 +86,8 @@ const router = new Router({
                             { title: 'Add', active: true }
                         ],
                         pageTitle: 'Add ClassCode',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -90,7 +102,8 @@ const router = new Router({
                             { title: 'View', active: true }
                         ],
                         pageTitle: 'View ClassCode',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -105,7 +118,8 @@ const router = new Router({
                             { title: 'Edit', active: true }
                         ],
                         pageTitle: 'Class Code Edit',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -120,7 +134,8 @@ const router = new Router({
                             { title: 'Add', active: true }
                         ],
                         pageTitle: 'Add Class subject',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -135,7 +150,8 @@ const router = new Router({
                             { title: 'View', active: true }
                         ],
                         pageTitle: 'Subject View',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -150,7 +166,8 @@ const router = new Router({
                             { title: 'Edit', active: true }
                         ],
                         pageTitle: 'Subject Edit',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 //assign teacher to subjects
@@ -166,7 +183,8 @@ const router = new Router({
                             { title: 'Assigned Teacher', active: true }
                         ],
                         pageTitle: 'Assigned Teacher',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 //subjects menu path
@@ -182,7 +200,8 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Subjects List',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -197,7 +216,8 @@ const router = new Router({
                             { title: 'Add', active: true }
                         ],
                         pageTitle: 'Subject Add',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -212,7 +232,8 @@ const router = new Router({
                             { title: 'View', active: true }
                         ],
                         pageTitle: 'Subject View',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -227,7 +248,8 @@ const router = new Router({
                             { title: 'Edit', active: true }
                         ],
                         pageTitle: 'Subject Edit',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 //users menu path
@@ -243,7 +265,8 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Teachers List',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -258,7 +281,8 @@ const router = new Router({
                             { title: 'Teacher', active: true }
                         ],
                         pageTitle: 'Teacher View',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -273,7 +297,8 @@ const router = new Router({
                             { title: 'Edit', active: true }
                         ],
                         pageTitle: 'Teacher Edit',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
 
@@ -289,7 +314,8 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Students List',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 },
                 {
@@ -304,7 +330,8 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Parents List',
-                        rule: 'editor'
+                        rule: 'editor',
+                          authRequired: true
                     }
                 }
             ],
@@ -388,14 +415,24 @@ router.beforeEach((to, from, next) => {
     // }
 
     // If auth required, check login. If login fails redirect to login page
-    if (to.meta.authRequired) {
-        const loggedIn = localStorage.getItem('userInfo');
+    if (to.meta.authRequired) { 
+     const loggedIn = localStorage.getItem('userInfo');   
         if (!loggedIn) {
             router.push({ path: '/pages/login' })
         }
+       
     }
 
-    return next()
+    if (to.name == 'page-admin-login') {
+   return next({ name: 'dashboard' });
+  } else {
+   return  next();
+  }
+
+   // return next()
+
+
+  
         // Specify the current path as the customState parameter, meaning it
         // will be returned to the application after auth
         // auth.login({ target: to.path });
