@@ -186,6 +186,21 @@ class CommonController extends Controller {
                     'last_name' => $request->last_name,
                 ]);
             }
+            if (!empty($request->facebook_url)) {
+                $updateData = User::where('id', $request->user_id)->update([
+                    'facebook_url' => $request->facebook_url,
+                ]);
+            }
+            if (!empty($request->linkedin_url)) {
+                $updateData = User::where('id', $request->user_id)->update([
+                    'linkedin_url' => $request->linkedin_url,
+                ]);
+            }
+            if (!empty($request->twitter_url)) {
+                $updateData = User::where('id', $request->user_id)->update([
+                    'twitter_url' => $request->twitter_url,
+                ]);
+            }
             $update = User::find($request->user_id);
             return response()->json(array('error' => false, 'message' => 'Profile updated successfully', 'data' => $update), 200);
         }
