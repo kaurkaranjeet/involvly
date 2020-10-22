@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     // Below mention routes are public, user can access those without any restriction.
-    // Super admin
+    // Admin Routes
     Route::post('admin-login', 'UserController@adminLogin');
+    Route::any('/manage-admin-users', ['as' => 'manage.teachers', 'uses' => 'UserController@manageAdminUsers']);
+
     // Create New User
     Route::post('register', 'UserController@register');
     // Login User
@@ -28,10 +30,10 @@ Route::prefix('auth')->group(function () {
     Route::get('delete-user/{id}', 'UserController@RemoveUser');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
-      Route::get('get_total_records', 'UserController@gettotalRecords');
+    Route::get('get_total_records', 'UserController@gettotalRecords');
     Route::get('requests/{id}', 'UserController@getRequest');
-     Route::get('teacher_requests', 'UserController@getteacherRequest');
-     Route::get('web_school_admins', 'UserController@WebSchoolAdmins');
+    Route::get('teacher_requests', 'UserController@getteacherRequest');
+    Route::get('web_school_admins', 'UserController@WebSchoolAdmins');
      
     Route::get('student_requests/{id}', 'UserController@getStudentRequest');
     Route::get('parent_requests/{id}', 'UserController@getParentRequest');
@@ -62,7 +64,7 @@ Route::prefix('auth')->group(function () {
     Route::any('/fetch-assigned-teachers', ['as' => 'assigned.teachers', 'uses' => 'TeacherController@fetchAssignedTeachersToClasses']);
     Route::post('/add-teacher-subject', ['as' => 'add.teacher', 'uses' => 'TeacherController@AddTeacherSubject']);
     Route::post('/remove-teacher-subject', ['as' => 'remove.teacher', 'uses' => 'TeacherController@RemoveTeacherSubject']);
-   Route::post('refresh-token', ['as' => 'refresh', 'uses' => 'UserController@RefreshToken']);
+    Route::post('refresh-token', ['as' => 'refresh', 'uses' => 'UserController@RefreshToken']);
     
 });
 // Mobile Apis
@@ -111,7 +113,7 @@ Route::prefix('v1')->group(function () {
     Route::post('get_classes_by_teacher', 'Api\V1\AssignmentController@GetClassesByTeacher');
     Route::post('get_students_by_classes', 'Api\V1\AssignmentController@GetStudentsByClass');
 
-//    Route::post('add_report', 'Api\V1\PostController@AddReport');
+    //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
     Route::post('delete_post', 'Api\V1\PostController@RemovePost');
     Route::post('getclasses', 'Api\V1\CommonController@GetClasses');

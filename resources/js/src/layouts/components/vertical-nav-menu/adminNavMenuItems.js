@@ -22,22 +22,22 @@ export default [{
         icon: 'UserIcon',
         i18n: 'User',
         submenu: [{
-                url: '/apps/user/user-list',
+                url: '/apps/user/allteachers',
                 name: 'Teachers List',
-                slug: 'app-user-list',
+                slug: 'all-teachers',
                 i18n: 'List'
             },
 
             {
-                url: '/apps/user/listofstudents',
+                url: '/apps/user/allstudents',
                 name: 'Student List',
-                slug: 'list-students',
+                slug: 'all-students',
                 i18n: 'List'
             },
             {
-                url: '/apps/user/listofparents',
+                url: '/apps/user/allparents',
                 name: 'Parents List',
-                slug: 'list-parents',
+                slug: 'all-parents',
                 i18n: 'List'
             }
 

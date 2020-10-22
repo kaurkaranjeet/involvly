@@ -57,7 +57,7 @@ const router = new Router({
                     component: () =>
                         import ('./views/Page2.vue')
                 },
-                //classes menu path
+                //classes side menu path
                 {
                     path: '/apps/class/class-list',
                     name: 'app-class-list',
@@ -170,7 +170,7 @@ const router = new Router({
                         authRequired: true
                     }
                 },
-                //assign teacher to subjects
+                //classes side menu path -- assign teacher to subjects
                 {
                     path: '/apps/class/assign-teacher/:classId/:subjectId',
                     name: 'app-assign-teacher',
@@ -187,7 +187,7 @@ const router = new Router({
                         authRequired: true
                     }
                 },
-                //subjects menu path
+                //classes side menu path -- subjects 
                 {
                     path: '/apps/subject/subject-list',
                     name: 'app-subject-list',
@@ -252,7 +252,7 @@ const router = new Router({
                         authRequired: true
                     }
                 },
-                //users menu path
+                //teachers side menu path
                 {
                     path: '/apps/user/user-list',
                     name: 'app-user-list',
@@ -333,7 +333,57 @@ const router = new Router({
                         rule: 'editor',
                         authRequired: true
                     }
-                }
+                },
+                //Super admin
+                //teachers side menu path
+                {
+                    path: '/apps/user/allteachers',
+                    name: 'app-teacher-list',
+                    component: () =>
+                        import ('@/views/apps/admin/user-list/TeacherList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            { title: 'Teachers', url: '/apps/user/allteachers' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Teachers List',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+                {
+                    path: '/apps/user/allstudents',
+                    name: 'app-student-list',
+                    component: () =>
+                        import ('@/views/apps/admin/user-list/StudentList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            { title: 'Students', url: '/apps/user/allstudents' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Students List',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+                {
+                    path: '/apps/user/allparents',
+                    name: 'app-parent-list',
+                    component: () =>
+                        import ('@/views/apps/admin/user-list/ParentList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            { title: 'Teachers', url: '/apps/user/allparents' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Parents List',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
             ],
         },
         // =============================================================================
