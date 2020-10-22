@@ -42,7 +42,7 @@ const router = new Router({
                     }
                 },
 
-                 {
+                {
                     path: '/dashboard',
                     name: 'dashboard',
                     component: () =>
@@ -71,7 +71,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Classes List',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -87,7 +87,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Add ClassCode',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -103,7 +103,7 @@ const router = new Router({
                         ],
                         pageTitle: 'View ClassCode',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -119,7 +119,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Class Code Edit',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -135,7 +135,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Add Class subject',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -151,7 +151,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Subject View',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -167,7 +167,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Subject Edit',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 //assign teacher to subjects
@@ -184,7 +184,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Assigned Teacher',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 //subjects menu path
@@ -201,7 +201,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Subjects List',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -217,7 +217,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Subject Add',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -233,7 +233,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Subject View',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -249,7 +249,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Subject Edit',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 //users menu path
@@ -266,7 +266,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Teachers List',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -282,7 +282,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Teacher View',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -298,7 +298,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Teacher Edit',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
 
@@ -315,7 +315,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Students List',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 },
                 {
@@ -331,7 +331,7 @@ const router = new Router({
                         ],
                         pageTitle: 'Parents List',
                         rule: 'editor',
-                          authRequired: true
+                        authRequired: true
                     }
                 }
             ],
@@ -415,29 +415,25 @@ router.beforeEach((to, from, next) => {
     // }
 
     // If auth required, check login. If login fails redirect to login page
-    if (to.meta.authRequired) { 
-     const loggedIn = localStorage.getItem('userInfo');   
-        if (!loggedIn) {
-            router.push({ path: '/pages/login' })
-        }
-       
-    }
+    // if (to.meta.authRequired) {
+    //     const loggedIn = localStorage.getItem('userInfo');
+    //     if (!loggedIn) {
+    //         router.push({ path: '/pages/login' })
+    //     }
 
-    if (to.name == 'page-admin-login') {
-   return next({ name: 'dashboard' });
-  } else {
-   return  next();
-  }
+    // }
+    // if (to.name == 'page-admin-login') {
+    //     return next({ name: 'dashboard' });
+    // } else {
+    //     return next();
+    // }
+    if ((to.name !== 'page-login' && to.name !== 'page-register' && to.name !== 'page-admin-login') && !(localStorage.getItem("accessToken"))) next({ name: 'page-login' })
 
-   // return next()
+    else if ((to.name === 'page-login' || to.name === 'page-register' || to.name === 'page-admin-login') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") == '1')) next({ name: 'dashboard' })
 
+    else if ((to.name === 'page-login' || to.name === 'page-register' || to.name === 'page-admin-login') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") != '1')) next({ name: 'home' })
 
-  
-        // Specify the current path as the customState parameter, meaning it
-        // will be returned to the application after auth
-        // auth.login({ target: to.path });
-
-    //})
+    else next()
 
 })
 

@@ -111,7 +111,7 @@ export default{
           color: 'warning'
         })
 
-      this.$router.push('/').catch(() => {})
+      this.$router.push('/dashboard').catch(() => {})
       }
       return true
     },
@@ -133,7 +133,7 @@ export default{
       this.$store.dispatch('auth/adminloginJWT', payload)
         .then(() => {
           this.$vs.loading.close() 
-          this.$router.push('/').catch(() => {})
+          this.$router.push('/dashboard').catch(() => {})
           })
         .catch(error => {
           this.$vs.loading.close()
