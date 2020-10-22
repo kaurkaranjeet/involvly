@@ -131,7 +131,10 @@ export default{
       }
 
       this.$store.dispatch('auth/adminloginJWT', payload)
-        .then(() => { this.$vs.loading.close() })
+        .then(() => {
+          this.$vs.loading.close() 
+          this.$router.push('/').catch(() => {})
+          })
         .catch(error => {
           this.$vs.loading.close()
           this.$vs.notify({

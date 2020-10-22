@@ -167,6 +167,20 @@ export default {
       }
     },
     menuItemsUpdated () {
+      if (localStorage.getItem("role_id") == '1') {
+      const clone = this.adminNavMenuItems.slice()
+
+      for (const [index, item] of this.adminNavMenuItems.entries()) {
+        if (item.header && item.items.length && (index || 1)) {
+          const i = clone.findIndex(ix => ix.header === item.header)
+          for (const [subIndex, subItem] of item.items.entries()) {
+            clone.splice(i + 1 + subIndex, 0, subItem)
+          }
+        }
+      }
+
+      return clone
+      } else {
       const clone = this.navMenuItems.slice()
 
       for (const [index, item] of this.navMenuItems.entries()) {
@@ -179,6 +193,9 @@ export default {
       }
 
       return clone
+      }
+
+
     },
     isVerticalNavMenuActive: {
       get ()    { return this.$store.state.isVerticalNavMenuActive },

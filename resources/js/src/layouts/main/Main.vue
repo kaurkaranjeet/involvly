@@ -11,10 +11,15 @@
 <template>
   <div class="layout--main" :class="[layoutTypeClass, navbarClasses, footerClasses, {'no-scroll': isAppPage}]">
 
-    <v-nav-menu
+    <v-nav-menu v-if="!accessRole"
       :navMenuItems = "navMenuItems"
       title         = "Involvvely"
       parent        = ".layout--main" />
+
+    <v-nav-menu v-if="accessRole"
+      :adminNavMenuItems = "adminNavMenuItems"
+      title         = "Involvvely"
+      parent        = ".layout--main" />  
 
     <div id="content-area" :class="[contentAreaClass, {'show-overlay': bodyOverlay}]">
       <div id="content-overlay" />
@@ -30,12 +35,19 @@
 
       <div style="height: 62px" v-if="navbarType === 'static'"></div>
 
-      <h-nav-menu
+      <h-nav-menu v-if="!accessRole"
         :class="[
           {'text-white' : isNavbarDark  && !isThemeDark},
           {'text-base'  : !isNavbarDark && isThemeDark}
         ]"
         :navMenuItems="navMenuItems" />
+
+        <h-nav-menu v-if="accessRole"
+        :class="[
+          {'text-white' : isNavbarDark  && !isThemeDark},
+          {'text-base'  : !isNavbarDark && isThemeDark}
+        ]"
+        :adminNavMenuItems="adminNavMenuItems" />
     </template>
 
     <template v-else>
@@ -118,6 +130,7 @@
 import BackToTop           from 'vue-backtotop'
 import HNavMenu            from '@/layouts/components/horizontal-nav-menu/HorizontalNavMenu.vue'
 import navMenuItems        from '@/layouts/components/vertical-nav-menu/navMenuItems.js'
+import adminNavMenuItems   from '@/layouts/components/vertical-nav-menu/adminNavMenuItems.js'
 import TheNavbarHorizontal from '@/layouts/components/navbar/TheNavbarHorizontal.vue'
 import TheNavbarVertical   from '@/layouts/components/navbar/TheNavbarVertical.vue'
 import TheFooter           from '@/layouts/components/TheFooter.vue'
@@ -141,6 +154,7 @@ export default {
       navbarColor       : themeConfig.navbarColor || '#fff',
       navbarType        : themeConfig.navbarType  || 'floating',
       navMenuItems,
+      adminNavMenuItems,
       routerTransition  : themeConfig.routerTransition || 'none',
       routeTitle        : this.$route.meta.pageTitle
     }
@@ -188,7 +202,16 @@ export default {
       }
     },
     verticalNavMenuWidth () { return this.$store.state.verticalNavMenuWidth },
-    windowWidth ()          { return this.$store.state.windowWidth }
+    windowWidth ()          { return this.$store.state.windowWidth },
+    accessRole() {
+      if (localStorage.getItem("role_id") == '1') {
+        alert(localStorage.getItem("role_id"))
+        return true;
+      } else {
+        alert("else")
+        return false;
+      }
+    },
   },
   methods: {
     changeRouteTitle (title) {

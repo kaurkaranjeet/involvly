@@ -314,6 +314,7 @@ export default {
                         localStorage.setItem('accessToken', response.data.accessToken)
                         localStorage.setItem('user_id', response.data.user.id);
                         localStorage.setItem('school_id', response.data.user.school_id);
+                        localStorage.setItem('role_id', response.data.user.role_id);
                         // Update user details
                         commit('UPDATE_USER_INFO', response.data.user, { root: true })
 
@@ -365,8 +366,7 @@ export default {
         return new Promise((resolve, reject) => {
             jwt.adminlogin(payload.userDetails.email, payload.userDetails.password)
                 .then(response => {
-                    alert("123")
-                        // If there's user data in response
+                    // If there's user data in response
                     if (response.data.user) {
                         // Navigate User to homepage
                         router.push(router.currentRoute.query.to || '/')
@@ -375,12 +375,12 @@ export default {
                         localStorage.setItem('accessToken', response.data.accessToken)
                         localStorage.setItem('user_id', response.data.user.id);
                         localStorage.setItem('school_id', response.data.user.school_id);
+                        localStorage.setItem('role_id', response.data.user.role_id);
                         // Update user details
                         commit('UPDATE_USER_INFO', response.data.user, { root: true })
 
                         // Set bearer token in axios
                         commit('SET_BEARER', response.data.accessToken)
-
                         resolve(response)
                     } else {
                         reject({ message: 'Wrong Email or Password' })
@@ -388,8 +388,6 @@ export default {
 
                 })
                 .catch(error => {
-                    alert("dasda")
-                    console.log("error", error)
                     reject(error)
                 })
         })
