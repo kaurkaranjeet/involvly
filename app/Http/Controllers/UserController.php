@@ -121,6 +121,33 @@ class UserController extends Controller {
         return response()->json(compact('students', 'teachers', 'Studentseries', 'Teacherseries'), 200);
     }
 
+
+     public function gettotalRecords(Request $request) {
+        $students = User::where('role_id',5)->where('status',1)->count();
+        $data = array();
+        $tdata=array();
+        $Studentseries=array();
+        $series_sql =  User::where('role_id',5)->where('status',1)->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
+        if (!empty($series_sql)) {
+
+            foreach ($series_sql as $rr) {
+                $data[] = $rr->views;
+            }
+        }
+        $Studentseries[]['data'] = $data;
+
+        $teachers = User::where('role_id',4)->where('type_of_schooling','home')->where('status',1)->count();
+        $tseries_sql =User::where('role_id',4)->where('status',1)->where('type_of_schooling','home')->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
+        if (!empty($tseries_sql)) {
+
+            foreach ($tseries_sql as $rr) {
+                $tdata[] = $rr->views;
+            }
+        }
+        $Teacherseries[]['data'] = $tdata;
+        return response()->json(compact('students', 'teachers', 'Studentseries', 'Teacherseries'), 200);
+    }
+
     public function getAuthenticatedUser() {
         try {
 
@@ -191,6 +218,15 @@ class UserController extends Controller {
         return response()->json(compact('data'), 200);
     }
 
+      public function getteacherRequest() {
+        $data = User::where('role_id', 4)->where('status', 0)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
+        return response()->json(compact('data'), 200);
+    }
+
+      public function WebSchoolAdmins() {
+        $data = User::where('role_id', 5)->where('status', 0)->with('SchoolDetail:id,school_name')->select('id', 'name', 'email', 'school_id', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
+        return response()->json(compact('data'), 200);
+    }
     public function getStudentRequest($school_id) {
         $data = User::where('role_id', 2)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
         return response()->json(compact('data'), 200);
@@ -199,6 +235,15 @@ class UserController extends Controller {
     public function getParentRequest($school_id) {
         $data = User::where('role_id', 3)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
         return response()->json(compact('data'), 200);
+    }
+
+
+    public function RefreshToken(Request $request){
+
+          /* $accessToken = JWTAuth::refresh();
+                $user = JWTAuth::setToken($accessToken)->toUser();*/
+
+         //  return response()->json(compact('accessToken'), 200);
     }
 
 }

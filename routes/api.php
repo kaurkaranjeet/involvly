@@ -28,7 +28,11 @@ Route::prefix('auth')->group(function () {
     Route::get('delete-user/{id}', 'UserController@RemoveUser');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
+      Route::get('get_total_records', 'UserController@gettotalRecords');
     Route::get('requests/{id}', 'UserController@getRequest');
+     Route::get('teacher_requests', 'UserController@getteacherRequest');
+     Route::get('web_school_admins', 'UserController@WebSchoolAdmins');
+     
     Route::get('student_requests/{id}', 'UserController@getStudentRequest');
     Route::get('parent_requests/{id}', 'UserController@getParentRequest');
 
@@ -58,6 +62,8 @@ Route::prefix('auth')->group(function () {
     Route::any('/fetch-assigned-teachers', ['as' => 'assigned.teachers', 'uses' => 'TeacherController@fetchAssignedTeachersToClasses']);
     Route::post('/add-teacher-subject', ['as' => 'add.teacher', 'uses' => 'TeacherController@AddTeacherSubject']);
     Route::post('/remove-teacher-subject', ['as' => 'remove.teacher', 'uses' => 'TeacherController@RemoveTeacherSubject']);
+   Route::post('refresh-token', ['as' => 'refresh', 'uses' => 'UserController@RefreshToken']);
+    
 });
 // Mobile Apis
 
