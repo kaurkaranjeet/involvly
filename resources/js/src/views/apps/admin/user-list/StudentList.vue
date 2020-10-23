@@ -150,7 +150,7 @@ import moduleUserManagement from '@/store/user-management/moduleUserManagement.j
 import CellRendererLink from './cell-renderer/CellRendererLink.vue'
 import CellRendererStatus from './cell-renderer/CellRendererStatus.vue'
 import CellRendererVerified from './cell-renderer/CellRendererVerified.vue'
-import CellRendererActionsUsers from './cell-renderer/CellRendererActionsUsers.vue'
+import CellRendererActionsStudents from './cell-renderer/CellRendererActionsStudents.vue'
 
 
 export default {
@@ -162,7 +162,7 @@ export default {
     CellRendererLink,
     CellRendererStatus,
     CellRendererVerified,
-    CellRendererActionsUsers
+    CellRendererActionsStudents
   },
   data () {
     return {
@@ -232,21 +232,29 @@ export default {
           filter: true,
           width: 225
         },
+
+        {
+          headerName: 'Type of Schooling',
+          field: 'type_of_schooling',
+          filter: true,
+          width: 225
+        },
+
        
       
-        // {
-        //   headerName: 'Classes',
-        //   field: 'class_codes',
-        //   filter: true,
-        //   width: 150,
-        //  // cellRendererFramework: 'CellRendererStatus'
-        // },
+        {
+          headerName: 'Classes',
+          field: 'class_codes',
+          filter: true,
+          width: 150,
+        //  cellRendererFramework: 'CellRendererStatus'
+        },
         
         {
           headerName: 'Actions',
           field: 'transactions',
           width: 150,
-          cellRendererFramework: 'CellRendererActionsUsers'
+          cellRendererFramework: 'CellRendererActionsStudents'
         }
       ],
 
@@ -255,7 +263,7 @@ export default {
         CellRendererLink,
         CellRendererStatus,
         CellRendererVerified,
-        CellRendererActionsUsers
+        CellRendererActionsStudents
       }
     }
   },

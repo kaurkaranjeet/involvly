@@ -260,16 +260,19 @@
         <vx-card title="Requests">
           <div slot="no-body" class="mt-4">
             <vs-tabs  class="tab-action-btn-fill-conatiner">
-      <vs-tab  label="Teachers">
+
+         <vs-tab :label="'Teachers ('+ teacherCount+')'">
+
          <div class="tab-text">
             <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
-                <vs-th>Registration Date</vs-th>
+               
                 <vs-th>Approve</vs-th>  
                 <vs-th>Reject</vs-th>  
+                 <vs-th>View Details</vs-th>
               </template>
 
               <template slot-scope="{data}">
@@ -285,9 +288,7 @@
                   <vs-td :data="data[indextr].email">
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
-                  <vs-td :data="data[indextr].date">
-                    <span>{{data[indextr].date}}</span>
-                  </vs-td>
+                 
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
@@ -315,23 +316,26 @@
                      
                     </span>
                   </vs-td>
-                  
+                   <vs-td :data="data[indextr].date">
+                  <router-link :to="'apps/user/user-view/'+data[indextr].id">View Details</router-link>
+                  </vs-td>
               
                 </vs-tr>
               </template>
             </vs-table>
           </div>
+  
           </vs-tab>
- <vs-tab  label="Students">
+ <vs-tab  :label="'Students ('+ studentCount+')'">
          <div class="tab-text">
             <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" ref="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
-                <vs-th>Registration Date</vs-th>
                 <vs-th>Approve</vs-th>  
                 <vs-th>Reject</vs-th>  
+                 <vs-th>View Details</vs-th>
               </template>
 
               <template slot-scope="{data}">
@@ -347,9 +351,7 @@
                   <vs-td :data="data[indextr].email">
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
-                  <vs-td :data="data[indextr].date">
-                    <span>{{data[indextr].date}}</span>
-                  </vs-td>
+                 
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
@@ -377,23 +379,26 @@
                      
                     </span>
                   </vs-td>
-                  
+                   <vs-td :data="data[indextr].date">
+                      <router-link :to="'apps/user/student-view/'+data[indextr].id">View Details</router-link>
+                  </vs-td>
               
                 </vs-tr>
               </template>
             </vs-table>
           </div>
           </vs-tab>
-           <vs-tab  label="Parents">
+           <vs-tab  :label="'Parents ('+ parentCount+')'">
          <div class="tab-text">
             <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
-                <vs-th>Registration Date</vs-th>
+              
                 <vs-th>Approve</vs-th>  
                 <vs-th>Reject</vs-th>  
+                  <vs-th>View Details</vs-th>
               </template>
 
               <template slot-scope="{data}">
@@ -409,9 +414,7 @@
                   <vs-td :data="data[indextr].email">
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
-                  <vs-td :data="data[indextr].date">
-                    <span>{{data[indextr].date}}</span>
-                  </vs-td>
+                
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
@@ -439,7 +442,9 @@
                      
                     </span>
                   </vs-td>
-                  
+                   <vs-td :data="data[indextr].date">
+                      <router-link :to="'apps/user/parent-view/'+data[indextr].id">View Details</router-link>
+                  </vs-td>
               
                 </vs-tr>
               </template>
@@ -519,6 +524,9 @@ export default {
 
       analyticsData,
       teacherRequests: [],
+       teacherCount: 0,
+       studentCount: 0,
+       parentCount:0,
       studentRequests:[],
       parentRequests:[]
     };
@@ -587,6 +595,7 @@ export default {
       .get("api/auth/requests/"+school_id,requestOptions)
       .then(response => {
         this.teacherRequests = response.data.data;
+         this.teacherCount = response.data.count;
       
       })
       .catch(error => {
@@ -604,6 +613,8 @@ export default {
       .get("api/auth/student_requests/"+school_id,requestOptions)
       .then(response => {
         this.studentRequests = response.data.data;
+this.studentCount = response.data.count;
+
       })
       .catch(error => {
         console.log(error);
@@ -620,6 +631,7 @@ export default {
       .get("api/auth/parent_requests/"+school_id,requestOptions)
       .then(response => {
         this.parentRequests = response.data.data;
+         this.parentCount = response.data.count;
       })
       .catch(error => {
         console.log(error);
@@ -643,8 +655,8 @@ export default {
           icon: 'icon-alert-circle',
           color: 'success'
         })
-        // location.reload();
-         this.GetStuRequests();
+        location.reload();
+         //this.GetStuRequests();
 
         // el.target.getElementsByClassName('tr-values').style.display='none';
 // el.parentNode.style.display='none';

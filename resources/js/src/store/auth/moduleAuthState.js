@@ -25,7 +25,13 @@ export default {
         localStorage.removeItem('user_id');
         localStorage.removeItem('school_id');
         localStorage.removeItem('accessToken');
-        localStorage.removeItem('role_id');
+      //  localStorage.removeItem('role_id');
+    //  alert()
+      if(localStorage.getItem('role_id')==5){
         this.$router.push('/pages/login').catch(() => {})
+      }
+      else{
+         this.$router.push('/pages/admin/login').catch(() => {})
+      }
     }
 }
