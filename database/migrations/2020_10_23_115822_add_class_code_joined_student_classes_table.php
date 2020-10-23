@@ -14,8 +14,7 @@ class AddClassCodeJoinedStudentClassesTable extends Migration
     public function up()
     {
         Schema::table('joined_student_classes', function (Blueprint $table) {
-            $table->unsignedBigInteger('class_code_name')->after('student_id');
-            $table->foreign('class_code_name')->references('class_code')->on('class_code')->onDelete('cascade');
+            $table->string('class_code_name')->after('student_id');
         });
     }
 
