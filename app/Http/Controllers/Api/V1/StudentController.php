@@ -96,7 +96,6 @@ class StudentController extends Controller {
                     'subject_id' => 'required|exists:class_code_subject,id',
                     'class_id' => 'required|exists:class_code,id',
                     'school_id' => 'required|exists:schools,id',
-                    'join_date' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
