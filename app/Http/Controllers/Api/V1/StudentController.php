@@ -13,6 +13,7 @@ use App\Models\ParentChildrens;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use App\Http\Controllers\admin\AdminNotificationController;
 
 class StudentController extends Controller {
 

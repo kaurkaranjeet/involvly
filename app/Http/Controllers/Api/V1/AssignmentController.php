@@ -21,7 +21,7 @@ class AssignmentController extends Controller {
         
     }
 
-    // Create assignment
+    // Add assignment
     public function AddAssignment(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
@@ -93,45 +93,37 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
-
-    public function GetScheduleTaskDetail(Request $request) {
-        $validator = Validator::make($request->all(), [
-                    'task_id' => 'required|exists:parent_tasks,id'
+    
+    // Add assigned asignments
+    public function AddAssignedAssignment(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'assignment_id' => 'required|exists:assignments,id',
+                    'assignment_type' => 'in:WHOLE,SELECTED',
+                    'class_id' => 'required|exists:class_code,id',
+                    'school_id' => 'required|exists:schools,id',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::with('User')->with('AssignedUser.User')->where('id', $request->task_id)->get();
-            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
-        }
-    }
-
-    public function GetRelatedParents(Request $request) {
-        try {
-
-            $input = $request->all();
-            $validator = Validator::make($input, [
-                        'parent_id' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                throw new Exception($validator->errors()->first());
-            } else {
-                $results = ParentChildrens::select(DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id', $request->parent_id)->first();
-                $childrens = $results->childrens;
-                if (!empty($childrens)) {
-                    $results = ParentChildrens::select('parent_id')->with('ParentDetails')->whereIn('children_id', array($childrens))->get();
-                    if (!empty($results)) {
-                        return response()->json(array('error' => false, 'data' => $results, 'message' => 'Parents fetched successfully.'), 200);
-                    } else {
-                        throw new Exception('No another parents');
-                    }
-                } else {
-                    throw new Exception('No childrens');
-                }
-            }
-        } catch (\Exception $e) {
-            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+//            $task = new Assignment; //then create new object
+//            $task->teacher_id = $request->teacher_id;
+//            $task->assignments_name = $request->assignments_name;
+//            $task->assignments_description = $request->assignments_description;
+//            $task->assignments_special_instruction = $request->assignments_special_instruction;
+//            $task->assignments_date = $request->assignments_date;
+//
+//            $data = [];
+//            if ($request->hasfile('assignments_attachement')) {
+//                foreach ($request->file('assignments_attachement') as $key => $file) {
+//                    $name = time() . $key . '.' . $file->getClientOriginalExtension();
+//                    $file->move(public_path() . '/assignment_doc/', $name);
+//                    $data[$key] = URL::to('/') . '/assignment_doc/' . $name;
+//                }
+//            }
+//            $task->assignments_attachement = $data;
+//            $task->save();
+//            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
     }
 
