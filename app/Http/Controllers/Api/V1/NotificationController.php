@@ -15,10 +15,8 @@ use Illuminate\Support\Facades\Validator;
 class NotificationController extends Controller {
 // Provide the Host Information.
 
-	public function SendNotification(){
-		
-		$notification=SendAllNotification('d0ga2Ad9l0iwqpKu3xofVB:APA91bF51lh4MtFaZ-rlKzA_1Qi6X90I63Nkxv10eipfEZYyOx4k2M6DkBx4ZzKAwEPK15agOsVBZTdW71k9NArQybUTYdMj2YSK0970epyPAo3hbeu5TQhZ_o8_4zntSbKojyVO53TF','helllo','helllo');
-
+	public function SendNotification($token,$message,$notify_type){
+                $notification=SendAllNotification($token,$message,$notify_type);
 	}
 
 	public function AllNotifications(Request $request){
