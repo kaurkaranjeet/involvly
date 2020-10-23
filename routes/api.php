@@ -112,15 +112,20 @@ Route::prefix('v1')->group(function () {
     Route::post('add_assignment', 'Api\V1\AssignmentController@AddAssignment');
     Route::post('get_classes_by_teacher', 'Api\V1\AssignmentController@GetClassesByTeacher');
     Route::post('get_students_by_classes', 'Api\V1\AssignmentController@GetStudentsByClass');
+    Route::post('add_assigned_assignments', 'Api\V1\AssignmentController@AddAssignedAssignment');
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
     Route::post('delete_post', 'Api\V1\PostController@RemovePost');
     Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
-
+    
+    //update user profile
     Route::post('update_user_image', 'Api\V1\CommonController@UpdateUserImage');
     Route::post('update_user_name', 'Api\V1\CommonController@UpdateUserName');
     Route::post('update_user_password', 'Api\V1\CommonController@UpdateUserPassword');
     Route::post('delete_my_account', 'Api\V1\CommonController@DeleteAccount');
+    
+    Route::post('join_class_by_student', 'Api\V1\StudentController@JoinStudentByClass');
+    Route::post('leave_class_by_student', 'Api\V1\StudentController@LeaveStudentByClass');
 });
 
