@@ -44,7 +44,7 @@ class LoginController extends Controller {
             if ($user_details->role_id == 2) {
                 $classCode = UserClassCode::where('user_id', $user_details->id)->first();
                 if (!empty($classCode)) {
-                    $user_details->class_code = $classCode->class_id;
+                    $user_details->class_id = $classCode->class_id;
                 }
             }
             if ($user_details->role_id == $request->role_id) {
