@@ -52,12 +52,7 @@ class StudentController extends Controller {
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
-                            if ($addUser->role_id == 2) {
-                                $classCode = UserClassCode::where('user_id', $addUser->id)->first();
-                                if (!empty($classCode)) {
-                                    $addUser->class_id = $classCode->class_id;
-                                }
-                            }
+                            $addUser->class_id = $class_code->id;
                             DB::table('user_class_code')->updateOrInsert(
                                     ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
                         } else {
