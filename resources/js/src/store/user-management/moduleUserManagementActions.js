@@ -129,6 +129,25 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+
+     fetchSchoolAdmins({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'school_admins',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-admin-users/', requestOptions)
+                .then((response) => {
+                    console.log(response.data.users);
+                    commit('SET_SCHOOL_ADMINS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
     fetchAdminStudents({ commit }) {
         var x = localStorage.getItem('accessToken');
         //  User Reward Card

@@ -43,7 +43,7 @@
         <statistics-card-line
           icon="UsersIcon"
           :statistic="subscribersGained.students"
-          statisticTitle="School Admin Registered"
+          statisticTitle="School Admins"
           :chartData="subscribersGained.Studentseries"
           type="area"
         ></statistics-card-line>
@@ -260,7 +260,7 @@
         <vx-card title="Requests">
           <div slot="no-body" class="mt-4">
             <vs-tabs  class="tab-action-btn-fill-conatiner">
-      <vs-tab  label="Independent Teachers">
+    <vs-tab  :label="'Independent Teachers ('+ teacherCount+')'">>
          <div class="tab-text">
             <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
@@ -268,9 +268,10 @@
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
                
-                 <vs-th>View Details</vs-th> 
+               
                 <vs-th>Approve</vs-th>  
                 <vs-th>Reject</vs-th>  
+                  <vs-th>View Details</vs-th> 
                 
               </template>
 
@@ -288,9 +289,7 @@
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
                  
-                  <vs-td :data="data[indextr].date">
-                    <span></span>
-                  </vs-td>
+                 
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
@@ -318,23 +317,27 @@
                      
                     </span>
                   </vs-td>
-                  
+                  <vs-td :data="data[indextr].date">
+                     <router-link :to="'apps/admin/teacher-view/'+data[indextr].id">View Details</router-link>
+             
+                  </vs-td>
               
                 </vs-tr>
               </template>
             </vs-table>
           </div>
           </vs-tab>
- <vs-tab  label="School Admins">
+ <vs-tab  :label="'School Admins ('+ inteacherCount+')'">
          <div class="tab-text">
             <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" ref="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
-                <vs-th>View Details</vs-th>
+               
                 <vs-th>Approve</vs-th>  
                 <vs-th>Reject</vs-th>  
+                 <vs-th>View Details</vs-th>
               </template>
 
               <template slot-scope="{data}">
@@ -350,9 +353,7 @@
                   <vs-td :data="data[indextr].email">
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
-                  <vs-td :data="data[indextr].date">
-                    <span></span>
-                  </vs-td>
+              
                   <vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
@@ -379,6 +380,11 @@
                      
                      
                     </span>
+                  </vs-td>
+
+                      <vs-td :data="data[indextr].date">
+                     <router-link :to="'apps/user/schooladmin-view/'+data[indextr].id">View Details</router-link>
+             
                   </vs-td>
                   
               
@@ -461,7 +467,9 @@ export default {
 
       analyticsData,
       teacherRequests: [],
+      inteacherCount:0,
       studentRequests:[],
+      teacherCount:0,
       parentRequests:[]
     };
   },
@@ -516,6 +524,7 @@ export default {
   },
 
     methods: {
+
  GetRequests () {
  var x = localStorage.getItem('accessToken');
     //  User Reward Card
@@ -527,6 +536,8 @@ export default {
       .get("api/auth/teacher_requests/",requestOptions)
       .then(response => {
         this.teacherRequests = response.data.data;
+        this.teacherCount = response.data.count;
+      
       
       })
       .catch(error => {
@@ -544,6 +555,8 @@ export default {
       .get("api/auth/web_school_admins/",requestOptions)
       .then(response => {
         this.studentRequests = response.data.data;
+this.inteacherCount = response.data.count;
+
       })
       .catch(error => {
         console.log(error);

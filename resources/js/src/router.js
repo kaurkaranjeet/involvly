@@ -38,7 +38,9 @@ const router = new Router({
                     component: () =>
                         import ('./views/Home.vue'),
                     meta: {
-                        authRequired: true
+                        authRequired: true,
+                        rule:'editor'
+
                     }
                 },
 
@@ -48,7 +50,8 @@ const router = new Router({
                     component: () =>
                         import ('./views/Dashboard.vue'),
                     meta: {
-                        authRequired: true
+                        authRequired: true,
+                          rule:'admin'
                     }
                 },
                 {
@@ -285,6 +288,111 @@ const router = new Router({
                         authRequired: true
                     }
                 },
+
+                 {
+                    path: '/apps/admin/teacher-view/:userId',
+                    name: 'admin-teacher-view',
+                    component: () =>
+                        import ('@/views/apps/user/UserAdminView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Dashboard', url: '/dashboard' },
+                            { title: 'Teachers', url: '/apps/user/allteachers' },
+                            { title: 'Teacher', active: true }
+                        ],
+                        pageTitle: 'Teacher View',
+                        rule: 'admin',
+                        authRequired: true
+                    }
+                },
+
+
+                {
+                    path: '/apps/user/student-view/:userId',
+                    name: 'app-student-view',
+                    component: () =>
+                        import ('@/views/apps/user/StudentView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Students', url: '/apps/user/listofstudents' },
+                            { title: 'Student', active: true }
+                        ],
+                        pageTitle: 'Student View',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+
+                {
+                    path: '/apps/user/admin-student-view/:userId',
+                    name: 'admin-student-view',
+                    component: () =>
+                        import ('@/views/apps/user/StudentAdminView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Students', url: '/apps/user/allstudents' },
+                            { title: 'Student', active: true }
+                        ],
+                        pageTitle: 'Student View',
+                        rule: 'admin',
+                        authRequired: true
+                    }
+                },
+
+                 {
+                    path: '/apps/user/parent-view/:userId',
+                    name: 'app-parent-view',
+                    component: () =>
+                        import ('@/views/apps/user/ParentsView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Parents', url: '/apps/user/listofparents' },
+                            { title: 'Parent', active: true }
+                        ],
+                        pageTitle: 'Parent View',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+
+
+                {
+                    path: '/apps/user/adminparent-view/:userId',
+                    name: 'adminparent-view',
+                    component: () =>
+                        import ('@/views/apps/user/ParentsAdminView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            { title: 'Parents', url: '/apps/user/allparents' },
+                            { title: 'Parent', active: true }
+                        ],
+                        pageTitle: 'Parent View',
+                        rule: 'admin',
+                        authRequired: true
+                    }
+                },
+
+
+                 {
+                    path: '/apps/user/schooladmin-view/:userId',
+                    name: 'adminparent-view',
+                    component: () =>
+                        import ('@/views/apps/user/SchoolAdminsView.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            { title: 'School Admins', url: '/apps/user/listofschooladmins' },
+                            { title: 'School Admin', active: true }
+                        ],
+                        pageTitle: 'School Admin View',
+                        rule: 'admin',
+                        authRequired: true
+                    }
+                },
                 {
                     path: '/apps/user/user-edit/:userId',
                     name: 'app-user-edit',
@@ -318,6 +426,23 @@ const router = new Router({
                         authRequired: true
                     }
                 },
+
+                {
+                    path: '/apps/user/listofschooladmins',
+                    name: 'list-admins-school',
+                    component: () =>
+                        import ('@/views/apps/admin/user-list/SchoolAdminList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'School Admins', url: '/apps/user/listofschooladmins' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'School Admin List',
+                        rule: 'admin',
+                        authRequired: true
+                    }
+                },
                 {
                     path: '/apps/user/listofparents',
                     name: 'list-parents',
@@ -348,7 +473,7 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Teachers List',
-                        rule: 'editor',
+                        rule: 'admin',
                         authRequired: true
                     }
                 },
@@ -364,7 +489,7 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Students List',
-                        rule: 'editor',
+                        rule: 'admin',
                         authRequired: true
                     }
                 },
@@ -376,11 +501,11 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/dashboard' },
-                            { title: 'Teachers', url: '/apps/user/allparents' },
+                            { title: 'Parents', url: '/apps/user/allparents' },
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Parents List',
-                        rule: 'editor',
+                        rule: 'admin',
                         authRequired: true
                     }
                 },
@@ -479,9 +604,9 @@ router.beforeEach((to, from, next) => {
     // }
     if ((to.name !== 'page-login' && to.name !== 'page-register' && to.name !== 'page-admin-login') && !(localStorage.getItem("accessToken"))) next({ name: 'page-login' })
 
-    else if ((to.name === 'page-login' || to.name === 'page-register' || to.name === 'page-admin-login') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") == '1')) next({ name: 'dashboard' })
+    else if ((to.name === 'page-admin-login') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") == '1')) next({ name: 'dashboard' })
 
-    else if ((to.name === 'page-login' || to.name === 'page-register' || to.name === 'page-admin-login') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") != '1')) next({ name: 'home' })
+    else if ((to.name === 'page-login' || to.name === 'page-register') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") != '1')) next({ name: 'home' })
 
     else next()
 

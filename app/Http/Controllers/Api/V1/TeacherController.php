@@ -45,7 +45,7 @@ class TeacherController extends Controller {
        // DB::commit();
         $token = JWTAuth::fromUser($addUser);
          $addUser->token=$token;
-         $addUser->documents= $addUser->documents;
+       
          if($request->type_of_schooling=='home'){
           if(Subject::where('id', '=',$request->subject_id)->exists()) {
           $this->AddteacherSubject($request->subject_id, $addUser->id);
@@ -53,6 +53,8 @@ class TeacherController extends Controller {
         } else{
             throw new Exception('Subject id is not valid');
         }
+
+         $names=array();
           
           if($request->hasfile('documents'))
           {
@@ -61,6 +63,7 @@ class TeacherController extends Controller {
             {
              $name = time().$key.'.'.$file->getClientOriginalExtension();
              $file->move(public_path().'/files/', $name);  
+             $names[]=$name;
              DB::table('teacher_documents')->insert(
               ['user_id' =>$addUser->id, 'document_name' => $name, 'document_url' => URL::to('/').'/files/'.$name]);
            }
@@ -72,6 +75,7 @@ class TeacherController extends Controller {
         DB::commit();
         //clascodes
         if(!empty( $addUser )){
+         $addUser->documents= $names;
          if(!empty($request->class_code)) {
           $class_code=  ClassCode::where('class_code',$request->class_code)->first();
           if(!empty($class_code)){

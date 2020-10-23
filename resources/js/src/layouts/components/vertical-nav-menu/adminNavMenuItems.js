@@ -9,9 +9,9 @@
 
 
 export default [{
-        url: "/",
+        url: "/dashboard",
         name: "Home",
-        slug: "home",
+        slug: "dashboard",
         icon: "HomeIcon"
 
     },
@@ -38,6 +38,12 @@ export default [{
                 url: '/apps/user/allparents',
                 name: 'Parents List',
                 slug: 'all-parents',
+                i18n: 'List'
+            },
+            {
+                url: '/apps/user/listofschooladmins',
+                name: 'School Admin List',
+                slug: 'list-admins-school',
                 i18n: 'List'
             }
 
