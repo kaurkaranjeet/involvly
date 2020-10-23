@@ -52,6 +52,12 @@ class StudentController extends Controller {
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
+                            if ($addUser->role_id == 2) {
+                                $classCode = UserClassCode::where('user_id', $addUser->id)->first();
+                                if (!empty($classCode)) {
+                                    $addUser->class_id = $classCode->class_id;
+                                }
+                            }
                             DB::table('user_class_code')->updateOrInsert(
                                     ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
                         } else {
@@ -112,26 +118,26 @@ class StudentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $joined), 200);
         }
     }
-     //LeaveStudentByClass
-    public function LeaveStudentByClass(Request $request){
+
+    //LeaveStudentByClass
+    public function LeaveStudentByClass(Request $request) {
 
         $validator = Validator::make($request->all(), [
                     'student_id' => 'required|exists:users,id',
                     'subject_id' => 'required|exists:class_code_subject,id',
                     'class_id' => 'required|exists:class_code,id',
                     'school_id' => 'required|exists:schools,id',
- 
-     ]);
-         if ($validator->fails()) {
-             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
-         } else {
-               $delete= JoinedStudentClass::where('student_id',$request->student_id)->where('subject_id',$request->subject_id)->where('class_id',$request->class_id)->where('school_id',$request->school_id)->delete();
-             if ($delete) {
-                 return response()->json(array('error' => false, 'message' => 'Student leave class successfully', 'data' => []), 200);
-             } else {
-                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
-             }
-         }
-     }
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $delete = JoinedStudentClass::where('student_id', $request->student_id)->where('subject_id', $request->subject_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->delete();
+            if ($delete) {
+                return response()->json(array('error' => false, 'message' => 'Student leave class successfully', 'data' => []), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+            }
+        }
+    }
 
 }
