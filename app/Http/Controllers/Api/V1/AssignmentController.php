@@ -191,7 +191,7 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             //get submitted data
-            $submitted_assignments = SubmittedAssignments::with('User')->where('assignment_id', $request->assignment_id)->get();
+            $submitted_assignments = SubmittedAssignments::with('User')->with('AssignedClass')->where('assignment_id', $request->assignment_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
         }
     }
