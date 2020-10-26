@@ -119,9 +119,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has started a new class - ' . $class->class_name;
+                            $message = 'Your Children has been joined a new class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has started a new class';
+                            $message = 'Your Children has been joined a new class';
                         }
                         $notify_type = 'JOINEDCLASS';
                         NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
@@ -155,9 +155,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has started a new class - ' . $class->class_name;
+                            $message = 'Your Children has been leaved class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has started a new class';
+                            $message = 'Your Children has been leaved class';
                         }
                         $notify_type = 'JOINEDCLASS';
                         NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
