@@ -118,6 +118,7 @@ Route::prefix('v1')->group(function () {
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
     Route::post('delete_post', 'Api\V1\PostController@RemovePost');
     Route::post('getclasses', 'Api\V1\CommonController@GetClasses');
+    Route::post('get_subjects_by_class', 'Api\V1\CommonController@GetSubjectsByClass');
     
     //update user profile
     Route::post('update_user_image', 'Api\V1\CommonController@UpdateUserImage');

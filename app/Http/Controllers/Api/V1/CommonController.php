@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Exception;
 use App\User;
 use App\Models\ClassCode;
+use App\Models\ClassSubjects;
 use App\Models\Subject;
 use App\Models\State;
 use App\Models\Cities;
@@ -60,6 +61,28 @@ class CommonController extends Controller {
                     return response()->json(array('error' => false, 'data' => $states), 200);
                 } else {
                     throw new Exception('No class in this school.');
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
+    }
+    
+    public function GetSubjectsByClass(Request $request) {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'class_id' => 'required|exists:class_code,id'
+            ]);
+            if ($validator->fails()) {
+                return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+            } else {
+                //get subjects
+                $states = ClassSubjects::with('subjects')->where('class_code_id', $request->class_id)->get();
+                if (!empty($states)) {
+                    return response()->json(array('error' => false, 'data' => $states), 200);
+                } else {
+                    throw new Exception('No Subjects in this school.');
                 }
             }
         } catch (\Exception $e) {
