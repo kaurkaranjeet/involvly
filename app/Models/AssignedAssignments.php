@@ -17,5 +17,9 @@ class AssignedAssignments extends Model {
     public function User() {
         return $this->belongsTo('App\User', 'assignment_assign_to', 'id');
     }
+    
+    public function AssignedClass() {
+        return $this->belongsTo('App\Models\ClassCode', 'class_id', 'id');
+    }
 
 }

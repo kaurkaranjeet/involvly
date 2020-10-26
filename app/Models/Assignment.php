@@ -18,4 +18,8 @@ class Assignment extends Model {
         return $this->belongsTo('App\User', 'teacher_id', 'id');
     }
 
+    public function AssignedClass() {
+        return $this->belongsTo('App\Models\ClassCode', 'class_id', 'id');
+    }
+
 }
