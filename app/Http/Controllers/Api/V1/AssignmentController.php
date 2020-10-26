@@ -64,8 +64,8 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-//            $class = AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->distinct('class_id')->get();
-            $classes = collect(AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->get());
+//          $class = AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->distinct('class_id')->get();
+            $classes = collect(AssignedTeacher::with('User')->with('AssignedClass')->where('teacher_id', $request->teacher_id)->get());
             $class = $classes->unique('class_id');
             $class->values()->all();
 
