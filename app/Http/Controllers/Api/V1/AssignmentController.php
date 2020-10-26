@@ -10,6 +10,7 @@ use App\User;
 use App\Models\UserClassCode;
 use App\Models\AssignedTeacher;
 use App\Models\Assignment;
+use App\Models\AssignedAssignments;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -93,7 +94,7 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
-    
+
     // Add assigned asignments
     public function AddAssignedAssignment(Request $request) {
         $input = $request->all();
@@ -106,24 +107,24 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-//            $task = new Assignment; //then create new object
-//            $task->teacher_id = $request->teacher_id;
-//            $task->assignments_name = $request->assignments_name;
-//            $task->assignments_description = $request->assignments_description;
-//            $task->assignments_special_instruction = $request->assignments_special_instruction;
-//            $task->assignments_date = $request->assignments_date;
-//
-//            $data = [];
-//            if ($request->hasfile('assignments_attachement')) {
-//                foreach ($request->file('assignments_attachement') as $key => $file) {
-//                    $name = time() . $key . '.' . $file->getClientOriginalExtension();
-//                    $file->move(public_path() . '/assignment_doc/', $name);
-//                    $data[$key] = URL::to('/') . '/assignment_doc/' . $name;
-//                }
-//            }
-//            $task->assignments_attachement = $data;
-//            $task->save();
-//            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
+            $task = new AssignedAssignments; //then create new object
+            $task->assignment_id = $request->assignment_id;
+            $task->assignment_type = $request->assignment_type;
+            $task->class_id = $request->class_id;
+            $task->school_id = $request->school_id;
+            if ($request->assignment_type == 'SELECTED') {
+                $data = [];
+                if (!empty($request->assignment_assign_to)) {
+                    foreach ($request->assignment_assign_to as $key => $assignment_assign_to) {
+                        $data[$key] = $assignment_assign_to;
+                    }
+                }
+                $task->assignment_assign_to = $data;
+            } else {
+                $task->assignment_assign_to = null;
+            }
+            $task->save();
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
     }
 
