@@ -114,6 +114,7 @@ Route::prefix('v1')->group(function () {
     Route::post('get_students_by_classes', 'Api\V1\AssignmentController@GetStudentsByClass');
     Route::post('add_assigned_assignments', 'Api\V1\AssignmentController@AddAssignedAssignment');
     Route::post('get_assignments_list', 'Api\V1\AssignmentController@GetAssignmentList');
+    Route::post('get_assignments_details', 'Api\V1\AssignmentController@GetAssignmentDetails');
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');

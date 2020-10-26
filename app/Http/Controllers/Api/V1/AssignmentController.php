@@ -146,5 +146,19 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
     }
+    
+    //Get Assignment details by assignment id
+    public function GetAssignmentDetails(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+            
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $assignment = Assignment::where('id', $request->assignment_id)->first();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
+        }
+    }
 
 }
