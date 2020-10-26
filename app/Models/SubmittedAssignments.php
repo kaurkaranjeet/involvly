@@ -18,5 +18,9 @@ class SubmittedAssignments extends Model {
     public function Assignments() {
         return $this->belongsTo('App\Models\Assignment', 'assignment_id', 'id');
     }
+    
+    public function AssignedClass() {
+        return $this->belongsTo('App\Models\ClassCode', 'class_id', 'id');
+    }
 
 }
