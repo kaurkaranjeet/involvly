@@ -132,6 +132,8 @@ class AssignmentController extends Controller {
     public function GetAssignmentList(Request $request) {
         $validator = Validator::make($request->all(), [
                     'teacher_id' => 'required|exists:users,id',
+                    'school_id' => 'required|exists:schools,id'
+            
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -140,7 +142,7 @@ class AssignmentController extends Controller {
             $assignment = Assignment::with('User')->leftJoin('assigned_assignments', 'assignments.id', '=', 'assigned_assignments.assignment_id')
                             ->leftJoin('class_code', 'assigned_assignments.class_id', '=', 'class_code.id')
                             ->select('assignments.*','class_code.class_name')
-                            ->where('teacher_id', $request->teacher_id)->get();
+                            ->where('teacher_id', $request->teacher_id)->where('class_code.school_id', $request->school_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
     }
