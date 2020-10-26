@@ -13,7 +13,7 @@ use App\Models\ParentChildrens;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
-use App\Http\Controllers\admin\AdminNotificationController;
+use App\Http\Controllers\Api\V1\NotificationController;
 
 class StudentController extends Controller {
 
@@ -109,7 +109,19 @@ class StudentController extends Controller {
             $joined->school_id = $request->school_id;
             $joined->join_date = $request->join_date;
             $joined->status = 1;
-            $joined->save();
+//            $joined->save();
+            //get parent related to students
+            $results = ParentChildrens::where('children_id', $request->student_id)->get();
+            if (!empty($results)) {
+                foreach ($results as $users) {
+                    $usersData = User::where('id', $users->parent_id)->first();
+                    //send notification
+                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
+//                        $message = 'Your Children has started a new class - ';
+//                        NotificationController::SendNotification($usersData->device_token,$message,);
+                    }
+                }
+            }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $joined), 200);
         }
     }
@@ -134,5 +146,5 @@ class StudentController extends Controller {
             }
         }
     }
-
+    
 }
