@@ -87,7 +87,7 @@
             </table>
           </div>
           <!-- /Information - Col 2 -->
-          <div class="vx-col w-full flex" id="account-manage-buttons">
+          <div class="vx-col w-full flex" id="account-manage-buttons" v-if="user_data.status==0">
          <!--    <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-user-edit', params: { userId: $route.params.userId }}">Edit</vs-button> -->
             <vs-button type="border"  class=" mr-4" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Delete</vs-button>
 

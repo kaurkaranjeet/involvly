@@ -585,62 +585,64 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "vx-col w-full flex",
-                        attrs: { id: "account-manage-buttons" }
-                      },
-                      [
-                        _c(
-                          "vs-button",
+                    _vm.user_data.status == 0
+                      ? _c(
+                          "div",
                           {
-                            staticClass: " mr-4",
-                            attrs: {
-                              type: "border",
-                              color: "danger",
-                              "icon-pack": "feather",
-                              icon: "icon-trash"
-                            },
-                            on: { click: _vm.confirmDeleteRecord }
+                            staticClass: "vx-col w-full flex",
+                            attrs: { id: "account-manage-buttons" }
                           },
-                          [_vm._v("Delete")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "vs-button",
-                          {
-                            staticClass: "bg-primary mr-4 flex",
-                            on: {
-                              click: function($event) {
-                                return _vm.Approveteacher(
-                                  _vm.user_data.id,
-                                  $event
-                                )
-                              }
-                            }
-                          },
-                          [_vm._v(" Approve")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "vs-button",
-                          {
-                            staticClass: "bg-danger mr-4 flex",
-                            on: {
-                              click: function($event) {
-                                return _vm.Rejectteacher(
-                                  _vm.user_data.id,
-                                  $event
-                                )
-                              }
-                            }
-                          },
-                          [_vm._v(" Reject")]
+                          [
+                            _c(
+                              "vs-button",
+                              {
+                                staticClass: " mr-4",
+                                attrs: {
+                                  type: "border",
+                                  color: "danger",
+                                  "icon-pack": "feather",
+                                  icon: "icon-trash"
+                                },
+                                on: { click: _vm.confirmDeleteRecord }
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "vs-button",
+                              {
+                                staticClass: "bg-primary mr-4 flex",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.Approveteacher(
+                                      _vm.user_data.id,
+                                      $event
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v(" Approve")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "vs-button",
+                              {
+                                staticClass: "bg-danger mr-4 flex",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.Rejectteacher(
+                                      _vm.user_data.id,
+                                      $event
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v(" Reject")]
+                            )
+                          ],
+                          1
                         )
-                      ],
-                      1
-                    )
+                      : _vm._e()
                   ])
                 ]
               )
