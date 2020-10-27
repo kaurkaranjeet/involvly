@@ -10,6 +10,8 @@ use App\User;
 use App\Models\UserClassCode;
 use App\Models\AssignedTeacher;
 use App\Models\Assignment;
+use App\Models\AssignedAssignments;
+use App\Models\SubmittedAssignments;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -21,7 +23,7 @@ class AssignmentController extends Controller {
         
     }
 
-    // Create assignment
+    // Add assignment
     public function AddAssignment(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
@@ -64,8 +66,8 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-//            $class = AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->distinct('class_id')->get();
-            $classes = collect(AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->get());
+//          $class = AssignedTeacher::with('AssignedClass')->where('teacher_id', $request->teacher_id)->distinct('class_id')->get();
+            $classes = collect(AssignedTeacher::with('User')->with('AssignedClass')->where('teacher_id', $request->teacher_id)->get());
             $class = $classes->unique('class_id');
             $class->values()->all();
 
@@ -94,44 +96,119 @@ class AssignmentController extends Controller {
         }
     }
 
-    public function GetScheduleTaskDetail(Request $request) {
-        $validator = Validator::make($request->all(), [
-                    'task_id' => 'required|exists:parent_tasks,id'
+    // Add assigned asignments
+    public function AddAssignedAssignment(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'assignment_id' => 'required|exists:assignments,id',
+                    'assignment_type' => 'required|in:WHOLE,SELECTED',
+                    'class_id' => 'required|exists:class_code,id',
+                    'school_id' => 'required|exists:schools,id',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::with('User')->with('AssignedUser.User')->where('id', $request->task_id)->get();
-            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
+            $task = new AssignedAssignments; //then create new object
+            $task->assignment_id = $request->assignment_id;
+            $task->assignment_type = $request->assignment_type;
+            $task->class_id = $request->class_id;
+            $task->school_id = $request->school_id;
+            if ($request->assignment_type == 'SELECTED') {
+                $data = [];
+                if (!empty($request->assignment_assign_to)) {
+                    foreach ($request->assignment_assign_to as $key => $assignment_assign_to) {
+                        $data[$key] = $assignment_assign_to;
+                        //add data in submitted assignments table
+                        $submitted = new SubmittedAssignments; //then create new object
+                        $submitted->assignment_id = $request->assignment_id;
+                        $submitted->student_id = $assignment_assign_to;
+                        $submitted->class_id = $request->class_id;
+//                        $submitted->submit_status = 0;
+                        $submitted->save();
+                    }
+                }
+                $task->assignment_assign_to = $data;
+            } else {
+                //get students by class_id
+                $students = UserClassCode::where('class_id', $request->class_id)->get();
+                if (!empty($students)) {
+                    foreach ($students as $users) {
+                        //add data in submitted assignments table
+                        $submitted = new SubmittedAssignments; //then create new object
+                        $submitted->assignment_id = $request->assignment_id;
+                        $submitted->student_id = $users->user_id;
+                        $submitted->class_id = $request->class_id;
+//                        $submitted->submit_status = 0;
+                        $submitted->save();
+                    }
+                }
+                $task->assignment_assign_to = null;
+            }
+            $task->save();
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
     }
 
-    public function GetRelatedParents(Request $request) {
-        try {
+    //Get Assignment List
+    public function GetAssignmentList(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'teacher_id' => 'required|exists:users,id',
+                    'school_id' => 'required|exists:schools,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+//            $assignment = Assignment::with('AssignedClass')->where('teacher_id', $request->teacher_id)->get();
+            $assignment = Assignment::with('User')->leftJoin('assigned_assignments', 'assignments.id', '=', 'assigned_assignments.assignment_id')
+                            ->leftJoin('class_code', 'assigned_assignments.class_id', '=', 'class_code.id')
+                            ->select('assignments.*', 'class_code.class_name')
+                            ->where('teacher_id', $request->teacher_id)->where('class_code.school_id', $request->school_id)->orderBy('assignments.id', 'DESC')->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
+        }
+    }
 
-            $input = $request->all();
-            $validator = Validator::make($input, [
-                        'parent_id' => 'required',
-            ]);
+    //Get Assignment details by assignment id
+    public function GetAssignmentDetails(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $assignment = Assignment::where('id', $request->assignment_id)->first();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
+        }
+    }
 
-            if ($validator->fails()) {
-                throw new Exception($validator->errors()->first());
-            } else {
-                $results = ParentChildrens::select(DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id', $request->parent_id)->first();
-                $childrens = $results->childrens;
-                if (!empty($childrens)) {
-                    $results = ParentChildrens::select('parent_id')->with('ParentDetails')->whereIn('children_id', array($childrens))->get();
-                    if (!empty($results)) {
-                        return response()->json(array('error' => false, 'data' => $results, 'message' => 'Parents fetched successfully.'), 200);
-                    } else {
-                        throw new Exception('No another parents');
-                    }
-                } else {
-                    throw new Exception('No childrens');
-                }
-            }
-        } catch (\Exception $e) {
-            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+    //get student asignments details
+    public function GetSubmittedAssignment(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            //get submitted data
+            $submitted_assignments = SubmittedAssignments::with('User')->with('AssignedClass')->where('assignment_id', $request->assignment_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
+        }
+    }
+
+    //get student Submitted asignments details
+    public function GetSubmittedAssignmentDetails(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+                    'student_id' => 'required|exists:users,id',
+                    'submitted_id' => 'required|exists:submitted_assignments,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            //get submitted data
+            $submitted_assignments = SubmittedAssignments::with('User')->with('Assignments')->where('assignment_id', $request->assignment_id)->where('id', $request->submitted_id)->first();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
         }
     }
 
