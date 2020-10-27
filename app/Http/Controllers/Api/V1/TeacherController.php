@@ -76,6 +76,7 @@ class TeacherController extends Controller {
         DB::commit();
         //clascodes
         if(!empty( $addUser )){
+          User::where('id',$addUser->id)->update(['device_token' => $request->device_token]);
          $addUser->documents= $names;
          if(!empty($request->class_code)) {
           $class_code=  ClassCode::where('class_code',$request->class_code)->first();

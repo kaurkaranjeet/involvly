@@ -49,6 +49,7 @@ class StudentController extends Controller {
 
                 //clascodes
                 if (!empty($addUser)) {
+                     User::where('id',$addUser->id)->update(['device_token' => $request->device_token]);
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
@@ -119,9 +120,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has been joined a new class - ' . $class->class_name;
+                            $message = 'Your Children has joined a new class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has been joined a new class';
+                            $message = 'Your Children has joined a new class';
                         }
                         $notify_type = 'JOINEDCLASS';
                         NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
@@ -155,9 +156,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has been leaved class - ' . $class->class_name;
+                            $message = 'Your Children has left class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has been leaved class';
+                            $message = 'Your Children has left class';
                         }
                         $notify_type = 'JOINEDCLASS';
                         NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
