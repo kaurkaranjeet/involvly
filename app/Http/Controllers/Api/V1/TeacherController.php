@@ -40,6 +40,7 @@ class TeacherController extends Controller {
          throw new Exception($validator->errors()->first());
        }  
        else{ 
+         $names=array();
         $student_obj=new User;
         $addUser = $student_obj->store($request);
        // DB::commit();
@@ -54,7 +55,7 @@ class TeacherController extends Controller {
             throw new Exception('Subject id is not valid');
         }
 
-         $names=array();
+        
           
           if($request->hasfile('documents'))
           {

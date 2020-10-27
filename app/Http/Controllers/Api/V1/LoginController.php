@@ -40,6 +40,8 @@ class LoginController extends Controller {
                 return response()->json(['message' => 'could_not_create_token', 'error' => true], 500);
             }
             $user_details = User::validateLogin($request->all());
+            //Update Device Token
+            User::where('id',$user_details->id)->update(['device_token' => $request->device_token]);
             // get class code 
             if ($user_details->role_id == 2) {
                 $classCode = UserClassCode::where('user_id', $user_details->id)->first();
