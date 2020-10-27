@@ -140,7 +140,6 @@ class AssignmentController extends Controller {
                         $submitted->class_id = $request->class_id;
 //                        $submitted->submit_status = 0;
                         $submitted->save();
-                        
                     }
                 }
                 $task->assignment_assign_to = null;
@@ -192,6 +191,22 @@ class AssignmentController extends Controller {
         } else {
             //get submitted data
             $submitted_assignments = SubmittedAssignments::with('User')->with('AssignedClass')->where('assignment_id', $request->assignment_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
+        }
+    }
+
+    //get student Submitted asignments details
+    public function GetSubmittedAssignmentDetails(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+                    'student_id' => 'required|exists:users,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            //get submitted data
+            $submitted_assignments = SubmittedAssignments::with('User')->with('Assignments')->where('assignment_id', $request->assignment_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
         }
     }
