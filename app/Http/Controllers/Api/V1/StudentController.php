@@ -49,6 +49,7 @@ class StudentController extends Controller {
 
                 //clascodes
                 if (!empty($addUser)) {
+                     User::where('id',$addUser->id)->update(['device_token' => $request->device_token]);
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
