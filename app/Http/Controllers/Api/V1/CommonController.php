@@ -67,7 +67,7 @@ class CommonController extends Controller {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
-    
+
     public function GetSubjectsByClass(Request $request) {
         try {
             $input = $request->all();
@@ -78,7 +78,12 @@ class CommonController extends Controller {
                 return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
             } else {
                 //get subjects
-                $states = ClassSubjects::with('subjects')->where('class_code_id', $request->class_id)->get();
+                $states = ClassSubjects::with('subjects')
+                                ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
+                                ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
+                                ->select('class_code_subject.*', 'assigned_teachers.teacher_id', 'users.name')
+                                ->where('class_code_id', $request->class_id)->get();
+
                 if (!empty($states)) {
                     return response()->json(array('error' => false, 'data' => $states), 200);
                 } else {
@@ -260,6 +265,7 @@ class CommonController extends Controller {
         }
         return \Response::json($arr);
     }
+
     public function DeleteAccount(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
@@ -269,7 +275,7 @@ class CommonController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $delete= User::where('id',$request->user_id)->delete();                   
+            $delete = User::where('id', $request->user_id)->delete();
             if ($delete) {
                 return response()->json(array('error' => false, 'message' => 'Account deleted successfully', 'data' => []), 200);
             } else {
