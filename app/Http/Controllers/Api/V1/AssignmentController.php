@@ -201,12 +201,13 @@ class AssignmentController extends Controller {
         $validator = Validator::make($request->all(), [
                     'assignment_id' => 'required|exists:assignments,id',
                     'student_id' => 'required|exists:users,id',
+                    'submitted_id' => 'required|exists:submitted_assignments,id',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             //get submitted data
-            $submitted_assignments = SubmittedAssignments::with('User')->with('Assignments')->where('assignment_id', $request->assignment_id)->get();
+            $submitted_assignments = SubmittedAssignments::with('User')->with('Assignments')->where('assignment_id', $request->assignment_id)->where('id', $request->submitted_id)->first();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
         }
     }
