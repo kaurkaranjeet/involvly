@@ -110,7 +110,7 @@ class StudentController extends Controller {
             $joined->school_id = $request->school_id;
             $joined->join_date = $request->join_date;
             $joined->status = 1;
-//            $joined->save();
+      $joined->save();
             //get parent related to students
             $results = ParentChildrens::where('children_id', $request->student_id)->get();
             if (!empty($results)) {
