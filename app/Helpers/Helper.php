@@ -86,7 +86,7 @@ fclose ($tSocket);
 }
 
 function SendAllNotification($token,$message,$notify_type){
-$API_ACCESS_KEY='AAAArwVchxQ:APA91bG5EETb2xJwJXI8kR2vOUPRzwzOPUTQAy_XpFsmJI4efMvg1mwhCiBVtoVCon8HXUKI7YUrZ1AwS1k_o1o4ADfwSoXhZq7jrYIp8xWpPiMcXIs0h9PMfsQsm0v6H7bLCW4WlTBL';
+$API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0DRK4BLTUAGpz6FbDKF9a4UmrIm8Sb6tajxHfCJBzKnDnf7jgg9dgu3oLDNFD0bonhRNUOf9-Cl8jQhbs3mPoaqKxge';
  $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 // $token='235zgagasd634sdgds46436';
 
