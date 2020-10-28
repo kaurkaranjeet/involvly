@@ -211,5 +211,23 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
         }
     }
+    
+    //remove assignment
+    public function RemoveAssignments(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $delete = Assignment::where('id', $request->assignment_id)->delete();
+            if ($delete) {
+                return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+            }
+        }
+    }
 
 }
