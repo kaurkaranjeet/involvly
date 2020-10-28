@@ -17,8 +17,7 @@ class CreateNotificaationTable extends Migration
             $table->id();
             $table->longText('notification_message');
             $table->string('type');
-              $table->string('notification_type');
-            
+              $table->string('notification_type');            
             $table->index('user_id');
             $table->unsignedBigInteger('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
