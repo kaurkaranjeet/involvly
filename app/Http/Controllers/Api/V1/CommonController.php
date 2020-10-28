@@ -12,6 +12,7 @@ use App\Models\Subject;
 use App\Models\State;
 use App\Models\Cities;
 use App\Models\School;
+use App\Models\JoinedStudentClass;
 use Illuminate\Support\Facades\Validator;
 use Pusher\Pusher;
 use DB;
@@ -72,7 +73,10 @@ class CommonController extends Controller {
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'class_id' => 'required|exists:class_code,id'
+//                        'class_id' => 'required|exists:class_code,id',
+                        'student_id' => 'required|exists:users,id',
+                        'class_id' => 'required|exists:class_code,id',
+                        'school_id' => 'required|exists:schools,id',
             ]);
             if ($validator->fails()) {
                 return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -83,7 +87,12 @@ class CommonController extends Controller {
                                 ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
                                 ->select('class_code_subject.*', 'assigned_teachers.teacher_id', 'users.name')
                                 ->where('class_code_id', $request->class_id)->get();
-
+                $joinedData = JoinedStudentClass::where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
+                if (isset($joinedData[0])) {
+                    $states->already_join = "1";
+                } else {
+                    $states->already_join = "0";
+                }
                 if (!empty($states)) {
                     return response()->json(array('error' => false, 'data' => $states), 200);
                 } else {
