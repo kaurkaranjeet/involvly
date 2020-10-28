@@ -82,17 +82,33 @@ class CommonController extends Controller {
                 return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
             } else {
                 //get subjects
+                $joinedData = JoinedStudentClass::where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->first(); 
+                
                 $states = ClassSubjects::with('subjects')
-                                ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
-                                ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
-                                ->select('class_code_subject.*', 'assigned_teachers.teacher_id', 'users.name')
-                                ->where('class_code_id', $request->class_id)->get();
-                $joinedData = JoinedStudentClass::where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->first();
-                if (!empty($joinedData)) {
-                    $states->already_join = 1;
+               ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
+               ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
+               ->select('class_code_subject.*', 'assigned_teachers.teacher_id', 'users.name')
+               ->where('class_code_id', $request->class_id)->get();
+                
+                 foreach($states as $state){
+                   if (!empty($joinedData)) {
+                    $state->already_join = 1;
                 } else {
-                    $states->already_join = 0;
+                    $state->already_join = 0;
                 }
+            }
+                
+//                $states = ClassSubjects::with('subjects')
+//                                ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
+//                                ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
+//                                ->select('class_code_subject.*', 'assigned_teachers.teacher_id', 'users.name')
+//                                ->where('class_code_id', $request->class_id)->get();
+//                $joinedData = JoinedStudentClass::where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->first();
+//                if (!empty($joinedData)) {
+//                    $states->already_join = 1;
+//                } else {
+//                    $states->already_join = 0;
+//                }
                 if (!empty($states)) {
                     return response()->json(array('error' => false, 'data' => $states), 200);
                 } else {
