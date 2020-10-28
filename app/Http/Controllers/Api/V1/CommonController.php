@@ -87,11 +87,11 @@ class CommonController extends Controller {
                                 ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
                                 ->select('class_code_subject.*', 'assigned_teachers.teacher_id', 'users.name')
                                 ->where('class_code_id', $request->class_id)->get();
-                $joinedData = JoinedStudentClass::where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
-                if (isset($joinedData[0])) {
-                    $states->already_join = "1";
+                $joinedData = JoinedStudentClass::where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->first();
+                if (!empty($joinedData)) {
+                    $states->already_join = 1;
                 } else {
-                    $states->already_join = "0";
+                    $states->already_join = 0;
                 }
                 if (!empty($states)) {
                     return response()->json(array('error' => false, 'data' => $states), 200);
