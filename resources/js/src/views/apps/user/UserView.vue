@@ -87,9 +87,12 @@
             </table>
           </div>
           <!-- /Information - Col 2 -->
-          <div class="vx-col w-full flex" id="account-manage-buttons">
+          <div class="vx-col w-full flex" id="account-manage-buttons" v-if="user_data.status==0">
          <!--    <vs-button icon-pack="feather" icon="icon-edit" class="mr-4" :to="{name: 'app-user-edit', params: { userId: $route.params.userId }}">Edit</vs-button> -->
-            <vs-button type="border" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Delete</vs-button>
+            <vs-button type="border"  class=" mr-4" color="danger" icon-pack="feather" icon="icon-trash" @click="confirmDeleteRecord">Delete</vs-button>
+
+              <vs-button class="bg-primary mr-4 flex" @click="Approveteacher(user_data.id,$event)"> Approve</vs-button>
+             <vs-button class="bg-danger mr-4 flex" @click="Rejectteacher(user_data.id,$event)"> Reject</vs-button>
           </div>
 
         </div>
@@ -241,6 +244,65 @@ export default {
         title: 'User Deleted',
         text: 'The selected user was successfully deleted'
       })
+    },
+     Approveteacher (id,el) {
+
+        var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+       this.$http
+      .post("/api/auth/approve_teacher/"+id,requestOptions)
+      .then(response => {
+         this.$vs.notify({
+          title: 'Approve',
+          text: 'Approved Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        })
+         location.reload();
+       
+
+        // el.target.getElementsByClassName('tr-values').style.display='none';
+// el.parentNode.style.display='none';
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    },
+
+
+     Rejectteacher (id,el) {
+
+        var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+       this.$http
+      .post("/api/auth/disapprove_teacher/"+id,requestOptions)
+      .then(response => {
+         this.$vs.notify({
+          title: 'Rejected',
+          text: 'Rejected Successfully',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'success'
+        })
+         location.reload();
+
+        // el.target.getElementsByClassName('tr-values').style.display='none';
+// el.parentNode.style.display='none';
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
     }
 
   },

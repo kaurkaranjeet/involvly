@@ -233,7 +233,7 @@ export default {
           width: 225
         },
         {
-          headerName: 'School Type',
+          headerName: 'Type of Schooling',
           field: 'type_of_schooling',
           filter: true,
           width: 225,

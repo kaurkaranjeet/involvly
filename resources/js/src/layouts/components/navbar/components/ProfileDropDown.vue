@@ -67,9 +67,17 @@ export default {
        localStorage.removeItem('accessToken');
   localStorage.removeItem('school_id');
    localStorage.removeItem('user_id');
-   localStorage.removeItem('role_id')
+  
+   if(localStorage.getItem('role_id')==5){
+     localStorage.removeItem('role_id')
+        this.$router.push('/pages/login').catch(() => {})
+      }
+      else{
+         localStorage.removeItem('role_id')
+         this.$router.push('/pages/admin/login').catch(() => {})
+      }
       // This is just for demo Purpose. If user clicks on logout -> redirect
-      this.$router.push('/pages/login').catch(() => {})
+     // this.$router.push('/pages/login').catch(() => {})
     }
   }
 }

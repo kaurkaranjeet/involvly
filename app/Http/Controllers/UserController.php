@@ -196,7 +196,16 @@ class UserController extends Controller {
             $users = User::where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->get();
         } else if ($request->type == 'student') {
             $users = User::where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->get();
-        } else {
+        }
+        else if ($request->type == 'school_admins') {
+            $users = User::with('SchoolDetail')->where('role_id', 5)->where('status', 1)->get();
+            foreach($users as $user){
+                $user->school_name= $user->SchoolDetail->school_name;
+            }
+        }
+
+
+         else {
             $users = User::where('role_id', 3)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->get();
         }
         //  print_r(DB::getQueryLog());die;
@@ -241,26 +250,32 @@ class UserController extends Controller {
 
     public function getRequest($school_id) {
         $data = User::where('role_id', 4)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
-        return response()->json(compact('data'), 200);
+        $count = User::where('role_id', 4)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+    
+        return response()->json(compact('data','count'), 200);
     }
 
       public function getteacherRequest() {
         $data = User::where('role_id', 4)->where('status', 0)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
-        return response()->json(compact('data'), 200);
+        $count = User::where('role_id', 4)->where('status', 0)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+            return response()->json(compact('data','count'), 200);
     }
 
       public function WebSchoolAdmins() {
         $data = User::where('role_id', 5)->where('status', 0)->with('SchoolDetail:id,school_name')->select('id', 'name', 'email', 'school_id', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
-        return response()->json(compact('data'), 200);
+              $count = User::where('role_id', 5)->where('status', 0)->with('SchoolDetail:id,school_name')->select('id', 'name', 'email', 'school_id', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        return response()->json(compact('data','count'), 200);
     }
     public function getStudentRequest($school_id) {
         $data = User::where('role_id', 2)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
-        return response()->json(compact('data'), 200);
+          $count = User::where('role_id', 2)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        return response()->json(compact('data','count'), 200);
     }
 
     public function getParentRequest($school_id) {
         $data = User::where('role_id', 3)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->get();
-        return response()->json(compact('data'), 200);
+         $count = User::where('role_id', 3)->where('school_id', $school_id)->where('status', 0)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        return response()->json(compact('data','count'), 200);
     }
 
 

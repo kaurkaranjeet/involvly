@@ -14,7 +14,7 @@ export default {
 
       // Below line will be for actual product
       // Currently it's commented due to demo purpose - Above url is for demo purpose
-       return "/apps/user/user-view/" + this.params.data.id
+       return "/apps/admin/teacher-view/" + this.params.data.id
     }
   },
   methods: {

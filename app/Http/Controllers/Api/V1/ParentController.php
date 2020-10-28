@@ -31,6 +31,7 @@ class ParentController extends Controller {
             $input = $request->all();
             $validator = Validator::make($input, [
                         'first_name' => 'required',
+                         'device_token' => 'required',
                         'last_name' => 'required',
                         'email' => 'required|unique:users',
                         'password' => 'required',
@@ -47,9 +48,10 @@ class ParentController extends Controller {
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
-                $addUser->token = $token;
+                $addUser->jwt_token = $token;
                 //clascodes
                 if (!empty($addUser)) {
+                   //User::where('id',$addUser->id)->update(['device_token' => $request->device_token]);
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {

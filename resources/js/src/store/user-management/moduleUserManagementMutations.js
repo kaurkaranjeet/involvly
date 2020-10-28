@@ -19,4 +19,8 @@ export default {
     SET_ADMIN_USERS(state, adminusers) {
         state.adminusers = adminusers
     },
+
+     SET_SCHOOL_ADMINS(state, schooladmins) {
+        state.school_admins = schooladmins
+    },
 }

@@ -1,6 +1,7 @@
 <template>
     <div :style="{'direction': $vs.rtl ? 'rtl' : 'ltr'}">
       <feather-icon icon="Edit3Icon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer" @click="editRecord" />
+        <feather-icon icon="EyeIcon" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer"  @click="$router.push(url)" />
       <feather-icon icon="Trash2Icon" svgClasses="h-5 w-5 hover:text-danger cursor-pointer" @click="confirmDeleteRecord" />
     </div>
 </template>
@@ -8,6 +9,15 @@
 <script>
 export default {
   name: 'CellRendererActions',
+   computed: {
+    url () {
+    //return '/apps/user/user-view/268'
+
+      // Below line will be for actual product
+      // Currently it's commented due to demo purpose - Above url is for demo purpose
+       return "/apps/user/user-view/" + this.params.data.id
+    }
+  },
   methods: {
     editRecord () {
      // this.$router.push(`/apps/user/user-edit/${  268}`).catch(() => {})
