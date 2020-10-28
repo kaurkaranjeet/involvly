@@ -109,25 +109,25 @@ class StudentController extends Controller {
             $joined->school_id = $request->school_id;
             $joined->join_date = $request->join_date;
             $joined->status = 1;
-//            $joined->save();
+            $joined->save();
             //get parent related to students
-            $results = ParentChildrens::where('children_id', $request->student_id)->get();
-            if (!empty($results)) {
-                foreach ($results as $users) {
-                    $usersData = User::where('id', $users->parent_id)->first();
-                    $class = ClassCode::where('id', $request->class_id)->first();
-                    //send notification
-                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                        if (!empty($class)) {
-                            $message = 'Your Children has been joined a new class - ' . $class->class_name;
-                        } else {
-                            $message = 'Your Children has been joined a new class';
-                        }
-                        $notify_type = 'JOINEDCLASS';
-                        NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
-                    }
-                }
-            }
+//            $results = ParentChildrens::where('children_id', $request->student_id)->get();
+//            if (!empty($results)) {
+//                foreach ($results as $users) {
+//                    $usersData = User::where('id', $users->parent_id)->first();
+//                    $class = ClassCode::where('id', $request->class_id)->first();
+//                    //send notification
+//                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
+//                        if (!empty($class)) {
+//                            $message = 'Your Children has been joined a new class - ' . $class->class_name;
+//                        } else {
+//                            $message = 'Your Children has been joined a new class';
+//                        }
+//                        $notify_type = 'JOINEDCLASS';
+//                        NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
+//                    }
+//                }
+//            }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $joined), 200);
         }
     }
@@ -147,23 +147,23 @@ class StudentController extends Controller {
             $delete = JoinedStudentClass::where('student_id', $request->student_id)->where('subject_id', $request->subject_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->delete();
             if ($delete) {
                 //get parent related to students
-            $results = ParentChildrens::where('children_id', $request->student_id)->get();
-            if (!empty($results)) {
-                foreach ($results as $users) {
-                    $usersData = User::where('id', $users->parent_id)->first();
-                    $class = ClassCode::where('id', $request->class_id)->first();
-                    //send notification
-                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                        if (!empty($class)) {
-                            $message = 'Your Children has been leaved class - ' . $class->class_name;
-                        } else {
-                            $message = 'Your Children has been leaved class';
-                        }
-                        $notify_type = 'JOINEDCLASS';
-                        NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
-                    }
-                }
-            }
+//            $results = ParentChildrens::where('children_id', $request->student_id)->get();
+//            if (!empty($results)) {
+//                foreach ($results as $users) {
+//                    $usersData = User::where('id', $users->parent_id)->first();
+//                    $class = ClassCode::where('id', $request->class_id)->first();
+//                    //send notification
+//                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
+//                        if (!empty($class)) {
+//                            $message = 'Your Children has been leaved class - ' . $class->class_name;
+//                        } else {
+//                            $message = 'Your Children has been leaved class';
+//                        }
+//                        $notify_type = 'JOINEDCLASS';
+//                        NotificationController::SendNotification($usersData->device_token, $message, $notify_type);
+//                    }
+//                }
+//            }
                 return response()->json(array('error' => false, 'message' => 'Student leave class successfully', 'data' => []), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
