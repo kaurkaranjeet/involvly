@@ -27,7 +27,7 @@ class NotificationController extends Controller {
 	}
 	else{
 	$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->get();
-if(!empty($notifications)){
+if(count($notifications)>0){
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 }else{
 	return response()->json(array('error' => true, 'message' => ' No Record found', 'data' => []), 200);
