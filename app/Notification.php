@@ -12,7 +12,7 @@ class Notification extends Model {
      * @var array
      */
     protected $fillable = [
-         'user_id', 'notification_message','type','is_follow','stream_id','notify_id',
+         'user_id', 'notification_message','type','is_follow','stream_id','notify_id', 'notification_type'
     ];
     
    

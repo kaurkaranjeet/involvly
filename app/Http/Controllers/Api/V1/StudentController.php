@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
 use App\User;
+use App\Notification;
 use App\Models\ClassCode;
 use App\Models\JoinedStudentClass;
 use App\Models\ParentChildrens;
@@ -126,7 +127,7 @@ class StudentController extends Controller {
                         }
                         $notify_type = 'JOINEDCLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
-                        Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'join_class']); 
+                        Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
                     }
                 }
             }
@@ -158,9 +159,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has left class - ' . $class->class_name;
+                            $message = 'Your Children has leave class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has left class';
+                            $message = 'Your Children has leave class';
                         }
                         $notify_type = 'LEAVECLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
