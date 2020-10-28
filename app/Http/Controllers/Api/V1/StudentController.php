@@ -149,6 +149,7 @@ class StudentController extends Controller {
             $delete = JoinedStudentClass::where('student_id', $request->student_id)->where('subject_id', $request->subject_id)->where('class_id', $request->class_id)->where('school_id', $request->school_id)->delete();
             if ($delete) {
                 //get parent related to students
+
             $results = ParentChildrens::where('children_id', $request->student_id)->get();
             if (!empty($results)) {
                 foreach ($results as $users) {
