@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
 use App\User;
-use App\Notification;
-use App\FollowUnfollow;
+use App\Models\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,13 +26,13 @@ class NotificationController extends Controller {
 		return response()->json(array('errors' => $validator->errors(),'error' => true));
 	}
 	else{
-	//$notifications=	Notification::where('user_id' , $request->user_id)->get();
+	$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->get();
 
-		$notifications=Notification::with('NotifyUser')->leftJoin('queues','notification.stream_id', '=', 'queues.id')
-        ->leftJoin('video_user', 'video_user.id', '=', 'queues.video_id')->select('notification.stream_id','notification.*','video_user.thumbnail_url','notification.stream_id')->where('notification.user_id',$request->user_id)->orderBy('notification.id', 'DESC')->get();
+		/*$notifications=Notification::with('NotifyUser')->leftJoin('queues','notification.stream_id', '=', 'queues.id')
+        ->leftJoin('video_user', 'video_user.id', '=', 'queues.video_id')->select('notification.stream_id','notification.*','video_user.thumbnail_url','notification.stream_id')->where('notification.user_id',$request->user_id)->orderBy('notification.id', 'DESC')->get();*/
   
 
-$data=array();
+/*$data=array();
         foreach($notifications as $value){
         	if($value->notify_id>0){
         	$value->name=$value->NotifyUser->name;
@@ -47,9 +46,9 @@ $data=array();
 
           
 
-        }
+        }*/
        
-	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $data), 200);
+	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 
 	}
 

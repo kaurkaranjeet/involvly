@@ -126,6 +126,7 @@ class StudentController extends Controller {
                         }
                         $notify_type = 'JOINEDCLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
+                        Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'join_class']); 
                     }
                 }
             }
@@ -160,8 +161,9 @@ class StudentController extends Controller {
                         } else {
                             $message = 'Your Children has left class';
                         }
-                        $notify_type = 'JOINEDCLASS';
+                        $notify_type = 'LEAVECLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
+                         Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
                     }
                 }
             }

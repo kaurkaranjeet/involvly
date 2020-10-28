@@ -48,10 +48,10 @@ class ParentController extends Controller {
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
-                $addUser->token = $token;
+                $addUser->jwt_token = $token;
                 //clascodes
                 if (!empty($addUser)) {
-                   User::where('id',$addUser->id)->update(['device_token' => $request->device_token]);
+                   //User::where('id',$addUser->id)->update(['device_token' => $request->device_token]);
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
