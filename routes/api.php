@@ -117,6 +117,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('get_assignments_details', 'Api\V1\AssignmentController@GetAssignmentDetails');
     Route::post('get_submitted_assignments', 'Api\V1\AssignmentController@GetSubmittedAssignment');
     Route::post('get_submitted_assignments_details', 'Api\V1\AssignmentController@GetSubmittedAssignmentDetails');
+    Route::post('remove_assignment', 'Api\V1\AssignmentController@RemoveAssignments');
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
