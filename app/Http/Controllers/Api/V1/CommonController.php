@@ -88,8 +88,9 @@ class CommonController extends Controller {
                                 ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
                                 ->select('class_code_subject.*', 'assigned_teachers.teacher_id', 'users.name')
                                 ->where('class_code_id', $request->class_id)->get();
-                if (!empty($joinedData[0])) {
-                    foreach ($states as $state) {
+
+                foreach ($states as $state) {
+                    if (!empty($joinedData[0])) {
                         foreach ($joinedData as $joined) {
                             if ($state->subject_id == $joined->subject_id) {
                                 $state->already_join = 1;
@@ -97,12 +98,11 @@ class CommonController extends Controller {
                                 $state->already_join = 0;
                             }
                         }
-                    }
-                } else {
-                    foreach ($states as $state) {
+                    } else {
                         $state->already_join = 0;
                     }
                 }
+
 
 //                $states = ClassSubjects::with('subjects')
 //                                ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
