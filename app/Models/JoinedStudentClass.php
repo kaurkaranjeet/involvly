@@ -19,4 +19,12 @@ class JoinedStudentClass extends Model {
         return $this->belongsTo('App\Models\ClassSubjects', 'subject_id', 'id');
     }
 
+    public function ParentDetails() {
+        return $this->belongsTo('App\User', 'parent_id', 'id');
+    }
+
+     public function SubjectDetails() {
+        return $this->belongsTo('App\Models\Subject', 'subject_id', 'id');
+    }
+
 }

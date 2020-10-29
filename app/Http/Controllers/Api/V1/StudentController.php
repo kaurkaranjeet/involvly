@@ -112,6 +112,8 @@ class StudentController extends Controller {
             $joined->join_date = $request->join_date;
             $joined->status = 1;
             $joined->save();
+
+            $subject_name=$joined->SubjectDetails->subject_name;
             //get parent related to students
             $results = ParentChildrens::where('children_id', $request->student_id)->get();
             if (!empty($results)) {
@@ -121,7 +123,7 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your child has joined the class - ' . $class->class_name;
+                            $message = 'Your child has joined the class - ' . $class->class_name. ' with subject-'.$subject_name;
                         } else {
                             $message = 'Your child has joined the class';
                         }
