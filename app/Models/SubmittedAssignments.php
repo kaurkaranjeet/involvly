@@ -10,6 +10,10 @@ class SubmittedAssignments extends Model {
 
     protected $table = 'submitted_assignments';
     protected $fillable = ['assignment_id', 'student_id', 'submitted_attachement', 'class_id','submit_status'];
+    protected $casts = [
+        'submitted_attachement' => 'array'
+    ];
+    
 
     public function User() {
         return $this->belongsTo('App\User', 'student_id', 'id');

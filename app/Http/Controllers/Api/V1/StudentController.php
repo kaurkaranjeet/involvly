@@ -111,7 +111,7 @@ class StudentController extends Controller {
             $joined->class_id = $request->class_id;
             $joined->school_id = $request->school_id;
             $joined->join_date = $request->join_date;
-            $joined->status = 1;
+//            $joined->status = '1';
             $joined->save();
 
             $subject_name=$joined->SubjectDetails->subject_name;
