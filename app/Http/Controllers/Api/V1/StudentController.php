@@ -97,7 +97,7 @@ class StudentController extends Controller {
         $input = $request->all();
         $validator = Validator::make($input, [
                     'student_id' => 'required|exists:users,id',
-                    'subject_id' => 'required|exists:class_code_subject,id',
+                    'subject_id' => 'required|exists:subjects,id',
                     'class_id' => 'required|exists:class_code,id',
                     'school_id' => 'required|exists:schools,id',
         ]);
@@ -140,7 +140,7 @@ class StudentController extends Controller {
 
         $validator = Validator::make($request->all(), [
                     'student_id' => 'required|exists:users,id',
-                    'subject_id' => 'required|exists:class_code_subject,id',
+                    'subject_id' => 'required|exists:subjects,id',
                     'class_id' => 'required|exists:class_code,id',
                     'school_id' => 'required|exists:schools,id',
         ]);
