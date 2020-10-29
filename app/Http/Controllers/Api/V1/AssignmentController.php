@@ -86,10 +86,10 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $subjects = ClassSubjects::with('subjects')
-                            ->leftJoin('assigned_teachers', 'class_code_subject.id', '=', 'assigned_teachers.subject_id')
+                            ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
                             ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
                             ->select('class_code_subject.*')
-                            ->where('class_code_id', $request->class_id)->where('assigned_teachers.teacher_id', $request->teacher_id)->get();
+                            ->where('class_code_id', $request->class_id)->where('class_id', $request->class_id)->where('assigned_teachers.teacher_id', $request->teacher_id)->get();
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $subjects), 200);
         }
