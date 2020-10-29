@@ -18,7 +18,7 @@ class CreateJoinedStudentClassesTable extends Migration
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('subject_id');
-            $table->foreign('subject_id')->references('id')->on('class_code_subject')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->unsignedBigInteger('class_id');
             $table->foreign('class_id')->references('id')->on('class_code')->onDelete('cascade');
             $table->unsignedBigInteger('school_id');
