@@ -121,9 +121,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your child has joined a new class - ' . $class->class_name;
+                            $message = 'Your child has joined the class - ' . $class->class_name;
                         } else {
-                            $message = 'Your child has joined a new class';
+                            $message = 'Your child has joined the class';
                         }
                         $notify_type = 'JOINEDCLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
@@ -159,9 +159,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your child has left class - ' . $class->class_name;
+                            $message = 'Your child has left the class - ' . $class->class_name;
                         } else {
-                            $message = 'Your child has left class';
+                            $message = 'Your child has left the class';
                         }
                         $notify_type = 'LEAVECLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
