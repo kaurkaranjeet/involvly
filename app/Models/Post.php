@@ -17,6 +17,15 @@ class Post extends Model
     return $this->belongsTo('App\User','user_id');
 }
 
+    public function CityDetail()
+{
+    return $this->belongsTo('App\Models\Cities','city');
+}
+
+  public function StateDetail()
+{
+    return $this->belongsTo('App\Models\State','state_id');
+}
 public function likes(){
    return $this->hasMany('App\Models\LikeUnlike','post_id')->where('like','=', 1);
 }
