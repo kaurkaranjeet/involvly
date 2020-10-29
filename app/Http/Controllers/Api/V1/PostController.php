@@ -74,7 +74,7 @@ public function GetPostHomefeed(Request $request){
               AND likes.user_id = ".$request->user_id."  AND likes.like = 1
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_like,posts.*")))->with('user')->withCount('likes','comments')->orderBy('likes_count', 'desc')->get();
+              AS is_like,posts.*")))->with('user','user.CityDetail','user.StateDetail')->withCount('likes','comments')->orderBy('likes_count', 'desc')->get();
    }else{
      $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
@@ -83,7 +83,7 @@ public function GetPostHomefeed(Request $request){
               AND likes.user_id = ".$request->user_id."  AND likes.like = 1
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_like,posts.*")))->with('user')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+              AS is_like,posts.*")))->with('user','user.CityDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
    }
         
        

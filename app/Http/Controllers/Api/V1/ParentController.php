@@ -162,6 +162,7 @@ class ParentController extends Controller {
           }
         }
     $addUser= DB::table('parent_childrens')->where('parent_id',$request->parent_id)->whereIn('children_id', array($request->student_id))->get();
+        User::where('id',$request->parent_id)->update(['type_of_schooling' => $request->type_of_schooling]);
         return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
       }
    }
