@@ -111,7 +111,7 @@ class StudentController extends Controller {
             $joined->school_id = $request->school_id;
             $joined->join_date = $request->join_date;
             $joined->status = 1;
-      $joined->save();
+            $joined->save();
             //get parent related to students
             $results = ParentChildrens::where('children_id', $request->student_id)->get();
             if (!empty($results)) {
@@ -159,9 +159,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has leave class - ' . $class->class_name;
+                            $message = 'Your Children has left class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has leave class';
+                            $message = 'Your Children has left class';
                         }
                         $notify_type = 'LEAVECLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
