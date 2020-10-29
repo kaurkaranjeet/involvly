@@ -56,7 +56,7 @@ Route::prefix('auth')->group(function () {
 
     //school - subjects
     Route::any('/manage-school-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSubjectsAccToSchool']);
-    Route::any('/save-school-subject', ['as' => 'save.subjects', 'uses' => 'Controller@saveSchoolSubject']);
+    Route::any('/save-school-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSchoolSubject']);
 
     Route::post('/add-subject', ['as' => 'add.subject', 'uses' => 'SubjectController@AddSubject']);
     Route::post('/remove-subject', ['as' => 'remove.subject', 'uses' => 'SubjectController@RemoveSubject']);
