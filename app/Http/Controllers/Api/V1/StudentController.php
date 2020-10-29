@@ -10,6 +10,7 @@ use App\User;
 use App\Notification;
 use App\Models\ClassCode;
 use App\Models\JoinedStudentClass;
+use App\Models\Subject;
 use App\Models\ParentChildrens;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
