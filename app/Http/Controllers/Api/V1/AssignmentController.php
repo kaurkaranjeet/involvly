@@ -263,11 +263,8 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $assignment = Assignment::with('User')->leftJoin('assigned_assignments', 'assignments.id', '=', 'assigned_assignments.assignment_id')
-                            ->leftJoin('class_code', 'assigned_assignments.class_id', '=', 'class_code.id')
-                            ->select('assignments.*', 'class_code.class_name')
-                            ->where('teacher_id', $request->teacher_id)->where('class_code.school_id', $request->school_id)->orderBy('assignments.id', 'DESC')->get();
-            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
+             $students_assignments = SubmittedAssignments::with('subjects')->with('Assignments')->where('student_id', $request->student_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $students_assignments), 200);
         }
     }
 
