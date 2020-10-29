@@ -90,7 +90,7 @@ class CommonController extends Controller {
         AND student_id= 210  AND subject_id = class_code_subject. subject_id
         ) THEN TRUE
         ELSE FALSE END)
-        AS is_joined , class_code_subject.*, 'assigned_teachers.teacher_id', 'users.name'")))->with('subjects')
+        AS is_joined , class_code_subject.*, assigned_teachers.teacher_id, users.name")))->with('subjects')
                                 ->leftJoin('assigned_teachers', 'class_code_subject.id', '=', 'assigned_teachers.subject_id')
                                 ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
                                 ->where('class_code_id', $request->class_id)->get();
