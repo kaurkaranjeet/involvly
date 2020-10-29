@@ -27,4 +27,9 @@ class JoinedStudentClass extends Model {
         return $this->belongsTo('App\Models\Subject', 'subject_id', 'id');
     }
 
+
+     public function ClassDetails() {
+        return $this->belongsTo('App\Models\ClassCode', 'class_id', 'id');
+    }
+
 }

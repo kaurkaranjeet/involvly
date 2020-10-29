@@ -114,16 +114,17 @@ class StudentController extends Controller {
             $joined->save();
 
             $subject_name=$joined->SubjectDetails->subject_name;
+             $class_name=$joined->ClassDetails->class_name;
             //get parent related to students
             $results = ParentChildrens::where('children_id', $request->student_id)->get();
             if (!empty($results)) {
                 foreach ($results as $users) {
                     $usersData = User::where('id', $users->parent_id)->first();
-                    $class = ClassCode::where('id', $request->class_id)->first();
+                   // $class = ClassCode::where('id', $request->class_id)->first();
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                        if (!empty($class)) {
-                            $message = 'Your child has joined the class - ' . $class->class_name. ' with subject-'.$subject_name;
+                        if (!empty($joined->ClassDetails->class_name)) {
+                            $message = 'Your child has joined the class - ' . $class_name. ' with subject-'.$subject_name;
                         } else {
                             $message = 'Your child has joined the class';
                         }
@@ -158,10 +159,11 @@ class StudentController extends Controller {
                 foreach ($results as $users) {
                     $usersData = User::where('id', $users->parent_id)->first();
                     $class = ClassCode::where('id', $request->class_id)->first();
+                     $subject = Subject::where('id', $request->subject_id)->first();
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your child has left the class - ' . $class->class_name;
+                            $message = 'Your child has left the class - ' . $class->class_name . ' with subject-'.$subject->subject_name;;
                         } else {
                             $message = 'Your child has left the class';
                         }
