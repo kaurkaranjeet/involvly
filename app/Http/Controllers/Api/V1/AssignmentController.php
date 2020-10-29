@@ -11,6 +11,7 @@ use App\Models\UserClassCode;
 use App\Models\AssignedTeacher;
 use App\Models\Assignment;
 use App\Models\AssignedAssignments;
+use App\Models\ClassSubjects;
 use App\Models\SubmittedAssignments;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
@@ -72,6 +73,25 @@ class AssignmentController extends Controller {
             $class->values()->all();
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
+        }
+    }
+
+    //Get subjects by class
+    public function GetSubjectsByClassTeacher(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'teacher_id' => 'required|exists:users,id',
+                    'class_id' => 'required|exists:class_code,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $subjects = ClassSubjects::with('users')->with('subjects')
+                            ->leftJoin('assigned_teachers', 'class_code_subject.id', '=', 'assigned_teachers.subject_id')
+                            ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
+                            ->select('class_code_subject.*')
+                            ->where('class_code_id', $request->class_id)->where('assigned_teachers.teacher_id', $request->teacher_id)->get();
+
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $subjects), 200);
         }
     }
 
@@ -211,7 +231,7 @@ class AssignmentController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $submitted_assignments), 200);
         }
     }
-    
+
     //remove assignment
     public function RemoveAssignments(Request $request) {
 
@@ -227,6 +247,23 @@ class AssignmentController extends Controller {
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
             }
+        }
+    }
+
+    //Get Assignment List
+    public function GetStudentAssignmentList(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'student_id' => 'required|exists:users,id',
+                    'class_id' => 'required|exists:class_code,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $assignment = Assignment::with('User')->leftJoin('assigned_assignments', 'assignments.id', '=', 'assigned_assignments.assignment_id')
+                            ->leftJoin('class_code', 'assigned_assignments.class_id', '=', 'class_code.id')
+                            ->select('assignments.*', 'class_code.class_name')
+                            ->where('teacher_id', $request->teacher_id)->where('class_code.school_id', $request->school_id)->orderBy('assignments.id', 'DESC')->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
     }
 
