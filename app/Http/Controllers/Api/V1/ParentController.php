@@ -31,7 +31,7 @@ class ParentController extends Controller {
             $input = $request->all();
             $validator = Validator::make($input, [
                         'first_name' => 'required',
-                         'device_token' => 'required',
+                       //  'device_token' => 'required',
                         'last_name' => 'required',
                         'email' => 'required|unique:users',
                         'password' => 'required',
