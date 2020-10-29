@@ -85,7 +85,7 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $subjects = ClassSubjects::with('users')->with('subjects')
+            $subjects = ClassSubjects::with('subjects')
                             ->leftJoin('assigned_teachers', 'class_code_subject.id', '=', 'assigned_teachers.subject_id')
                             ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
                             ->select('class_code_subject.*')
