@@ -18,7 +18,7 @@ class CreateAssignedTeachersTable extends Migration
             $table->unsignedBigInteger('class_id');
       $table->foreign('class_id')->references('id')->on('class_code')->onDelete('cascade'); 
             $table->unsignedBigInteger('subject_id');
-            $table->foreign('subject_id')->references('id')->on('class_code_subject')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->unsignedBigInteger('teacher_id');
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('school_id');
