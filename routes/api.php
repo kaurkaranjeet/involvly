@@ -108,9 +108,10 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
     Route::post('delete_schedule_task', 'Api\V1\ParentController@RemoveScheduleTask');
-    //Assignment
+    // Teacher Assignment
     Route::post('add_assignment', 'Api\V1\AssignmentController@AddAssignment');
     Route::post('get_classes_by_teacher', 'Api\V1\AssignmentController@GetClassesByTeacher');
+    Route::post('get_subjects_by_class_teacher', 'Api\V1\AssignmentController@GetSubjectsByClassTeacher');
     Route::post('get_students_by_classes', 'Api\V1\AssignmentController@GetStudentsByClass');
     Route::post('add_assigned_assignments', 'Api\V1\AssignmentController@AddAssignedAssignment');
     Route::post('get_assignments_list', 'Api\V1\AssignmentController@GetAssignmentList');
@@ -118,6 +119,8 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('get_submitted_assignments', 'Api\V1\AssignmentController@GetSubmittedAssignment');
     Route::post('get_submitted_assignments_details', 'Api\V1\AssignmentController@GetSubmittedAssignmentDetails');
     Route::post('remove_assignment', 'Api\V1\AssignmentController@RemoveAssignments');
+    // Student Assignment
+    Route::post('get_student_assignment_list', 'Api\V1\AssignmentController@GetStudentAssignmentList');
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
