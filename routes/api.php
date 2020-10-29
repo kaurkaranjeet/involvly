@@ -122,6 +122,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     // Student Assignment
     Route::post('get_student_assignment_list', 'Api\V1\AssignmentController@GetStudentAssignmentList');
     Route::post('upload_assignment_by_student', 'Api\V1\AssignmentController@UploadAssignmentByStudents');
+    Route::post('get_uploaded_assignment_by_student', 'Api\V1\AssignmentController@GetUploadAssignmentByStudents');
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');

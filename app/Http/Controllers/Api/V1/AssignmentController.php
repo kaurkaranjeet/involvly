@@ -290,8 +290,6 @@ class AssignmentController extends Controller {
                     $data[$key] = URL::to('/') . '/assignment_doc/' . $name;
                 }
             }
-//            $task->assignments_attachement = $data;
-            //add submitted assignment by student id 
             $updateData = SubmittedAssignments::where('assignment_id', $request->assignment_id)
                     ->where('student_id', $request->student_id)
                     ->where('subject_id', $request->subject_id)
@@ -309,6 +307,25 @@ class AssignmentController extends Controller {
                 return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getdata), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'Something went wrong', 'data' => $updateData), 200);
+            }
+        }
+    }
+    
+    // Get Uploaded Assignment By Students
+    public function GetUploadAssignmentByStudents(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'student_id' => 'required|exists:users,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $getData = SubmittedAssignments::where('student_id', $request->student_id)->where('submit_status','1')->get();
+                    
+            if ($getData) {
+                return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getData), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'Something went wrong', 'data' => $getData), 200);
             }
         }
     }
