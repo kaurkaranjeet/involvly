@@ -146,7 +146,7 @@ class AssignmentController extends Controller {
                         $submitted->student_id = $assignment_assign_to;
                         $submitted->class_id = $request->class_id;
                         $submitted->subject_id = $request->subject_id;
-//                        $submitted->submit_status = 0;
+//                        $submitted->submit_status = '0';
                         $submitted->save();
                     }
                 }
@@ -162,7 +162,7 @@ class AssignmentController extends Controller {
                         $submitted->student_id = $users->user_id;
                         $submitted->class_id = $request->class_id;
                         $submitted->subject_id = $request->subject_id;
-//                        $submitted->submit_status = 0;
+//                        $submitted->submit_status = '0';
                         $submitted->save();
                     }
                 }
@@ -199,7 +199,7 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $assignment = Assignment::where('id', $request->assignment_id)->first();
+            $assignment = Assignment::with('User')->where('id', $request->assignment_id)->first();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
     }
@@ -263,8 +263,53 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-             $students_assignments = SubmittedAssignments::with('subjects')->with('Assignments')->where('student_id', $request->student_id)->get();
+            $students_assignments = SubmittedAssignments::with('subjects')->with('Assignments')->where('student_id', $request->student_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $students_assignments), 200);
+        }
+    }
+
+    // Upload Assignment By Students
+    public function UploadAssignmentByStudents(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'student_id' => 'required|exists:users,id',
+                    'assignment_id' => 'required|exists:assignments,id',
+                    'subject_id' => 'required|exists:subjects,id',
+                    'class_id' => 'required|exists:class_code,id',
+                    'submitted_attachement' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+
+            $data = [];
+            if ($request->hasfile('submitted_attachement')) {
+                foreach ($request->file('submitted_attachement') as $key => $file) {
+                    $name = time() . $key . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path() . '/assignment_doc/', $name);
+                    $data[$key] = URL::to('/') . '/assignment_doc/' . $name;
+                }
+            }
+//            $task->assignments_attachement = $data;
+            //add submitted assignment by student id 
+            $updateData = SubmittedAssignments::where('assignment_id', $request->assignment_id)
+                    ->where('student_id', $request->student_id)
+                    ->where('subject_id', $request->subject_id)
+                    ->where('class_id', $request->class_id)
+                    ->update([
+                'submitted_attachement' => $data,
+                'submit_status' => '1'
+            ]);
+            if ($updateData) {
+                $getdata = SubmittedAssignments::where('assignment_id', $request->assignment_id)
+                    ->where('student_id', $request->student_id)
+                    ->where('subject_id', $request->subject_id)
+                    ->where('class_id', $request->class_id)
+                    ->first();
+                return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getdata), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'Something went wrong', 'data' => $updateData), 200);
+            }
         }
     }
 
