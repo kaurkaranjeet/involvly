@@ -122,6 +122,7 @@ class AssignmentController extends Controller {
         $validator = Validator::make($input, [
                     'assignment_id' => 'required|exists:assignments,id',
                     'assignment_type' => 'required|in:WHOLE,SELECTED',
+                    'subject_id' => 'required|exists:subjects,id',
                     'class_id' => 'required|exists:class_code,id',
                     'school_id' => 'required|exists:schools,id',
         ]);
@@ -132,6 +133,7 @@ class AssignmentController extends Controller {
             $task->assignment_id = $request->assignment_id;
             $task->assignment_type = $request->assignment_type;
             $task->class_id = $request->class_id;
+            $task->subject_id = $request->subject_id;
             $task->school_id = $request->school_id;
             if ($request->assignment_type == 'SELECTED') {
                 $data = [];
@@ -143,6 +145,7 @@ class AssignmentController extends Controller {
                         $submitted->assignment_id = $request->assignment_id;
                         $submitted->student_id = $assignment_assign_to;
                         $submitted->class_id = $request->class_id;
+                        $submitted->subject_id = $request->subject_id;
 //                        $submitted->submit_status = 0;
                         $submitted->save();
                     }
@@ -158,6 +161,7 @@ class AssignmentController extends Controller {
                         $submitted->assignment_id = $request->assignment_id;
                         $submitted->student_id = $users->user_id;
                         $submitted->class_id = $request->class_id;
+                        $submitted->subject_id = $request->subject_id;
 //                        $submitted->submit_status = 0;
                         $submitted->save();
                     }
