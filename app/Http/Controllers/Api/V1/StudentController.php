@@ -121,9 +121,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has joined a new class - ' . $class->class_name;
+                            $message = 'Your child has joined a new class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has joined a new class';
+                            $message = 'Your child has joined a new class';
                         }
                         $notify_type = 'JOINEDCLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
@@ -131,7 +131,7 @@ class StudentController extends Controller {
                     }
                 }
             }
-            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $joined), 200);
+            return response()->json(array('error' => false, 'message' => 'You have joined the class successfully', 'data' => $joined), 200);
         }
     }
 
@@ -159,9 +159,9 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your Children has left class - ' . $class->class_name;
+                            $message = 'Your child has left class - ' . $class->class_name;
                         } else {
-                            $message = 'Your Children has left class';
+                            $message = 'Your child has left class';
                         }
                         $notify_type = 'LEAVECLASS';
                         SendAllNotification($usersData->device_token, $message, $notify_type);
@@ -169,7 +169,7 @@ class StudentController extends Controller {
                     }
                 }
             }
-                return response()->json(array('error' => false, 'message' => 'Student leave class successfully', 'data' => []), 200);
+                return response()->json(array('error' => false, 'message' => 'You have left the class successfully', 'data' => []), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
             }
