@@ -962,10 +962,17 @@ var render = function() {
                                   [
                                     _c(
                                       "vs-td",
-                                      { attrs: { data: data[indextr].id } },
+                                      {
+                                        attrs: {
+                                          data: data[indextr].subject_id
+                                        }
+                                      },
                                       [
                                         _c("span", [
-                                          _vm._v("#" + _vm._s(data[indextr].id))
+                                          _vm._v(
+                                            "#" +
+                                              _vm._s(data[indextr].subject_id)
+                                          )
                                         ])
                                       ]
                                     ),

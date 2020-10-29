@@ -97,8 +97,8 @@
 
               <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                  <vs-td :data="data[indextr].id">
-                    <span>#{{data[indextr].id}}</span>
+                  <vs-td :data="data[indextr].subject_id">
+                    <span>#{{data[indextr].subject_id}}</span>
                   </vs-td>
 
                     <vs-td :data="data[indextr].subject_name">
