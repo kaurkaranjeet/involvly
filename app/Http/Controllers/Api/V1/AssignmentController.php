@@ -320,7 +320,7 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $getData = SubmittedAssignments::where('student_id', $request->student_id)->where('submit_status','1')->get();
+            $getData = SubmittedAssignments::with('Assignments')->where('student_id', $request->student_id)->where('submit_status','1')->get();
                     
             if ($getData) {
                 return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getData), 200);
