@@ -214,7 +214,7 @@ class ParentController extends Controller {
                    'email'=>$user_data_to->email,
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
-                   'task_date' => date('m/d/Y',$request->task_date),
+                   'task_date' => date('m/d/Y',strtotime($request->task_date)),
                    'task_time' => $request->task_time,
                    'task_description' => $request->task_description,
                 );
