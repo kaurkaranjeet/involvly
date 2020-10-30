@@ -11,13 +11,16 @@ Author URL: http://www.themeforest.net/user/pixinvent
 <template>
   <div class="clearfix">
     <vs-input
-      v-validate="'required'"
+      v-validate="'required|min:4|max:15'"
       data-vv-validate-on="blur"
       label-placeholder="Name"
       name="displayName"
       placeholder="Name"
       v-model="displayName"
-      class="w-full" />
+      class="w-full"
+
+ v-on:keypress="isLetter($event)"
+       />
     <span class="text-danger text-sm">{{ errors.first('displayName') }}</span>
 
 
@@ -70,10 +73,12 @@ Author URL: http://www.themeforest.net/user/pixinvent
       data-vv-validate-on="change"
       name="country"
       type="country"
-      label-placeholder=""
+      label-placeholder="Country"
       placeholder="Country"
       v-model="country"
-      class="w-full mt-6"  />
+      class="w-full mt-6"
+      readonly="true"
+       />
     <span class="text-danger text-sm">{{ errors.first('country') }}</span>
      
    
@@ -95,9 +100,13 @@ Author URL: http://www.themeforest.net/user/pixinvent
             <vs-button type="border" class="w-full mt-6" @click="$refs.update_avatar_input.click()">Upload Documents</vs-button> 
 </div>
     <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>
-    <vs-button  type="border" to="/pages/login" class="mt-6">Login</vs-button>
-    <vs-button class="float-right mt-6" @click="registerUserJWt" :disabled="!validateForm">Register</vs-button>
+  
+    <vs-button class="w-full mt-6" @click="registerUserJWt" :disabled="!validateForm">Submit</vs-button>
+
+      <vs-button class="w-full mt-6" type="border" to="/pages/login" >Login</vs-button>
   </div>
+
+
 </template>
 <script src="https://unpkg.com/vue-select@latest"></script>
 <script>
@@ -137,6 +146,12 @@ export default {
   },
   methods: {
 
+
+isLetter(e) {
+  let char = String.fromCharCode(e.keyCode); // Get the character
+  if(/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
+  else e.preventDefault(); // If not match, don't add to input text
+},
      selectFile(event) {
      // console.log(event.target.files)
             // `files` is always an array because the file input may be in multiple mode
