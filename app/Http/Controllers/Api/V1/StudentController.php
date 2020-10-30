@@ -125,7 +125,7 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($joined->ClassDetails->class_name)) {
-                            $message = 'Your child has joined the class - ' . $class_name. ' with subject-'.$subject_name;
+                            $message = 'Your child has joined the '.$subject_name. 'class';
                         } else {
                             $message = 'Your child has joined the class';
                         }
@@ -164,7 +164,7 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your child has left the class - ' . $class->class_name . ' with subject-'.$subject->subject_name;;
+                            $message = 'Your child has left the '.$subject->subject_name. 'class';
                         } else {
                             $message = 'Your child has left the class';
                         }
