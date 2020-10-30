@@ -83,7 +83,7 @@ public function GetPostHomefeed(Request $request){
               AND likes.user_id = ".$request->user_id."  AND likes.like = 1
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
    }
         
        
