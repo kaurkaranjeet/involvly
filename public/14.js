@@ -220,6 +220,32 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    reset_data: function reset_data() {
+      this.displayName = '';
+      this.Position = '';
+      this.email = '';
+      this.password = '';
+      this.documents = '';
+      this.confirm_password = '';
+      this.state_id = '';
+      this.city = '';
+      this.country = 'United States';
+      this.cityoptions = [];
+      this.schooloptions = [];
+      this.stateFilter = {
+        label: 'Select State',
+        value: '0'
+      };
+      this.schoolFilter = {
+        label: 'Select School',
+        value: '0'
+      };
+      this.cityFilter = {
+        label: 'Select city',
+        value: '0'
+      };
+      this.isTermsConditionAccepted = true;
+    },
     isLetter: function isLetter(e) {
       var _char = String.fromCharCode(e.keyCode); // Get the character
 
@@ -281,6 +307,8 @@ __webpack_require__.r(__webpack_exports__);
             icon: 'icon-alert-circle',
             color: 'success'
           });
+
+          _this.reset_data();
         } else {
           _this.$vs.notify({
             title: 'Error',
