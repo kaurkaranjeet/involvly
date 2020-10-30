@@ -117,7 +117,7 @@ class StudentController extends Controller {
             $subject_name=$joined->SubjectDetails->subject_name;
              $class_name=$joined->ClassDetails->class_name;
             //get parent related to students
-            $results = ParentChildrens::where('children_id', $request->student_id)->get();
+            $results = ParentChildrens::with('ChildDetails')->where('children_id', $request->student_id)->get();
             if (!empty($results)) {
                 foreach ($results as $users) {
                     $usersData = User::where('id', $users->parent_id)->first();
@@ -125,7 +125,7 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($joined->ClassDetails->class_name)) {
-                            $message = 'Your child has joined the '.$subject_name. 'class';
+                            $message = 'Your '.$users->ChildDetails->name.' has joined the '.$subject_name.' class';
                         } else {
                             $message = 'Your child has joined the class';
                         }
@@ -155,7 +155,7 @@ class StudentController extends Controller {
             if ($delete) {
                 //get parent related to students
 
-            $results = ParentChildrens::where('children_id', $request->student_id)->get();
+            $results = ParentChildrens::with('ChildDetails')->where('children_id', $request->student_id)->get();
             if (!empty($results)) {
                 foreach ($results as $users) {
                     $usersData = User::where('id', $users->parent_id)->first();
@@ -164,7 +164,7 @@ class StudentController extends Controller {
                     //send notification
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                         if (!empty($class)) {
-                            $message = 'Your child has left the '.$subject->subject_name. 'class';
+                            $message = 'Your '.$users->ChildDetails->name.' has left the '.$subject->subject_name.' class';
                         } else {
                             $message = 'Your child has left the class';
                         }
