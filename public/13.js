@@ -232,6 +232,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -246,6 +254,12 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       data_local: JSON.parse(JSON.stringify(this.data)),
+      cityoptions: [],
+      stateFilteroption: [],
+      cityFilter: {
+        label: 'Select city',
+        value: '0'
+      },
       statusOptions: [{
         label: 'ACTIVE',
         value: '1'
@@ -282,6 +296,26 @@ __webpack_require__.r(__webpack_exports__);
         this.data_local.status = obj.value;
       }
     },
+    stateFilter: {
+      get: function get() {
+        var obj = this.stateFilteroption;
+        var state_id = this.data_local.state_id;
+        var lebeltext = '';
+        Object.keys(this.stateFilteroption).forEach(function (key) {
+          //   console.log(obj[key].value)
+          if (obj[key].value == state_id) {
+            lebeltext = obj[key].label;
+          }
+        });
+        return {
+          label: lebeltext,
+          value: state_id
+        };
+      },
+      set: function set(obj) {
+        this.data_local.state_id = obj.value;
+      }
+    },
     role_local: {
       get: function get() {
         var name = 'user'; // return { label: this.capitalize(name),  value:name }
@@ -294,19 +328,36 @@ __webpack_require__.r(__webpack_exports__);
       return !this.errors.any();
     }
   },
+  created: function created() {
+    var _this = this;
+
+    this.$http.get("/api/v1/list_states").then(function (response) {
+      var data = response.data.data;
+
+      for (var index in data) {
+        var newobj = {};
+        newobj.label = data[index].state_name;
+        newobj.value = data[index].id;
+
+        _this.stateFilteroption.push(newobj);
+      }
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  },
   methods: {
     capitalize: function capitalize(str) {//  return str.slice(0, 1).toUpperCase() + str.slice(1, str.length)
     },
     save_changes: function save_changes() {
-      var _this = this;
+      var _this2 = this;
 
       /* eslint-disable */
       if (!this.validateForm) return;
       var local = this.data_local;
       this.$store.dispatch('userManagement/UpdateUser', local).then(function (res) {
-        _this.user_data = res.data.data;
+        _this2.user_data = res.data.data;
 
-        _this.$vs.notify({
+        _this2.$vs.notify({
           title: 'Success',
           text: 'Updated Successfully',
           iconPack: 'feather',
@@ -316,11 +367,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
         if (res.data.data.role_id == '4') {
-          _this.$router.push('/apps/user/user-list')["catch"](function () {});
+          _this2.$router.push('/apps/user/user-list')["catch"](function () {});
         }
       })["catch"](function (err) {
         if (err.response.status === 404) {
-          _this.user_not_found = true;
+          _this2.user_not_found = true;
           return;
         }
 
@@ -329,6 +380,30 @@ __webpack_require__.r(__webpack_exports__);
       // You can get data in "this.data_local"
 
       /* eslint-enable */
+    },
+    getCities: function getCities(a) {
+      var _this3 = this;
+
+      this.cityFilter = {
+        label: 'Select city',
+        value: ''
+      };
+      this.cityoptions = [];
+      this.$http.post("/api/v1/get_cities", {
+        state_id: a.value
+      }).then(function (response) {
+        var data = response.data.data;
+
+        for (var index in data) {
+          var newobj = {};
+          newobj.label = data[index].city;
+          newobj.value = data[index].id;
+
+          _this3.cityoptions.push(newobj);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
     reset_data: function reset_data() {
       this.data_local = JSON.parse(JSON.stringify(this.data));
@@ -929,6 +1004,40 @@ var render = function() {
               attrs: { disabled: "" }
             },
             [_vm._v(_vm._s(_vm.errors.first("email")))]
+          ),
+          _vm._v(" "),
+          _c(
+            "v-select",
+            {
+              directives: [
+                {
+                  name: "validate",
+                  rawName: "v-validate",
+                  value: "required",
+                  expression: "'required'"
+                }
+              ],
+              staticClass: "w-full mt-6",
+              attrs: {
+                options: _vm.stateFilteroption,
+                name: "state_id",
+                clearable: false,
+                "data-vv-validate-on": "change"
+              },
+              on: { input: _vm.getCities },
+              model: {
+                value: _vm.stateFilter,
+                callback: function($$v) {
+                  _vm.stateFilter = $$v
+                },
+                expression: "stateFilter"
+              }
+            },
+            [
+              _c("span", { staticClass: "text-danger text-sm" }, [
+                _vm._v(_vm._s(_vm.errors.first("stateFilter")))
+              ])
+            ]
           )
         ],
         1
@@ -1023,7 +1132,36 @@ var render = function() {
               )
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _c("v-select", {
+            directives: [
+              {
+                name: "validate",
+                rawName: "v-validate",
+                value: "required",
+                expression: "'required'"
+              }
+            ],
+            staticClass: "w-full mt-6",
+            attrs: {
+              options: _vm.cityoptions,
+              clearable: false,
+              name: "city",
+              "data-vv-validate-on": "change"
+            },
+            model: {
+              value: _vm.cityFilter,
+              callback: function($$v) {
+                _vm.cityFilter = $$v
+              },
+              expression: "cityFilter"
+            }
+          }),
+          _vm._v(" "),
+          _c("span", { staticClass: "text-danger text-sm" }, [
+            _vm._v(_vm._s(_vm.errors.first("cityFilter")))
+          ])
         ],
         1
       )

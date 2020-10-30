@@ -39,7 +39,10 @@
         <span class="text-danger text-sm"  v-show="errors.has('first_name')">{{ errors.first('first_name') }}</span>
          <vs-input class="w-full mt-4" label="Email" v-model="data_local.email" type="email" v-validate="'required|email'" name="email" readonly />
         <span class="text-danger text-sm"  disabled v-show="errors.has('email')">{{ errors.first('email') }}</span>
-
+ <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
+      data-vv-validate-on="change">
+      <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
+</v-select>
        
       </div>
 
@@ -52,7 +55,12 @@
           <v-select v-model="status_local" :clearable="false" :options="statusOptions" v-validate="'required'" name="status" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
           <span class="text-danger text-sm"  v-show="errors.has('status')">{{ errors.first('status') }}</span>
         </div>
-
+<v-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"    name="city"  v-validate="'required'"
+      data-vv-validate-on="change"/>
+    <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
+<!-- <v-select  :options="schooloptions"   :clearable="false"  v-model="schoolFilter" class="w-full mt-6"  >
+    
+</v-select> -->
       
        
       </div>
@@ -119,9 +127,10 @@ export default {
     return {
 
       data_local: JSON.parse(JSON.stringify(this.data)),
-
-
-
+ cityoptions:[],
+ stateFilteroption:[
+ ],
+  cityFilter: { label: 'Select city', value: '0' }, 
       statusOptions: [
         { label: 'ACTIVE',  value: '1' },
         { label: 'INACTIVE',  value: '0' },
@@ -148,6 +157,30 @@ export default {
         this.data_local.status = obj.value
       }
     },
+
+     stateFilter: {
+
+      get () {
+let obj=this.stateFilteroption;
+let state_id=this.data_local.state_id;
+ let lebeltext='';
+      Object.keys(this.stateFilteroption).forEach(function(key) {
+     //   console.log(obj[key].value)
+        if (obj[key].value == state_id) {
+
+  lebeltext=obj[key].label;
+ }
+});
+
+   return    { label: lebeltext,  value:state_id}
+       
+      },
+      set (obj) {
+      
+        this.data_local.state_id = obj.value
+      }
+    },
+
     role_local: {
       get () {
        let name='user';
@@ -161,6 +194,26 @@ export default {
     validateForm () {
       return !this.errors.any()
     }
+  },
+
+
+  created(){
+
+    this.$http
+      .get("/api/v1/list_states")
+      .then(response => {
+        var data=response.data.data;
+        for ( var index in data ) {
+         let newobj={}
+         newobj.label=data[index].state_name;
+         newobj.value=data[index].id;
+       this.stateFilteroption.push( newobj );
+       }
+      })
+      .catch(error => {
+        console.log(error);
+      });  
+    
   },
   methods: {
     capitalize (str) {
@@ -197,6 +250,25 @@ if(res.data.data.role_id=='4'){
       // You can get data in "this.data_local"
 
       /* eslint-enable */
+    },
+
+     getCities(a){
+       this.cityFilter= { label: 'Select city', value: '' };
+   this.cityoptions=[];
+this.$http
+      .post("/api/v1/get_cities",{state_id:a.value})
+      .then(response => {
+        var data=response.data.data;
+        for ( var index in data ) {
+         let newobj={}
+         newobj.label=data[index].city;
+         newobj.value=data[index].id;
+        this.cityoptions.push( newobj );
+       }
+      })
+      .catch(error => {
+        console.log(error);
+      });
     },
     reset_data () {
       this.data_local = JSON.parse(JSON.stringify(this.data))

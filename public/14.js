@@ -171,6 +171,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -211,6 +220,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    isLetter: function isLetter(e) {
+      var _char = String.fromCharCode(e.keyCode); // Get the character
+
+
+      if (/^[A-Za-z]+$/.test(_char)) return true; // Match with regex 
+      else e.preventDefault(); // If not match, don't add to input text
+    },
     selectFile: function selectFile(event) {
       // console.log(event.target.files)
       // `files` is always an array because the file input may be in multiple mode
@@ -535,8 +551,8 @@ var render = function() {
           {
             name: "validate",
             rawName: "v-validate",
-            value: "required",
-            expression: "'required'"
+            value: "required|min:4|max:15",
+            expression: "'required|min:4|max:15'"
           }
         ],
         staticClass: "w-full",
@@ -545,6 +561,11 @@ var render = function() {
           "label-placeholder": "Name",
           name: "displayName",
           placeholder: "Name"
+        },
+        on: {
+          keypress: function($event) {
+            return _vm.isLetter($event)
+          }
         },
         model: {
           value: _vm.displayName,
@@ -694,8 +715,9 @@ var render = function() {
           "data-vv-validate-on": "change",
           name: "country",
           type: "country",
-          "label-placeholder": "",
-          placeholder: "Country"
+          "label-placeholder": "Country",
+          placeholder: "Country",
+          readonly: "true"
         },
         model: {
           value: _vm.country,
@@ -835,18 +857,21 @@ var render = function() {
       _vm._v(" "),
       _c(
         "vs-button",
-        { staticClass: "mt-6", attrs: { type: "border", to: "/pages/login" } },
-        [_vm._v("Login")]
+        {
+          staticClass: "w-full mt-6",
+          attrs: { disabled: !_vm.validateForm },
+          on: { click: _vm.registerUserJWt }
+        },
+        [_vm._v("Submit")]
       ),
       _vm._v(" "),
       _c(
         "vs-button",
         {
-          staticClass: "float-right mt-6",
-          attrs: { disabled: !_vm.validateForm },
-          on: { click: _vm.registerUserJWt }
+          staticClass: "w-full mt-6",
+          attrs: { type: "border", to: "/pages/login" }
         },
-        [_vm._v("Register")]
+        [_vm._v("Login")]
       )
     ],
     1
