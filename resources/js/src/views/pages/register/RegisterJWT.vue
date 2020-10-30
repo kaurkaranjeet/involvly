@@ -146,7 +146,24 @@ export default {
   },
   methods: {
 
-
+reset_data () {
+    this.displayName= ''
+      this.Position=''
+      this.email= ''
+      this.password= ''
+       this.documents= ''
+      this.confirm_password= ''
+        this.state_id= ''
+      this.city=''
+      this.country= 'United States'
+      
+      this.cityoptions=[]
+      this.schooloptions=[]
+      this.stateFilter= { label: 'Select State', value: '0' }
+     this.schoolFilter={ label: 'Select School', value: '0' }
+      this.cityFilter={ label: 'Select city', value: '0' }     
+      this.isTermsConditionAccepted= true
+    },
 isLetter(e) {
   let char = String.fromCharCode(e.keyCode); // Get the character
   if(/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
@@ -213,6 +230,7 @@ isLetter(e) {
           icon: 'icon-alert-circle',
           color: 'success'
         })
+        this.reset_data()
 
          } else{
           this.$vs.notify({
