@@ -12,6 +12,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Mail;
 use Exception;
 use App\Models\UserClassCode;
+use App\Models\ClassCode;
 
 class LoginController extends Controller {
 
