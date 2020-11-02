@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
 use App\Models\ClassCode;
+use App\Models\ClassUser;
 use App\Models\ParentTask;
 use App\Models\ParentTaskAssigned;
 use App\Models\ParentChildrens;
@@ -55,7 +56,7 @@ class ParentController extends Controller {
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
-                          $classobj=   DB::table('user_class_code')->insert(
+                          $classobj=  ClassUser::create(
                                     ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
                         } else {
                             return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
