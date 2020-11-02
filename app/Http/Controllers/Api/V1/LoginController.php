@@ -45,15 +45,17 @@ class LoginController extends Controller {
             // get class code 
            // if ($user_details->role_id == 2) {
                 $classCode = UserClassCode::where('user_id', $user_details->id)->orderBy('id', 'DESC')->first();
+                 $class_code = ClassCode::where('class_code', $request->class_code)->where('id', $classCode->class_id)->first();
                 if (!empty($classCode)) {
-                    $user_details->class_id = $classCode->id;
-                    $user_details->class_name = $classCode->class_name;
+                    $user_details->class_id = $classCode->class_id;
+                    $user_details->class_name = $class_code->class_name;
                 }
                 else{
                   $user_details->class_id = '';
                   $user_details->class_name = '';  
               }
             //}
+
             if ($user_details->role_id == $request->role_id) {
                 $user_details->token = $token;
                 $user_details->role_id = strval($user_details->role_id);
