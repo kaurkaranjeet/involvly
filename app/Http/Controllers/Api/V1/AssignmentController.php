@@ -330,5 +330,25 @@ class AssignmentController extends Controller {
             }
         }
     }
+    
+    // Get Pending Assignment By Students
+    public function GetPendingAssignmentByStudents(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'student_id' => 'required|exists:users,id',
+                    'class_id' => 'required|exists:class_code,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $getData = SubmittedAssignments::with('subjects')->with('Assignments.User')->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '0')->get();
+
+            if ($getData) {
+                return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getData), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'Something went wrong', 'data' => $getData), 200);
+            }
+        }
+    }
 
 }
