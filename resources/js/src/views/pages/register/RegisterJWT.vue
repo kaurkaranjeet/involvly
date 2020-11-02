@@ -13,9 +13,9 @@ Author URL: http://www.themeforest.net/user/pixinvent
     <vs-input
       v-validate="'required|min:4|max:15'"
       data-vv-validate-on="blur"
-      label-placeholder="Name"
+      label-placeholder="Name*"
       name="displayName"
-      placeholder="Name"
+      placeholder="Name*"
       v-model="displayName"
       class="w-full"
 
@@ -27,9 +27,9 @@ Author URL: http://www.themeforest.net/user/pixinvent
  <vs-input
       v-validate="'required'"
       data-vv-validate-on="blur"
-      label-placeholder="Position"
+      label-placeholder="Position*"
       name="Position"
-      placeholder="Position"
+      placeholder="Position*"
       v-model="Position"
       class="w-full" />
     <span class="text-danger text-sm">{{ errors.first('Position') }}</span>
@@ -38,8 +38,8 @@ Author URL: http://www.themeforest.net/user/pixinvent
       data-vv-validate-on="blur"
       name="email"
       type="email"
-      label-placeholder="Email"
-      placeholder="Email"
+      label-placeholder="Email*"
+      placeholder="Email*"
       v-model="email"
       class="w-full mt-6" />
     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
@@ -50,8 +50,8 @@ Author URL: http://www.themeforest.net/user/pixinvent
       data-vv-validate-on="blur"
       v-validate="'required|min:6|max:10'"
       name="password"
-      label-placeholder="Password"
-      placeholder="Password"
+      label-placeholder="Password*"
+      placeholder="Password*"
       v-model="password"
       class="w-full mt-6" />
     <span class="text-danger text-sm">{{ errors.first('password') }}</span>
@@ -62,8 +62,8 @@ Author URL: http://www.themeforest.net/user/pixinvent
       data-vv-validate-on="blur"
       data-vv-as="password"
       name="confirm_password"
-      label-placeholder="Confirm Password"
-      placeholder="Confirm Password"
+      label-placeholder="Confirm Password*"
+      placeholder="Confirm Password*"
       v-model="confirm_password"
       class="w-full mt-6" />
     <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
@@ -133,9 +133,9 @@ export default {
       stateFilteroption:[],
       cityoptions:[],
       schooloptions:[],
-      stateFilter: { label: 'Select State', value: '0' },
-     schoolFilter: { label: 'Select School', value: '0' },
-      cityFilter: { label: 'Select city', value: '0' },      
+      stateFilter: { label: 'Select State*', value: '0' },
+     schoolFilter: { label: 'Select School*', value: '0' },
+      cityFilter: { label: 'Select city*', value: '0' },      
       isTermsConditionAccepted: true
     }
   },
