@@ -200,15 +200,15 @@ __webpack_require__.r(__webpack_exports__);
       cityoptions: [],
       schooloptions: [],
       stateFilter: {
-        label: 'Select State',
+        label: 'Select State*',
         value: '0'
       },
       schoolFilter: {
-        label: 'Select School',
+        label: 'Select School*',
         value: '0'
       },
       cityFilter: {
-        label: 'Select city',
+        label: 'Select city*',
         value: '0'
       },
       isTermsConditionAccepted: true
@@ -586,9 +586,9 @@ var render = function() {
         staticClass: "w-full",
         attrs: {
           "data-vv-validate-on": "blur",
-          "label-placeholder": "Name",
+          "label-placeholder": "Name*",
           name: "displayName",
-          placeholder: "Name"
+          placeholder: "Name*"
         },
         on: {
           keypress: function($event) {
@@ -620,9 +620,9 @@ var render = function() {
         staticClass: "w-full",
         attrs: {
           "data-vv-validate-on": "blur",
-          "label-placeholder": "Position",
+          "label-placeholder": "Position*",
           name: "Position",
-          placeholder: "Position"
+          placeholder: "Position*"
         },
         model: {
           value: _vm.Position,
@@ -651,8 +651,8 @@ var render = function() {
           "data-vv-validate-on": "blur",
           name: "email",
           type: "email",
-          "label-placeholder": "Email",
-          placeholder: "Email"
+          "label-placeholder": "Email*",
+          placeholder: "Email*"
         },
         model: {
           value: _vm.email,
@@ -682,8 +682,8 @@ var render = function() {
           type: "password",
           "data-vv-validate-on": "blur",
           name: "password",
-          "label-placeholder": "Password",
-          placeholder: "Password"
+          "label-placeholder": "Password*",
+          placeholder: "Password*"
         },
         model: {
           value: _vm.password,
@@ -713,8 +713,8 @@ var render = function() {
           "data-vv-validate-on": "blur",
           "data-vv-as": "password",
           name: "confirm_password",
-          "label-placeholder": "Confirm Password",
-          placeholder: "Confirm Password"
+          "label-placeholder": "Confirm Password*",
+          placeholder: "Confirm Password*"
         },
         model: {
           value: _vm.confirm_password,

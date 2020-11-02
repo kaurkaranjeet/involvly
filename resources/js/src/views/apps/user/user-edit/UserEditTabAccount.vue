@@ -130,7 +130,6 @@ export default {
  cityoptions:[],
  stateFilteroption:[
  ],
-  cityFilter: { label: 'Select city', value: '0' }, 
       statusOptions: [
         { label: 'ACTIVE',  value: '1' },
         { label: 'INACTIVE',  value: '0' },
@@ -157,6 +156,30 @@ export default {
         this.data_local.status = obj.value
       }
     },
+
+     cityFilter: {
+
+      get () {
+let obj=this.cityoptions;
+let city=this.data_local.city_detail.id;
+ let lebeltext='';
+      Object.keys(obj).forEach(function(key) {
+    
+        if (obj[key].value == city) {
+
+  lebeltext=obj[key].label;
+ }
+});
+
+   return    { label: lebeltext,  value:city}
+       
+      },
+      set (obj) {
+      
+        this.data_local.city = obj.value
+      }
+    },
+
 
      stateFilter: {
 
@@ -198,6 +221,22 @@ let state_id=this.data_local.state_id;
 
 
   created(){
+    
+    this.$http
+    .post("/api/v1/get_cities",{state_id:this.data_local.state_id})
+    .then(response => {
+      var data=response.data.data;
+      for ( var index in data ) {
+       let newobj={}
+       newobj.label=data[index].city;
+       newobj.value=data[index].id;
+       this.cityoptions.push( newobj );
+     }
+   })
+    .catch(error => {
+      console.log(error);
+    });
+  
 
     this.$http
       .get("/api/v1/list_states")
