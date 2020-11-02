@@ -81,12 +81,21 @@ class TeacherController extends Controller {
          if(!empty($request->class_code)) {
           $class_code=  ClassCode::where('class_code',$request->class_code)->first();
           if(!empty($class_code)){
-            DB::table('user_class_code')->insert(
+         $classobj=   DB::table('user_class_code')->insert(
               ['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
+
           }else{
            return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
          }
        }
+          $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$addUser->id)->first();
+          if(isset($classobj)){
+            $addUser->class_id=$classobj->id;
+             $addUser->class_name=$classobj->class_name;
+          }else{
+             $addUser->class_id='';
+             $addUser->class_name=='';
+          }
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
            DB::commit();
        }

@@ -55,13 +55,20 @@ class StudentController extends Controller {
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
-                            $addUser->class_id = $class_code->id;
-                            DB::table('user_class_code')->updateOrInsert(
+                            $classobj=  DB::table('user_class_code')->updateOrInsert(
                                     ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
                         } else {
                             return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
                         }
                     }
+                    $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$addUser->id)->first();
+                    if(isset($classobj)){
+                        $addUser->class_id=$classobj->id;
+                        $addUser->class_name=$classobj->class_name;
+                    }else{
+                       $addUser->class_id='';
+                       $addUser->class_name=='';
+                   }
                     return response()->json(array('error' => false, 'data' => $addUser), 200);
                 } else {
                     throw new Exception('Something went wrong');
