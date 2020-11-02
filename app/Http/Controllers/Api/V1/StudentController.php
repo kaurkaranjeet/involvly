@@ -10,7 +10,6 @@ use App\User;
 use App\Notification;
 use App\Models\ClassCode;
 use App\Models\ClassUser;
-
 use App\Models\JoinedStudentClass;
 use App\Models\Subject;
 use App\Models\ParentChildrens;
@@ -64,9 +63,9 @@ class StudentController extends Controller {
                         }
                     }
                     $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$addUser->id)->first();
-                    if(isset($classobj)){
-                        $addUser->class_id=$classobj->id;
-                        $addUser->class_name=$classobj->class_name;
+                    if(isset($class_code)){
+                        $addUser->class_id=$class_code->id;
+                        $addUser->class_name=$class_code->class_name;
                     }else{
                        $addUser->class_id='';
                        $addUser->class_name=='';

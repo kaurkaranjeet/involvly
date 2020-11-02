@@ -77,8 +77,8 @@ class ParentController extends Controller {
                     }
                    $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$addUser->id)->first();
                    if(isset($classobj)){
-                    $addUser->class_id=$classobj->id;
-                    $addUser->class_name=$classobj->class_name;
+                    $addUser->class_id=$class_code->id;
+                    $addUser->class_name=$class_code->class_name;
                   }else{
                    $addUser->class_id='';
                    $addUser->class_name=='';
