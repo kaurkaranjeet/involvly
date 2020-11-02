@@ -1,11 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class ClassUser extends Model
 {
+
     /**
      * The attributes that are mass assignable.
      *
