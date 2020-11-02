@@ -221,7 +221,7 @@ let state_id=this.data_local.state_id;
 
 
   created(){
-    
+      
     this.$http
     .post("/api/v1/get_cities",{state_id:this.data_local.state_id})
     .then(response => {

@@ -234,7 +234,7 @@ class UserController extends Controller {
 
     public function UpdateProfile(Request $request) {
         $name = $request->first_name . ' ' . $request->last_name;
-        User::where('id', $request->id)->update(['first_name' => $request->first_name, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
+        User::where('id', $request->id)->update(['first_name' => $request->first_name,'state_id' => $request->state_id,'city' => $request->city, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
         $data = User::find($request->id);
         if (!empty($data)) {
             return response()->json(compact('data'), 200);
