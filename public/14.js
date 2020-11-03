@@ -250,7 +250,7 @@ __webpack_require__.r(__webpack_exports__);
       var _char = String.fromCharCode(e.keyCode); // Get the character
 
 
-      if (/^[A-Za-z]+$/.test(_char)) return true; // Match with regex 
+      if (/^[a-zA-Z\s]*$/.test(_char)) return true; // Match with regex 
       else e.preventDefault(); // If not match, don't add to input text
     },
     selectFile: function selectFile(event) {
