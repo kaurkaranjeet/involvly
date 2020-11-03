@@ -1,7 +1,7 @@
 <template>
     <div>
      <vs-button v-if="params.value==0" @click="AddTeacher(params.value)">Assign</vs-button>
-     <vs-button v-if="params.value==1" @click="RemoveTeacher(params.value)"> Re-Assign</vs-button>
+     <vs-button v-if="params.value==1" @click="RemoveTeacher(params.value)"> Remove</vs-button>
                      </div>
     </div>
 </template>
@@ -19,7 +19,7 @@ export default {
       school_id:localStorage.getItem('school_id'),
     }
       this.$store.dispatch("classManagement/AddTeacherToClassSubjects", payload)
-        .then(()   => { this.showAddSuccess(); location.reload(true) })
+        .then(()   => { this.showAddSuccess(); this.$router.push('/class/class-view/'+this.$route.params.classId).catch(() => {}) })
         .catch(err => { console.error(err)       })
     },
      RemoveTeacher () {
@@ -45,7 +45,7 @@ export default {
       this.$vs.notify({
         color: 'success',
         title: 'Added',
-        text: 'Added successfully'
+        text: 'Teacher Assigned successfully'
       })
     }
     ,
@@ -53,7 +53,7 @@ export default {
       this.$vs.notify({
         color: 'danger',
         title: 'Removed',
-        text: 'Removed successfully'
+        text: 'Teacher Removed successfully'
       })
     }
   }
