@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.$vs.notify({
           color: "success",
           title: "Success",
-          text: "Data add successfully!"
+          text: "Class added successfully."
         });
       })["catch"](function (error) {
         _this.$vs.loading.close();
