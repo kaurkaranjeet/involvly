@@ -580,8 +580,8 @@ var render = function() {
           {
             name: "validate",
             rawName: "v-validate",
-            value: "required",
-            expression: "'required'"
+            value: "required|min:6",
+            expression: "'required|min:6'"
           }
         ],
         staticClass: "w-full",
@@ -590,8 +590,7 @@ var render = function() {
           "label-placeholder": "Name*",
           name: "name",
           placeholder: "Name*",
-          maxlength: 50,
-          minlength: 50
+          maxlength: 50
         },
         on: {
           keypress: function($event) {

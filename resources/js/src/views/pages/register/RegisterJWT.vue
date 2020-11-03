@@ -11,7 +11,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
 <template>
   <div class="clearfix">
     <vs-input
-      v-validate="'required'"
+      v-validate="'required|min:6'"
       data-vv-validate-on="blur"
       label-placeholder="Name*"
       name="name"
@@ -19,7 +19,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       v-model="name"
       class="w-full"
       :maxlength="50"
-:minlength="50"
+
  v-on:keypress="isLetter($event)"
        />
     <span class="text-danger text-sm">{{ errors.first('name') }}</span>
