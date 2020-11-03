@@ -67,7 +67,7 @@ class LoginController extends Controller {
                 $user_details->status = strval($user_details->status);
                 $user_details->join_community = strval($user_details->join_community);
                 if (!empty($user_details)) {
-                    return response()->json(array('error' => false, 'data' => $user_details), 202);
+                    return response()->json(array('error' => false, 'data' => $user_details, 'message' => 'Login Successfully'), 200);
                 } else {
                     return response()->json(array('error' => true, 'data' => [], 'message' => 'Something went wrong'), 200);
                 }

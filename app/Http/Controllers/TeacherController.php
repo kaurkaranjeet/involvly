@@ -32,7 +32,20 @@ class TeacherController extends Controller {
         //                     ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
         //                     ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
         //                     ->select('users.*','class_code.class_name')->where('role_id', 4)->where('user_class_code.class_id', $id)->get();
-        $teachers = User::where('role_id', 4)->where('school_id',$request->school_id)->get();
+
+        $assignment_details = AssignedTeacher::select(DB::raw('group_concat(teacher_id) as names'))
+                                ->where('school_id', $request->school_id)
+                                 ->where('class_id', $request->class_id)
+                                ->where('subject_id','!=', $request->subject_id)
+                                ->first();
+
+                                //echo $assignment_details->names;die;
+                                if(!empty($assignment_details->names)){
+                               $teachers = User::where('role_id', 4)->where('school_id',$request->school_id)->whereNotIn('id', [$assignment_details->names])->get();
+                                }else{
+                                     $teachers = User::where('role_id', 4)->where('school_id',$request->school_id)->get();
+                                }
+      
                             foreach($teachers as $teacher){
                                 $is_added = AssignedTeacher::where('subject_id',$request->subject_id)->where('class_id',$request->class_id)->where('school_id',$request->school_id)->where('teacher_id',$teacher->id)->count();
                                  if( $is_added>0){
@@ -61,7 +74,12 @@ class TeacherController extends Controller {
             return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
     }  
 
-    $data=new  AssignedTeacher;
+  $assigned=AssignedTeacher::where('class_id',$request->class_id)->where('school_id',$request->school_id)->where('subject_id',$request->subject_id)->first();
+  if(!empty($assigned)){
+     $data=AssignedTeacher::find($assigned->id);
+  }else{
+       $data=new  AssignedTeacher;
+   } 
     $data->class_id =$request->class_id;
     $data->subject_id =$request->subject_id;
     $data->school_id =$request->school_id;

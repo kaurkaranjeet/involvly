@@ -495,7 +495,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("classManagement/AddTeacherToClassSubjects", payload).then(function () {
         _this.showAddSuccess();
 
-        location.reload(true);
+        _this.$router.push('/apps/class/class-view/' + _this.$route.params.classId)["catch"](function () {});
       })["catch"](function (err) {
         console.error(err);
       });
@@ -528,14 +528,14 @@ __webpack_require__.r(__webpack_exports__);
       this.$vs.notify({
         color: 'success',
         title: 'Added',
-        text: 'Added successfully'
+        text: 'Teacher Assigned successfully'
       });
     },
     showRemoveSuccess: function showRemoveSuccess() {
       this.$vs.notify({
         color: 'danger',
         title: 'Removed',
-        text: 'Removed successfully'
+        text: 'Teacher Removed successfully'
       });
     }
   }
@@ -993,7 +993,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v(" Re-Assign")]
+            [_vm._v(" Remove")]
           )
         : _vm._e()
     ],
