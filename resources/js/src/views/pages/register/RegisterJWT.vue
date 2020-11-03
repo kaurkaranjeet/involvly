@@ -11,17 +11,18 @@ Author URL: http://www.themeforest.net/user/pixinvent
 <template>
   <div class="clearfix">
     <vs-input
-      v-validate="'required|min:4|max:15'"
+      v-validate="'required|min:4'"
       data-vv-validate-on="blur"
       label-placeholder="Name*"
-      name="displayName"
+      name="name"
       placeholder="Name*"
-      v-model="displayName"
+      v-model="name"
       class="w-full"
-
+      :maxlength="50"
+:minlength="4"
  v-on:keypress="isLetter($event)"
        />
-    <span class="text-danger text-sm">{{ errors.first('displayName') }}</span>
+    <span class="text-danger text-sm">{{ errors.first('name') }}</span>
 
 
  <vs-input
@@ -101,7 +102,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
 </div>
     <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>
   
-    <vs-button class="w-full mt-6" @click="registerUserJWt" :disabled="!validateForm">Submit</vs-button>
+    <vs-button class="w-full mt-6" @click="registerUserJWt" >Submit</vs-button>
 
       <vs-button class="w-full mt-6" type="border" to="/pages/login" >Login</vs-button>
   </div>
@@ -121,7 +122,7 @@ export default {
 
   data () {
     return {
-      displayName: '',
+      name: '',
       Position: '',
       email: '',
       password: '',
@@ -141,13 +142,13 @@ export default {
   },
   computed: {
     validateForm () {
-      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== ''  && this.schoolFilter.value !== '0'
+      return !this.errors.any() && this.name !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== ''  && this.schoolFilter.value !== '0'
     }
   },
   methods: {
 
 reset_data () {
-    this.displayName= ''
+    this.name= ''
       this.Position=''
       this.email= ''
       this.password= ''
@@ -205,7 +206,7 @@ isLetter(e) {
         let formData = new FormData();
       formData.append('documents', this.documents);  
         formData.append('position', this.Position); 
-      formData.append('name', this.displayName);
+      formData.append('name', this.name);
       formData.append('email', this.email);
       formData.append('password', this.password);
       formData.append('confirmPassword', this.confirmPassword);

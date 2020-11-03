@@ -180,6 +180,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -187,7 +188,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      displayName: '',
+      name: '',
       Position: '',
       email: '',
       password: '',
@@ -216,12 +217,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     validateForm: function validateForm() {
-      return !this.errors.any() && this.displayName !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true && this.country !== '' && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== '' && this.schoolFilter.value !== '0';
+      return !this.errors.any() && this.name !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true && this.country !== '' && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== '' && this.schoolFilter.value !== '0';
     }
   },
   methods: {
     reset_data: function reset_data() {
-      this.displayName = '';
+      this.name = '';
       this.Position = '';
       this.email = '';
       this.password = '';
@@ -286,7 +287,7 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('documents', this.documents);
       formData.append('position', this.Position);
-      formData.append('name', this.displayName);
+      formData.append('name', this.name);
       formData.append('email', this.email);
       formData.append('password', this.password);
       formData.append('confirmPassword', this.confirmPassword);
@@ -579,16 +580,18 @@ var render = function() {
           {
             name: "validate",
             rawName: "v-validate",
-            value: "required|min:4|max:15",
-            expression: "'required|min:4|max:15'"
+            value: "required|min:4",
+            expression: "'required|min:4'"
           }
         ],
         staticClass: "w-full",
         attrs: {
           "data-vv-validate-on": "blur",
           "label-placeholder": "Name*",
-          name: "displayName",
-          placeholder: "Name*"
+          name: "name",
+          placeholder: "Name*",
+          maxlength: 50,
+          minlength: 4
         },
         on: {
           keypress: function($event) {
@@ -596,16 +599,16 @@ var render = function() {
           }
         },
         model: {
-          value: _vm.displayName,
+          value: _vm.name,
           callback: function($$v) {
-            _vm.displayName = $$v
+            _vm.name = $$v
           },
-          expression: "displayName"
+          expression: "name"
         }
       }),
       _vm._v(" "),
       _c("span", { staticClass: "text-danger text-sm" }, [
-        _vm._v(_vm._s(_vm.errors.first("displayName")))
+        _vm._v(_vm._s(_vm.errors.first("name")))
       ]),
       _vm._v(" "),
       _c("vs-input", {
@@ -885,11 +888,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "vs-button",
-        {
-          staticClass: "w-full mt-6",
-          attrs: { disabled: !_vm.validateForm },
-          on: { click: _vm.registerUserJWt }
-        },
+        { staticClass: "w-full mt-6", on: { click: _vm.registerUserJWt } },
         [_vm._v("Submit")]
       ),
       _vm._v(" "),

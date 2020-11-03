@@ -143,7 +143,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$vs.notify({
           title: 'Error',
-          text: error.message,
+          text: 'Invalid Credentials',
           iconPack: 'feather',
           icon: 'icon-alert-circle',
           color: 'danger'

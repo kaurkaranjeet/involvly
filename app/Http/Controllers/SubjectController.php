@@ -164,7 +164,7 @@ class SubjectController extends Controller {
     //school subject listing
     public function manageSubjectsAccToSchool(Request $request , $id) {
       DB::enableQueryLog();
-      $subjects = Subject::where('school_id', $id)->get();
+      $subjects = Subject::where('school_id', $id)->orderBy('id', 'DESC')->get();
       // //get subjects
       // $subjects = School::leftJoin('class_code', 'schools.id', '=', 'class_code.school_id')
       //                       ->leftJoin('subjects', 'class_code.id', '=', 'subjects.class_id')

@@ -104,12 +104,16 @@ class StudentController extends Controller {
     // JoinStudentByClasscode
     public function JoinStudentByClass(Request $request) {
         $input = $request->all();
+         $messages = [
+          'exists' => 'This subject is deleted by admin',
+          
+        ];
         $validator = Validator::make($input, [
                     'student_id' => 'required|exists:users,id',
                     'subject_id' => 'required|exists:subjects,id',
                     'class_id' => 'required|exists:class_code,id',
                     'school_id' => 'required|exists:schools,id',
-        ]);
+        ], $messages);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {

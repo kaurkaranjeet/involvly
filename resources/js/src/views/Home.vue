@@ -43,7 +43,7 @@
         <statistics-card-line
           icon="UsersIcon"
           :statistic="subscribersGained.students"
-          statisticTitle="Student Registered"
+          statisticTitle="Students Registered"
           :chartData="subscribersGained.Studentseries"
           type="area"
         ></statistics-card-line>
