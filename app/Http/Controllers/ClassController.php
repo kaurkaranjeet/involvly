@@ -18,7 +18,7 @@ class ClassController extends Controller {
     public function manageClasses(Request $request,$id) {
         
    $school= User::find($id);
-        $classes = ClassCode::where('school_id',$school->school_id)->get();
+        $classes = ClassCode::where('school_id',$school->school_id)->orderBy('id', 'DESC')->get();
         if (isset($classes) && count($classes) > 0) {
             return response()->json(compact('classes'), 200);
         } else {
