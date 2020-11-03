@@ -495,7 +495,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("classManagement/AddTeacherToClassSubjects", payload).then(function () {
         _this.showAddSuccess();
 
-        _this.$router.push('/class/class-view/' + _this.$route.params.classId)["catch"](function () {});
+        _this.$router.push('/apps/class/class-view/' + _this.$route.params.classId)["catch"](function () {});
       })["catch"](function (err) {
         console.error(err);
       });
