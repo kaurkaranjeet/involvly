@@ -580,8 +580,8 @@ var render = function() {
           {
             name: "validate",
             rawName: "v-validate",
-            value: "required|min:4",
-            expression: "'required|min:4'"
+            value: "required",
+            expression: "'required'"
           }
         ],
         staticClass: "w-full",
@@ -591,7 +591,7 @@ var render = function() {
           name: "name",
           placeholder: "Name*",
           maxlength: 50,
-          minlength: 4
+          minlength: 50
         },
         on: {
           keypress: function($event) {
@@ -888,7 +888,11 @@ var render = function() {
       _vm._v(" "),
       _c(
         "vs-button",
-        { staticClass: "w-full mt-6", on: { click: _vm.registerUserJWt } },
+        {
+          staticClass: "w-full mt-6",
+          attrs: { disabled: !_vm.validateForm },
+          on: { click: _vm.registerUserJWt }
+        },
         [_vm._v("Submit")]
       ),
       _vm._v(" "),
