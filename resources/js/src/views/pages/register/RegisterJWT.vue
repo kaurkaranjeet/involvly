@@ -11,7 +11,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
 <template>
   <div class="clearfix">
     <vs-input
-      v-validate="'required|min:4'"
+      v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="Name*"
       name="name"
@@ -19,7 +19,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       v-model="name"
       class="w-full"
       :maxlength="50"
-:minlength="4"
+:minlength="50"
  v-on:keypress="isLetter($event)"
        />
     <span class="text-danger text-sm">{{ errors.first('name') }}</span>
@@ -102,7 +102,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
 </div>
     <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>
   
-    <vs-button class="w-full mt-6" @click="registerUserJWt" >Submit</vs-button>
+    <vs-button class="w-full mt-6" @click="registerUserJWt" :disabled="!validateForm">Submit</vs-button>
 
       <vs-button class="w-full mt-6" type="border" to="/pages/login" >Login</vs-button>
   </div>
