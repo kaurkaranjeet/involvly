@@ -817,7 +817,7 @@ var render = function() {
             attrs: {
               icon: "UsersIcon",
               statistic: _vm.subscribersGained.students,
-              statisticTitle: "Student Registered",
+              statisticTitle: "Students Registered",
               chartData: _vm.subscribersGained.Studentseries,
               type: "area"
             }
