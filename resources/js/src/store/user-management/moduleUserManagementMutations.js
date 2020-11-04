@@ -23,4 +23,8 @@ export default {
      SET_SCHOOL_ADMINS(state, schooladmins) {
         state.school_admins = schooladmins
     },
+SET_CLASSES(state, classes) {
+        state.classes = classes
+    },
+
 }

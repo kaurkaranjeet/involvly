@@ -32,8 +32,28 @@ export default {
         return new Promise((resolve, reject) => {
             axios.post('/api/auth/manage-users/' + school_id, requestOptions)
                 .then((response) => {
-                    console.log(response.data.users);
+                  //  console.log(response.data.users);
                     commit('SET_USERS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+
+     fetchClassCode({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        var user_id = localStorage.getItem('user_id');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'teacher',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-classes/' + user_id, requestOptions)
+                .then((response) => {
+                   // console.log(response.data.classes);
+                    commit('SET_CLASSES', response.data.classes)
                     resolve(response)
                 })
                 .catch((error) => { reject(error) })

@@ -11,15 +11,15 @@
 
   <div id="page-user-list">
 
-    <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters" style="display: none">
+    <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
        <!--  <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Role</label>
           <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
         </div> -->
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Status</label>
-          <v-select :options="statusOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="statusFilter" class="mb-4 md:mb-0" />
+          <label class="text-sm opacity-75">Select Class</label>
+          <v-select :options="classOptions" :clearable="false"  v-model="isclassFilter" class="mb-4 md:mb-0" />
         </div>
         <!-- <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Verified</label>
@@ -190,6 +190,11 @@ export default {
         { label: 'Yes', value: 'yes' },
         { label: 'No', value: 'no' }
       ],
+      isclassFilter: { label: 'All', value: 'all' },
+
+      classOptions: [
+         { label: 'All', value: 'all' },
+      ],
 
       departmentFilter: { label: 'All', value: 'all' },
       departmentOptions: [
@@ -263,6 +268,9 @@ export default {
     roleFilter (obj) {
       this.setColumnFilter('role', obj.value)
     },
+     isclassFilter (obj) {
+      this.setColumnFilter('class_codes', obj.value)
+    },
     statusFilter (obj) {
       this.setColumnFilter('status', obj.value)
     },
@@ -279,6 +287,8 @@ export default {
     usersData () {
       return this.$store.state.userManagement.users
     },
+
+  
     paginationPageSize () {
       if (this.gridApi) return this.gridApi.paginationGetPageSize()
       else return 10
@@ -342,6 +352,30 @@ export default {
       moduleUserManagement.isRegistered = true
     }
     this.$store.dispatch('userManagement/fetchUsers').catch(err => { console.error(err) })
+    var x = localStorage.getItem('accessToken');
+        var user_id = localStorage.getItem('user_id');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'teacher',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+     this.$http
+      .get('/api/auth/manage-classes/' + user_id, requestOptions)
+      .then(response => {
+        var data=response.data.classes;
+        for ( var index in data ) {
+         let newobj={}
+         newobj.label=data[index].class_name;
+         newobj.value=data[index].class_code;
+        this.classOptions.push( newobj );
+       }
+      })
+      .catch(error => {
+        console.log(error);
+      }); 
+
+
   }
 }
 
