@@ -146,6 +146,7 @@ class AssignmentController extends Controller {
                         $submitted->student_id = $assignment_assign_to;
                         $submitted->class_id = $request->class_id;
                         $submitted->subject_id = $request->subject_id;
+                        $submitted->submitted_attachement = [];
 //                        $submitted->submit_status = '0';
                         $submitted->save();
                     }
@@ -162,6 +163,7 @@ class AssignmentController extends Controller {
                         $submitted->student_id = $users->user_id;
                         $submitted->class_id = $request->class_id;
                         $submitted->subject_id = $request->subject_id;
+                        $submitted->submitted_attachement = [];
 //                        $submitted->submit_status = '0';
                         $submitted->save();
                     }
