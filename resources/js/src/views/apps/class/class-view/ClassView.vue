@@ -106,7 +106,7 @@
                   </vs-td>                                  
                   <vs-td>
                     <span class="flex items-center px-2 py-1 rounded"> 
-                     <vs-button @click="assignedTeacherToClass($route.params.classId,data[indextr].id)"> Assign/Re-assign</vs-button>
+                     <vs-button @click="assignedTeacherToClass($route.params.classId,data[indextr].subject_id)"> Assign/Re-assign</vs-button>
                                         </span>
                  
                   </vs-td>

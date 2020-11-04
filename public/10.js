@@ -1008,7 +1008,7 @@ var render = function() {
                                                 click: function($event) {
                                                   return _vm.assignedTeacherToClass(
                                                     _vm.$route.params.classId,
-                                                    data[indextr].id
+                                                    data[indextr].subject_id
                                                   )
                                                 }
                                               }
