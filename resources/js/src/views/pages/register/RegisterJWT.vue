@@ -94,8 +94,20 @@ Author URL: http://www.themeforest.net/user/pixinvent
     
 </v-select>
 <span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
-    <div class="flex items-start flex-col sm:flex-row">
+    <div class="flex items-start flex-col sm:flex-row ">
+       <div v-for="(image, key) in images" class="mt-3">
+  
+        <img class="mr-5 rounded h-12 w-12" :ref="'image'"  /> 
+     
+    
+</div>
+<div v-for="(pdfs, key) in pdf" class="mt-3">
+ <a :ref="'pdfs'" class="mr-5" target="_blank" >{{pdfs.name}}</a>
+ </div>
+</div>
+  <div class="flex items-start flex-col sm:flex-row">
  <input type="file" class="hidden" ref="update_avatar_input" @change="selectFile" accept="image/*" multiple >
+
 
             <!-- Toggle comment of below buttons as one for actual flow & currently shown is only for demo -->
             <vs-button type="border" class="w-full mt-6" @click="$refs.update_avatar_input.click()">Upload Documents</vs-button> 
@@ -122,10 +134,13 @@ export default {
 
   data () {
     return {
+      countimages:0,
       name: '',
       Position: '',
       email: '',
       password: '',
+      images: [],
+      pdf: [],
        documents: '',
       confirm_password: '',
         state_id: '',
@@ -157,7 +172,8 @@ reset_data () {
         this.state_id= ''
       this.city=''
       this.country= 'United States'
-      
+      this.images=[]
+       this.pdf=[]
       this.cityoptions=[]
       this.schooloptions=[]
       this.stateFilter= { label: 'Select State', value: '0' }
@@ -171,10 +187,53 @@ isLetter(e) {
   else e.preventDefault(); // If not match, don't add to input text
 },
      selectFile(event) {
-     // console.log(event.target.files)
+    let selectedFiles= event.target.files;
             // `files` is always an array because the file input may be in multiple mode
-            this.documents = event.target.files;
+            this.documents = selectedFiles;
+if(selectedFiles.length>5){
+  alert('You can upload 5 documents');
+  return false;
+}
 
+for (var i=0; i < selectedFiles.length; i++){
+  console.log(selectedFiles[i])
+  if(selectedFiles[i].type=='image/jpg'|| selectedFiles[i].type=='image/png'|| selectedFiles[i].type=='image/jpeg'){
+    this.images.push(selectedFiles[i]);
+    this.countimages++;
+  }
+  else{
+     if(selectedFiles[i].type=='application/doc'|| selectedFiles[i].type=='application/ms-doc'|| selectedFiles[i].type=='application/msword' ||  selectedFiles[i].type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||  selectedFiles[i].type=='application/pdf'){
+      this.countimages++;
+     this.pdf.push(selectedFiles[i]);
+   }
+   else{
+  alert('Only pdf,jpg,png,docs files are allowed');
+  return false;
+
+   }
+  }
+}
+
+for (let i = 0; i < this.images.length; i++) {
+        let reader = new FileReader();
+       reader.onload = (e) => {
+         this.$refs.image[i].src = reader.result;
+
+          //console.log(this.$refs.image[i].src);
+        };
+
+        reader.readAsDataURL(this.images[i]);
+      }
+for (let i = 0; i < this.pdf.length; i++) {
+        let reader = new FileReader();
+       reader.onload = (e) => {
+         this.$refs.pdfs[i].href = reader.result;
+
+          //console.log(this.$refs.image[i].src);
+        };
+
+        reader.readAsDataURL(this.pdf[i]);
+      }
 
         },
     checkLogin () {
@@ -201,6 +260,15 @@ isLetter(e) {
        this.$vs.loading;
       // If form is not validated or user is already login return
       if (!this.validateForm || !this.checkLogin()) return
+       if(this.countimages>5){
+        this.$vs.notify({
+          title: 'Error',
+          text: 'Only 5 files are allowed at a time',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'danger'
+        })
+       }
       //  console.log(this.stateFilter.value);
 //    console.log( this.stateFilter);
         let formData = new FormData();
