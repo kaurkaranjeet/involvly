@@ -119,6 +119,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('get_submitted_assignments', 'Api\V1\AssignmentController@GetSubmittedAssignment');
     Route::post('get_submitted_assignments_details', 'Api\V1\AssignmentController@GetSubmittedAssignmentDetails');
     Route::post('remove_assignment', 'Api\V1\AssignmentController@RemoveAssignments');
+    Route::post('remove_submitted_assignment', 'Api\V1\AssignmentController@RemoveSubmittedAssignments');
     // Student Assignment
     Route::post('get_student_assignment_list', 'Api\V1\AssignmentController@GetStudentAssignmentList');
     Route::post('upload_assignment_by_student', 'Api\V1\AssignmentController@UploadAssignmentByStudents');

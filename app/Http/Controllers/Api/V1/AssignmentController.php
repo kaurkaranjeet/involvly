@@ -330,7 +330,7 @@ class AssignmentController extends Controller {
             }
         }
     }
-    
+
     // Get Pending Assignment By Students
     public function GetPendingAssignmentByStudents(Request $request) {
         $input = $request->all();
@@ -341,11 +341,31 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $getData = SubmittedAssignments::with('subjects')->with('Assignments.User')->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '1')->get();
+            $getData = SubmittedAssignments::with('subjects')->with('Assignments.User')->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '0')->get();
             if ($getData) {
                 return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getData), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'Something went wrong', 'data' => $getData), 200);
+            }
+        }
+    }
+
+    //remove submitted assignment by teacher
+    public function RemoveSubmittedAssignments(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+                    'student_id' => 'required|exists:users,id',
+                    'class_id' => 'required|exists:class_code,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $delete = SubmittedAssignments::where('assignment_id', $request->assignment_id)->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '1')->delete();
+            if ($delete) {
+                return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
             }
         }
     }
