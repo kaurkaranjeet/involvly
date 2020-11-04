@@ -49,32 +49,25 @@ __webpack_require__.r(__webpack_exports__);
       activeTab: 0
     };
   },
-  watch: {
-    activeTab: function activeTab() {
-      this.fetch_user_data(this.$route.params.userId);
-    }
-  },
-  methods: {
-    fetch_subject_data: function fetch_subject_data(subjectId) {
-      var _this = this;
-
-      this.$store.dispatch('subjectManagement/fetchSchoolSubjectDetail', subjectId).then(function (res) {
-        _this.subject_data = res.data.subject;
-        console.log(_this.subject_data);
-        _this.subject_name = _this.subject_data.subject_name;
-      })["catch"](function (err) {
-        console.error(err);
-      });
-    }
-  },
+  watch: {},
+  methods: {},
   created: function created() {
+    var _this = this;
+
     // Register Module UserManagement Module
     if (!_store_subject_management_moduleSubjectManagement_js__WEBPACK_IMPORTED_MODULE_0__["default"].isRegistered) {
-      this.$store.registerModule('SubjectManagement', _store_subject_management_moduleSubjectManagement_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+      this.$store.registerModule('subjectManagement', _store_subject_management_moduleSubjectManagement_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
       _store_subject_management_moduleSubjectManagement_js__WEBPACK_IMPORTED_MODULE_0__["default"].isRegistered = true;
     }
 
-    this.fetch_subject_data(localStorage.getItem('school_id'));
+    var subjectId = this.$route.params.subjectId;
+    this.$store.dispatch('subjectManagement/fetchSchoolSubjectDetail', subjectId).then(function (res) {
+      _this.subject_data = res.data.subject;
+      console.log(_this.subject_data);
+      _this.subject_name = _this.subject_data.subject_name;
+    })["catch"](function (err) {
+      console.error(err);
+    }); // this.fetch_subject_data(localStorage.getItem('school_id'))
   }
 });
 
