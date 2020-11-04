@@ -181,6 +181,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -188,10 +200,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      countimages: 0,
       name: '',
       Position: '',
       email: '',
       password: '',
+      images: [],
+      pdf: [],
       documents: '',
       confirm_password: '',
       state_id: '',
@@ -231,6 +246,8 @@ __webpack_require__.r(__webpack_exports__);
       this.state_id = '';
       this.city = '';
       this.country = 'United States';
+      this.images = [];
+      this.pdf = [];
       this.cityoptions = [];
       this.schooloptions = [];
       this.stateFilter = {
@@ -255,9 +272,61 @@ __webpack_require__.r(__webpack_exports__);
       else e.preventDefault(); // If not match, don't add to input text
     },
     selectFile: function selectFile(event) {
-      // console.log(event.target.files)
-      // `files` is always an array because the file input may be in multiple mode
-      this.documents = event.target.files;
+      var _this = this;
+
+      var selectedFiles = event.target.files; // `files` is always an array because the file input may be in multiple mode
+
+      this.documents = selectedFiles;
+
+      if (selectedFiles.length > 5) {
+        alert('You can upload 5 documents');
+        return false;
+      }
+
+      for (var i = 0; i < selectedFiles.length; i++) {
+        console.log(selectedFiles[i]);
+
+        if (selectedFiles[i].type == 'image/jpg' || selectedFiles[i].type == 'image/png' || selectedFiles[i].type == 'image/jpeg') {
+          this.images.push(selectedFiles[i]);
+          this.countimages++;
+        } else {
+          if (selectedFiles[i].type == 'application/doc' || selectedFiles[i].type == 'application/ms-doc' || selectedFiles[i].type == 'application/msword' || selectedFiles[i].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || selectedFiles[i].type == 'application/pdf') {
+            this.countimages++;
+            this.pdf.push(selectedFiles[i]);
+          } else {
+            alert('Only pdf,jpg,png,docs files are allowed');
+            return false;
+          }
+        }
+      }
+
+      var _loop = function _loop(_i) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          _this.$refs.image[_i].src = reader.result; //console.log(this.$refs.image[i].src);
+        };
+
+        reader.readAsDataURL(_this.images[_i]);
+      };
+
+      for (var _i = 0; _i < this.images.length; _i++) {
+        _loop(_i);
+      }
+
+      var _loop2 = function _loop2(_i2) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          _this.$refs.pdfs[_i2].href = reader.result; //console.log(this.$refs.image[i].src);
+        };
+
+        reader.readAsDataURL(_this.pdf[_i2]);
+      };
+
+      for (var _i2 = 0; _i2 < this.pdf.length; _i2++) {
+        _loop2(_i2);
+      }
     },
     checkLogin: function checkLogin() {
       // If user is already logged in notify
@@ -277,12 +346,23 @@ __webpack_require__.r(__webpack_exports__);
       return true;
     },
     registerUserJWt: function registerUserJWt() {
-      var _this = this;
+      var _this2 = this;
 
       this.$vs.loading; // If form is not validated or user is already login return
 
-      if (!this.validateForm || !this.checkLogin()) return; //  console.log(this.stateFilter.value);
+      if (!this.validateForm || !this.checkLogin()) return;
+
+      if (this.countimages > 5) {
+        this.$vs.notify({
+          title: 'Error',
+          text: 'Only 5 files are allowed at a time',
+          iconPack: 'feather',
+          icon: 'icon-alert-circle',
+          color: 'danger'
+        });
+      } //  console.log(this.stateFilter.value);
       //    console.log( this.stateFilter);
+
 
       var formData = new FormData();
       formData.append('documents', this.documents);
@@ -301,7 +381,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         if (response.data.error == false) {
-          _this.$vs.notify({
+          _this2.$vs.notify({
             title: 'Successfully registered',
             text: 'Your request is under Process',
             iconPack: 'feather',
@@ -309,9 +389,9 @@ __webpack_require__.r(__webpack_exports__);
             color: 'success'
           });
 
-          _this.reset_data();
+          _this2.reset_data();
         } else {
-          _this.$vs.notify({
+          _this2.$vs.notify({
             title: 'Error',
             text: response.data.message,
             iconPack: 'feather',
@@ -322,7 +402,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err.error);
 
-        _this.$vs.notify({
+        _this2.$vs.notify({
           title: 'Something went wrong',
           text: 'Please try later',
           iconPack: 'feather',
@@ -342,7 +422,7 @@ __webpack_require__.r(__webpack_exports__);
         });*/
     },
     getCities: function getCities(a) {
-      var _this2 = this;
+      var _this3 = this;
 
       this.cityFilter = {
         label: 'Select city',
@@ -359,14 +439,14 @@ __webpack_require__.r(__webpack_exports__);
           newobj.label = data[index].city;
           newobj.value = data[index].id;
 
-          _this2.cityoptions.push(newobj);
+          _this3.cityoptions.push(newobj);
         }
       })["catch"](function (error) {
         console.log(error);
       });
     },
     getSchools: function getSchools(a) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$http.post("/api/v1/list_schools", {
         city_id: a.value
@@ -378,7 +458,7 @@ __webpack_require__.r(__webpack_exports__);
           newobj.label = data[index].school_name;
           newobj.value = data[index].id;
 
-          _this3.schooloptions.push(newobj);
+          _this4.schooloptions.push(newobj);
         }
       })["catch"](function (error) {
         console.log(error);
@@ -386,7 +466,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.$http.get("/api/v1/list_states").then(function (response) {
       var data = response.data.data;
@@ -396,7 +476,7 @@ __webpack_require__.r(__webpack_exports__);
         newobj.label = data[index].state_name;
         newobj.value = data[index].id;
 
-        _this4.stateFilteroption.push(newobj);
+        _this5.stateFilteroption.push(newobj);
       }
     })["catch"](function (error) {
       console.log(error);
@@ -841,6 +921,38 @@ var render = function() {
       _c("span", { staticClass: "text-danger text-sm" }, [
         _vm._v(_vm._s(_vm.errors.first("schoolFilter")))
       ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "flex items-start flex-col sm:flex-row " },
+        [
+          _vm._l(_vm.images, function(image, key) {
+            return _c("div", { staticClass: "mt-3" }, [
+              _c("img", {
+                ref: "image",
+                refInFor: true,
+                staticClass: "mr-5 rounded h-12 w-12"
+              })
+            ])
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.pdf, function(pdfs, key) {
+            return _c("div", { staticClass: "mt-3" }, [
+              _c(
+                "a",
+                {
+                  ref: "pdfs",
+                  refInFor: true,
+                  staticClass: "mr-5",
+                  attrs: { target: "_blank" }
+                },
+                [_vm._v(_vm._s(pdfs.name))]
+              )
+            ])
+          })
+        ],
+        2
+      ),
       _vm._v(" "),
       _c(
         "div",
