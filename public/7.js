@@ -3517,7 +3517,7 @@ var render = function(_h, _vm) {
         _vm._v(" "),
         _c("span", [_vm._v(_vm._s(new Date().getFullYear()) + " ")]),
         _vm._v(" "),
-        _c("a", { attrs: { href: "/", target: "_blank", rel: "nofollow" } }, [
+        _c("a", { attrs: { href: "javscript:void(0)", rel: "nofollow" } }, [
           _vm._v("Involvvely")
         ]),
         _vm._v(" "),
