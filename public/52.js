@@ -349,7 +349,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (val !== 'all') {
         modelObj = {
-          type: 'equals',
+          type: 'contains',
           filter: val
         };
       }
@@ -841,7 +841,7 @@ var render = function() {
               rowSelection: "multiple",
               colResizeDefault: "shift",
               animateRows: true,
-              floatingFilter: false,
+              floatingFilter: true,
               pagination: true,
               paginationPageSize: _vm.paginationPageSize,
               suppressPaginationPanel: true,
