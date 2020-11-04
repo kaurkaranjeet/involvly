@@ -172,7 +172,7 @@ class UserController extends Controller {
         DB::enableQueryLog();
 
         if ($request->type == 'teacher') {
-            $users = User::where('role_id', 4)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_name from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->get();
+            $users = User::where('role_id', 4)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->get();
         } else if ($request->type == 'student') {
             $users = User::where('role_id', 2)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->get();
         } else {
