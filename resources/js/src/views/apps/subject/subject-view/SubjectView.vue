@@ -41,13 +41,19 @@ export default {
     }
   },
   watch: {
-    activeTab () {
-      this.fetch_user_data(this.$route.params.userId)
-    }
+    
   },
   methods: {
-    fetch_subject_data (subjectId) {
-      this.$store.dispatch('subjectManagement/fetchSchoolSubjectDetail', subjectId)
+    
+  },
+  created () {
+    // Register Module UserManagement Module
+    if (!moduleSubjectManagement.isRegistered) {
+      this.$store.registerModule('subjectManagement', moduleSubjectManagement)
+      moduleSubjectManagement.isRegistered = true
+    }
+ const subjectId = this.$route.params.subjectId
+    this.$store.dispatch('subjectManagement/fetchSchoolSubjectDetail', subjectId)
         .then(res => { 
           this.subject_data = res.data.subject
           console.log(this.subject_data)
@@ -56,15 +62,7 @@ export default {
         .catch(err => {
           console.error(err) 
         })
-    }
-  },
-  created () {
-    // Register Module UserManagement Module
-    if (!moduleSubjectManagement.isRegistered) {
-      this.$store.registerModule('SubjectManagement', moduleSubjectManagement)
-      moduleSubjectManagement.isRegistered = true
-    }
-    this.fetch_subject_data(localStorage.getItem('school_id'))
+   // this.fetch_subject_data(localStorage.getItem('school_id'))
   }
 }
 
