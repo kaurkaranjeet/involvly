@@ -841,7 +841,7 @@ var render = function() {
               rowSelection: "multiple",
               colResizeDefault: "shift",
               animateRows: true,
-              floatingFilter: true,
+              floatingFilter: false,
               pagination: true,
               paginationPageSize: _vm.paginationPageSize,
               suppressPaginationPanel: true,
