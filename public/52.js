@@ -411,7 +411,7 @@ __webpack_require__.r(__webpack_exports__);
       for (var index in data) {
         var newobj = {};
         newobj.label = data[index].class_name;
-        newobj.value = data[index].class_code;
+        newobj.value = data[index].class_name;
 
         _this.classOptions.push(newobj);
       }

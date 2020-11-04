@@ -367,7 +367,7 @@ export default {
         for ( var index in data ) {
          let newobj={}
          newobj.label=data[index].class_name;
-         newobj.value=data[index].class_code;
+         newobj.value=data[index].class_name;
         this.classOptions.push( newobj );
        }
       })
