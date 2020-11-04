@@ -121,7 +121,7 @@
         rowSelection="multiple"
         colResizeDefault="shift"
         :animateRows="true"
-        :floatingFilter="false"
+        :floatingFilter="true"
         :pagination="true"
         :paginationPageSize="paginationPageSize"
         :suppressPaginationPanel="true"
@@ -313,7 +313,7 @@ export default {
       let modelObj = null
 
       if (val !== 'all') {
-        modelObj = { type: 'equals', filter: val }
+        modelObj = { type: 'contains', filter: val }
       }
 
       filter.setModel(modelObj)
