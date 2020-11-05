@@ -207,9 +207,9 @@ export default {
             icon: "icon-alert-circle",
           });
           
-          /* this.$router
+           this.$router
             .push(`/apps/user/listofstudents`)
-            .catch(() => {});*/
+            .catch(() => {});
         }
         })
 

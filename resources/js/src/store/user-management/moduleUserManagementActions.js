@@ -124,7 +124,7 @@ export default {
       SaveStudent({ commit }, data) {
         console.log(data);
         return new Promise((resolve, reject) => {
-            axios.post(`/api/v1/signup_student/`, data)
+            axios.post(`/api/v1/signup_student`, data)
                 .then((response) => {
 
 

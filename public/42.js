@@ -220,10 +220,8 @@ __webpack_require__.r(__webpack_exports__);
             iconPack: "feather",
             icon: "icon-alert-circle"
           });
-          /* this.$router
-            .push(`/apps/user/listofstudents`)
-            .catch(() => {});*/
 
+          _this.$router.push("/apps/user/listofstudents")["catch"](function () {});
         }
       })["catch"](function (error) {
         _this.$vs.loading.close();
