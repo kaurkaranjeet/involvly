@@ -10,6 +10,9 @@
 <template>
 
   <div id="page-user-list">
+    <div class="col-md-12 bg-light text-right pd-bt mb-5">
+            <vs-button color="primary" type="filled" @click="addStudentdata">Add New Teacher</vs-button>
+        </div>
 
     <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
@@ -308,6 +311,11 @@ export default {
     }
   },
   methods: {
+      addStudentdata() {
+            this.$router
+                .push(`/apps/user/addnewteacher`)
+                .catch(() => {});
+        },
     setColumnFilter (column, val) {
       const filter = this.gridApi.getFilterInstance(column)
       let modelObj = null

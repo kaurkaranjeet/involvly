@@ -1725,7 +1725,7 @@ var render = function() {
                                 attrs: {
                                   "max-items": "5",
                                   pagination: "",
-                                  data: _vm.studentRequests
+                                  data: _vm.parentRequests
                                 },
                                 scopedSlots: _vm._u([
                                   {
