@@ -8,194 +8,209 @@
 ========================================================================================== -->
 
 <template>
-  <div id="page-user-edit">
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vs-input
-      v-validate="'required|min:3'"
+  <div class="clearfix">
+ 
+     <vs-input
+      v-validate="'required|min:6'"
       data-vv-validate-on="blur"
-      label-placeholder="First Name"
-      name="First Name"
-      v-model="first_name"
+      label-placeholder="First Name*"
+      name="firstname"
+      placeholder=" First Name*"
+      v-model="firstname"
       class="w-full"
-    />
-    <span class="text-danger text-xs">{{ errors.first("First Name") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
+      :maxlength="50"
+       />
+    <span class="text-danger text-xs">{{ errors.first('firstname') }}</span>
+   
+  
     <vs-input
-      v-validate="'required|min:3'"
+      v-validate="'required'"
       data-vv-validate-on="blur"
-      label-placeholder="Last Name"
-      name="Last Name"
-      v-model="last_name"
+      label-placeholder="Last Name*"
+      name="lastname"
+      placeholder="Last Name*"
+      v-model="lastname"
       class="w-full"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Last Name") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vs-input
-      v-validate="'required|email|min:3'"
+       />
+    <span class="text-danger text-xs">{{ errors.first("lastname") }}</span>
+  
+
+   <vs-input
+      v-validate="'required|email'"
       data-vv-validate-on="blur"
-      label-placeholder="Email"
-      name="Email"
+      name="email"
+      type="email"
+      label-placeholder="Email*"
+      placeholder="Email*"
       v-model="email"
-      class="w-full"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Email") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vs-input
-      v-validate="'required|min:6|max:10'"
+      class="w-full mt-6" />
+    <span class="text-danger text-xs">{{ errors.first("email") }}</span>
+   
+ 
+<vs-input
+      ref="password"
+      type="password"
       data-vv-validate-on="blur"
-      label-placeholder="Password"
-      name="Password"
+      v-validate="'required|min:6|max:10'"
+      name="password"
+      label-placeholder="Password*"
+      placeholder="Password*"
       v-model="password"
-      class="w-full"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Password") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vs-input
+      class="w-full mt-6" />
+    <span class="text-danger text-xs">{{ errors.first("password") }}</span>
+    
+ 
+     <vs-input
+      type="password"
       v-validate="'min:6|max:10|confirmed:password'"
       data-vv-validate-on="blur"
-      label-placeholder="Confirm Password"
-      name="Confirm Password"
+      data-vv-as="password"
+      name="confirm_password"
+      label-placeholder="Confirm Password*"
+      placeholder="Confirm Password*"
       v-model="confirm_password"
-      class="w-full"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Confirm Password") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vue-select
-      v-model="schooling_type"
-      :clearable="false"
-      :options="schoolingOptions"
-      v-validate="'required'"
-      name="Schooling Type"
-      placeholder="Schooling Type"
-      class="w-full mt-6"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Schooling Type") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vue-select
-      v-model="school"
-      :clearable="false"
-      :options="schoolOptions"
-      v-validate="'required'"
-      name="Select School"
-      placeholder="Select School"
-      class="w-full mt-6"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Select School") }}</span>
-    </div>
-  </div>
-  <div class="vx-row mb-2">
-    <div class="vx-col w-full">
-    <vue-select
-      v-model="classes"
-      :clearable="false"
-      :options="classOptions"
-      v-validate="'required'"
-      name="Select School"
-      placeholder="Select School"
-      class="w-full mt-6"
-      v-if="this.school.value == 'home'"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Select School") }}</span>
-    </div>
-  </div>
+      class="w-full mt-6" />
+    <span class="text-danger text-xs">{{ errors.first("confirm_password") }}</span>
+   
+  
+
+   <vue-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
+      data-vv-validate-on="change"></vue-select>
+      <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
+
+ 
+   
+  
+
+  <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"   name="city"  v-validate="'required'"
+      data-vv-validate-on="change"/>
+    <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
+  
+ 
+<vue-select  :options="classoptions"   :clearable="false"  v-model="classFilter" class="w-full mt-6"  >
+    
+</vue-select>
+<span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
+
   <div class="vx-row">
-    <div class="vx-col w-full">
-      <vs-button class="mr-3 mb-2" @click="saveSubject" :disabled="!validateForm" >Submit</vs-button>
-      <vs-button color="warning" type="border" class="mb-2" @click="first_name =''; 
-      last_name =''; email =''; password =''; confirm_password =''; check5 = false;">Cancel</vs-button>
-    </div>
-  </div>
+      <div class="vx-col w-full">
+        <div class="mt-8 flex flex-wrap items-center justify-end">
+      <vs-button class="mt-2" @click="SaveStudent"  :disabled="!validateForm" >Submit</vs-button>
+      <vs-button color="warning" type="border" class="ml-4 mt-2" @click="reset_data">Reset</vs-button>
+   </div>
+ </div>
+</div>
   </vx-card>
-  </div>
+</div>
+
+
 </template>
 
-
+<script src="https://unpkg.com/vue-select@latest"></script>
 <script>
 // Store Module
-import moduleSubjectManagement from '@/store/subject-management/moduleSubjectManagement.js'
+import moduleUserManagement from '@/store/user-management/moduleUserManagement.js'
 import vueSelect from 'vue-select'
-
+import { Validator } from 'vee-validate'
 export default {
   components: {
     vueSelect
   },
   data () {
     return {
-      first_name: "",
-      last_name: "",
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
       confirm_password: "",
-      schooling_type: "",
-      school:"",
+     
+     
       classes:"",
-      schoolingOptions: [
-        { label: "Home", value: "home" },
-        { label: "School", value: "school" },
-      ],
-      classOptions: [
-        { label: "Home", value: "home" },
-        { label: "School", value: "school" },
-      ],
+      stateFilteroption:[],
+      cityoptions:[],
+      classoptions:[],
+      stateFilter: { label: 'Select State*', value: '0' },
+       classFilter: { label: 'Select Class', value: '0' },
+      cityFilter: { label: 'Select city*', value: '0' }, 
     }
   },
   computed: {
     validateForm() {
+      //console.log(this.errors)
       this.$vs.loading.close();
-      return (
-        !this.errors.any() &&
-        this.first_name !== "" &&
-        this.last_name !== "" &&
-        this.email !== "" &&
-        this.password !== "" &&
-        this.confirm_password !== "" &&
-        this.schooling_type !== ""
-      );
+       return !this.errors.any() && this.firstname !== '' && this.lastname !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.classFilter.value !== '0'
+
     },
   },
   methods: {
-    saveSubject() {
+
+    reset_data () {
+      this.firstname= ''
+      this.lastname=''
+      this.email= ''
+      this.password= ''
+
+      this.confirm_password= ''
+
+
+      
+    
+      this.cityoptions=[]
+      this.schooloptions=[]
+      this.stateFilter= { label: 'Select State', value: '0' }
+      this.cityFilter={ label: 'Select city', value: '0' }     
+    },
+    SaveStudent() {
+
       var code = {
-        subject_name: this.subject_name,
-        school_id: localStorage.getItem('school_id')
+        first_name: this.firstname,
+        last_name: this.lastname,
+        email: this.email,
+        password: this.password,
+        type_of_schooling: 'school',
+        country:'United States',
+        school_id: localStorage.getItem('school_id'),
+        city_id:this.cityFilter.value,
+        state_id:this.stateFilter.value,
+        class_code:this.classFilter.value,
+          role_id:2
       };
-      console.log("adddata",code);
+     // console.log("adddata",code);
       // If form is not validated return
-      if (!this.validateForm) returns;
+      if (!this.validateForm) return;
       // Loading
-      this.$vs.loading();
+     this.$vs.loading();
       this.$store
-        .dispatch("subjectManagement/saveSchoolSubject", code)
+        .dispatch("userManagement/SaveStudent", code)
         .then((res) => {
           this.$vs.loading.close();
+
           this.$router
-            .push(`/apps/subject/subject-list`)
+            .push(`apps/user/listofstudents`)
             .catch(() => {});
+            if(res.data.error){
+          this.$vs.notify({
+            title: "Error",
+            text: res.data.message,
+            iconPack: "feather",
+            icon: "icon-alert-circle",
+            color: "danger",
+          });
+
+            }else{
+              this.reset_data();
+
+
           this.$vs.notify({
             color: "success",
             title: "Success",
-            text: "Data add successfully!",
+            text: "Student added successfully!",
+            iconPack: "feather",
+            icon: "icon-alert-circle",
           });
+        }
         })
+
         .catch((error) => {
           this.$vs.loading.close();
           this.$vs.notify({
@@ -207,17 +222,72 @@ export default {
           });
         });
     },
-  },
-  watch: {
-    activeTab () {
-      this.fetch_user_data(this.$route.params.userId)
-    }
+
+    getCities(a){
+       this.cityFilter= { label: 'Select city', value: '' };
+   this.cityoptions=[];
+this.$http
+      .post("/api/v1/get_cities",{state_id:a.value})
+      .then(response => {
+        var data=response.data.data;
+        for ( var index in data ) {
+         let newobj={}
+         newobj.label=data[index].city;
+         newobj.value=data[index].id;
+        this.cityoptions.push( newobj );
+       }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
+
   },
   created() {
-     if (!moduleSubjectManagement.isRegistered) {
-      this.$store.registerModule('subjectManagement', moduleSubjectManagement)
-      moduleSubjectManagement.isRegistered = true
+     if (!moduleUserManagement.isRegistered) {
+      this.$store.registerModule('userManagement', moduleUserManagement)
+      moduleUserManagement.isRegistered = true
     }
+
+
+    this.$http
+      .get("/api/v1/list_states")
+      .then(response => {
+        var data=response.data.data;
+        for ( var index in data ) {
+         let newobj={}
+         newobj.label=data[index].state_name;
+         newobj.value=data[index].id;
+        this.stateFilteroption.push( newobj );
+       }
+      })
+      .catch(error => {
+        console.log(error);
+      });  
+
+      // Fetch class
+ var x = localStorage.getItem('accessToken');
+        var user_id = localStorage.getItem('user_id');
+        //  User Reward Card
+        const requestOptions = {
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+      this.$http
+      .post('/api/auth/manage-classes/' + user_id,requestOptions)
+      .then(response => {
+        var data=response.data.classes;
+        for ( var index in data ) {
+         let newobj={}
+         newobj.label=data[index].class_name;
+         newobj.value=data[index].class_code;
+        this.classoptions.push( newobj );
+       }
+      })
+      .catch(error => {
+        console.log(error);
+      });  
+
   }
 }
 

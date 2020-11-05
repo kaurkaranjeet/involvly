@@ -19,7 +19,7 @@
       v-model="subject_name"
       class="w-full"
     />
-    <span class="text-danger text-xs">{{ errors.first("Subject Name") }}</span>
+    <span class="text-danger text-xs">{{ errors.first("subject_name") }}</span>
     </div>
   </div>
   <div class="vx-row">

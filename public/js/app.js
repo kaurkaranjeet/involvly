@@ -73549,6 +73549,27 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         authRequired: true
       }
     }, {
+      path: '/apps/user/addstudent',
+      name: 'add-student',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentAdd.vue */ "./resources/js/src/views/apps/user/user-list/StudentAdd.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Students',
+          url: '/apps/user/listofstudents'
+        }, {
+          title: 'Add',
+          active: true
+        }],
+        pageTitle: 'Student Add',
+        rule: 'editor',
+        authRequired: true
+      }
+    }, {
       path: '/apps/user/listofschooladmins',
       name: 'list-admins-school',
       component: function component() {
