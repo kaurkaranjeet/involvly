@@ -445,6 +445,23 @@ const router = new Router({
                 },
 
                 {
+                    path: '/apps/user/addnewteacher',
+                    name: 'add-teacher',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/TeacherAdd.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Teachers', url: 'apps/user/user-list' },
+                            { title: 'Add', active: true }
+                        ],
+                        pageTitle: 'Add New Teacher',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+
+                {
                     path: '/apps/user/listofschooladmins',
                     name: 'list-admins-school',
                     component: () =>

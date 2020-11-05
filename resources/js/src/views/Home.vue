@@ -390,7 +390,7 @@
           </vs-tab>
            <vs-tab  :label="'Parents ('+ parentCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" >
+            <vs-table max-items="5" pagination :data="parentRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
