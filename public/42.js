@@ -204,8 +204,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("userManagement/SaveStudent", code).then(function (res) {
         _this.$vs.loading.close();
 
-        _this.$router.push("/apps/user/listofstudents")["catch"](function () {});
-
         if (res.data.error) {
           _this.$vs.notify({
             title: "Error",
@@ -215,8 +213,6 @@ __webpack_require__.r(__webpack_exports__);
             color: "danger"
           });
         } else {
-          _this.reset_data();
-
           _this.$vs.notify({
             color: "success",
             title: "Success",
@@ -224,6 +220,8 @@ __webpack_require__.r(__webpack_exports__);
             iconPack: "feather",
             icon: "icon-alert-circle"
           });
+
+          _this.$router.push("/apps/user/listofstudents")["catch"](function () {});
         }
       })["catch"](function (error) {
         _this.$vs.loading.close();

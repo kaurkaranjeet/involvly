@@ -185,9 +185,7 @@ export default {
         .then((res) => {
           this.$vs.loading.close();
 
-          this.$router
-            .push(`/apps/user/listofstudents`)
-            .catch(() => {});
+         
             if(res.data.error){
           this.$vs.notify({
             title: "Error",
@@ -198,7 +196,7 @@ export default {
           });
 
             }else{
-              this.reset_data();
+             
 
 
           this.$vs.notify({
@@ -208,6 +206,10 @@ export default {
             iconPack: "feather",
             icon: "icon-alert-circle",
           });
+          
+           this.$router
+            .push(`/apps/user/listofstudents`)
+            .catch(() => {});
         }
         })
 
