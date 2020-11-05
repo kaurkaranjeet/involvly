@@ -174,7 +174,7 @@ __webpack_require__.r(__webpack_exports__);
     var commit = _ref6.commit;
     console.log(data);
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/v1/signup_student/", data).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/v1/signup_student", data).then(function (response) {
         resolve(response);
       })["catch"](function (error) {
         reject(error);
