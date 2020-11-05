@@ -160,6 +160,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
  // Store Module
@@ -332,6 +335,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    addStudentdata: function addStudentdata() {
+      this.$router.push("/apps/user/addstudent")["catch"](function () {});
+    },
     setColumnFilter: function setColumnFilter(column, val) {
       var filter = this.gridApi.getFilterInstance(column);
       var modelObj = null;
@@ -466,7 +472,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../../node_mod
 
 
 // module
-exports.push([module.i, "#page-user-list .user-list-filters .vs__actions {\n  position: absolute;\n  top: 50%;\n}[dir] #page-user-list .user-list-filters .vs__actions {\n  transform: translateY(-58%);\n}[dir=ltr] #page-user-list .user-list-filters .vs__actions {\n  right: 0;\n}[dir=rtl] #page-user-list .user-list-filters .vs__actions {\n  left: 0;\n}", ""]);
+exports.push([module.i, "#page-user-list .user-list-filters .vs__actions {\n  position: absolute;\n  top: 50%;\n}[dir] #page-user-list .user-list-filters .vs__actions {\n  transform: translateY(-58%);\n}[dir=ltr] #page-user-list .user-list-filters .vs__actions {\n  right: 0;\n}[dir=rtl] #page-user-list .user-list-filters .vs__actions {\n  left: 0;\n}\n[dir] .pd-bt {\n  padding-bottom: 10px;\n}", ""]);
 
 // exports
 
@@ -522,6 +528,22 @@ var render = function() {
     "div",
     { attrs: { id: "page-user-list" } },
     [
+      _c(
+        "div",
+        { staticClass: "col-md-12 bg-light text-right pd-bt" },
+        [
+          _c(
+            "vs-button",
+            {
+              attrs: { color: "primary", type: "filled" },
+              on: { click: _vm.addStudentdata }
+            },
+            [_vm._v("Add Student")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c(
         "vx-card",
         {

@@ -1852,12 +1852,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       "default": true
     },
     navMenuItems: {
-      type: Array,
-      required: true
+      type: Array
     },
     adminNavMenuItems: {
-      type: Array,
-      required: true
+      type: Array
     },
     title: {
       type: String

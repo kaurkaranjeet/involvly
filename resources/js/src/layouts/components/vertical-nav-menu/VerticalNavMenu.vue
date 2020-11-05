@@ -133,8 +133,8 @@ export default {
     openGroupHover:   { type: Boolean, default: false },
     parent:           { type: String },
     reduceNotRebound: { type: Boolean, default: true },
-    navMenuItems:     { type: Array,   required: true },
-    adminNavMenuItems:{ type: Array,   required: true },
+    navMenuItems:     { type: Array },
+    adminNavMenuItems:{ type: Array },
     title:            { type: String }
   },
   data: () => ({

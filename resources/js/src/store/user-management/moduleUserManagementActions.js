@@ -120,6 +120,19 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+
+      SaveStudent({ commit }, data) {
+        console.log(data);
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/v1/signup_student/`, data)
+                .then((response) => {
+
+
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
     removeRecord({ commit }, userId) {
         return new Promise((resolve, reject) => {
             axios.get(`/api/auth/delete-user/${userId}`)
