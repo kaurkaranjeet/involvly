@@ -39,7 +39,7 @@ const router = new Router({
                         import ('./views/Home.vue'),
                     meta: {
                         authRequired: true,
-                        rule:'editor'
+                        rule: 'editor'
 
                     }
                 },
@@ -51,7 +51,7 @@ const router = new Router({
                         import ('./views/Dashboard.vue'),
                     meta: {
                         authRequired: true,
-                          rule:'admin'
+                        rule: 'admin'
                     }
                 },
                 {
@@ -289,7 +289,7 @@ const router = new Router({
                     }
                 },
 
-                 {
+                {
                     path: '/apps/admin/teacher-view/:userId',
                     name: 'admin-teacher-view',
                     component: () =>
@@ -341,7 +341,7 @@ const router = new Router({
                     }
                 },
 
-                 {
+                {
                     path: '/apps/user/parent-view/:userId',
                     name: 'app-parent-view',
                     component: () =>
@@ -377,7 +377,7 @@ const router = new Router({
                 },
 
 
-                 {
+                {
                     path: '/apps/user/schooladmin-view/:userId',
                     name: 'adminparent-view',
                     component: () =>
@@ -422,6 +422,23 @@ const router = new Router({
                             { title: 'List', active: true }
                         ],
                         pageTitle: 'Students List',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+
+                {
+                    path: '/apps/user/addstudent',
+                    name: 'add-student',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/StudentAdd.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Students', url: '/apps/user/listofstudents' },
+                            { title: 'Add', active: true }
+                        ],
+                        pageTitle: 'Student Add',
                         rule: 'editor',
                         authRequired: true
                     }
