@@ -90,6 +90,11 @@ export default{
 
     }
   },
+   created() {
+
+    this.checkRemmember();
+
+  },
 
   
    computed: {
@@ -97,7 +102,23 @@ export default{
       return !this.errors.any() && this.email !== '' && this.password !== ''
     }
   },
+ 
   methods: {
+
+    checkRemmember(){
+    // alert(localStorage.getItem('checkbox_remember_me'))
+       if (localStorage.getItem('checkbox_remember_me')) {
+            this.checkbox_remember_me=true;
+            this.email=localStorage.getItem('email_check');
+            this.password=localStorage.getItem('password_chk');
+          }
+          else{
+            this.checkbox_remember_me=false;
+            this.email='';
+            this.password='';
+          }
+        
+        },
     checkLogin () {
 
     //  If user is already logged in notify
@@ -114,7 +135,7 @@ export default{
           color: 'warning'
         })
 
-      this.$router.push('/').catch(() => {})
+      return false;
       }
       return true
     },
@@ -133,8 +154,16 @@ export default{
         }
       }
 
+    
+
+      localStorage.setItem('checkbox_remember_me', this.checkbox_remember_me);
+      localStorage.setItem('email_check', this.email);
+      localStorage.setItem('password_chk', this.password);      
+
       this.$store.dispatch('auth/loginJWT', payload)
-        .then(() => { 
+        .then(() => {     
+
+
           this.$router.push('/').catch(() => {})
           this.$vs.loading.close() })
         .catch(error => {
