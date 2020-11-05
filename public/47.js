@@ -204,7 +204,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("userManagement/SaveStudent", code).then(function (res) {
         _this.$vs.loading.close();
 
-        _this.$router.push("apps/user/listofstudents")["catch"](function () {});
+        _this.$router.push("/apps/user/listofstudents")["catch"](function () {});
 
         if (res.data.error) {
           _this.$vs.notify({

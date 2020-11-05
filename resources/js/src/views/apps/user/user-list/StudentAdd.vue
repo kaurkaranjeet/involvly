@@ -186,7 +186,7 @@ export default {
           this.$vs.loading.close();
 
           this.$router
-            .push(`apps/user/listofstudents`)
+            .push(`/apps/user/listofstudents`)
             .catch(() => {});
             if(res.data.error){
           this.$vs.notify({
