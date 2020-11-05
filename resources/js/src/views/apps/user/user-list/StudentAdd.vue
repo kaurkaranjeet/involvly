@@ -11,7 +11,7 @@
   <div class="clearfix">
  
      <vs-input
-      v-validate="'required|min:6'"
+      v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="First Name*"
       name="firstname"
