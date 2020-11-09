@@ -141,6 +141,11 @@ __webpack_require__.r(__webpack_exports__);
       stateFilteroption: [],
       cityoptions: [],
       classoptions: [],
+      Subjectoptions: [],
+      subjectFilter: {
+        label: 'Select Subject',
+        value: '0'
+      },
       stateFilter: {
         label: 'Select State*',
         value: '0'
@@ -159,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
     validateForm: function validateForm() {
       //console.log(this.errors)
       this.$vs.loading.close();
-      return !this.errors.any() && this.firstname !== '' && this.lastname !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.classFilter.value !== '0';
+      return !this.errors.any() && this.firstname !== '' && this.lastname !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.stateFilter.value !== '0' && this.cityFilter.value !== '0';
     }
   },
   methods: {
@@ -180,65 +185,8 @@ __webpack_require__.r(__webpack_exports__);
         value: '0'
       };
     },
-    SaveStudent: function SaveStudent() {
-      var _this = this;
-
-      var code = {
-        first_name: this.firstname,
-        last_name: this.lastname,
-        email: this.email,
-        password: this.password,
-        type_of_schooling: 'school',
-        country: 'United States',
-        school_id: localStorage.getItem('school_id'),
-        city_id: this.cityFilter.value,
-        state_id: this.stateFilter.value,
-        class_code: this.classFilter.value,
-        role_id: 2
-      }; // console.log("adddata",code);
-      // If form is not validated return
-
-      if (!this.validateForm) return; // Loading
-
-      this.$vs.loading();
-      this.$store.dispatch("userManagement/SaveStudent", code).then(function (res) {
-        _this.$vs.loading.close();
-
-        _this.$router.push("/apps/user/listofstudents")["catch"](function () {});
-
-        if (res.data.error) {
-          _this.$vs.notify({
-            title: "Error",
-            text: res.data.message,
-            iconPack: "feather",
-            icon: "icon-alert-circle",
-            color: "danger"
-          });
-        } else {
-          _this.reset_data();
-
-          _this.$vs.notify({
-            color: "success",
-            title: "Success",
-            text: "Student added successfully!",
-            iconPack: "feather",
-            icon: "icon-alert-circle"
-          });
-        }
-      })["catch"](function (error) {
-        _this.$vs.loading.close();
-
-        _this.$vs.notify({
-          title: "Error",
-          text: error,
-          iconPack: "feather",
-          icon: "icon-alert-circle",
-          color: "danger"
-        });
-      });
-    },
     getCities: function getCities(a) {
-      var _this2 = this;
+      var _this = this;
 
       this.cityFilter = {
         label: 'Select city',
@@ -255,15 +203,102 @@ __webpack_require__.r(__webpack_exports__);
           newobj.label = data[index].city;
           newobj.value = data[index].id;
 
-          _this2.cityoptions.push(newobj);
+          _this.cityoptions.push(newobj);
         }
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    getSubjects: function getSubjects(a) {
+      var _this2 = this;
+
+      this.subjectFilter = {
+        label: 'Select Subject',
+        value: ''
+      };
+      this.Subjectoptions = [];
+      this.$http.post("/api/auth/manage-subjects/" + a.value).then(function (response) {
+        var data = response.data.subjects;
+
+        for (var index in data) {
+          var newobj = {};
+          newobj.label = data[index].subject_name;
+          newobj.value = data[index].id;
+
+          _this2.Subjectoptions.push(newobj);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    SaveTeacher: function SaveTeacher() {
+      var _this3 = this;
+
+      var code = {
+        first_name: this.firstname,
+        last_name: this.lastname,
+        email: this.email,
+        password: this.password,
+        type_of_schooling: 'school',
+        country: 'United States',
+        school_id: localStorage.getItem('school_id'),
+        city_id: this.cityFilter.value,
+        state_id: this.stateFilter.value,
+        class_id: this.classFilter.value,
+        role_id: 4,
+        subject_id: this.subjectFilter.value
+      }; // If form is not validated return
+
+      if (!this.validateForm) return;
+
+      if (this.classFilter.value != "") {
+        if (this.subjectFilter.value = "") {
+          alert("Please subject first");
+          return false;
+        }
+      } // Loading
+
+
+      this.$vs.loading();
+      this.$store.dispatch("userManagement/SaveTeacher", code).then(function (res) {
+        _this3.$vs.loading.close();
+
+        if (res.data.error) {
+          _this3.$vs.notify({
+            title: "Error",
+            text: res.data.message,
+            iconPack: "feather",
+            icon: "icon-alert-circle",
+            color: "danger"
+          });
+        } else {
+          _this3.$vs.notify({
+            color: "success",
+            title: "Success",
+            text: "Teacher added successfully!",
+            iconPack: "feather",
+            icon: "icon-alert-circle"
+          });
+          /*this.$router
+           .push(`/apps/user/listofstudents`)
+           .catch(() => {});*/
+
+        }
+      })["catch"](function (error) {
+        _this3.$vs.loading.close();
+
+        _this3.$vs.notify({
+          title: "Error",
+          text: error,
+          iconPack: "feather",
+          icon: "icon-alert-circle",
+          color: "danger"
+        });
+      });
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     if (!_store_user_management_moduleUserManagement_js__WEBPACK_IMPORTED_MODULE_0__["default"].isRegistered) {
       this.$store.registerModule('userManagement', _store_user_management_moduleUserManagement_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
@@ -278,7 +313,7 @@ __webpack_require__.r(__webpack_exports__);
         newobj.label = data[index].state_name;
         newobj.value = data[index].id;
 
-        _this3.stateFilteroption.push(newobj);
+        _this4.stateFilteroption.push(newobj);
       }
     })["catch"](function (error) {
       console.log(error);
@@ -298,9 +333,9 @@ __webpack_require__.r(__webpack_exports__);
       for (var index in data) {
         var newobj = {};
         newobj.label = data[index].class_name;
-        newobj.value = data[index].class_code;
+        newobj.value = data[index].id;
 
-        _this3.classoptions.push(newobj);
+        _this4.classoptions.push(newobj);
       }
     })["catch"](function (error) {
       console.log(error);
@@ -542,6 +577,7 @@ var render = function() {
       _c("vue-select", {
         staticClass: "w-full mt-6",
         attrs: { options: _vm.classoptions, clearable: false },
+        on: { input: _vm.getSubjects },
         model: {
           value: _vm.classFilter,
           callback: function($$v) {
@@ -552,7 +588,23 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "text-danger text-sm" }, [
-        _vm._v(_vm._s(_vm.errors.first("schoolFilter")))
+        _vm._v(_vm._s(_vm.errors.first("classFilter")))
+      ]),
+      _vm._v(" "),
+      _c("vue-select", {
+        staticClass: "w-full mt-6",
+        attrs: { options: _vm.Subjectoptions, clearable: false },
+        model: {
+          value: _vm.subjectFilter,
+          callback: function($$v) {
+            _vm.subjectFilter = $$v
+          },
+          expression: "subjectFilter"
+        }
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-danger text-sm" }, [
+        _vm._v(_vm._s(_vm.errors.first("subjectFilter")))
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "vx-row" }, [
@@ -566,7 +618,7 @@ var render = function() {
                 {
                   staticClass: "mt-2",
                   attrs: { disabled: !_vm.validateForm },
-                  on: { click: _vm.SaveStudent }
+                  on: { click: _vm.SaveTeacher }
                 },
                 [_vm._v("Submit")]
               ),

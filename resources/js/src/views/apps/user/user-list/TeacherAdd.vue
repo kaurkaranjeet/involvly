@@ -74,28 +74,28 @@
    
   
 
-   <vue-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
-      data-vv-validate-on="change"></vue-select>
-      <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
+    <vue-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
+    data-vv-validate-on="change"></vue-select>
+    <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span> 
 
- 
-   
-  
-
-  <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"   name="city"  v-validate="'required'"
+      <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"   name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
-    <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
-  
- 
-<vue-select  :options="classoptions"   :clearable="false"  v-model="classFilter" class="w-full mt-6"  >
+      <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
+
+
+      <vue-select  :options="classoptions"   :clearable="false"  v-model="classFilter" class="w-full mt-6" @input="getSubjects" >
+
+      </vue-select>
+<span class="text-danger text-sm">{{ errors.first('classFilter') }}</span>
+<vue-select  :options="Subjectoptions"   :clearable="false"  v-model="subjectFilter" class="w-full mt-6"   >
     
 </vue-select>
-<span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
+<span class="text-danger text-sm">{{ errors.first('subjectFilter') }}</span>
 
   <div class="vx-row">
       <div class="vx-col w-full">
         <div class="mt-8 flex flex-wrap items-center justify-end">
-      <vs-button class="mt-2" @click="SaveStudent"  :disabled="!validateForm" >Submit</vs-button>
+      <vs-button class="mt-2" @click="SaveTeacher"  :disabled="!validateForm" >Submit</vs-button>
       <vs-button color="warning" type="border" class="ml-4 mt-2" @click="reset_data">Reset</vs-button>
    </div>
  </div>
@@ -129,8 +129,10 @@ export default {
       stateFilteroption:[],
       cityoptions:[],
       classoptions:[],
+      Subjectoptions:[],      
+      subjectFilter: { label: 'Select Subject', value: '0' },
       stateFilter: { label: 'Select State*', value: '0' },
-       classFilter: { label: 'Select Class', value: '0' },
+      classFilter: { label: 'Select Class', value: '0' },
       cityFilter: { label: 'Select city*', value: '0' }, 
     }
   },
@@ -138,7 +140,7 @@ export default {
     validateForm() {
       //console.log(this.errors)
       this.$vs.loading.close();
-       return !this.errors.any() && this.firstname !== '' && this.lastname !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.classFilter.value !== '0'
+       return !this.errors.any() && this.firstname !== '' && this.lastname !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0'
 
     },
   },
@@ -160,68 +162,7 @@ export default {
       this.stateFilter= { label: 'Select State', value: '0' }
       this.cityFilter={ label: 'Select city', value: '0' }     
     },
-    SaveStudent() {
-
-      var code = {
-        first_name: this.firstname,
-        last_name: this.lastname,
-        email: this.email,
-        password: this.password,
-        type_of_schooling: 'school',
-        country:'United States',
-        school_id: localStorage.getItem('school_id'),
-        city_id:this.cityFilter.value,
-        state_id:this.stateFilter.value,
-        class_code:this.classFilter.value,
-          role_id:2
-      };
-     // console.log("adddata",code);
-      // If form is not validated return
-      if (!this.validateForm) return;
-      // Loading
-     this.$vs.loading();
-      this.$store
-        .dispatch("userManagement/SaveStudent", code)
-        .then((res) => {
-          this.$vs.loading.close();
-
-          this.$router
-            .push(`/apps/user/listofstudents`)
-            .catch(() => {});
-            if(res.data.error){
-          this.$vs.notify({
-            title: "Error",
-            text: res.data.message,
-            iconPack: "feather",
-            icon: "icon-alert-circle",
-            color: "danger",
-          });
-
-            }else{
-              this.reset_data();
-
-
-          this.$vs.notify({
-            color: "success",
-            title: "Success",
-            text: "Student added successfully!",
-            iconPack: "feather",
-            icon: "icon-alert-circle",
-          });
-        }
-        })
-
-        .catch((error) => {
-          this.$vs.loading.close();
-          this.$vs.notify({
-            title: "Error",
-            text: error,
-            iconPack: "feather",
-            icon: "icon-alert-circle",
-            color: "danger",
-          });
-        });
-    },
+    
 
     getCities(a){
        this.cityFilter= { label: 'Select city', value: '' };
@@ -241,7 +182,89 @@ this.$http
         console.log(error);
       });
     },
+    getSubjects(a){
+     this.subjectFilter= { label: 'Select Subject', value: '' };
+     this.Subjectoptions=[];
+     this.$http
+     .post("/api/auth/manage-subjects/"+a.value)
+     .then(response => {
+      var data=response.data.subjects;
+      for ( var index in data ) {
+       let newobj={}
+       newobj.label=data[index].subject_name;
+       newobj.value=data[index].id;
+       this.Subjectoptions.push( newobj );
+     }
+   })
+     .catch(error => {
+      console.log(error);
+    });
+   },
+   SaveTeacher() {
 
+    var code = {
+      first_name: this.firstname,
+      last_name: this.lastname,
+      email: this.email,
+      password: this.password,
+      type_of_schooling: 'school',
+      country:'United States',
+      school_id: localStorage.getItem('school_id'),
+      city_id:this.cityFilter.value,
+      state_id:this.stateFilter.value,
+      class_id:this.classFilter.value,
+      role_id:4,
+      subject_id:this.subjectFilter.value,
+
+    };
+
+      // If form is not validated return
+      if (!this.validateForm) return;
+      if(this.classFilter.value!=""){
+        if(this.subjectFilter.value=""){
+         alert( "Please subject first");
+         return false;
+       }
+     }
+      // Loading
+      this.$vs.loading();
+      this.$store
+      .dispatch("userManagement/SaveTeacher", code)
+      .then((res) => {
+        this.$vs.loading.close();
+        if(res.data.error){
+          this.$vs.notify({
+            title: "Error",
+            text: res.data.message,
+            iconPack: "feather",
+            icon: "icon-alert-circle",
+            color: "danger",
+          });
+
+        }else{
+          this.$vs.notify({
+            color: "success",
+            title: "Success",
+            text: "Teacher added successfully!",
+            iconPack: "feather",
+            icon: "icon-alert-circle",
+          });         
+           /*this.$router
+            .push(`/apps/user/listofstudents`)
+            .catch(() => {});*/
+          }
+        })
+      .catch((error) => {
+        this.$vs.loading.close();
+        this.$vs.notify({
+          title: "Error",
+          text: error,
+          iconPack: "feather",
+          icon: "icon-alert-circle",
+          color: "danger",
+        });
+      });
+    }
   },
   created() {
      if (!moduleUserManagement.isRegistered) {
@@ -280,7 +303,7 @@ this.$http
         for ( var index in data ) {
          let newobj={}
          newobj.label=data[index].class_name;
-         newobj.value=data[index].class_code;
+         newobj.value=data[index].id;
         this.classoptions.push( newobj );
        }
       })
