@@ -94,7 +94,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             'title' =>'Involvvely',
             'body' => $message,
             'sound' => 'default',
-            "click_action":"FLUTTER_NOTIFICATION_CLICK",
+            "click_action"=>"FLUTTER_NOTIFICATION_CLICK",
             'badge' => '1'
         ];
         $extraNotificationData = ["body" => $notification,"title" =>$message,"notify_type"=>$notify_type];
@@ -105,7 +105,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             'notification' => $notification,
              'priority'=>'high',
             'data' => $extraNotificationData,
-            "click_action":"FLUTTER_NOTIFICATION_CLICK"
+            "click_action"=>"FLUTTER_NOTIFICATION_CLICK"
 
         ];
          $headers = [
