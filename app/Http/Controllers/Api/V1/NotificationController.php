@@ -27,9 +27,9 @@ class NotificationController extends Controller {
 	}
 	else{
 		if($request->type=='school_notification'){
-			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('notification_type' , 'school_notification')->orderBy('id', 'DESC')->get();
+			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('type' , 'school_notification')->orderBy('id', 'DESC')->get();
 		}else{
-			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('notification_type' , 'social_notification')->orderBy('id', 'DESC')->get();
+			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->get();
 		}
 	
 if(count($notifications)>0){
