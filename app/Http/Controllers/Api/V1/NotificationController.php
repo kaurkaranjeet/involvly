@@ -26,7 +26,12 @@ class NotificationController extends Controller {
 		return response()->json(array('errors' => $validator->errors(),'error' => true));
 	}
 	else{
-	$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->orderBy('id', 'DESC')->get();
+		if($request->type=='school_notification'){
+			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('notification_type' , 'school_notification')->orderBy('id', 'DESC')->get();
+		}else{
+			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('notification_type' , 'social_notification')->orderBy('id', 'DESC')->get();
+		}
+	
 if(count($notifications)>0){
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 }else{
@@ -38,6 +43,9 @@ if(count($notifications)>0){
 	}
 
 }
+
+
+
 
 }
 
