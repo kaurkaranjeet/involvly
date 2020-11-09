@@ -192,15 +192,6 @@ public function GetComments(Request $request){
     $flight->like=$request->like;
     $flight->save();
   // total likes
-  /* $results = DB::select( DB::raw("select count(*) as total_likes from `like_unlike` where `post_id` = ".$request->stream_id." and `like` = 1") );
-
-   
-           if(isset($results[0])){
-            $flight->total_likes=$results[0]->total_likes;
-        }
-        else{
-             $flight->total_likes=0;
-        }*/
 
         if($request->like=='1'){
          // $like='liked';
@@ -220,13 +211,13 @@ public function GetComments(Request $request){
         ELSE FALSE END)
         AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('id', $request->post_id)->orderBy('id', 'DESC')->first();
        $this->pusher->trigger('count-channel', 'like_count', $posts);
-       /*if($notify_id==0){
-        // send notification
-          $user=$flight->Streamuser($request->stream_id);
-         $message= $flight->User->name .' has '.$like.' your video';
-         Notification::create(['user_id'=>$user->id,'notification_message'=>$message,'type'=>'like','is_follow'=>0,'stream_id'=> $request->stream_id,'notify_id'=>$request->user_id]);  
-       }   */    
-
+       $post_user=Post::with('user')->where('id',$request->post_id)->first();
+        // send notification         
+       $message= $post_user->user->name .' has liked your post.';
+       if(!empty($post_user->user->device_token)){
+        SendAllNotification($post_user->user->device_token,$message,'like_post'); 
+        Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'like','notification_type'=>'social_notification']);  
+      }
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 
 
