@@ -103,7 +103,7 @@ Route::prefix('v1')->group(function () {
 Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications');
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
-    //Task
+    // Schedule Task
     Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
@@ -125,6 +125,8 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('upload_assignment_by_student', 'Api\V1\AssignmentController@UploadAssignmentByStudents');
     Route::post('get_uploaded_assignment_by_student', 'Api\V1\AssignmentController@GetUploadAssignmentByStudents');
     Route::post('get_pending_assignment_by_student', 'Api\V1\AssignmentController@GetPendingAssignmentByStudents');
+    // Timetable
+    Route::post('add_timetable', 'Api\V1\TimetableController@AddTimetable');
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
