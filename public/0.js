@@ -192,8 +192,19 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  removeRecord: function removeRecord(_ref8, userId) {
+  SaveParent: function SaveParent(_ref8, data) {
     var commit = _ref8.commit;
+    console.log(data);
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/v1/signup_parent", data).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  removeRecord: function removeRecord(_ref9, userId) {
+    var commit = _ref9.commit;
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/auth/delete-user/".concat(userId)).then(function (response) {
         commit('REMOVE_RECORD', userId);
@@ -204,8 +215,8 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   //admin functions 
-  fetchAdminUsers: function fetchAdminUsers(_ref9) {
-    var commit = _ref9.commit;
+  fetchAdminUsers: function fetchAdminUsers(_ref10) {
+    var commit = _ref10.commit;
     var x = localStorage.getItem('accessToken'); //  User Reward Card
 
     var requestOptions = {
@@ -224,8 +235,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchSchoolAdmins: function fetchSchoolAdmins(_ref10) {
-    var commit = _ref10.commit;
+  fetchSchoolAdmins: function fetchSchoolAdmins(_ref11) {
+    var commit = _ref11.commit;
     var x = localStorage.getItem('accessToken'); //  User Reward Card
 
     var requestOptions = {
@@ -244,8 +255,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchAdminStudents: function fetchAdminStudents(_ref11) {
-    var commit = _ref11.commit;
+  fetchAdminStudents: function fetchAdminStudents(_ref12) {
+    var commit = _ref12.commit;
     var x = localStorage.getItem('accessToken'); //  User Reward Card
 
     var requestOptions = {
@@ -264,8 +275,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  fetchAdminParents: function fetchAdminParents(_ref12) {
-    var commit = _ref12.commit;
+  fetchAdminParents: function fetchAdminParents(_ref13) {
+    var commit = _ref13.commit;
     var x = localStorage.getItem('accessToken'); //  User Reward Card
 
     var requestOptions = {
