@@ -73591,6 +73591,27 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         authRequired: true
       }
     }, {
+      path: '/apps/user/add_new_parent',
+      name: 'add-parent',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(49)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentAdd.vue */ "./resources/js/src/views/apps/user/user-list/ParentAdd.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, {
+          title: 'Parents',
+          url: '/apps/user/listofparents'
+        }, {
+          title: 'Add',
+          active: true
+        }],
+        pageTitle: 'Add New Parent',
+        rule: 'editor',
+        authRequired: true
+      }
+    }, {
       path: '/apps/user/listofschooladmins',
       name: 'list-admins-school',
       component: function component() {

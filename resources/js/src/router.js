@@ -462,6 +462,23 @@ const router = new Router({
                 },
 
                 {
+                    path: '/apps/user/add_new_parent',
+                    name: 'add-parent',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/ParentAdd.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Parents', url: '/apps/user/listofparents' },
+                            { title: 'Add', active: true }
+                        ],
+                        pageTitle: 'Add New Parent',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+
+                {
                     path: '/apps/user/listofschooladmins',
                     name: 'list-admins-school',
                     component: () =>
