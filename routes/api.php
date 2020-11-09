@@ -128,7 +128,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     // Timetable
     Route::post('add_timetable', 'Api\V1\TimetableController@AddTimetable');
     Route::post('get_timetable', 'Api\V1\TimetableController@getTimetable');
-    Route::post('remove_timetable', 'Api\V1\AssignmentController@RemoveTimetable');
+    Route::post('remove_timetable', 'Api\V1\TimetableController@RemoveTimetable');
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');
     Route::post('get_related_parents', 'Api\V1\ParentController@GetRelatedParents');
