@@ -63,4 +63,17 @@ class TimetableController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
     }
+    //Get timetable List
+    public function getTimetable(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'teacher_id' => 'required|exists:users,id',
+                    'school_id' => 'required|exists:schools,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $timetable = Timetable::with('User')->orderBy('id', 'DESC')->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $timetable), 200);
+        }
+    }
 }
