@@ -19,7 +19,7 @@ Route::prefix('auth')->group(function () {
     // Admin Routes
     Route::post('admin-login', 'UserController@adminLogin');
     Route::any('/manage-admin-users', ['as' => 'manage.teachers', 'uses' => 'UserController@manageAdminUsers']);
-
+  Route::post('signup_teacher', 'TeacherController@TeacherRegister');
     // Create New User
     Route::post('register', 'UserController@register');
     // Login User

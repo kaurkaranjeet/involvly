@@ -6,11 +6,14 @@ use App\User;
 use App\Models\Role;
 use App\Models\ClassCode;
 use App\Models\AssignedTeacher;
+use App\Models\ClassUser;
+
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class TeacherController extends Controller {
@@ -109,6 +112,66 @@ class TeacherController extends Controller {
     return response()->json(compact('data'),200);
       
     }
+
+
+        // Register Student
+    public function TeacherRegister(Request $request){
+      try {
+        DB::beginTransaction();
+
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'first_name' => 'required',
+        'last_name' => 'required',
+        'email' => 'required|unique:users',
+        'password' => 'required',
+        'country' => 'required',
+        'state_id' => 'required|exists:states,id',
+        'city_id' => 'required|exists:cities,id',
+       'school_id' => 'required'
+      ]);
+       
+       if ($validator->fails()) {
+         throw new Exception($validator->errors()->first());
+       }  
+       else{ 
+       // echo $request->school_id;die;
+
+        $student_obj=new User;
+        $addUser = $student_obj->store($request);
+       // DB::commit();
+        $token = JWTAuth::fromUser($addUser);
+        $addUser->token=$token;   
+
+        DB::commit();
+        //clascodes
+        if(!empty( $addUser )){
+         if(!empty($request->class_id)) {
+          $class_code=  ClassCode::where('id',$request->class_id)->first();
+          if(!empty($class_code)){
+            AssignedTeacher::create(['class_id'=>$class_code->id,'subject_id'=>$request->subject_id,'teacher_id'=>$addUser->id,'school_id'=>$addUser->school_id]);
+            $classobj=  ClassUser::create(
+              ['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
+
+          }else{
+           return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
+         }
+       }
+          
+         return response()->json(array('error' => false, 'data' =>$addUser ), 200);
+           DB::commit();
+       }
+       else{
+         throw new Exception('Something went wrong');
+       }
+     }
+   } catch (\Exception $e) {
+    DB::rollback();
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+   }
+
+ }
+
 
 }
 
