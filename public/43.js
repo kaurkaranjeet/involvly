@@ -177,6 +177,7 @@ __webpack_require__.r(__webpack_exports__);
       this.Subjectoptions = [];
       this.classoptions = [];
       this.cityoptions = [];
+      this.Subjectoptions = [];
       this.schooloptions = [];
       this.stateFilter = {
         label: 'Select State',
@@ -184,6 +185,14 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.cityFilter = {
         label: 'Select city',
+        value: '0'
+      };
+      this.classFilter = {
+        label: 'Select Class',
+        value: '0'
+      };
+      this.subjectFilter = {
+        label: 'Select Subject',
         value: '0'
       };
     },
@@ -278,10 +287,8 @@ __webpack_require__.r(__webpack_exports__);
             iconPack: "feather",
             icon: "icon-alert-circle"
           });
-          /*this.$router
-           .push(`/apps/user/listofstudents`)
-           .catch(() => {});*/
 
+          _this3.$router.push("/apps/user/user-list")["catch"](function () {});
         }
       })["catch"](function (error) {
         _this3.$vs.loading.close();
