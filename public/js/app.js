@@ -73581,7 +73581,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           url: '/'
         }, {
           title: 'Teachers',
-          url: 'apps/user/user-list'
+          url: '/apps/user/user-list'
         }, {
           title: 'Add',
           active: true
