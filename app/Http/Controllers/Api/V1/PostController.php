@@ -133,7 +133,7 @@ public function GetPostHomefeed(Request $request){
        if(!empty($post_user->user->device_token)){
         SendAllNotification($post_user->user->device_token,$message,'comment_post');          
       }
-       Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'comment','notification_type'=>'social_notification']);
+       Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment']);
 
         $this->pusher->trigger('comment-channel', 'add_comment', $comments);
 
@@ -224,7 +224,7 @@ public function GetComments(Request $request){
        if(!empty($post_user->user->device_token)){
         SendAllNotification($post_user->user->device_token,$message,'like_post');        
       }
-      Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'like','notification_type'=>'social_notification']);  
+      Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like']);  
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 
 
