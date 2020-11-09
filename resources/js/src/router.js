@@ -452,7 +452,7 @@ const router = new Router({
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
-                            { title: 'Teachers', url: 'apps/user/user-list' },
+                            { title: 'Teachers', url: '/apps/user/user-list' },
                             { title: 'Add', active: true }
                         ],
                         pageTitle: 'Add New Teacher',
