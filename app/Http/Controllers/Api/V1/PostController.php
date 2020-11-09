@@ -12,6 +12,7 @@ use App\Models\LikeUnlike;
 use App\Events\ReplyEvent;
 use App\Events\CommentCountEvent;
 use App\Models\Comment;
+use App\Models\Notification;
 use App\Models\CommentReply;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Validator;
