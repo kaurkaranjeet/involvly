@@ -76,4 +76,22 @@ class TimetableController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $timetable), 200);
         }
     }
+
+    //remove TIMETABLE
+    public function RemoveTimetable(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+                    'timetable_id' => 'required|exists:timetables,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $delete = Timetable::where('id', $request->timetable_id)->delete();
+            if ($delete) {
+                return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+            }
+        }
+    }
 }
