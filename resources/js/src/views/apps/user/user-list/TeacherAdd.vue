@@ -151,16 +151,16 @@ export default {
       this.lastname=''
       this.email= ''
       this.password= ''
-
       this.confirm_password= ''
-
-     this.Subjectoptions=[]
-      
-     this.classoptions=[]
+      this.Subjectoptions=[]      
+      this.classoptions=[]
       this.cityoptions=[]
+      this.Subjectoptions=[]
       this.schooloptions=[]
       this.stateFilter= { label: 'Select State', value: '0' }
-      this.cityFilter={ label: 'Select city', value: '0' }     
+      this.cityFilter={ label: 'Select city', value: '0' } 
+      this.classFilter={ label: 'Select Class', value: '0' } 
+      this.subjectFilter={ label: 'Select Subject', value: '0' }       
     },
     
 
@@ -248,10 +248,11 @@ this.$http
             text: "Teacher added successfully!",
             iconPack: "feather",
             icon: "icon-alert-circle",
-          });         
-           /*this.$router
-            .push(`/apps/user/listofstudents`)
-            .catch(() => {});*/
+          });
+
+           this.$router
+            .push(`/apps/user/user-list`)
+            .catch(() => {});
           }
         })
       .catch((error) => {
