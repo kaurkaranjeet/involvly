@@ -174,6 +174,8 @@ __webpack_require__.r(__webpack_exports__);
       this.email = '';
       this.password = '';
       this.confirm_password = '';
+      this.Subjectoptions = [];
+      this.classoptions = [];
       this.cityoptions = [];
       this.schooloptions = [];
       this.stateFilter = {
@@ -212,10 +214,7 @@ __webpack_require__.r(__webpack_exports__);
     getSubjects: function getSubjects(a) {
       var _this2 = this;
 
-      this.subjectFilter = {
-        label: 'Select Subject',
-        value: ''
-      };
+      // this.subjectFilter= { label: 'Select Subject', value: '0' };
       this.Subjectoptions = [];
       this.$http.post("/api/auth/manage-subjects/" + a.value).then(function (response) {
         var data = response.data.subjects;

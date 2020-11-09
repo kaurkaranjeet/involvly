@@ -154,9 +154,9 @@ export default {
 
       this.confirm_password= ''
 
-
+     this.Subjectoptions=[]
       
-    
+     this.classoptions=[]
       this.cityoptions=[]
       this.schooloptions=[]
       this.stateFilter= { label: 'Select State', value: '0' }
@@ -183,7 +183,7 @@ this.$http
       });
     },
     getSubjects(a){
-     this.subjectFilter= { label: 'Select Subject', value: '' };
+    // this.subjectFilter= { label: 'Select Subject', value: '0' };
      this.Subjectoptions=[];
      this.$http
      .post("/api/auth/manage-subjects/"+a.value)
