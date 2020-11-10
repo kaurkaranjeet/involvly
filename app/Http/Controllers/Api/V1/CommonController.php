@@ -101,8 +101,7 @@ WHERE class_id= class_code_subject .class_code_id AND
         AS already_join  ,( SELECT name FROM assigned_teachers INNER JOIN users
  ON users.id= assigned_teachers.teacher_id WHERE
  class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name, class_code_subject.*, assigned_teachers.teacher_id")))->with('subjects')
-                                ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
-                                ->where('class_code_id', $request->class_id)->where('assigned_teachers.subject_id', 'class_code_subject.subject_id')->groupBy('class_code_subject.id')->get();
+                                ->where('class_code_id', $request->class_id)->groupBy('subject_id')->get();
 
             
 
