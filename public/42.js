@@ -139,7 +139,7 @@ __webpack_require__.r(__webpack_exports__);
       cityoptions: [],
       ChildFilteroption: [],
       ChildFilter: {
-        label: 'Select Associated Child',
+        label: 'Select State*',
         value: '0'
       },
       stateFilter: {
@@ -188,6 +188,8 @@ __webpack_require__.r(__webpack_exports__);
     SaveParent: function SaveParent() {
       var _this = this;
 
+      alert(this.cityFilter.value);
+      return false;
       var code = {
         first_name: this.firstname,
         last_name: this.lastname,
@@ -198,6 +200,7 @@ __webpack_require__.r(__webpack_exports__);
         school_id: localStorage.getItem('school_id'),
         city_id: this.cityFilter.value,
         state_id: this.stateFilter.value,
+        student_id: this.ChildFilter.value,
         role_id: 3
       }; // console.log("adddata",code);
       // If form is not validated return
@@ -287,12 +290,14 @@ __webpack_require__.r(__webpack_exports__);
     }); // Fetch class
 
     var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id'); //  User Reward Card
+    var user_id = localStorage.getItem('user_id');
+    var school_id = localStorage.getItem('school_id'); //  User Reward Card
 
     var requestOptions = {
       headers: {
         'Authorization': 'Bearer ' + x
-      }
+      },
+      school_id: school_id
     };
     this.$http.post('/api/auth/manage-classes/' + user_id, requestOptions).then(function (response) {
       var data = response.data.classes;
@@ -303,6 +308,19 @@ __webpack_require__.r(__webpack_exports__);
         newobj.value = data[index].class_code;
 
         _this3.classoptions.push(newobj);
+      }
+    })["catch"](function (error) {
+      console.log(error);
+    });
+    this.$http.post("/api/auth/list_students", requestOptions).then(function (response) {
+      var data = response.data.data;
+
+      for (var index in data) {
+        var newobj = {};
+        newobj.label = data[index].name;
+        newobj.value = data[index].id;
+
+        _this3.ChildFilteroption.push(newobj);
       }
     })["catch"](function (error) {
       console.log(error);
@@ -553,11 +571,12 @@ var render = function() {
         staticClass: "w-full mt-6",
         attrs: {
           options: _vm.ChildFilteroption,
-          name: "student_id[]",
-          clearable: false,
-          "data-vv-validate-on": "change"
+          name: "student_id",
+          clearable: true,
+          placeholder: " Select Associated Child",
+          "data-vv-validate-on": "change",
+          multiple: ""
         },
-        on: { input: _vm.getStudents },
         model: {
           value: _vm.ChildFilter,
           callback: function($$v) {

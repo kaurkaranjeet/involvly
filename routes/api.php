@@ -34,7 +34,7 @@ Route::prefix('auth')->group(function () {
     Route::get('requests/{id}', 'UserController@getRequest');
     Route::get('teacher_requests', 'UserController@getteacherRequest');
     Route::get('web_school_admins', 'UserController@WebSchoolAdmins');
-     
+    Route::post('list_students', 'SubjectController@GetStudents');
     Route::get('student_requests/{id}', 'UserController@getStudentRequest');
     Route::get('parent_requests/{id}', 'UserController@getParentRequest');
 
