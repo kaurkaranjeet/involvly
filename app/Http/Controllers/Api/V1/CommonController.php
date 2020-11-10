@@ -90,10 +90,9 @@ class CommonController extends Controller {
         AND student_id= ".$request->student_id." AND subject_id = class_code_subject. subject_id
         ) THEN TRUE
         ELSE FALSE END)
-        AS already_join  , class_code_subject.*, assigned_teachers.teacher_id, users.name")))->with('subjects')
+        AS already_join  ,(SELECT name from users WHERE users.id=assigned_teachers.teacher_id) as name class_code_subject.*, assigned_teachers.teacher_id, users.name")))->with('subjects')
                                 ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
-                                ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
-                                ->where('class_code_id', $request->class_id)->groupBy('id')->get();
+                                ->where('class_code_id', $request->class_id)->groupBy('subject_id')->get();
 
             
 
