@@ -7,16 +7,36 @@ use App\Models\Role;
 use App\Models\ClassCode;
 use App\Models\AssignedTeacher;
 use App\Models\ClassUser;
+use App\Models\ClassSubjects;
 
+use Pusher\Pusher;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Exception;
+use App\Events\AssignEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class TeacherController extends Controller {
+
+
+   public function __construct()
+    {
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'encrypted' => true
+        );
+        $this->pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'), 
+            $options
+        );
+
+       
+    }
 
     public function Approveteacher($id) {
         $data = User::where('id', $id)->update(['status' => '1']);
@@ -90,6 +110,19 @@ class TeacherController extends Controller {
     $data->save();
 
     $data->is_added=0;
+    if(!empty($request->student_id)){
+    $states = ClassSubjects::select((DB::raw("( CASE WHEN EXISTS (
+      SELECT *
+      FROM joined_student_classes
+      WHERE class_id = class_code_subject.class_code_id
+      AND student_id= ".$request->student_id." AND subject_id = class_code_subject. subject_id
+      ) THEN TRUE
+      ELSE FALSE END)
+      AS already_join  , class_code_subject.*, assigned_teachers.teacher_id, users.name")))->with('subjects')
+    ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
+    ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')->where('assigned_teachers.id', $data->id)->groupBy('subject_id')->get();
+     $this->pusher->trigger('assign-channel', 'assign_teacher', $states);
+   }
     return response()->json(compact('data'),200);
       
     }
