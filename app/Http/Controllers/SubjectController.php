@@ -187,14 +187,15 @@ class SubjectController extends Controller {
   if($validator->fails()){
           return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
   }
-  if(!empty($request->get('school_id'))){
+ $count_subject= Subject::where('subject_name', 'like', '' .  $request->get('subject_name') . '')->where('school_id',$request->school_id)->count();
+  if($count_subject==0){
     $subject = Subject::create([
       'subject_name' => $request->get('subject_name'),
       'school_id' => $request->get('school_id'),
   ]);
-  return response()->json(compact('subject'),201);
+   return response()->json([ 'error' =>false, 'message'=>'Subject added successfully','subject'=>$subject], 200);
     }else{
-      return response()->json(['message' => 'id not found'], 200);
+      return response()->json(['error' =>true, 'message'=>'Subject ID already exist'], 200);
     }
   }
 }
