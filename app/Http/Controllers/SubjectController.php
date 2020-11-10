@@ -195,7 +195,7 @@ class SubjectController extends Controller {
   ]);
    return response()->json([ 'error' =>false, 'message'=>'Subject added successfully','subject'=>$subject], 200);
     }else{
-      return response()->json(['error' =>true, 'message'=>'Subject ID already exist'], 200);
+      return response()->json(['error' =>true, 'message'=>'Subject name already exist'], 200);
     }
   }
 }
