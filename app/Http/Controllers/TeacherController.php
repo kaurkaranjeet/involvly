@@ -121,7 +121,7 @@ class TeacherController extends Controller {
       ELSE FALSE END)
       AS already_join  , class_code_subject.*, assigned_teachers.teacher_id, users.name")))->with('subjects')
     ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
-    ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')->where('assigned_teachers.id', $data->id)->groupBy('subject_id')->get();
+    ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')->where('assigned_teachers.id', $data->id)->groupBy('subject_id')->first();
      $this->pusher->trigger('assign-channel', 'assign_teacher', $states);
   // }
     return response()->json(compact('data'),200);
