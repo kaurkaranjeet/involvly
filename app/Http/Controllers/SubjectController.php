@@ -198,6 +198,27 @@ class SubjectController extends Controller {
       return response()->json(['error' =>true, 'message'=>'Subject name already exist'], 200);
     }
   }
+
+
+   public function GetStudents(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'school_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            throw new Exception($validator->errors()->first());
+        } else {
+            DB::enableQueryLog();
+            //  $students=User::with('SchoolDetail')
+
+            $students = User::with('SchoolDetail:id,school_name')
+                            ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
+                            ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
+                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('users.school_id', $request->school_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $students), 200);
+        }
+    }
 }
 
 ?>

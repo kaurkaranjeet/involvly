@@ -93,7 +93,7 @@ class CommonController extends Controller {
         AS already_join  , class_code_subject.*, assigned_teachers.teacher_id, users.name")))->with('subjects')
                                 ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
                                 ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')
-                                ->where('class_code_id', $request->class_id)->groupBy('subject_id')->get();
+                                ->where('class_code_id', $request->class_id)->groupBy('class_code_id')->get();
 
             
 

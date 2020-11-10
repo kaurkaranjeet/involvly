@@ -160,6 +160,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
  // Store Module
@@ -332,6 +335,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    addStudentdata: function addStudentdata() {
+      this.$router.push("/apps/user/add_new_parent")["catch"](function () {});
+    },
     setColumnFilter: function setColumnFilter(column, val) {
       var filter = this.gridApi.getFilterInstance(column);
       var modelObj = null;
@@ -522,6 +528,22 @@ var render = function() {
     "div",
     { attrs: { id: "page-user-list" } },
     [
+      _c(
+        "div",
+        { staticClass: "col-md-12 bg-light text-right pd-bt" },
+        [
+          _c(
+            "vs-button",
+            {
+              attrs: { color: "primary", type: "filled" },
+              on: { click: _vm.addStudentdata }
+            },
+            [_vm._v("Add New Parent")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c(
         "vx-card",
         {
