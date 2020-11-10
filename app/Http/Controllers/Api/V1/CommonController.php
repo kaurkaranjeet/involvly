@@ -94,7 +94,7 @@ class CommonController extends Controller {
  class_id= class_code_subject .class_code_id AND 
  subject_id=class_code_subject .subject_id) as teacher_id,  (SELECT name from users WHERE users.id=assigned_teachers.teacher_id) as name, class_code_subject.*")))->with('subjects')
                                 
-                                ->where('class_code_id', $request->class_id)->->get();
+                                ->where('class_code_id', $request->class_id)->get();
 
             
 
