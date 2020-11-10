@@ -110,19 +110,20 @@ class TeacherController extends Controller {
     $data->save();
 
     $data->is_added=0;
-    if(!empty($request->student_id)){
+    $student_id=0;
+   // if(!empty($request->student_id)){
     $states = ClassSubjects::select((DB::raw("( CASE WHEN EXISTS (
       SELECT *
       FROM joined_student_classes
       WHERE class_id = class_code_subject.class_code_id
-      AND student_id= ".$request->student_id." AND subject_id = class_code_subject. subject_id
+      AND student_id= ".$student_id." AND subject_id = class_code_subject. subject_id
       ) THEN TRUE
       ELSE FALSE END)
       AS already_join  , class_code_subject.*, assigned_teachers.teacher_id, users.name")))->with('subjects')
     ->leftJoin('assigned_teachers', 'class_code_subject.subject_id', '=', 'assigned_teachers.subject_id')
     ->leftJoin('users', 'assigned_teachers.teacher_id', '=', 'users.id')->where('assigned_teachers.id', $data->id)->groupBy('subject_id')->get();
      $this->pusher->trigger('assign-channel', 'assign_teacher', $states);
-   }
+  // }
     return response()->json(compact('data'),200);
       
     }
