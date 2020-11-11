@@ -11,6 +11,7 @@ use App\Mail\SendMailable;
 use App\User;
 use App\Models\ClassCode;
 use App\Models\ClassUser;
+use App\Models\UnapproveStudent;
 use App\Models\ParentTask;
 use App\Models\ParentTaskAssigned;
 use App\Models\ParentChildrens;
@@ -74,6 +75,22 @@ class ParentController extends Controller {
                                         'relationship' => $request->relationship
                             ]);
                         }
+                    }
+                     // Store unapprove Student
+                    if($request->has('full_name')){
+                     $data = [];
+                     if($request->hasfile('documents'))
+                     {                     
+                      foreach($request->file('documents') as $key=>$file)
+                      {
+                        $name=time().$key.'.'.$file->getClientOriginalExtension();    
+                        $file->move(public_path().'/documents/', $name);      
+                        $data[$key] = URL::to('/').'/documents/'.$name;  
+                      }
+                    }
+                      
+                 $unapprove_student= UnapproveStudent::create(['full_name'=>$request->full_name,'parent_id'=>$addUser->id,'school_id'=>$request->school_id,'documents'=>$data,'status'=>0,'class_code_id'=>$request->class_id]);
+
                     }
                    $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$addUser->id)->first();
                    if(isset($classobj)){
@@ -140,7 +157,7 @@ class ParentController extends Controller {
         'parent_id' => 'required',
         'school_id' => 'required_if:type_of_schooling, =,school',
         //'class_code' => 'required_if:type_of_schooling, =,school',
-        'student_id' => 'required_if:type_of_schooling, =,school'
+       // 'student_id' => 'required_if:type_of_schooling, =,school'
       ]);
        
        if ($validator->fails()) {
@@ -176,8 +193,28 @@ class ParentController extends Controller {
         if(isset($request->school_id)){
         User::where('id',$request->parent_id)->whereNull('school_id')->update(['school_id' => $request->school_id]);
     }
+  }
+
+
+   // Store unapprove Student
+                    if($request->has('full_name')){
+                     $data = [];
+                     if($request->hasfile('documents'))
+                     {                     
+                      foreach($request->file('documents') as $key=>$file)
+                      {
+                        $name=time().$key.'.'.$file->getClientOriginalExtension();    
+                        $file->move(public_path().'/documents/', $name);      
+                        $data[$key] = URL::to('/').'/documents/'.$name;  
+                      }
+                    }
+                      
+                 $unapprove_student= UnapproveStudent::create(['full_name'=>$request->full_name,'parent_id'=>$addUser->id,'school_id'=>$request->school_id,'documents'=>$data,'status'=>0,'class_code_id'=>$request->class_id]);
+
+                    }
+
         return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
-      }
+      
    }
 
    } catch (\Exception $e) {
