@@ -119,7 +119,12 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $teachers = ParentChildrens::with('ChildDetails')->where('parent_id', $request->parent_id)->get();
+//            $teachers = ParentChildrens::with('ChildDetails')->where('parent_id', $request->parent_id)->get();
+            $teachers = ParentChildrens::with('ChildDetails')
+                            ->leftJoin('user_class_code', 'parent_childrens.children_id', '=', 'user_class_code.user_id')
+                            ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
+                            ->select('parent_childrens.*','user_class_code.class_id','class_code.class_name')
+                            ->where('parent_id', $request->parent_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $teachers), 200);
         }
     }
