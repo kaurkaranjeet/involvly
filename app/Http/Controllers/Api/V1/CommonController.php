@@ -89,7 +89,8 @@ WHERE class_id= class_code_subject .class_code_id AND
  ON users.id= assigned_teachers.teacher_id WHERE
  class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name
  from class_code_subject LEFT JOIN assigned_teachers ON assigned_teachers.subject_id=class_code_subject.subject_id
- where class_code_id=12 AND assigned_teachers.subject_id= class_code_subject.subject_id GROUP BY class_code_subject.id*/
+ where class_code_id=12 AND assigned_teachers.subject_id= class_code_subject.subject_id GROUP BY class_code_subject.id
+*/
 
                 $states = ClassSubjects::select((DB::raw("( CASE WHEN EXISTS (
         SELECT *
@@ -100,7 +101,7 @@ WHERE class_id= class_code_subject .class_code_id AND
         ELSE FALSE END)
         AS already_join  ,( SELECT name FROM assigned_teachers INNER JOIN users
  ON users.id= assigned_teachers.teacher_id WHERE
- class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name, class_code_subject.*, assigned_teachers.teacher_id")))->with('subjects')
+ class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name, class_code_subject.*")))->with('subjects')
                                 ->where('class_code_id', $request->class_id)->groupBy('subject_id')->get();
 
             
