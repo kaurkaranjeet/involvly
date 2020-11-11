@@ -131,10 +131,11 @@ public function GetPostHomefeed(Request $request){
          $post_user=Post::with('user')->where('id',$request->post_id)->first();
         // send notification         
        $message= $comments->User->name .' has commented on your post.';
-       if(!empty($post_user->user->device_token)){
+       if(!empty($post_user->user->device_token)  &&  $post_user->user->id!=$request->user_id){
         SendAllNotification($post_user->user->device_token,$message,'comment_post');          
       }
        Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment']);
+     }
 
         $this->pusher->trigger('comment-channel', 'add_comment', $comments);
 
@@ -220,12 +221,15 @@ public function GetComments(Request $request){
         AS is_like,posts.*")))->with('user')->withCount('likes','comments')->where('id', $request->post_id)->orderBy('id', 'DESC')->first();
        $this->pusher->trigger('count-channel', 'like_count', $posts);
        $post_user=Post::with('user')->where('id',$request->post_id)->first();
-        // send notification         
-       $message= $flight->User->name .' has liked your post.';
-       if(!empty($post_user->user->device_token)){
-        SendAllNotification($post_user->user->device_token,$message,'like_post');        
-      }
-      Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like']);  
+        // send notification    
+       if(!empty($post_user->user->device_token)  &&  $post_user->user->id!=$request->user_id){     
+         $message= $flight->User->name .' has liked your post.';
+         if(!empty($post_user->user->device_token)){
+          SendAllNotification($post_user->user->device_token,$message,'like_post');        
+        }
+
+      Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like']); 
+       } 
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 
 
