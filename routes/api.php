@@ -130,6 +130,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('get_timetable', 'Api\V1\TimetableController@getTimetable');
     Route::post('remove_timetable', 'Api\V1\TimetableController@RemoveTimetable');
     Route::post('fetch_assigned_teachers_by_students', 'Api\V1\TimetableController@FetchAssignedTeachersByStudent');
+    Route::post('fetch_child_by_parents', 'Api\V1\TimetableController@FetchChildByParents');
     
 
     //Route::post('add_report', 'Api\V1\PostController@AddReport');

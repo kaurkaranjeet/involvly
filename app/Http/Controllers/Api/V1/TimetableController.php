@@ -11,6 +11,7 @@ use App\Models\UserClassCode;
 use App\Models\AssignedTeacher;
 use App\Models\ClassSubjects;
 use App\Models\Timetable;
+use App\Models\ParentChildrens;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -105,7 +106,20 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $teachers = AssignedTeacher::with('User')->with('subjects.subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
+            $teachers = AssignedTeacher::with('User')->with('ClassSubjects.subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $teachers), 200);
+        }
+    }
+
+    //FetchChildByParents
+    public function FetchChildByParents(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'parent_id' => 'required|exists:users,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $teachers = ParentChildrens::with('ChildDetails')->where('parent_id', $request->parent_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $teachers), 200);
         }
     }
