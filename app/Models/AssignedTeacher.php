@@ -16,7 +16,7 @@ class AssignedTeacher extends Model {
     }
 
     public function subjects() {
-        return $this->belongsTo('App\Model\ClassSubjects', 'subject_id', 'id');
+        return $this->belongsTo('App\Models\ClassSubjects', 'subject_id', 'id');
     }
 
     public function AssignedClass() {
