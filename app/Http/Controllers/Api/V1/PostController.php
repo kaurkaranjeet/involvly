@@ -205,11 +205,12 @@ public function GetComments(Request $request){
   // total likes
 
         if($request->like=='1'){
-         // $like='liked';
+
+         $like='liked';
          $this->pusher->trigger('like-channelpost', 'like_post', $flight);
        }
        else{
-     //   $like='unliked';
+       $like='disliked';
          $this->pusher->trigger('like-channelpost', 'dislike_post', $flight);
        }
 
@@ -224,8 +225,9 @@ public function GetComments(Request $request){
        $this->pusher->trigger('count-channel', 'like_count', $posts);
        $post_user=Post::with('user')->where('id',$request->post_id)->first();
         // send notification    
-       if(!empty($post_user->user->device_token)  &&  $post_user->user->id!=$request->user_id){     
-         $message= $flight->User->name .' has liked your post.';
+       if($post_user->user->id!=$request->user_id){ 
+
+         $message= $flight->User->name .' has '.$like.' your post.';
          if(!empty($post_user->user->device_token)){
           SendAllNotification($post_user->user->device_token,$message,'like_post');        
         }
