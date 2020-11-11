@@ -18,6 +18,10 @@ class AssignedTeacher extends Model {
     public function ClassSubjects() {
         return $this->belongsTo('App\Models\ClassSubjects', 'subject_id', 'id');
     }
+    
+    public function Subjects() {
+        return $this->belongsTo('App\Models\Subject', 'subject_id', 'id');
+    }
 
     public function AssignedClass() {
         return $this->belongsTo('App\Models\ClassCode', 'class_id', 'id');
