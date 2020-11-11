@@ -106,7 +106,7 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $teachers = AssignedTeacher::with('User')->with('ClassSubjects.subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
+            $teachers = AssignedTeacher::with('User')->with('Subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $teachers), 200);
         }
     }
