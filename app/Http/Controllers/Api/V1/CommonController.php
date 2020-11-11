@@ -99,7 +99,9 @@ WHERE class_id= class_code_subject .class_code_id AND
         AND student_id= ".$request->student_id." AND subject_id = class_code_subject. subject_id
         ) THEN TRUE
         ELSE FALSE END)
-        AS already_join  ,( SELECT name FROM assigned_teachers INNER JOIN users
+        AS already_join  , ( SELECT teacher_id FROM assigned_teachers 
+WHERE class_id= class_code_subject .class_code_id AND
+ subject_id=class_code_subject .subject_id) as teacher_id , ( SELECT name FROM assigned_teachers INNER JOIN users
  ON users.id= assigned_teachers.teacher_id WHERE
  class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name, class_code_subject.*")))->with('subjects')
                                 ->where('class_code_id', $request->class_id)->groupBy('subject_id')->get();

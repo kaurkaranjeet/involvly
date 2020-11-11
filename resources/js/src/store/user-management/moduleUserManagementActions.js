@@ -151,7 +151,7 @@ export default {
     SaveParent({ commit }, data) {
         console.log(data);
         return new Promise((resolve, reject) => {
-            axios.post(`/api/v1/signup_parent`, data)
+            axios.post(`/api/auth/signup_parent`, data)
                 .then((response) => {
 
 

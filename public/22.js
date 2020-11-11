@@ -309,21 +309,18 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    roleFilter: function roleFilter(obj) {
-      this.setColumnFilter('role', obj.value);
+    roleFilter: function roleFilter(obj) {//  this.setColumnFilter('role', obj.value)
     },
     isclassFilter: function isclassFilter(obj) {
       this.setColumnFilter('class_codes', obj.value);
     },
-    statusFilter: function statusFilter(obj) {
-      this.setColumnFilter('status', obj.value);
+    statusFilter: function statusFilter(obj) {// this.setColumnFilter('status', obj.value)
     },
     isVerifiedFilter: function isVerifiedFilter(obj) {
       var val = obj.value === 'all' ? 'all' : obj.value === 'yes' ? 'true' : 'false';
       this.setColumnFilter('is_verified', val);
     },
-    departmentFilter: function departmentFilter(obj) {
-      this.setColumnFilter('department', obj.value);
+    departmentFilter: function departmentFilter(obj) {//  this.setColumnFilter('department', obj.value)
     }
   },
   computed: {
@@ -368,7 +365,7 @@ __webpack_require__.r(__webpack_exports__);
       this.gridApi.setFilterModel(null);
       this.gridApi.onFilterChanged(); // Reset Filter Options
 
-      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = {
+      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = this.isclassFilter = {
         label: 'All',
         value: 'all'
       };

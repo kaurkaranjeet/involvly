@@ -196,7 +196,7 @@ __webpack_require__.r(__webpack_exports__);
     var commit = _ref8.commit;
     console.log(data);
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/v1/signup_parent", data).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].post("/api/auth/signup_parent", data).then(function (response) {
         resolve(response);
       })["catch"](function (error) {
         reject(error);
