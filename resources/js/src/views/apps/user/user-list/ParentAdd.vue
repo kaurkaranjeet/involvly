@@ -85,10 +85,12 @@
   <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"   name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
-    <vue-select  :options="ChildFilteroption"  name="student_id"  :clearable="true"  v-model="ChildFilter" class="w-full mt-6"    v-validate="'required'"   placeholder=" Select Associated Child"
+    <vue-select  :options="ChildFilteroption"  name="student_id[]"  :clearable="true"  v-model="ChildFilter" class="w-full mt-6"    v-validate="'required'"   placeholder=" Select Associated Child"
     data-vv-validate-on="change" multiple></vue-select>
     <span class="text-danger text-sm">{{ errors.first('ChildFilter') }}</span>
-
+    <vue-select :options="relationshipOptions" :clearable="false" v-model="relationFilter" class="w-full mt-6"  v-validate="'required'"
+    data-vv-validate-on="change"/>
+    <span class="text-danger text-sm">{{ errors.first('relationFilter') }}</span>
   <div class="vx-row">
       <div class="vx-col w-full">
         <div class="mt-8 flex flex-wrap items-center justify-end">
@@ -126,7 +128,14 @@ export default {
       stateFilteroption:[],
       cityoptions:[],
       ChildFilteroption:[],
-      ChildFilter: { label: 'Select State*', value: '0' },
+      ChildFilter: [],
+      
+    relationshipOptions: [
+        { label: 'Father', value: 'Father' },
+        { label: 'Mother', value: 'Mother' }
+      ],
+ relationFilter: { label: 'Select Relationship*', value: '0' },
+
       stateFilter: { label: 'Select State*', value: '0' },
        classFilter: { label: 'Select Class', value: '0' },
       cityFilter: { label: 'Select city*', value: '0' }, 
@@ -147,22 +156,23 @@ export default {
       this.lastname=''
       this.email= ''
       this.password= ''
-
       this.confirm_password= ''
-
-
-      
-    
       this.cityoptions=[]
+      this.relationshipOptions=[]
       this.schooloptions=[]
       this.stateFilter= { label: 'Select State', value: '0' }
       this.cityFilter={ label: 'Select city', value: '0' }   
-      this.ChildFilter={ label: 'Select Associated Child', value: '0' }    
+      this.ChildFilter=[]   
     },
     SaveParent() {
-      alert(this.cityFilter.value)
-      return false;
-
+      let x=''
+      //console.log(this.ChildFilter)
+      let person=this.ChildFilter;
+      let student=[];
+      for (x in person) {
+        student.push(person[x].value);
+        
+      };
       var code = {
         first_name: this.firstname,
         last_name: this.lastname,
@@ -170,10 +180,11 @@ export default {
         password: this.password,
         type_of_schooling: 'school',
         country:'United States',
+        relationship:this.relationFilter.value,
         school_id: localStorage.getItem('school_id'),
         city_id:this.cityFilter.value,
         state_id:this.stateFilter.value,
-        student_id:this.ChildFilter.value,
+        student_id:student.join(),
         role_id:3
       };
      // console.log("adddata",code);
@@ -270,6 +281,8 @@ this.$http
         console.log(error);
       });  
 
+
+
       // Fetch class
  var x = localStorage.getItem('accessToken');
         var user_id = localStorage.getItem('user_id');
@@ -280,7 +293,7 @@ this.$http
          school_id:school_id
 
         };
-      this.$http
+     /* this.$http
       .post('/api/auth/manage-classes/' + user_id,requestOptions)
       .then(response => {
         var data=response.data.classes;
@@ -293,7 +306,7 @@ this.$http
       })
       .catch(error => {
         console.log(error);
-      });  
+      });  */
 
        this.$http
    .post("/api/auth/list_students",requestOptions)
@@ -310,7 +323,10 @@ this.$http
     console.log(error);
   });
 
+
   }
+
+ 
 }
 
 </script>

@@ -119,6 +119,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 // Store Module
 
 
@@ -138,8 +140,16 @@ __webpack_require__.r(__webpack_exports__);
       stateFilteroption: [],
       cityoptions: [],
       ChildFilteroption: [],
-      ChildFilter: {
-        label: 'Select State*',
+      ChildFilter: [],
+      relationshipOptions: [{
+        label: 'Father',
+        value: 'Father'
+      }, {
+        label: 'Mother',
+        value: 'Mother'
+      }],
+      relationFilter: {
+        label: 'Select Relationship*',
         value: '0'
       },
       stateFilter: {
@@ -171,6 +181,7 @@ __webpack_require__.r(__webpack_exports__);
       this.password = '';
       this.confirm_password = '';
       this.cityoptions = [];
+      this.relationshipOptions = [];
       this.schooloptions = [];
       this.stateFilter = {
         label: 'Select State',
@@ -180,16 +191,21 @@ __webpack_require__.r(__webpack_exports__);
         label: 'Select city',
         value: '0'
       };
-      this.ChildFilter = {
-        label: 'Select Associated Child',
-        value: '0'
-      };
+      this.ChildFilter = [];
     },
     SaveParent: function SaveParent() {
       var _this = this;
 
-      alert(this.cityFilter.value);
-      return false;
+      var x = ''; //console.log(this.ChildFilter)
+
+      var person = this.ChildFilter;
+      var student = [];
+
+      for (x in person) {
+        student.push(person[x].value);
+      }
+
+      ;
       var code = {
         first_name: this.firstname,
         last_name: this.lastname,
@@ -197,10 +213,11 @@ __webpack_require__.r(__webpack_exports__);
         password: this.password,
         type_of_schooling: 'school',
         country: 'United States',
+        relationship: this.relationFilter.value,
         school_id: localStorage.getItem('school_id'),
         city_id: this.cityFilter.value,
         state_id: this.stateFilter.value,
-        student_id: this.ChildFilter.value,
+        student_id: student.join(),
         role_id: 3
       }; // console.log("adddata",code);
       // If form is not validated return
@@ -299,19 +316,21 @@ __webpack_require__.r(__webpack_exports__);
       },
       school_id: school_id
     };
-    this.$http.post('/api/auth/manage-classes/' + user_id, requestOptions).then(function (response) {
-      var data = response.data.classes;
-
-      for (var index in data) {
-        var newobj = {};
-        newobj.label = data[index].class_name;
-        newobj.value = data[index].class_code;
-
-        _this3.classoptions.push(newobj);
+    /* this.$http
+     .post('/api/auth/manage-classes/' + user_id,requestOptions)
+     .then(response => {
+       var data=response.data.classes;
+       for ( var index in data ) {
+        let newobj={}
+        newobj.label=data[index].class_name;
+        newobj.value=data[index].class_code;
+       this.classoptions.push( newobj );
       }
-    })["catch"](function (error) {
-      console.log(error);
-    });
+     })
+     .catch(error => {
+       console.log(error);
+     });  */
+
     this.$http.post("/api/auth/list_students", requestOptions).then(function (response) {
       var data = response.data.data;
 
@@ -571,7 +590,7 @@ var render = function() {
         staticClass: "w-full mt-6",
         attrs: {
           options: _vm.ChildFilteroption,
-          name: "student_id",
+          name: "student_id[]",
           clearable: true,
           placeholder: " Select Associated Child",
           "data-vv-validate-on": "change",
@@ -588,6 +607,34 @@ var render = function() {
       _vm._v(" "),
       _c("span", { staticClass: "text-danger text-sm" }, [
         _vm._v(_vm._s(_vm.errors.first("ChildFilter")))
+      ]),
+      _vm._v(" "),
+      _c("vue-select", {
+        directives: [
+          {
+            name: "validate",
+            rawName: "v-validate",
+            value: "required",
+            expression: "'required'"
+          }
+        ],
+        staticClass: "w-full mt-6",
+        attrs: {
+          options: _vm.relationshipOptions,
+          clearable: false,
+          "data-vv-validate-on": "change"
+        },
+        model: {
+          value: _vm.relationFilter,
+          callback: function($$v) {
+            _vm.relationFilter = $$v
+          },
+          expression: "relationFilter"
+        }
+      }),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-danger text-sm" }, [
+        _vm._v(_vm._s(_vm.errors.first("relationFilter")))
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "vx-row" }, [

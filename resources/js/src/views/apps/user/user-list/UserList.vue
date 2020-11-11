@@ -269,20 +269,20 @@ export default {
   },
   watch: {
     roleFilter (obj) {
-      this.setColumnFilter('role', obj.value)
+    //  this.setColumnFilter('role', obj.value)
     },
      isclassFilter (obj) {
       this.setColumnFilter('class_codes', obj.value)
     },
     statusFilter (obj) {
-      this.setColumnFilter('status', obj.value)
+     // this.setColumnFilter('status', obj.value)
     },
     isVerifiedFilter (obj) {
       const val = obj.value === 'all' ? 'all' : obj.value === 'yes' ? 'true' : 'false'
       this.setColumnFilter('is_verified', val)
     },
     departmentFilter (obj) {
-      this.setColumnFilter('department', obj.value)
+    //  this.setColumnFilter('department', obj.value)
     }
   },
   computed: {
@@ -333,7 +333,7 @@ export default {
       this.gridApi.onFilterChanged()
 
       // Reset Filter Options
-      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter = { label: 'All', value: 'all' }
+      this.roleFilter = this.statusFilter = this.isVerifiedFilter = this.departmentFilter =this.isclassFilter= { label: 'All', value: 'all' }
 
       this.$refs.filterCard.removeRefreshAnimation()
     },
