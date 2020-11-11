@@ -63,6 +63,7 @@ class TimetableController extends Controller {
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
     }
+
     //Get timetable List
     public function getTimetable(Request $request) {
         $validator = Validator::make($request->all(), [
@@ -94,4 +95,19 @@ class TimetableController extends Controller {
             }
         }
     }
+
+    //fetch assigned teachers 
+    public function FetchAssignedTeachersByStudent(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'class_id' => 'required|exists:class_code,id',
+                    'school_id' => 'required|exists:schools,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $teachers = AssignedTeacher::with('User')->with('subjects.subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $teachers), 200);
+        }
+    }
+
 }
