@@ -77,7 +77,7 @@ class ParentController extends Controller {
                         }
                     }
                      // Store unapprove Student
-                    if($request->has('full_name')){
+                  /*  if($request->has('full_name')){
                      $data = [];
                      if($request->hasfile('documents'))
                      {                     
@@ -91,7 +91,7 @@ class ParentController extends Controller {
                       
                  $unapprove_student= UnapproveStudent::create(['full_name'=>$request->full_name,'parent_id'=>$addUser->id,'school_id'=>$request->school_id,'documents'=>$data,'status'=>0,'class_code_id'=>$request->class_id]);
 
-                    }
+                    }*/
                    $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$addUser->id)->first();
                    if(isset($classobj)){
                     $addUser->class_id=$class_code->id;
@@ -197,7 +197,7 @@ class ParentController extends Controller {
 
 
    // Store unapprove Student
-                    if($request->has('full_name')){
+                   /* if($request->has('full_name')){
                      $data = [];
                      if($request->hasfile('documents'))
                      {                     
@@ -209,9 +209,9 @@ class ParentController extends Controller {
                       }
                     }
                       
-                 $unapprove_student= UnapproveStudent::create(['full_name'=>$request->full_name,'parent_id'=>$addUser->id,'school_id'=>$request->school_id,'documents'=>$data,'status'=>0,'class_code_id'=>$request->class_id]);
+                 $unapprove_student= UnapproveStudent::create(['full_name'=>$request->full_name,'parent_id'=>$addUser->parent_id,'school_id'=>$request->school_id,'documents'=>$data,'status'=>0,'class_code_id'=>$request->class_id]);
 
-                    }
+                    }*/
 
         return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
       
