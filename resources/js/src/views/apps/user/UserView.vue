@@ -99,37 +99,32 @@
 
       </vx-card>
 
-     <!--  <div class="vx-row">
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Information" class="mb-base">
-            <table>
+      <div class="vx-row">
+        <div class="vx-col lg w-full">
+          <vx-card title="Timetables" class="mb-base">
+           <table  v-for="item in user_data.timetables" :key="item.id">
               <tr>
-                <td class="font-semibold">Birth Date</td>
-                <td>{{ user_data.dob }}</td>
+                <td class="">{{ item.date }}<div>Repeats {{ item.selected_days }}</div></td>
+                <td></td>
               </tr>
-              <tr>
-                <td class="font-semibold">Mobile</td>
-                <td>{{ user_data.mobile }}</td>
+                 <tr>
+                <td class="font-semibold">Links</td>
+               <tr v-if="item.timetable_doc!=''">
+               
+                <td><ul id="example-1">
+                  <li v-for="x in item.timetable_doc" :key="x">
+
+                   <a :href="x" target="_blank">{{x}}</a>
+
+                 </li>
+               </ul>
+             </td> 
+             </tr>
               </tr>
-              <tr>
-                <td class="font-semibold">Website</td>
-                <td>{{ user_data.website }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Languages</td>
-                <td> {{ user_data.languages_known.join(", ") }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Gender</td>
-                <td>{{ user_data.gender }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Contact</td>
-                <td>{{ user_data.contact_options.join(", ") }}></td>
-              </tr>
+             <tr><td type= "border">----------------------</td></tr>
             </table>
           </vx-card>
-        </div> -->
+        </div>
 
        <!--  <div class="vx-col lg:w-1/2 w-full">
           <vx-card title="Social Links" class="mb-base">

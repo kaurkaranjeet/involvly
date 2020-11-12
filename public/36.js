@@ -204,11 +204,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -645,7 +640,73 @@ var render = function() {
                       : _vm._e()
                   ])
                 ]
-              )
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "vx-row" }, [
+                _c(
+                  "div",
+                  { staticClass: "vx-col lg w-full" },
+                  [
+                    _c(
+                      "vx-card",
+                      {
+                        staticClass: "mb-base",
+                        attrs: { title: "Timetables" }
+                      },
+                      _vm._l(_vm.user_data.timetables, function(item) {
+                        return _c("table", { key: item.id }, [
+                          _c("tr", [
+                            _c("td", {}, [
+                              _vm._v(_vm._s(item.date)),
+                              _c("div", [
+                                _vm._v("Repeats " + _vm._s(item.selected_days))
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("td")
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", { staticClass: "font-semibold" }, [
+                              _vm._v("Links")
+                            ])
+                          ]),
+                          item.timetable_doc != ""
+                            ? _c("tr", [
+                                _c("td", [
+                                  _c(
+                                    "ul",
+                                    { attrs: { id: "example-1" } },
+                                    _vm._l(item.timetable_doc, function(x) {
+                                      return _c("li", { key: x }, [
+                                        _c(
+                                          "a",
+                                          {
+                                            attrs: { href: x, target: "_blank" }
+                                          },
+                                          [_vm._v(_vm._s(x))]
+                                        )
+                                      ])
+                                    }),
+                                    0
+                                  )
+                                ])
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("td", { attrs: { type: "border" } }, [
+                              _vm._v("----------------------")
+                            ])
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ],
+                  1
+                )
+              ])
             ],
             1
           )

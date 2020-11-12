@@ -197,7 +197,7 @@ class ParentController extends Controller {
     }
   }
 
-$data = [];
+$data_document = [];
    // Store unapprove Student
                     if($request->has('full_name')){
                      
@@ -207,15 +207,15 @@ $data = [];
                       {
                         $name=time().$key.'.'.$file->getClientOriginalExtension();    
                         $file->move(public_path().'/documents/', $name);      
-                        $data[$key] = URL::to('/').'/documents/'.$name;  
+                        $data_document[$key] = URL::to('/').'/documents/'.$name;  
                       }
                     }
                       
-                 $unapprove_student= UnapproveStudent::create(['full_name'=>$request->full_name,'parent_id'=>$request->parent_id,'school_id'=>$request->school_id,'documents'=>$data,'status'=>'0','class_code_id'=>$request->class_id]);
+                 $addUser= UnapproveStudent::create(['full_name'=>$request->full_name,'parent_id'=>$request->parent_id,'school_id'=>$request->school_id,'documents'=>$data_document,'status'=>'0','class_code_id'=>$request->class_id]);
 
                     }
 
-        return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.','documents' => $data), 200);
+        return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.','documents' => $data_document), 200);
       
    }
 

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use App\Models\UnapproveStudent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller {
@@ -218,14 +219,19 @@ class UserController extends Controller {
     }
 
     public function fetchUser($id) {
-        $data = User::fetchUser($id);
+ $data = User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->with('Timetables')->where('id', $id)->first();
     // print_r($data->StateDetail);die;
+        $UnapproveStudent=[];
        $data->state_name= $data->StateDetail->state_name;
         $data->city= $data->CityDetail->city;
         if(count($data->documents)){
              $data->is_document= 1;
         }
+        if($data->role_id==3){
+      $UnapproveStudent=   UnapproveStudent::where('parent_id',$id)->get();
+              }
         if (isset($data)) {
+         $data['unapproveStudent']=$UnapproveStudent;
             return response()->json(compact('data'), 200);
         } else {
             return response()->json(['message' => 'No record found'], 200);
