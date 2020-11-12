@@ -142,7 +142,7 @@ class StudentController extends Controller {
                             $message = $users->ChildDetails->name.' has joined the class';
                         }
                         $notify_type = 'JOINEDCLASS';
-                        SendAllNotification($usersData->device_token, $message, $notify_type);
+                        SendAllNotification($usersData->device_token, $message, 'school_notification');
                         Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
                     }
                 }
@@ -181,7 +181,7 @@ class StudentController extends Controller {
                             $message = $users->ChildDetails->name.'  has left the class';
                         }
                         $notify_type = 'LEAVECLASS';
-                        SendAllNotification($usersData->device_token, $message, $notify_type);
+                        SendAllNotification($usersData->device_token, $message,'school_notification');
                          Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
                     }
                 }

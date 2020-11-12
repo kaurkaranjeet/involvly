@@ -97,7 +97,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             "click_action"=>"FLUTTER_NOTIFICATION_CLICK",
             'badge' => '1'
         ];
-        $extraNotificationData = ["body" => $notification,"title" =>$message,"notify_type"=>$notify_type];
+        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type];
 
         $fcmNotification = [
             //'registration_ids' => $tokenList, //multple token array

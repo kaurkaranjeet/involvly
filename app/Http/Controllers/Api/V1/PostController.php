@@ -134,7 +134,7 @@ public function GetPostHomefeed(Request $request){
 
       if($post_user->user->id!=$request->user_id){
        if(!empty($post_user->user->device_token)){
-        SendAllNotification($post_user->user->device_token,$message,'comment_post');          
+        SendAllNotification($post_user->user->device_token,$message,'social_notification');          
       }
        Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment']);
      }
@@ -229,7 +229,7 @@ public function GetComments(Request $request){
 
          $message= $flight->User->name .' has '.$like.' your post.';
          if(!empty($post_user->user->device_token)){
-          SendAllNotification($post_user->user->device_token,$message,'like_post');        
+          SendAllNotification($post_user->user->device_token,$message,'social_notification');        
         }
 
       Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like']); 

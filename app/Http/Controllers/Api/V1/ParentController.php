@@ -197,10 +197,10 @@ class ParentController extends Controller {
     }
   }
 
-
+$data = [];
    // Store unapprove Student
                     if($request->has('full_name')){
-                     $data = [];
+                     
                      if($request->hasfile('documents'))
                      {                     
                       foreach($request->file('documents') as $key=>$file)
@@ -215,7 +215,7 @@ class ParentController extends Controller {
 
                     }
 
-        return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.' ), 200);
+        return response()->json(array('error' => false, 'data' =>$addUser,'message' => 'Child added successfully.','documents' => $data), 200);
       
    }
 
