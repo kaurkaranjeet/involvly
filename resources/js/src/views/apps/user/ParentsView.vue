@@ -99,68 +99,32 @@
 
       </vx-card>
 
-     <!--  <div class="vx-row">
-        <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Information" class="mb-base">
-            <table>
+      <div class="vx-row">
+        <div class="vx-col lg w-full" v-if="user_data.unapproveStudent!=''">
+          <vx-card title="Student that need to add in School" class="mb-base">
+            <table  v-for="item in user_data.unapproveStudent" :key="item.id">
               <tr>
-                <td class="font-semibold">Birth Date</td>
-                <td>{{ user_data.dob }}</td>
+                <td class="font-semibold">Full Name</td>
+                <td>{{ item.full_name }}</td>
               </tr>
-              <tr>
-                <td class="font-semibold">Mobile</td>
-                <td>{{ user_data.mobile }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Website</td>
-                <td>{{ user_data.website }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Languages</td>
-                <td> {{ user_data.languages_known.join(", ") }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Gender</td>
-                <td>{{ user_data.gender }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Contact</td>
-                <td>{{ user_data.contact_options.join(", ") }}></td>
-              </tr>
-            </table>
-          </vx-card>
-        </div> -->
+              <tr v-if="item.documents!=''">
+                <td class="font-semibold">Documents</td>
+                <td><ul id="example-1">
+                  <li v-for="x in item.documents" :key="x">
 
-       <!--  <div class="vx-col lg:w-1/2 w-full">
-          <vx-card title="Social Links" class="mb-base">
-            <table>
-              <tr>
-                <td class="font-semibold">Twitter</td>
-                <td>{{ user_data.social_links.twitter }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Facebook</td>
-                <td>{{ user_data.social_links.facebook }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Instagram</td>
-                <td>{{ user_data.social_links.instagram }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Github</td>
-                <td>{{ user_data.social_links.github }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">CodePen</td>
-                <td>{{ user_data.social_links.codepen }}</td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Slack</td>
-                <td>{{ user_data.social_links.slack }}</td>
-              </tr>
+                   <a :href="x" target="_blank">{{x}}</a>
+
+                 </li>
+               </ul></td> 
+             </tr>   
+             <tr><td type= "border">----------------------</td></tr>
             </table>
           </vx-card>
-        </div> -->
+        </div>
+
+
+
+       
       </div>
 
       <!-- Permissions -->

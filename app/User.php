@@ -118,7 +118,9 @@ class User extends Authenticatable implements JWTSubject {
     protected function FollowingUser($id){
          return FollowUnfollow::where('following_user_id', $id)->count();
     }
-
+    public function Timetables(){
+          return $this->hasMany('App\Models\Timetable','teacher_id','id');  
+            }
     
     
     /**
