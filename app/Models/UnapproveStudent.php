@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class UnapproveStudent extends Model {
 
     //protected $table = 'joined_student_classes';
-    protected $fillable = ['parent_id', 'full_name', 'class_code_id', 'school_id','status'];
+    protected $fillable = ['parent_id', 'full_name', 'class_code_id', 'school_id','status','documents'];
  protected $casts = [
         'documents' => 'array'
     ];
