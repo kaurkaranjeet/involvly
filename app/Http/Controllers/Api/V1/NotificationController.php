@@ -8,6 +8,7 @@ use JWTAuth;
 use Exception;
 use App\User;
 use App\Models\Notification;
+use DB;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,9 +28,9 @@ class NotificationController extends Controller {
 	}
 	else{
 		if($request->type=='school_notification'){
-			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('type' , 'school_notification')->orderBy('id', 'DESC')->get();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
 		}else{
-			$notifications=	Notification::with('User')->where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->get();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
 		}
 	
 if(count($notifications)>0){

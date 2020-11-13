@@ -172,7 +172,10 @@ class UserController extends Controller {
     public function manageUsers(Request $request, $id) {
         DB::enableQueryLog();
 
+
         if ($request->type == 'teacher') {
+        
+
             $users = User::where('role_id', 4)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } else if ($request->type == 'student') {
             $users = User::where('role_id', 2)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
@@ -181,6 +184,9 @@ class UserController extends Controller {
             $users = User::where('role_id', 3)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
         }
         //  print_r(DB::getQueryLog());die;
+        foreach($users as $user){
+            $user->subjects='Hindi';
+        }
 
         if (isset($users) && count($users) > 0) {
             return response()->json(compact('users'), 200);
@@ -188,6 +194,19 @@ class UserController extends Controller {
             return response()->json(['error' => 'true', 'users' => [], 'message' => 'No record found'], 200);
         }
     }
+
+    public function Getrecord(Request $request){
+ //DB::enableQueryLog();
+        $users = User::join('assigned_teachers', 'users.id', '=', 'assigned_teachers.teacher_id')->where('role_id', 4)->where('status', 1)->where('users.school_id', $request->school_id)->where('class_id',$request->class_id)->where('subject_id',$request->subject_id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+
+        //print_r(DB::getQueryLog());die;
+     if (isset($users) && count($users) > 0) {
+        return response()->json(compact('users'), 200);
+    } else {
+        return response()->json(['error' => 'true', 'users' => [], 'message' => 'No record found'], 200);
+    }
+
+}
 
     //fetch all admin users
     public function manageAdminUsers(Request $request) {
