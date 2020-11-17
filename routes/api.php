@@ -20,6 +20,7 @@ Route::prefix('auth')->group(function () {
     Route::post('admin-login', 'UserController@adminLogin');
     Route::any('/manage-admin-users', ['as' => 'manage.teachers', 'uses' => 'UserController@manageAdminUsers']);
   Route::post('signup_teacher', 'TeacherController@TeacherRegister');
+    Route::post('get_record', 'UserController@Getrecord');
     Route::post('signup_parent', 'ParentController@ParentRegister');
     // Create New User
     Route::post('register', 'UserController@register');
@@ -122,6 +123,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('remove_assignment', 'Api\V1\AssignmentController@RemoveAssignments');
     Route::post('remove_submitted_assignment', 'Api\V1\AssignmentController@RemoveSubmittedAssignments');
     // Student Assignment
+     Route::post('get_student_assigment_submission', 'Api\V1\AssignmentController@GetSubmittedAssignments');
     Route::post('get_student_assignment_list', 'Api\V1\AssignmentController@GetStudentAssignmentList');
     Route::post('upload_assignment_by_student', 'Api\V1\AssignmentController@UploadAssignmentByStudents');
     Route::post('get_uploaded_assignment_by_student', 'Api\V1\AssignmentController@GetUploadAssignmentByStudents');
