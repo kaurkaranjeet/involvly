@@ -372,4 +372,25 @@ class AssignmentController extends Controller {
         }
     }
 
+
+    //remove submitted assignment by teacher
+    public function GetSubmittedAssignments(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+                    'assignment_id' => 'required|exists:assignments,id',
+                    'student_id' => 'required|exists:users,id',
+                    
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+       $get = SubmittedAssignments::where('assignment_id', $request->assignment_id)->where('student_id', $request->student_id)->where('submit_status', '1')->get();
+            if ($get) {
+                return response()->json(array('error' => false, 'message' => 'Get successfully', 'data' => []), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+            }
+        }
+    }
+
 }

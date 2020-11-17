@@ -22,9 +22,16 @@
         </div> -->
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Select Class</label>
-          <v-select :options="classOptions" :clearable="false"  v-model="isclassFilter" class="mb-4 md:mb-0" />
+          <v-select :options="classOptions" :clearable="false"  v-model="isclassFilter" class="mb-4 md:mb-0"   @input="getSubjects"/>
         </div>
-        <!-- <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+<!-- <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+      <label class="text-sm opacity-75">Select Subject</label>
+        <v-select  :options="Subjectoptions"   :clearable="false"  v-model="subjectFilter" class="mb-4 md:mb-0"  @input="getRecord"  />
+
+     
+      </div> -->
+
+       <!--  <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Verified</label>
           <v-select :options="isVerifiedOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
         </div> -->
@@ -193,7 +200,10 @@ export default {
         { label: 'Yes', value: 'yes' },
         { label: 'No', value: 'no' }
       ],
-      isclassFilter: { label: 'All', value: 'all' },
+      isclassFilter: { label: 'All', value: 'all' ,id: '0'},
+
+      subjectFilter:{ label: 'All', value: 'all' },
+      Subjectoptions:[{ label: 'All', value: 'all' }],
 
       classOptions: [
          { label: 'All', value: 'all' },
@@ -255,7 +265,16 @@ export default {
           field: 'transactions',
           width: 150,
           cellRendererFramework: 'CellRendererActions'
-        }
+        },
+
+        {
+          headerName: 'Verified',
+          field: 'is_verified',
+          filter: true,
+          width: 125,
+          cellRendererFramework: 'CellRendererVerified',
+          cellClass: 'hidden'
+        },
       ],
 
       // Cell Renderer Components
@@ -274,6 +293,11 @@ export default {
      isclassFilter (obj) {
       this.setColumnFilter('class_codes', obj.value)
     },
+
+ subjectFilter (obj) {
+     // this.setColumnFilter('class_codes', obj.value)
+    },
+
     statusFilter (obj) {
      // this.setColumnFilter('status', obj.value)
     },
@@ -311,6 +335,48 @@ export default {
     }
   },
   methods: {
+
+    getSubjects(a){
+     this.subjectFilter= { label: 'All', value: 'all' };
+     this.Subjectoptions=[{ label: 'All', value: 'all' }];
+     this.$http
+     .post("/api/auth/manage-subjects/"+a.id)
+     .then(response => {
+      var data=response.data.subjects;
+      for ( var index in data ) {
+       let newobj={}
+       newobj.label=data[index].subject_name;
+       newobj.value=data[index].id;
+       this.Subjectoptions.push( newobj );
+     }
+   })
+     .catch(error => {
+      console.log(error);
+    });
+   },
+
+    getRecord(a){
+
+        var x = localStorage.getItem('accessToken');
+        var school_id = localStorage.getItem('school_id');
+        //  User Reward Card
+        const requestOptions = {
+            'subject_id': a.value,
+            'class_id': this.isclassFilter.id,
+            'school_id': school_id,
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+     this.$http
+     .post("/api/auth/get_record",requestOptions)
+     .then(response => {
+   // this. rowDataresponse.data.users;
+     
+   })
+     .catch(error => {
+      console.log(error);
+    });
+   },
       addStudentdata() {
             this.$router
                 .push(`/apps/user/addnewteacher`)
@@ -376,6 +442,7 @@ export default {
          let newobj={}
          newobj.label=data[index].class_name;
          newobj.value=data[index].class_name;
+         newobj.id=data[index].id;
         this.classOptions.push( newobj );
        }
       })
