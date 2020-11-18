@@ -11,8 +11,7 @@ class Timetable extends Model {
     protected $table = 'timetables';
     protected $fillable = ['teacher_id', 'date', 'selected_days', 'timetable_doc', 'school_id'];
     protected $casts = [
-        'selected_days' => 'array',
-        'timetable_doc' => 'array',
+        'selected_days' => 'array'
     ];
 
     public function User() {

@@ -50,14 +50,12 @@ class TimetableController extends Controller {
                 }
             }
             $task->selected_days = $days_data;
-
-            $timetable_doc_data = [];
+            $timetable_doc_data='';            
             if ($request->hasfile('timetable_doc')) {
-                foreach ($request->file('timetable_doc') as $key => $file) {
-                    $name = time() . $key . '.' . $file->getClientOriginalExtension();
-                    $file->move(public_path() . '/timetable_doc/', $name);
-                    $timetable_doc_data[$key] = URL::to('/') . '/timetable_doc/' . $name;
-                }
+            	$file=$request->hasfile('timetable_doc');
+            	$name=trim($file->getClientOriginalName());  
+                $file->move(public_path() . '/timetable_doc/', $name);
+                $timetable_doc_data = URL::to('/') . '/timetable_doc/' . $name;                
             }
             $task->timetable_doc = $timetable_doc_data;
             $task->save();
