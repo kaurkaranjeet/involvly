@@ -69,7 +69,7 @@ class TimetableController extends Controller {
             $task->selected_days = $days_data;
             $timetable_doc_data='';            
             if ($request->hasfile('timetable_doc')) {
-            	$file=$request->hasfile('timetable_doc');
+            	$file=$request->file('timetable_doc');
             	$name=trim($file->getClientOriginalName());  
                 $file->move(public_path() . '/timetable_doc/', $name);
                 $timetable_doc_data = URL::to('/') . '/timetable_doc/' . $name;                
