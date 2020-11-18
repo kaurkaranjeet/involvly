@@ -163,6 +163,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
  // Store Module
@@ -236,8 +243,17 @@ __webpack_require__.r(__webpack_exports__);
       }],
       isclassFilter: {
         label: 'All',
+        value: 'all',
+        id: '0'
+      },
+      subjectFilter: {
+        label: 'All',
         value: 'all'
       },
+      Subjectoptions: [{
+        label: 'All',
+        value: 'all'
+      }],
       classOptions: [{
         label: 'All',
         value: 'all'
@@ -298,6 +314,13 @@ __webpack_require__.r(__webpack_exports__);
         field: 'transactions',
         width: 150,
         cellRendererFramework: 'CellRendererActions'
+      }, {
+        headerName: 'Verified',
+        field: 'is_verified',
+        filter: true,
+        width: 125,
+        cellRendererFramework: 'CellRendererVerified',
+        cellClass: 'hidden'
       }],
       // Cell Renderer Components
       components: {
@@ -313,6 +336,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     isclassFilter: function isclassFilter(obj) {
       this.setColumnFilter('class_codes', obj.value);
+    },
+    subjectFilter: function subjectFilter(obj) {// this.setColumnFilter('class_codes', obj.value)
     },
     statusFilter: function statusFilter(obj) {// this.setColumnFilter('status', obj.value)
     },
@@ -343,6 +368,48 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    getSubjects: function getSubjects(a) {
+      var _this = this;
+
+      this.subjectFilter = {
+        label: 'All',
+        value: 'all'
+      };
+      this.Subjectoptions = [{
+        label: 'All',
+        value: 'all'
+      }];
+      this.$http.post("/api/auth/manage-subjects/" + a.id).then(function (response) {
+        var data = response.data.subjects;
+
+        for (var index in data) {
+          var newobj = {};
+          newobj.label = data[index].subject_name;
+          newobj.value = data[index].id;
+
+          _this.Subjectoptions.push(newobj);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getRecord: function getRecord(a) {
+      var x = localStorage.getItem('accessToken');
+      var school_id = localStorage.getItem('school_id'); //  User Reward Card
+
+      var requestOptions = {
+        'subject_id': a.value,
+        'class_id': this.isclassFilter.id,
+        'school_id': school_id,
+        headers: {
+          'Authorization': 'Bearer ' + x
+        }
+      };
+      this.$http.post("/api/auth/get_record", requestOptions).then(function (response) {// this. rowDataresponse.data.users;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     addStudentdata: function addStudentdata() {
       this.$router.push("/apps/user/addnewteacher")["catch"](function () {});
     },
@@ -389,7 +456,7 @@ __webpack_require__.r(__webpack_exports__);
     }*/
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     if (!_store_user_management_moduleUserManagement_js__WEBPACK_IMPORTED_MODULE_3__["default"].isRegistered) {
       this.$store.registerModule('userManagement', _store_user_management_moduleUserManagement_js__WEBPACK_IMPORTED_MODULE_3__["default"]);
@@ -415,8 +482,9 @@ __webpack_require__.r(__webpack_exports__);
         var newobj = {};
         newobj.label = data[index].class_name;
         newobj.value = data[index].class_name;
+        newobj.id = data[index].id;
 
-        _this.classOptions.push(newobj);
+        _this2.classOptions.push(newobj);
       }
     })["catch"](function (error) {
       console.log(error);
@@ -593,6 +661,7 @@ var render = function() {
                 _c("v-select", {
                   staticClass: "mb-4 md:mb-0",
                   attrs: { options: _vm.classOptions, clearable: false },
+                  on: { input: _vm.getSubjects },
                   model: {
                     value: _vm.isclassFilter,
                     callback: function($$v) {
