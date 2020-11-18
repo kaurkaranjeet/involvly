@@ -36,6 +36,23 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+        	$selected_timetable=Timetable::where('teacher_id',$request->teacher_id)->where('school_id',$request->school_id)->first();
+        	if(!empty($selected_timetable)){
+        		if(in_array('Everyday',$selected_timetable->selected_days)){
+        			return response()->json(array('error' => true, 'message' =>'You have already created timetable for Everyday' ), 200);
+        		} else{
+        			$implode= implode(',' ,$selected_timetable->selected_days);
+        			$explode=explode(',' ,$implode);
+        			foreach ($request->selected_days as  $selected_days) {
+        				if(in_array($selected_days,$explode)){
+        					return response()->json(array('error' => true, 'message' =>$selected_days.' is already selected.'  ), 200);
+        				}
+
+        			}
+        		}
+        	}
+
+
             $task = new Timetable; //then create new object
             $task->teacher_id = $request->teacher_id;
             $task->date = $request->date;
@@ -60,7 +77,8 @@ class TimetableController extends Controller {
             $task->timetable_doc = $timetable_doc_data;
             $task->save();
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
-        }
+        
+    }
     }
 
     //Get timetable List
