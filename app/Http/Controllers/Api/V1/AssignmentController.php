@@ -386,7 +386,7 @@ class AssignmentController extends Controller {
         } else {
        $get = SubmittedAssignments::where('assignment_id', $request->assignment_id)->where('student_id', $request->student_id)->where('submit_status', '1')->get();
             if ($get) {
-                return response()->json(array('error' => false, 'message' => 'Get successfully', 'data' => []), 200);
+                return response()->json(array('error' => false, 'message' => 'Get successfully', 'data' => $get), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
             }
