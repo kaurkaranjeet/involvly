@@ -14,6 +14,22 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller {
 
+     public function __construct()
+    {
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'encrypted' => true
+        );
+        $this->pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'), 
+            $options
+        );
+
+       
+    }
+
     public function adminLogin(Request $request) {
         $credentials = $request->only('email', 'password');
 
@@ -270,6 +286,8 @@ class UserController extends Controller {
 
     public function RemoveUser($id) {
         $data = User::where('id', $id)->delete();
+
+        $this->pusher->trigger('remove-channel', 'delete_user', $states);
         return response()->json(compact('data'), 200);
     }
 
