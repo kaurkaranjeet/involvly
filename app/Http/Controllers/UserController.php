@@ -288,7 +288,7 @@ class UserController extends Controller {
     public function RemoveUser($id) {
         $data = User::where('id', $id)->delete();
 
-        $this->pusher->trigger('remove-channel', 'delete_user', $states);
+        $this->pusher->trigger('remove-channel', 'delete_user', $data);
         return response()->json(compact('data'), 200);
     }
 
