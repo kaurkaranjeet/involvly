@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use App\Models\UnapproveStudent;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Pusher\Pusher;
 
 class UserController extends Controller {
 
