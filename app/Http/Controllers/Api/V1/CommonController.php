@@ -234,14 +234,18 @@ WHERE class_id= class_code_subject .class_code_id AND
             if (!empty($request->first_name)) {
                 $updateData = User::where('id', $request->user_id)->update([
                     'first_name' => $request->first_name,
-                    $name=$request->first_name;
+                    
                 ]);
+
+                $name=$request->first_name;
             }
             if (!empty($request->last_name)) {
                 $updateData = User::where('id', $request->user_id)->update([
                     'last_name' => $request->last_name,
-                     $name.=  ' '.$request->last_name;
+                  
                 ]);
+
+                   $name.=  ' '.$request->last_name;
             }
             if (!empty($request->facebook_url)) {
                 $updateData = User::where('id', $request->user_id)->update([
