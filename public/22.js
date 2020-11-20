@@ -531,18 +531,23 @@ __webpack_require__.r(__webpack_exports__);
         type: 'confirm',
         color: 'danger',
         title: 'Confirm Delete',
-        text: "You are about to delete \"".concat(this.params.data.username, "\""),
+        text: "You are about to delete \"".concat(this.params.data.name, "\""),
         accept: this.deleteRecord,
         acceptText: 'Delete'
       });
     },
     deleteRecord: function deleteRecord() {
+      var _this = this;
+
       /* Below two lines are just for demo purpose */
       this.showDeleteSuccess();
       /* UnComment below lines for enabling true flow if deleting user */
-      // this.$store.dispatch("userManagement/removeRecord", this.params.data.id)
-      //   .then(()   => { this.showDeleteSuccess() })
-      //   .catch(err => { console.error(err)       })
+
+      this.$store.dispatch("userManagement/removeRecord", this.params.data.id).then(function () {
+        _this.showDeleteSuccess();
+      })["catch"](function (err) {
+        console.error(err);
+      });
     },
     showDeleteSuccess: function showDeleteSuccess() {
       this.$vs.notify({
