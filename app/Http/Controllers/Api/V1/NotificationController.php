@@ -45,6 +45,26 @@ if(count($notifications)>0){
 
 }
 
+// Update Notification settings
+public function NotificationSetting(Request $request){
+	$validator = Validator::make($request->all(), [
+		'user_id' => 'required|exists:users,id',
+		'notification_settings' => 'required'
+	]);
+	if($validator->fails()){
+		return response()->json(array('errors' => $validator->errors(),'error' => true));
+	}
+	else{
+		$userobj= User::find($request->user_id);
+		$userobj->notification_settings=$request->notification_settings;
+		$userobj->save();
+		
+		return response()->json(array('error' => false, 'message' => 'Updated successfully', 'data' =>$userobj), 200);
+
+	}
+
+}
+
 
 
 
