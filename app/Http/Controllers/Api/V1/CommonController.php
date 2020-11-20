@@ -230,6 +230,7 @@ WHERE class_id= class_code_subject .class_code_id AND
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+            $update_name = User::find($request->user_id);
             $name='';
             if (!empty($request->first_name)) {
                 $updateData = User::where('id', $request->user_id)->update([
@@ -239,6 +240,9 @@ WHERE class_id= class_code_subject .class_code_id AND
 
                 $name=$request->first_name;
             }
+            else{
+                 $name=$update_name->first_name;
+            }
             if (!empty($request->last_name)) {
                 $updateData = User::where('id', $request->user_id)->update([
                     'last_name' => $request->last_name,
@@ -246,6 +250,9 @@ WHERE class_id= class_code_subject .class_code_id AND
                 ]);
 
                    $name.=  ' '.$request->last_name;
+            }
+            else{
+                   $name.=  ' '.$update_name->last_name;
             }
             if (!empty($request->facebook_url)) {
                 $updateData = User::where('id', $request->user_id)->update([
