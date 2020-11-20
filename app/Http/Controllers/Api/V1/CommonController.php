@@ -230,14 +230,17 @@ WHERE class_id= class_code_subject .class_code_id AND
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+            $name='';
             if (!empty($request->first_name)) {
                 $updateData = User::where('id', $request->user_id)->update([
                     'first_name' => $request->first_name,
+                    $name=$request->first_name;
                 ]);
             }
             if (!empty($request->last_name)) {
                 $updateData = User::where('id', $request->user_id)->update([
                     'last_name' => $request->last_name,
+                     $name.=  ' '.$request->last_name;
                 ]);
             }
             if (!empty($request->facebook_url)) {
@@ -253,6 +256,11 @@ WHERE class_id= class_code_subject .class_code_id AND
             if (!empty($request->twitter_url)) {
                 $updateData = User::where('id', $request->user_id)->update([
                     'twitter_url' => $request->twitter_url,
+                ]);
+            }
+            if (!empty($name)) {
+                $updateData = User::where('id', $request->user_id)->update([
+                    'name' => $name,
                 ]);
             }
             $update = User::find($request->user_id);
