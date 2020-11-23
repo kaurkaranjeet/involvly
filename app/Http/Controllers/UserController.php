@@ -286,9 +286,10 @@ class UserController extends Controller {
     }
 
     public function RemoveUser($id) {
+        $userobj=User::where('id', $request->user_id)->first();
         $data = User::where('id', $id)->delete();
 
-        $this->pusher->trigger('remove-channel', 'delete_user', $data);
+        $this->pusher->trigger('remove-channel', 'delete_user', $userobj);
         return response()->json(compact('data'), 200);
     }
 

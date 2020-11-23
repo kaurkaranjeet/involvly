@@ -320,9 +320,9 @@ WHERE class_id= class_code_subject .class_code_id AND
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-
+         $userobj=User::where('id', $request->user_id)->first();
             $delete = User::where('id', $request->user_id)->delete();
-            $this->pusher->trigger('remove-channel', 'delete_user', $delete);
+            $this->pusher->trigger('remove-channel', 'delete_user', $userobj);
             if ($delete) {
                 return response()->json(array('error' => false, 'message' => 'Account deleted successfully', 'data' => []), 200);
             } else {
