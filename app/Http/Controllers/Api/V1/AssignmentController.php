@@ -159,7 +159,7 @@ class AssignmentController extends Controller {
                  $message = 'You have been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name.'on '.$getData->Assignments->created_at.'. Last Date of Submission '.$getData->assignments_date;
 
                  $notify_type = 'Assignment';
-                 SendAllNotification($usersData->device_token, $message, 'school_notification');
+                 SendAllNotification($child_name->device_token, $message, 'school_notification');
              }
                  Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
 
