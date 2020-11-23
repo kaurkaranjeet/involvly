@@ -155,25 +155,20 @@ class AssignmentController extends Controller {
 
                 $child_name=User::where('id', $assignment_assign_to)->first();
                 $getData = SubmittedAssignments::with('subjects')->with('Assignments.User','Assignments')->where('student_id', $assignment_assign_to)->where('assignment_id', $request->assignment_id)->first();
-                if (!empty($child_name->device_token) && $child_name->device_token != null) {                                  
-                 $message = 'You have been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name.'on '.$getData->Assignments->created_at.'. Last Date of Submission '.$getData->assignments_date;
-
-                 $notify_type = 'Assignment';
+                 $message = 'You have been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name.'on '.date('d-m-Y',$getData->Assignments->created_at).'. Last Date of Submission '.date('d-m-Y',$getData->Assignments->assignments_date);
+                if (!empty($child_name->device_token) && $child_name->device_token != null) {  
+                    $notify_type = 'Assignment';
                  SendAllNotification($child_name->device_token, $message, 'school_notification');
              }
                  Notification::create(['user_id'=>$child_name->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
-
                         $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->get();
                         if (!empty($results)) {
                             foreach ($results as $users) {
                                 $usersData = User::where('id', $users->parent_id)->first();
-
+                                $message =  $child_name->name .' has been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name .'on '.date('d-m-Y',$getData->Assignments->created_at).'. Last Date of Submission '.date('d-m-Y',$getData->Assignments->assignments_date);
                     //send notification
-                                if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                                  
-                                        $message =  $child_name->name .' has been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name .'on '.$getData->Assignments->created_at.'. Last Date of Submission '.$getData->assignments_date;
-                                    
-                                    $notify_type = 'Assignment';
+                                if (!empty($usersData->device_token) && $usersData->device_token != null) { 
+                                     $notify_type = 'Assignment';
                                     SendAllNotification($usersData->device_token, $message, 'school_notification');
                                 }
                                     Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
@@ -207,9 +202,10 @@ class AssignmentController extends Controller {
 
                          $child_name=User::where('id', $users->user_id)->first();
                 $getData = SubmittedAssignments::with('subjects')->with('Assignments.User','Assignments')->where('student_id', $users->user_id)->where('assignment_id', $request->assignment_id)->first();
-                if (!empty($child_name->device_token) && $child_name->device_token != null) {                                  
-                 $message = 'You have been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name.'on '.$getData->Assignments->created_at.'. Last Date of Submission '.$getData->assignments_date;
+                $message = 'You have been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name.'on '.date('d-m-Y',$getData->Assignments->created_at).'. Last Date of Submission '.$getData->Assignments->assignments_date;
 
+                if (!empty($child_name->device_token) && $child_name->device_token != null) {                                  
+                 
                  $notify_type = 'Assignment';
                  SendAllNotification($child_name->device_token, $message, 'school_notification');
              }
@@ -221,11 +217,9 @@ class AssignmentController extends Controller {
                                 $usersData = User::where('id', $users->parent_id)->first();
 
                     //send notification
-                                if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                                  
-                                        $message =  $child_name->name .' has been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name .'on '.$getData->Assignments->created_at.'. Last Date of Submission '.$getData->assignments_date;;
-                                    
-                                    $notify_type = 'Assignment';
+                                 $message =  $child_name->name .' has been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name .'on '.date('d-m-Y',$getData->Assignments->created_at).'. Last Date of Submission '.date('d-m-Y',$getData->Assignments->assignments_date);
+                                if (!empty($usersData->device_token) && $usersData->device_token != null) { 
+                                 $notify_type = 'Assignment';
                                     SendAllNotification($usersData->device_token, $message, 'school_notification');
                                 }
                                     Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
