@@ -10,6 +10,8 @@ use App\User;
 use App\Models\UserClassCode;
 use App\Models\AssignedTeacher;
 use App\Models\Assignment;
+use App\Models\ParentChildrens;
+use App\Notification;
 use App\Models\AssignedAssignments;
 use App\Models\ClassSubjects;
 use App\Models\SubmittedAssignments;
