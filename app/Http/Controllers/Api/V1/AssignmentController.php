@@ -363,12 +363,20 @@ class AssignmentController extends Controller {
                 'submitted_attachement' => $data,
                 'submit_status' => '1'
             ]);
+
+                     
             if ($updateData) {
-                $getdata = SubmittedAssignments::where('assignment_id', $request->assignment_id)
+                $getdata = SubmittedAssignments::with('subjects')->with('Assignments.User','Assignments','Student')->where('assignment_id', $request->assignment_id)
                         ->where('student_id', $request->student_id)
                         ->where('subject_id', $request->subject_id)
                         ->where('class_id', $request->class_id)
                         ->first();
+                        $message = $getdata->Student->name.' has submitted an assignment';
+                        if (!empty($getData->User->device_token)) { 
+                           SendAllNotification($getData->User->device_token, $message, 'school_notification');
+                       }
+                   Notification::create(['user_id'=>$getData->User->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']);
+
                 return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getdata), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'Something went wrong', 'data' => $updateData), 200);
