@@ -39,7 +39,7 @@ class TimetableController extends Controller {
         	$selected_timetable=Timetable::where('teacher_id',$request->teacher_id)->where('school_id',$request->school_id)->first();
         	if(!empty($selected_timetable)){
         		if(in_array('Everyday',$selected_timetable->selected_days)){
-        			return response()->json(array('error' => true, 'message' =>'You have already created timetable for Everyday' ), 200);
+        			return response()->json(array('error' => true, 'message' =>'You have already created time table for all days' ), 200);
         		} else{
         			$implode= implode(',' ,$selected_timetable->selected_days);
         			$explode=explode(',' ,$implode);
