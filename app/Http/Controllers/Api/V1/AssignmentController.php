@@ -147,14 +147,50 @@ class AssignmentController extends Controller {
                         $submitted->class_id = $request->class_id;
                         $submitted->subject_id = $request->subject_id;
                         $submitted->submitted_attachement = [];
+
 //                        $submitted->submit_status = '0';
                         $submitted->save();
+
+                $child_name=User::where('id', $assignment_assign_to)->first();
+                $getData = SubmittedAssignments::with('subjects')->with('Assignments.User','Assignments')->where('student_id', $assignment_assign_to)->where('assignment_id', $request->assignment_id)->first();
+                if (!empty($child_name->device_token) && $child_name->device_token != null) {                                  
+                 $message = 'You have been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name.'on '.$getData->Assignments->created_at.'. Last Date of Submission '.$getData->assignments_date;
+
+                 $notify_type = 'Assignment';
+                 SendAllNotification($usersData->device_token, $message, 'school_notification');
+             }
+                 Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
+
+                        $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->get();
+                        if (!empty($results)) {
+                            foreach ($results as $users) {
+                                $usersData = User::where('id', $users->parent_id)->first();
+
+                    //send notification
+                                if (!empty($usersData->device_token) && $usersData->device_token != null) {
+                                  
+                                        $message =  $child_name->name .' has been given an assignment for ' .$getData->subject_name. ' by ' .$getData->User->name;
+                                    
+                                    $notify_type = 'Assignment';
+                                    SendAllNotification($usersData->device_token, $message, 'school_notification');
+                                }
+                                    Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
+                                
+                            }
+                        }
+
+
                     }
+
+
+
+                  
+
                 }
                 $task->assignment_assign_to = $data;
             } else {
                 //get students by class_id
-                $students = UserClassCode::where('class_id', $request->class_id)->get();
+                $students = UserClassCode::join('users','users.id','=','user_class_code.user_id')->where('class_id', $request->class_id)->where('users.role_id', '2')->get();
                 if (!empty($students)) {
                     foreach ($students as $users) {
                         //add data in submitted assignments table
