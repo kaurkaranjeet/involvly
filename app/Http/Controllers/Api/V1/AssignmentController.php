@@ -366,7 +366,7 @@ class AssignmentController extends Controller {
 
                      
             if ($updateData) {
-                $getdata = SubmittedAssignments::with('subjects')->with('Assignments.User','Assignments','Student')->where('assignment_id', $request->assignment_id)
+                $getData = SubmittedAssignments::with('subjects')->with('Assignments.User','Assignments','Student')->where('assignment_id', $request->assignment_id)
                         ->where('student_id', $request->student_id)
                         ->where('subject_id', $request->subject_id)
                         ->where('class_id', $request->class_id)
