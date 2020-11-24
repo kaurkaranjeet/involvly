@@ -159,10 +159,10 @@ class AssignmentController extends Controller {
                  $teacher_name=User::where('id', $getData->Assignments->teacher_id)->first();
                  $message = 'You have been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name.' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
                 if (!empty($getData->Student->device_token)) {  
-                    $notify_type = 'Assignment';
+                  //  $notify_type = 'Assignment';
                  SendAllNotification($getData->Student->device_token, $message, 'school_notification');
              }
-                 Notification::create(['user_id'=>$assignment_assign_to,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
+                 Notification::create(['user_id'=>$assignment_assign_to,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']); 
                         $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->groupBy('parent_id')->get();
                         if (!empty($results)) {
                             foreach ($results as $users) {
