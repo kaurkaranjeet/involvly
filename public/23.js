@@ -314,14 +314,16 @@ __webpack_require__.r(__webpack_exports__);
         field: 'transactions',
         width: 150,
         cellRendererFramework: 'CellRendererActions'
-      }, {
-        headerName: 'Verified',
-        field: 'is_verified',
-        filter: true,
-        width: 125,
-        cellRendererFramework: 'CellRendererVerified',
-        cellClass: 'hidden'
-      }],
+      }
+      /* {
+         headerName: 'Verified',
+         field: 'is_verified',
+         filter: true,
+         width: 125,
+         cellRendererFramework: 'CellRendererVerified',
+         cellClass: 'hidden'
+       },*/
+      ],
       // Cell Renderer Components
       components: {
         CellRendererLink: _cell_renderer_CellRendererLink_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
