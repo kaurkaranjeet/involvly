@@ -161,7 +161,7 @@ class AssignmentController extends Controller {
                  SendAllNotification($child_name->device_token, $message, 'school_notification');
              }
                  Notification::create(['user_id'=>$child_name->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type]); 
-                        $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->get();
+                        $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->groupBy('parent_id')->get();
                         if (!empty($results)) {
                             foreach ($results as $users) {
                                 $usersData = User::where('id', $users->parent_id)->first();
@@ -211,7 +211,7 @@ class AssignmentController extends Controller {
              }
                  Notification::create(['user_id'=>$child_name->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']); 
 
-                        $results = ParentChildrens::with('ChildDetails')->where('children_id', $users->user_id)->get();
+                        $results = ParentChildrens::with('ChildDetails')->where('children_id', $users->user_id)->groupBy('parent_id')->get();
                         if (!empty($results)) {
                             foreach ($results as $users) {
                                 $usersData = User::where('id', $users->parent_id)->first();
@@ -383,7 +383,7 @@ class AssignmentController extends Controller {
                      Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']);
                  }
                    //send notification to parents
-                   $results = ParentChildrens::with('ParentDetails')->where('children_id', $request->student_id)->get();
+                   $results = ParentChildrens::with('ParentDetails')->where('children_id', $request->student_id)->groupBy('parent_id')->get();
                    if (!empty($results)) {
                     foreach ($results as $users) {
                        // $usersData = User::where('id', $users->parent_id)->first();
