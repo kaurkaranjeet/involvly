@@ -372,7 +372,7 @@ class AssignmentController extends Controller {
                         ->where('class_id', $request->class_id)
                         ->first();
                           //send notification to teacher
-                        $message = $getdata->Student->name.' has submitted an assignment.';
+                        $message = $getData->Student->name.' has submitted an assignment.';
                         if (!empty($getData->User->device_token)) { 
                            SendAllNotification($getData->User->device_token, $message, 'school_notification');
                        }
