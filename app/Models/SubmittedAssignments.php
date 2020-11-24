@@ -18,6 +18,9 @@ class SubmittedAssignments extends Model {
     public function User() {
         return $this->belongsTo('App\User', 'student_id', 'id');
     }
+     public function Student() {
+        return $this->belongsTo('App\User', 'student_id', 'id');
+    }
     
     public function Assignments() {
         return $this->belongsTo('App\Models\Assignment', 'assignment_id', 'id');
