@@ -366,20 +366,22 @@ class AssignmentController extends Controller {
 
                      
             if ($updateData) {
-                $getData = SubmittedAssignments::with('subjects')->with('Assignments','Assignments.User','Student')->where('assignment_id', $request->assignment_id)
+                $getData = SubmittedAssignments::with('subjects')->with('Assignments','Student')->where('assignment_id', $request->assignment_id)
                         ->where('student_id', $request->student_id)
                         ->where('subject_id', $request->subject_id)
                         ->where('class_id', $request->class_id)
                         ->first();
 
-                        print_r($getData->User);die;
+                    $teacher_detials=  User::where('id',$getData->Assignments->teacher_id)->first();
+                    if(!empty($teacher_detials)){
                           //send notification to teacher
                         $message = $getData->Student->name.' has submitted an assignment.';
-                        if (!empty($getData->User->device_token)) { 
-                           SendAllNotification($getData->User->device_token, $message, 'school_notification');
-                       }
+                        if (!empty($teacher_detials->device_token)) { 
+                         SendAllNotification($teacher_detials->device_token, $message, 'school_notification');
+                     }
 
-                   Notification::create(['user_id'=>$getData->User->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']);
+                     Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']);
+                 }
                    //send notification to parents
                    $results = ParentChildrens::with('ParentDetails')->where('children_id', $request->student_id)->get();
                    if (!empty($results)) {
