@@ -384,7 +384,7 @@ class AssignmentController extends Controller {
                     foreach ($results as $users) {
                        // $usersData = User::where('id', $users->parent_id)->first();
                     //send notification
-                        $message =  $getdata->Student->name .' has submitted an assignment.';
+                        $message =  $getData->Student->name .' has submitted an assignment.';
                         if (!empty($users->ParentDetails->device_token) && $users->ParentDetails->device_token != null) { SendAllNotification($users->ParentDetails->device_token, $message, 'school_notification');
                         }
                         Notification::create(['user_id'=>$users->parent_id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment']); 
@@ -392,7 +392,7 @@ class AssignmentController extends Controller {
                     }
                 }
 
-                return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getdata), 200);
+                return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getData), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'Something went wrong', 'data' => $updateData), 200);
             }
