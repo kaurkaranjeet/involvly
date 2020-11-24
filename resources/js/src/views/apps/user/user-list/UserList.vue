@@ -267,14 +267,14 @@ export default {
           cellRendererFramework: 'CellRendererActions'
         },
 
-        {
+       /* {
           headerName: 'Verified',
           field: 'is_verified',
           filter: true,
           width: 125,
           cellRendererFramework: 'CellRendererVerified',
           cellClass: 'hidden'
-        },
+        },*/
       ],
 
       // Cell Renderer Components
