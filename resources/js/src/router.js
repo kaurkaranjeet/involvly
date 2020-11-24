@@ -411,6 +411,39 @@ const router = new Router({
                 },
 
                 {
+                    path: '/apps/user/student-edit/:userId',
+                    name: 'app-student-edit',
+                    component: () =>
+                        import ('@/views/apps/user/user-edit/UserEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Students', url: '/apps/user/listofstudents' },
+                            { title: 'Edit', active: true }
+                        ],
+                        pageTitle: 'Students Edit',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+                    {
+                    path: '/apps/user/parent-edit/:userId',
+                    name: 'app-parent-edit',
+                    component: () =>
+                        import ('@/views/apps/user/user-edit/UserEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            { title: 'Parents', url: '/apps/user/listofparents' },
+                            { title: 'Edit', active: true }
+                        ],
+                        pageTitle: 'Parents Edit',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+
+                {
                     path: '/apps/user/listofstudents',
                     name: 'list-students',
                     component: () =>
