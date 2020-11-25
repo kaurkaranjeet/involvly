@@ -14,6 +14,7 @@ class Assignment extends Model {
         'assignments_attachement' => 'array'
     ];
 
+
     public function User() {
         return $this->belongsTo('App\User', 'teacher_id', 'id');
     }
