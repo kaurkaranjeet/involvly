@@ -436,7 +436,7 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $getData = SubmittedAssignments::with('subjects')->with('Assignments.User')->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '0')->get();
+            $getData = SubmittedAssignments::with('subjects')->with('Assignments.User')->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '0')->orderBy('id', 'DESC')->get()
             if ($getData) {
                 return response()->json(array('error' => false, 'message' => 'Success', 'data' => $getData), 200);
             } else {
