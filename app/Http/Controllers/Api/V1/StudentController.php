@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
 use App\User;
-use App\Notification;
+
 use App\Models\ClassCode;
 use App\Models\ClassUser;
 use App\Models\JoinedStudentClass;
 use App\Models\Subject;
 use App\Models\ParentChildrens;
+use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -136,16 +137,26 @@ class StudentController extends Controller {
                     $usersData = User::where('id', $users->parent_id)->first();
                    // $class = ClassCode::where('id', $request->class_id)->first();
                     //send notification
-                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                        if (!empty($joined->ClassDetails->class_name)) {
+                    if (!empty($joined->ClassDetails->class_name)) {
                             $message = $users->ChildDetails->name.' has joined the '.$subject_name.' class';
                         } else {
                             $message = $users->ChildDetails->name.' has joined the class';
                         }
-                        $notify_type = 'JOINEDCLASS';
+                    if (!empty($usersData->device_token) && $usersData->device_token != null) {                       
+                     
                         SendAllNotification($usersData->device_token, $message, 'school_notification');
-                        Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$users->children_id]); 
-                    }
+                         }
+                         //DB::enableQueryLog();
+                         $notify_type = 'JOINEDCLASS';
+                         $notificationobj=new Notification;
+                         $notificationobj->user_id=$usersData->id;
+                         $notificationobj->notification_message=$message;
+                         $notificationobj->notification_type=$notify_type;
+                         $notificationobj->from_user_id=$users->children_id;
+                         $notificationobj->save();
+                       /* Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$users->children_id]); */
+                       // dd(DB::getQueryLog());
+                   
                 }
             }
             return response()->json(array('error' => false, 'message' => 'You have joined the class successfully', 'data' => $joined), 200);
@@ -169,6 +180,7 @@ class StudentController extends Controller {
                 //get parent related to students
 
             $results = ParentChildrens::with('ChildDetails')->where('children_id', $request->student_id)->get();
+
             if (!empty($results)) {
                 $student_id=$request->student_id;
                 foreach ($results as $users) {
@@ -176,16 +188,24 @@ class StudentController extends Controller {
                     $class = ClassCode::where('id', $request->class_id)->first();
                      $subject = Subject::where('id', $request->subject_id)->first();
                     //send notification
-                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                        if (!empty($class)) {
+                         if (!empty($class)) {
                             $message = $users->ChildDetails->name.' has left the '.$subject->subject_name.' class';
                         } else {
                             $message = $users->ChildDetails->name.'  has left the class';
                         }
                         $notify_type = 'LEAVECLASS';
+                    if (!empty($usersData->device_token) && $usersData->device_token != null) {
+                    
                         SendAllNotification($usersData->device_token, $message,'school_notification');
-                         Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$users->children_id]); 
                     }
+                         $notify_type = 'JOINEDCLASS';
+                         $notificationobj=new Notification;
+                         $notificationobj->user_id=$usersData->id;
+                         $notificationobj->notification_message=$message;
+                         $notificationobj->notification_type=$notify_type;
+                         $notificationobj->from_user_id=$users->children_id;
+                         $notificationobj->save();
+                    
                 }
             }
                 return response()->json(array('error' => false, 'message' => 'You have left the class successfully', 'data' => []), 200);
