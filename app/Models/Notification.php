@@ -19,7 +19,13 @@ class Notification extends Model {
   protected $table='notification';
 
       public function User(){
-   return $this->belongsTo('App\User','user_id','id');
+   return $this->belongsTo('App\User','from_user_id','id');
    }
+/*
+     public function User(){
+   return $this->belongsTo('App\User','user_id','id');
+   }*/
+
+   
 
 }
