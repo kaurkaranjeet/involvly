@@ -146,16 +146,14 @@ class StudentController extends Controller {
                      
                         SendAllNotification($usersData->device_token, $message, 'school_notification');
                          }
-                         //DB::enableQueryLog();
-                         $notify_type = 'JOINEDCLASS';
+                         
                          $notificationobj=new Notification;
                          $notificationobj->user_id=$usersData->id;
                          $notificationobj->notification_message=$message;
-                         $notificationobj->notification_type=$notify_type;
+                         $notificationobj->notification_type='JOINEDCLASS';
                          $notificationobj->from_user_id=$users->children_id;
                          $notificationobj->save();
-                       /* Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$users->children_id]); */
-                       // dd(DB::getQueryLog());
+                      
                    
                 }
             }
@@ -193,7 +191,7 @@ class StudentController extends Controller {
                         } else {
                             $message = $users->ChildDetails->name.'  has left the class';
                         }
-                        $notify_type = 'LEAVECLASS';
+                        
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
                     
                         SendAllNotification($usersData->device_token, $message,'school_notification');
@@ -202,7 +200,7 @@ class StudentController extends Controller {
                          $notificationobj=new Notification;
                          $notificationobj->user_id=$usersData->id;
                          $notificationobj->notification_message=$message;
-                         $notificationobj->notification_type=$notify_type;
+                         $notificationobj->notification_type='LEAVECLASS';
                          $notificationobj->from_user_id=$users->children_id;
                          $notificationobj->save();
                     
