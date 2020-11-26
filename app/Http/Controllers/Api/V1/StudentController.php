@@ -198,7 +198,7 @@ class StudentController extends Controller {
                     
                         SendAllNotification($usersData->device_token, $message,'school_notification');
                     }
-                         $notify_type = 'JOINEDCLASS';
+                       
                          $notificationobj=new Notification;
                          $notificationobj->user_id=$usersData->id;
                          $notificationobj->notification_message=$message;
