@@ -411,8 +411,15 @@ class AssignmentController extends Controller {
                         if (!empty($teacher_detials->device_token)) { 
                          SendAllNotification($teacher_detials->device_token, $message, 'school_notification');
                      }
+                      $notificationobj=new Notification;
+                         $notificationobj->user_id=$teacher_detials->id;
+                         $notificationobj->notification_message=$message;
+                         $notificationobj->notification_type='Assignment';
+                          $notificationobj->type='school_notification';
+                         $notificationobj->from_user_id=$request->student_id;
+                         $notificationobj->save();
 
-                     Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$request->student_id]);
+                     //Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$request->student_id]);
                  }
                    //send notification to parents
                    $results = ParentChildrens::with('ParentDetails')->where('children_id', $request->student_id)->groupBy('parent_id')->get();
@@ -423,7 +430,14 @@ class AssignmentController extends Controller {
                         $message =  $getData->Student->name .' has submitted an assignment.';
                         if (!empty($users->ParentDetails->device_token) && $users->ParentDetails->device_token != null) { SendAllNotification($users->ParentDetails->device_token, $message, 'school_notification');
                         }
-                        Notification::create(['user_id'=>$users->parent_id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$request->student_id]); 
+                         $notificationobj=new Notification;
+                         $notificationobj->user_id=$users->parent_id;
+                         $notificationobj->notification_message=$message;
+                         $notificationobj->notification_type='Assignment';
+                          $notificationobj->type='school_notification';
+                         $notificationobj->from_user_id=$request->student_id;
+                         $notificationobj->save();
+                       // Notification::create(['user_id'=>$users->parent_id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$request->student_id]); 
 
                     }
                 }
