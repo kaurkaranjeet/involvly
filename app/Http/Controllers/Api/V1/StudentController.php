@@ -131,6 +131,7 @@ class StudentController extends Controller {
             //get parent related to students
             $results = ParentChildrens::with('ChildDetails')->where('children_id', $request->student_id)->get();
             if (!empty($results)) {
+                $student_id=$request->student_id;
                 foreach ($results as $users) {
                     $usersData = User::where('id', $users->parent_id)->first();
                    // $class = ClassCode::where('id', $request->class_id)->first();
@@ -143,7 +144,7 @@ class StudentController extends Controller {
                         }
                         $notify_type = 'JOINEDCLASS';
                         SendAllNotification($usersData->device_token, $message, 'school_notification');
-                        Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$request->student_id]); 
+                        Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$student_id]); 
                     }
                 }
             }
@@ -169,6 +170,7 @@ class StudentController extends Controller {
 
             $results = ParentChildrens::with('ChildDetails')->where('children_id', $request->student_id)->get();
             if (!empty($results)) {
+                $student_id=$request->student_id;
                 foreach ($results as $users) {
                     $usersData = User::where('id', $users->parent_id)->first();
                     $class = ClassCode::where('id', $request->class_id)->first();
@@ -182,7 +184,7 @@ class StudentController extends Controller {
                         }
                         $notify_type = 'LEAVECLASS';
                         SendAllNotification($usersData->device_token, $message,'school_notification');
-                         Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$request->student_id]); 
+                         Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>$notify_type,'from_user_id'=>$student_id]); 
                     }
                 }
             }
