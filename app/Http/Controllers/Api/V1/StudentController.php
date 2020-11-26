@@ -151,6 +151,7 @@ class StudentController extends Controller {
                          $notificationobj->user_id=$usersData->id;
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='JOINEDCLASS';
+                          $notificationobj->type='school_notification';
                          $notificationobj->from_user_id=$users->children_id;
                          $notificationobj->save();
                       
@@ -201,6 +202,7 @@ class StudentController extends Controller {
                          $notificationobj->user_id=$usersData->id;
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='LEAVECLASS';
+                          $notificationobj->type='school_notification';
                          $notificationobj->from_user_id=$users->children_id;
                          $notificationobj->save();
                     
