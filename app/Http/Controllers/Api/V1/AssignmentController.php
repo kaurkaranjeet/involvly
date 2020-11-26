@@ -162,7 +162,7 @@ class AssignmentController extends Controller {
                   //  $notify_type = 'Assignment';
                  SendAllNotification($getData->Student->device_token, $message, 'school_notification');
              }
-                 Notification::create(['user_id'=>$assignment_assign_to,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']); 
+                 Notification::create(['user_id'=>$assignment_assign_to,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$teacher_name->id]); 
                         $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->groupBy('parent_id')->get();
                         if (!empty($results)) {
                             foreach ($results as $users) {
@@ -173,7 +173,7 @@ class AssignmentController extends Controller {
                                    //  $notify_type = 'Assignment';
                                     SendAllNotification($usersData->device_token, $message, 'school_notification');
                                 }
-                                    Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment']); 
+                                    Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$teacher_name->id]); 
                                 
                             }
                         }
@@ -212,7 +212,7 @@ class AssignmentController extends Controller {
                 // $notify_type = 'Assignment';
                  SendAllNotification($getData->Student->device_token, $message, 'school_notification');
              }
-                 Notification::create(['user_id'=>$getData->Student->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']); 
+                 Notification::create(['user_id'=>$getData->Student->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$teacher_name->id]); 
 
                         $results = ParentChildrens::with('ChildDetails')->where('children_id', $users->user_id)->groupBy('parent_id')->get();
                         if (!empty($results)) {
@@ -225,7 +225,7 @@ class AssignmentController extends Controller {
                                 
                                     SendAllNotification($usersData->device_token, $message, 'school_notification');
                                 }
-                                    Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment']); 
+                                    Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$teacher_name->id]); 
                                 
                             }
                         }
@@ -383,7 +383,7 @@ class AssignmentController extends Controller {
                          SendAllNotification($teacher_detials->device_token, $message, 'school_notification');
                      }
 
-                     Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment']);
+                     Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$request->student_id]);
                  }
                    //send notification to parents
                    $results = ParentChildrens::with('ParentDetails')->where('children_id', $request->student_id)->groupBy('parent_id')->get();
@@ -394,7 +394,7 @@ class AssignmentController extends Controller {
                         $message =  $getData->Student->name .' has submitted an assignment.';
                         if (!empty($users->ParentDetails->device_token) && $users->ParentDetails->device_token != null) { SendAllNotification($users->ParentDetails->device_token, $message, 'school_notification');
                         }
-                        Notification::create(['user_id'=>$users->parent_id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment']); 
+                        Notification::create(['user_id'=>$users->parent_id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$request->student_id]); 
 
                     }
                 }
