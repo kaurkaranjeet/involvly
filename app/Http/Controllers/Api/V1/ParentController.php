@@ -381,8 +381,9 @@ if(!empty($results)){
          $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->first();
          if(!empty($accept_reject_data)){
           $message=$accept_reject_data->User->name.' has accepted the task ' .$accept_reject_data->ParentTask->task_name;
+         
             if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
-              SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+              SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
             }
             $notificationobj=new Notification;
             $notificationobj->user_id=$accept_reject_data->ParentTask->User->id;
