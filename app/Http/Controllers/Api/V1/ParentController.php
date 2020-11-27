@@ -15,6 +15,7 @@ use App\Models\UnapproveStudent;
 use App\Models\ParentTask;
 use App\Models\ParentTaskAssigned;
 use App\Models\ParentChildrens;
+use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
