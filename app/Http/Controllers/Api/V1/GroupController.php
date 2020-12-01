@@ -12,6 +12,8 @@ use App\Mail\SendMailable;
 use App\User;
 use App\Models\Group;
 use App\Models\GroupMessage;
+use App\Models\ParentChildrens;
+
 use Pusher\Pusher;
 use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
