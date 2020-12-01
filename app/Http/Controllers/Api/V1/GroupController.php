@@ -54,10 +54,10 @@ class GroupController extends Controller {
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
               if(!empty($teachers->schools)){
 
-               $groups= Group::whereRaw(" (type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."')) AND status=1")->get();
+               $groups= Group::whereRaw("type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."')) AND status=1")->get();
 
              }else{
-              $groups= Group::whereRaw("WHERE (type='parent_community' OR type='school') AND status=1")->get();
+              $groups= Group::whereRaw("type='parent_community' OR type='school') AND status=1")->get();
             }
                 // $groups=Group::where('status',1)->get();
                  
