@@ -26,19 +26,19 @@ class GroupController extends Controller {
     public function GroupList(Request $request) {
         try {
 
-            /*$input = $request->all();
+            $input = $request->all();
             $validator = Validator::make($input, [
-                        'school_id' => 'required',
+                        'user_id' => 'required|exists:users,id',
             ]);
 
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
-            } else {*/
-             
+            } else {
+                
                  $groups=Group::all();
                  return response()->json(array('error' => false, 'data' => $groups), 200);
                
-           // }
+          }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
