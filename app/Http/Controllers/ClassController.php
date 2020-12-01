@@ -46,21 +46,6 @@ class ClassController extends Controller {
         'school_id' => $request->get('school_id'),
     ]);
 
-
-// Create Class Group
-    $group_count= Group::where('class_id',$class->id)->where('type','class_group')->count();
-        if($group_count==0){         
-         $group_obj= new  Group;
-         $group_obj->group_name= $class->class_name;
-         $group_obj->school_id=$request->school_id;
-         $group_obj->user_id=0;
-         $group_obj->type='class_group';
-         $group_obj->status='1';
-         $group_obj->class_id=$class->id;
-         $group_obj->save();
-     }
-
-
     return response()->json(compact('class'),201);
     }
 
