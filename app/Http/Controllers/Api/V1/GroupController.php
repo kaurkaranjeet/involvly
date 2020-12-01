@@ -137,6 +137,27 @@ class GroupController extends Controller {
         }
     }
 
+     // Group List
+    public function GroupMessages(Request $request) {
+      try {
+
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'group_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+         $group_data= GroupMessage::where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();             
+         return response()->json(array('error' => false, 'data' => $group_data), 200);
+         
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
   
 
 }
