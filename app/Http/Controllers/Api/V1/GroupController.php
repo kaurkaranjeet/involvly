@@ -149,9 +149,9 @@ class GroupController extends Controller {
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-         $group_data= GroupMessage::where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();             
+          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();             
          return response()->json(array('error' => false, 'data' => $group_data), 200);
-         
+
        }
      } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
