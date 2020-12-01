@@ -70,6 +70,11 @@ class GroupController extends Controller {
                    $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
                    $single_group->member_count=$count;
                   }
+
+                  if($single_group->type=='school_admin'){
+                   $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
+                   $single_group->member_count=$count;
+                  }
                  }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
                
