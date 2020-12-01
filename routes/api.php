@@ -152,5 +152,6 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
    Route::post('update_notification_settings', 'Api\V1\NotificationController@NotificationSetting');
     Route::post('join_class_by_student', 'Api\V1\StudentController@JoinStudentByClass');
     Route::post('leave_class_by_student', 'Api\V1\StudentController@LeaveStudentByClass');
+     Route::post('group_list', 'Api\V1\GroupController@GroupList');
 });
 
