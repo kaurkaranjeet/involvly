@@ -43,7 +43,7 @@ class GroupController extends Controller {
                    $single_group->member_count=$count;
                   }
                   if($single_group->type=='school'){
-                   $count= User::where('city_id',$user->city_id)->where('join_community',1)->where('status',1)->count();
+                   $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
                    $single_group->member_count=$count;
                   }
                  }
