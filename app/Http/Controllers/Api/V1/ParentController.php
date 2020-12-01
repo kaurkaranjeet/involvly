@@ -394,7 +394,7 @@ if(!empty($results)){
             $notificationobj->save();
           }
           else{
-            $accept_reject_data=array();
+            $accept_reject_data=new ParentController();
           }
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $accept_reject_data), 200);
