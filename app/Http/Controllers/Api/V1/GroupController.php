@@ -85,7 +85,7 @@ class GroupController extends Controller {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                       // 'from_user_id' => 'required|exists:users,id',
+                       'message' => 'required',
                          'user_id' => 'required|exists:users,id',
                         'group_id' => 'required|exists:groups,id',
             ]);
@@ -95,7 +95,7 @@ class GroupController extends Controller {
             } else {
               $user=User::find($request->user_id);
               if($request->group_id=='1'){
-               $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->get();
+               $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
                foreach($users as $single){
                  $groups=new GroupMessage;
                  $groups->to_user_id=$single->id;
@@ -110,8 +110,8 @@ class GroupController extends Controller {
 
              }
 
-             if($request->group_id=='2'){
-              $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->get();
+            elseif($request->group_id=='2'){
+              $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
               foreach($users as $single){
                $groups=new GroupMessage;
                $groups->to_user_id=$single->id;
@@ -125,11 +125,24 @@ class GroupController extends Controller {
 
            }
 
+           else if(Group::where('group_id',$request->group_id)->where('type','school_admin')->exists()){
+             $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('id','!=',$user->id)->where('status',1)->get();
+              foreach($users as $single){
+               $groups=new GroupMessage;
+               $groups->to_user_id=$single->id;
+               $groups->from_user_id=$request->user_id;
+               $groups->group_id=$request->group_id;
+               $groups->message=$request->message;
+               $groups->is_read=0;
+               $groups->save();
+               $this->pusher->trigger('group-channel', 'group_user', $groups);
+             }
+           }
 
-                $group_data= GroupMessage::where('from_user_id',$user->id)->where('group_id',$request->group_id)->get();
+
+           $group_data= GroupMessage::where('from_user_id',$user->id)->where('group_id',$request->group_id)->get();
                 
-             
-                 return response()->json(array('error' => false, 'data' => $group_data), 200);
+         return response()->json(array('error' => false, 'data' => $group_data), 200);
                
           }
         } catch (\Exception $e) {
@@ -137,7 +150,7 @@ class GroupController extends Controller {
         }
     }
 
-     // Group List
+     // Group Messages List
     public function GroupMessages(Request $request) {
       try {
 
