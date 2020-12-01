@@ -50,7 +50,7 @@ class GroupController extends Controller {
             } else {
               $user=User::find($request->user_id);
               $teachers = ParentChildrens::leftJoin('users', 'users.id', '=', 'parent_childrens.children_id')
-               ->select(DB::raw('group_concat(DISTINCT(school_id) as schools'))
+               ->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
               if(!empty($teachers->schools)){
 
