@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
+use App\Events\GroupEvent;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
 use App\Models\Group;
 use App\Models\GroupMessage;
+use Pusher\Pusher;
 use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
@@ -81,8 +83,9 @@ class GroupController extends Controller {
                  $groups->message=$request->message;
                   $groups->is_read=0;
                  $groups->save();
+                   $this->pusher->trigger('group-channel', 'group_user', $groups);
                }
-                 $group_data= GroupMessage::where('from_user_id',$user->id)->where('group_id',$request->group_id)->get();
+                 
 
              }
 
@@ -94,14 +97,15 @@ class GroupController extends Controller {
                $groups->from_user_id=$request->user_id;
                $groups->group_id=$request->group_id;
                $groups->message=$request->message;
-                $groups->is_read=0;
+               $groups->is_read=0;
                $groups->save();
-             }
-
-            $group_data= GroupMessage::where('from_user_id',$user->id)->where('group_id',$request->group_id)->get();
+               $this->pusher->trigger('group-channel', 'group_user', $groups);
+             }          
 
            }
 
+
+                $group_data= GroupMessage::where('from_user_id',$user->id)->where('group_id',$request->group_id)->get();
                 
              
                  return response()->json(array('error' => false, 'data' => $group_data), 200);
