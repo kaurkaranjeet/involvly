@@ -52,14 +52,20 @@ class GroupController extends Controller {
               $teachers = ParentChildrens::leftJoin('users', 'users.id', '=', 'parent_childrens.children_id')
                ->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-              if(!empty($teachers->schools)){
 
-               $groups= Group::whereRaw("type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."')) AND status=1")->get();
+               $classes = ParentChildrens::leftJoin('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
+               ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
+              ->where('parent_id', $user->id)->groupBy('parent_id')->first();
+              if(!empty($teachers->schools)){
+               $sql= Group::whereRaw("type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))   AND status=1");
+               if(!empty($classes->classes)){
+                 $sql= Group::whereRaw("type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))   AND status=1");
+               }
 
              }else{
-              $groups= Group::whereRaw("type='parent_community' OR type='school') AND status=1")->get();
+              $sql= Group::whereRaw("type='parent_community' OR type='school') AND status=1");
             }
-                // $groups=Group::where('status',1)->get();
+               $groups=$sql->get();
                  
                  foreach($groups as $single_group){
                   if($single_group->type=='parent_community'){

@@ -20,7 +20,7 @@
       class="w-full"
       readonly
     />
-    <span class="text-danger text-xs">{{ errors.first("Class Name") }}</span>
+ 
     </div>
   </div>
   <div class="vx-row mb-2">
@@ -35,7 +35,6 @@
       class="w-full"
       readonly
     />
-    <span class="text-danger text-xs">{{ errors.first("Class Code") }}</span>
     </div>
   </div>
   </vx-card>
