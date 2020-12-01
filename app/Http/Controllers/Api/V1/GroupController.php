@@ -39,13 +39,14 @@ class GroupController extends Controller {
                    $group_obj = new Group;
                    $group_obj->type='parent_community';
                    $group_obj->user_id='0';
+                   $group_obj->status='1';
                    $group_obj->school_id=$request->school_id;
                    $group_obj->group_name='Parent Community';
                    $group_obj->save();
-               
+                }
                  $groups=Group::where('school_id',$request->school_id)->get();
                  return response()->json(array('error' => false, 'data' => $groups), 200);
-                }
+               
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
