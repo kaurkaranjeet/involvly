@@ -393,6 +393,9 @@ if(!empty($results)){
             $notificationobj->from_user_id=$accept_reject_data->User->id;
             $notificationobj->save();
           }
+          else{
+            $accept_reject_data=array();
+          }
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $accept_reject_data), 200);
         }
