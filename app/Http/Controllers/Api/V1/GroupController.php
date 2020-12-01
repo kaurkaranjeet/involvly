@@ -26,28 +26,19 @@ class GroupController extends Controller {
     public function GroupList(Request $request) {
         try {
 
-            $input = $request->all();
+            /*$input = $request->all();
             $validator = Validator::make($input, [
                         'school_id' => 'required',
             ]);
 
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
-            } else {
-             $group_count= Group::where('type','parent_community')->where('school_id',$request->school_id)->count();
-                 if($group_count==0){
-                   $group_obj = new Group;
-                   $group_obj->type='parent_community';
-                   $group_obj->user_id='0';
-                   $group_obj->status='1';
-                   $group_obj->school_id=$request->school_id;
-                   $group_obj->group_name='Parent Community';
-                   $group_obj->save();
-                }
-                 $groups=Group::where('school_id',$request->school_id)->get();
+            } else {*/
+             
+                 $groups=Group::all();
                  return response()->json(array('error' => false, 'data' => $groups), 200);
                
-            }
+           // }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
