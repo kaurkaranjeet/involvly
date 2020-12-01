@@ -53,7 +53,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 // Store Module
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -146,11 +145,7 @@ var render = function() {
               },
               expression: "class_name"
             }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-danger text-xs" }, [
-            _vm._v(_vm._s(_vm.errors.first("Class Name")))
-          ])
+          })
         ],
         1
       )
@@ -185,11 +180,7 @@ var render = function() {
               },
               expression: "class_code"
             }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-danger text-xs" }, [
-            _vm._v(_vm._s(_vm.errors.first("Class Code")))
-          ])
+          })
         ],
         1
       )

@@ -19,7 +19,7 @@
       v-model="class_name"
       class="w-full"
     />
-    <span class="text-danger text-xs">{{ errors.first("Class Name") }}</span>
+    <span class="text-danger text-xs">{{ errors.first("class_name") }}</span>
     </div>
   </div>
   <div class="vx-row mb-2">
@@ -33,7 +33,7 @@
       v-model="class_code"
       class="w-full"
     />
-    <span class="text-danger text-xs">{{ errors.first("Class Code") }}</span>
+    <span class="text-danger text-xs">{{ errors.first("class_code") }}</span>
     </div>
   </div>
   <div class="vx-row">

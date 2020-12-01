@@ -202,7 +202,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("span", { staticClass: "text-danger text-xs" }, [
-            _vm._v(_vm._s(_vm.errors.first("Class Name")))
+            _vm._v(_vm._s(_vm.errors.first("class_name")))
           ])
         ],
         1
@@ -240,7 +240,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("span", { staticClass: "text-danger text-xs" }, [
-            _vm._v(_vm._s(_vm.errors.first("Class Code")))
+            _vm._v(_vm._s(_vm.errors.first("class_code")))
           ])
         ],
         1

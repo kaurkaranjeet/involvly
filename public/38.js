@@ -80,7 +80,8 @@ __webpack_require__.r(__webpack_exports__);
 
       var code = {
         class_name: this.class_name,
-        class_code: this.class_code
+        class_code: this.class_code,
+        school_id: localStorage.getItem('school_id')
       }; // If form is not validated return
 
       if (!this.validateForm) returns; // Loading
@@ -170,7 +171,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("span", { staticClass: "text-danger text-xs" }, [
-            _vm._v(_vm._s(_vm.errors.first("Class Name")))
+            _vm._v(_vm._s(_vm.errors.first("class_name")))
           ])
         ],
         1
@@ -208,7 +209,7 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("span", { staticClass: "text-danger text-xs" }, [
-            _vm._v(_vm._s(_vm.errors.first("Class Code")))
+            _vm._v(_vm._s(_vm.errors.first("class_code")))
           ])
         ],
         1

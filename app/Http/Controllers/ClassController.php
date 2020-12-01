@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use App\Models\Group;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ClassController extends Controller {
@@ -41,8 +42,8 @@ class ClassController extends Controller {
     $class = ClassCode::create([
         'class_name' => $request->get('class_name'),
         'class_code' => $request->get('class_code'),
-        'approved' => '0',
-        'school_id' => '1',
+        'approved' => '1',
+        'school_id' => $request->get('school_id'),
     ]);
 
     return response()->json(compact('class'),201);
