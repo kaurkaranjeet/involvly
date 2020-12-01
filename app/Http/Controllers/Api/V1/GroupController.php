@@ -59,7 +59,7 @@ class GroupController extends Controller {
     }
 
 
-     public function SendMessage(Request $request) {
+     public function SendGroupMessage(Request $request) {
         try {
 
             $input = $request->all();
