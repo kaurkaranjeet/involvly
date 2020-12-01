@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use App\Models\UnapproveStudent;
+use App\Models\Group;
+use App\Models\School;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Pusher\Pusher;
 
@@ -109,6 +111,16 @@ class UserController extends Controller {
             }
         }
 
+        $group_count= Group::where('school_id',$request->school_id)->where('type','school_admin')->count();
+        if($group_count==0){
+         $school_name=School::where('id',$request->school_id)->select('school_name')->first();
+         $group_obj= new  Group;
+         $group_obj->group_name= $school_name->school_name;
+         $group_obj->school_id=$request->school_id;
+         $group_obj->user_id=$user->id;
+         $group_obj->type='school_admin';
+         $group_obj->save();
+     }
         $token = JWTAuth::fromUser($user);
         $error = false;
 

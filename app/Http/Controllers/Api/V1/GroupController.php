@@ -46,9 +46,19 @@ class GroupController extends Controller {
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
+              $user=User::find($request->user_id);
+              $teachers = ParentChildrens::leftJoin('users', 'users.id', '=', 'parent_childrens.children_id')
+               ->select(DB::raw('group_concat(school_id) as schools'))
+              ->where('parent_id', $user->id)->groupBy('parent_id')->first();
+              if(!empty($teachers->schools)){
 
-                 $groups=Group::all();
-                 $user=User::find($request->user_id);
+               $groups= Group::selectRaw("WHERE (type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."')) AND status=1")->get();
+
+             }else{
+              $groups= Group::selectRaw("WHERE (type='parent_community' OR type='school') AND status=1")->get();
+            }
+                // $groups=Group::where('status',1)->get();
+                 
                  foreach($groups as $single_group){
                   if($single_group->type=='parent_community'){
                    $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
