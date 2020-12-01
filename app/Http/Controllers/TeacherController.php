@@ -8,7 +8,8 @@ use App\Models\ClassCode;
 use App\Models\AssignedTeacher;
 use App\Models\ClassUser;
 use App\Models\ClassSubjects;
-
+use App\Models\Group;
+use App\Models\School;
 use Pusher\Pusher;
 use DB;
 use Illuminate\Http\Request;
@@ -39,7 +40,13 @@ class TeacherController extends Controller {
     }
 
     public function Approveteacher($id) {
-        $data = User::where('id', $id)->update(['status' => '1']);
+      $user=User::where('id', $id);
+       $user_first=$user->first();
+      if($user_first->role_id==5){
+     Group::where('school_id',$user_first->school_id)->where('user_id',$user_first->id)->where('type','school_admin')->update(['status' => '1']);
+      }
+      $data = $user->update(['status' => '1']);
+
         return response()->json(compact('data'), 200);
     }
 
