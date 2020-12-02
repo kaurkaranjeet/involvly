@@ -158,7 +158,7 @@ class GroupController extends Controller {
            }
 
 
-           $group_data= GroupMessage::where('group_id',$request->group_id)->groupBy('created_at')->orderBy('id', 'DESC')->get();
+           $group_data= GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('created_at')->orderBy('id', 'DESC')->get();
                 
          return response()->json(array('error' => false, 'data' => $group_data), 200);
                
