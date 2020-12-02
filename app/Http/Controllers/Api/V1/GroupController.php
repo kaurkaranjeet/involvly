@@ -70,29 +70,29 @@ class GroupController extends Controller {
             }
                $groups=$sql->get();
                  
-                 foreach($groups as $single_group){
-                  if($single_group->type=='parent_community'){
-                   $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
-                   $single_group->member_count=$count;
-                  }
-                  if($single_group->type=='school'){
-                   $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
-                   $single_group->member_count=$count;
-                  }
+               foreach($groups as $single_group){
+                if($single_group->type=='parent_community'){
+                 $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
+                 $single_group->member_count=$count;
+               }
+               if($single_group->type=='school'){
+                 $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
+                 $single_group->member_count=$count;
+               }
 
-                  if($single_group->type=='school_admin'){
-                   $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
-                   $single_group->member_count=$count;
-                  }
-                  
-                  if($single_group->type=='class_group'){
-                  $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
-               ->select(DB::raw('count(*)'))
-              ->where('parent_id', $user->id)->where('class_id', $single_group->class_id)->groupBy('parent_id')->count();
-                   $single_group->member_count=$count;
-                  }
+               if($single_group->type=='school_admin'){
+                 $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
+                 $single_group->member_count=$count;
+               }
 
-                 }
+               if($single_group->type=='class_group'){
+                $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
+                ->select(DB::raw('count(*)'))
+                ->where('parent_id', $user->id)->where('class_id', $single_group->class_id)->groupBy('parent_id')->count();
+                $single_group->member_count=$count;
+              }
+
+            }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
                
           }
@@ -188,7 +188,7 @@ class GroupController extends Controller {
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->groupBy('group_number')->orderBy('id', 'DESC')->get();           
+          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->groupBy('group_number')->get();           
          return response()->json(array('error' => false, 'data' => $group_data), 200);
 
        }
