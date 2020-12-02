@@ -73,7 +73,7 @@ class GroupController extends Controller {
                foreach($groups as $single_group){
                 if($single_group->type=='parent_community'){
                  $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
-                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+        $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
 
                  $single_group->member_count=$count;
                   $single_group->unread_count=$unread_count;
@@ -81,14 +81,14 @@ class GroupController extends Controller {
                if($single_group->type=='school'){
                  $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
                  $single_group->member_count=$count;
-                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
                }
 
                if($single_group->type=='school_admin'){
                  $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
                  $single_group->member_count=$count;
-                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+         $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
 
                  
                   $single_group->unread_count=$unread_count;
@@ -99,7 +99,7 @@ class GroupController extends Controller {
                 ->select(DB::raw('Distinct count(parent_id))'))
                 ->where('class_id', $single_group->class_id)->count();
 
-                $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+         $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
 
                  $single_group->member_count=$count;
                   $single_group->unread_count=$unread_count;
