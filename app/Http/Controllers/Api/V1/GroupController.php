@@ -73,23 +73,36 @@ class GroupController extends Controller {
                foreach($groups as $single_group){
                 if($single_group->type=='parent_community'){
                  $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
+                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+
                  $single_group->member_count=$count;
+                  $single_group->unread_count=$unread_count;
                }
                if($single_group->type=='school'){
                  $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
                  $single_group->member_count=$count;
+                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+                  $single_group->unread_count=$unread_count;
                }
 
                if($single_group->type=='school_admin'){
                  $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
                  $single_group->member_count=$count;
+                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+
+                 
+                  $single_group->unread_count=$unread_count;
                }
 
                if($single_group->type=='class_group'){
                 $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
                 ->select(DB::raw('Distinct count(parent_id))'))
                 ->where('class_id', $single_group->class_id)->count();
-                $single_group->member_count=$count;
+
+                $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)count();
+
+                 $single_group->member_count=$count;
+                  $single_group->unread_count=$unread_count;
               }
 
             }
@@ -277,6 +290,25 @@ class GroupController extends Controller {
         }
     }
 
-  
+  // Group Messages List
+    public function ReadGroupMessage(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'user_id' => 'required',
+          'group_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+       GroupMessage::with('User')->where('group_id',$request->group_id)->where('user_id',$request->user_id)->update(['is_read'=>'1']);   
+       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->get();          
+      return response()->json(array('error' => false, 'data' => $group_data), 200);
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
 
 }
