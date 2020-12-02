@@ -162,7 +162,7 @@ class GroupController extends Controller {
            }
 
 
-           $group_data= GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('created_at')->orderBy('id', 'DESC')->get();
+           $group_data= GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->get();
                 
          return response()->json(array('error' => false, 'data' => $group_data), 200);
                
@@ -184,7 +184,7 @@ class GroupController extends Controller {
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->groupBy('created_at')->orderBy('id', 'DESC')->get();           
+          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->groupBy('group_number')->orderBy('id', 'DESC')->get();           
          return response()->json(array('error' => false, 'data' => $group_data), 200);
 
        }
