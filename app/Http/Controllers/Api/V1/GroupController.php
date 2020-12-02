@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
 use App\Events\GroupEvent;
+use App\Events\ReadEvent;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
@@ -303,7 +304,8 @@ class GroupController extends Controller {
           throw new Exception($validator->errors()->first());
         } else {
        GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
-       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->get();          
+       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->get();   
+         $this->pusher->trigger('read-channel', 'read_group', $group_data);       
       return response()->json(array('error' => false, 'data' => $group_data), 200);
        }
      } catch (\Exception $e) {
