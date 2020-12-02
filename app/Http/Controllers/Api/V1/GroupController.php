@@ -50,7 +50,7 @@ class GroupController extends Controller {
             } else {
               $user=User::find($request->user_id);
 
-              // $results = DB::select( DB::raw("SELECT m1.message as last_message,m1.created_at,u1.name ,u1.email,u1.image,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(messages.is_read) from messages  WHERE messages.is_read=0 and messages.from_user_id=m1.from_user_id AND messages.to_user_id=".$user_id." group by messages.from_user_id) as  unreadcount FROM messages m1 LEFT JOIN messages m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") ORDER BY m1.created_at") );
+             
 
               $teachers = ParentChildrens::leftJoin('users', 'users.id', '=', 'parent_childrens.children_id')
                ->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
@@ -128,7 +128,7 @@ class GroupController extends Controller {
                   $groups->group_number=$random_number;
                   $groups->is_read=0;
                  $groups->save();
-                   $this->pusher->trigger('group-channel', 'group_user', $groups);
+                  
                }
                  
 
@@ -145,7 +145,7 @@ class GroupController extends Controller {
                $groups->is_read=0;
                 $groups->group_number=$random_number;
                $groups->save();
-               $this->pusher->trigger('group-channel', 'group_user', $groups);
+               
              }          
 
            }
@@ -161,12 +161,16 @@ class GroupController extends Controller {
                 $groups->group_number=$random_number;
                $groups->is_read=0;
                $groups->save();
-               $this->pusher->trigger('group-channel', 'group_user', $groups);
+               //$this->pusher->trigger('group-channel', 'group_user', $groups);
              }
            }
 
 
+
+
   $group_data= GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->first();
+
+  $this->pusher->trigger('group-channel', 'group_user', $group_data);
                 
          return response()->json(array('error' => false, 'data' => $group_data), 200);
                
