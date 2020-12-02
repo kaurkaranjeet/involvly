@@ -14,6 +14,10 @@ class UpdateGroupFileTable extends Migration
     public function up()
     {
         //
+
+         Schema::table('group_messages', function (Blueprint $table) {
+            $table->longText('file');
+        });
     }
 
     /**
