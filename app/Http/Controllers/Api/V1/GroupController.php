@@ -112,6 +112,7 @@ class GroupController extends Controller {
                 throw new Exception($validator->errors()->first());
             } else {
               $user=User::find($request->user_id);
+              $random_number=rand();
               if($request->group_id=='1'){
                $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
                foreach($users as $single){
@@ -120,6 +121,7 @@ class GroupController extends Controller {
                  $groups->from_user_id=$request->user_id;
                  $groups->group_id=$request->group_id;
                  $groups->message=$request->message;
+                  $groups->group_number=$random_number;
                   $groups->is_read=0;
                  $groups->save();
                    $this->pusher->trigger('group-channel', 'group_user', $groups);
@@ -137,6 +139,7 @@ class GroupController extends Controller {
                $groups->group_id=$request->group_id;
                $groups->message=$request->message;
                $groups->is_read=0;
+                $groups->group_number=$random_number;
                $groups->save();
                $this->pusher->trigger('group-channel', 'group_user', $groups);
              }          
@@ -151,6 +154,7 @@ class GroupController extends Controller {
                $groups->from_user_id=$request->user_id;
                $groups->group_id=$request->group_id;
                $groups->message=$request->message;
+                $groups->group_number=$random_number;
                $groups->is_read=0;
                $groups->save();
                $this->pusher->trigger('group-channel', 'group_user', $groups);
