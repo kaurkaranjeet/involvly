@@ -83,7 +83,7 @@ class GroupController extends Controller {
                   }
                   
                   if($single_group->type=='class_group'){
-                  $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
+                  $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
                ->select(DB::raw('count(*)'))
               ->where('parent_id', $user->id)->where('class_id', $single_group->class_id)->groupBy('parent_id')->count();
                    $single_group->member_count=$count;
