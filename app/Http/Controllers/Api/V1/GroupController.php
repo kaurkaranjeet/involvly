@@ -118,34 +118,105 @@ class GroupController extends Controller {
               $user=User::find($request->user_id);
               $random_number=rand();
               if($request->group_id=='1'){
-               $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
+                $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
+               if($request->hasfile('images'))
+               {
+                foreach($request->file('images') as $key=>$single)
+                {
+                  $name=time().$key.'.'.$single->getClientOriginalExtension();    
+                  $single->move(public_path().'/assignment_doc/', $name);      
+                  $filename= URL::to('/').'/assignment_doc/'.$name; 
+                  if($key>0){
+                    $request->message='';
+                  }
+                
+                foreach($users as $single){ 
+                  $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
+                }
+              }
+            }
+            else{
                foreach($users as $single){ 
                 $this->Sendsinglemessage($single->id,$request,$random_number); 
-               }
-               } 
+              }
+            } 
+          }
                 elseif($request->group_id=='2'){
               $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
+
+              if($request->hasfile('images'))
+               {
+                foreach($request->file('images') as $key=>$single)
+                {
+                  $name=time().$key.'.'.$single->getClientOriginalExtension();    
+                  $single->move(public_path().'/assignment_doc/', $name);      
+                  $filename= URL::to('/').'/assignment_doc/'.$name; 
+                  if($key>0){
+                    $request->message='';
+                  }
+                
+                foreach($users as $single){ 
+                  $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
+                }
+              }
+            }
+            else{
               foreach($users as $single){
                 $this->Sendsinglemessage($single->id,$request,$random_number);
                                               }       
+            }
 
             }
            else if(Group::where('group_id',$request->group_id)->where('type','school_admin')->exists()){
              $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('id','!=',$user->id)->where('status',1)->get();
+             if($request->hasfile('images'))
+               {
+                foreach($request->file('images') as $key=>$single)
+                {
+                  $name=time().$key.'.'.$single->getClientOriginalExtension();    
+                  $single->move(public_path().'/assignment_doc/', $name);      
+                  $filename= URL::to('/').'/assignment_doc/'.$name; 
+                  if($key>0){
+                    $request->message='';
+                  }
+                
+                foreach($users as $single){ 
+                  $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
+                }
+              }
+            }else{
               foreach($users as $single){
                $this->Sendsinglemessage($single->id,$request,$random_number);
               
              }
+           }
            }
 
            else if(Group::where('group_id',$request->group_id)->where('type','class_group')->exists()){
              $class_id= Group::where('group_id',$request->group_id)->where('type','class_group')->first();           
              $users = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens .parent_id')
              ->select(DB::raw('DIstinct users.id'))->where('class_id', $class_id->class_id)->get();
+             if($request->hasfile('images'))
+             {
+              foreach($request->file('images') as $key=>$single)
+              {
+                $name=time().$key.'.'.$single->getClientOriginalExtension();    
+                $single->move(public_path().'/assignment_doc/', $name);      
+                $filename= URL::to('/').'/assignment_doc/'.$name; 
+                if($key>0){
+                  $request->message='';
+                }
+                
+                foreach($users as $single){ 
+                  $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
+                }
+              }
+            }   else{
              foreach($users as $single){
                $this->Sendsinglemessage($single->id,$request,$random_number);              
              }
            }
+         }
 
   $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->first();
 
@@ -160,37 +231,19 @@ class GroupController extends Controller {
     }
 
 
-    public function Sendsinglemessage($to_user_id,$input,$random_number){
-      if($input->hasfile('file'))
-      {
-        $message=$input->message;
-        foreach($input->file('file') as $key=>$file)
-        {
-          $name=time().$key.'.'.$file->getClientOriginalExtension();    
-          $file->move(public_path().'/images/', $name);      
-          $filename= URL::to('/').'/images/'.$name; 
+    public function Sendsinglemessage($to_user_id,$input,$random_number,$file_name=''){
+      
           $groups=new GroupMessage;
           $groups->to_user_id=$to_user_id;
           $groups->from_user_id=$input->user_id;
           $groups->group_id=$input->group_id;
-          $groups->message=$message;
+          $groups->message=$input->message;
           $groups->group_number=$random_number;
           $groups->is_read=0;
-          $groups->file=$filename;
+          $groups->file=$file_name;
           $groups->save();
           $messsage='';
-        }
-      }else{
-        $groups=new GroupMessage;
-        $groups->to_user_id=$to_user_id;
-        $groups->from_user_id=$input->user_id;
-        $groups->group_id=$input->group_id;
-        $groups->message=$input->message;
-        $groups->group_number=$random_number;
-        $groups->is_read=0;
-        $groups->save();
-
-      }
+      
 
     }
      // Group Messages List
