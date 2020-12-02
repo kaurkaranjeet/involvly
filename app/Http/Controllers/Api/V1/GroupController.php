@@ -242,11 +242,12 @@ class GroupController extends Controller {
            }
          }
 
-  $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
+         $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
 
-  $this->pusher->trigger('group-channel', 'group_user', $group_data);
+         $array=array('error' => false, 'data' => $group_data);
+         $this->pusher->trigger('group-channel', 'group_user', $array);
                 
-         return response()->json(array('error' => false, 'data' => $group_data), 200);
+         return response()->json(array('error' => false, 'data' => $array), 200);
                
           }
         } catch (\Exception $e) {
@@ -283,7 +284,8 @@ class GroupController extends Controller {
           throw new Exception($validator->errors()->first());
         } else {
           $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->groupBy('group_number')->orderBy('id', 'ASC')->get();           
-         return response()->json(array('error' => false, 'data' => $group_data), 200);
+          $array=array('error' => false, 'data' => $group_data);
+         return response()->json($array, 200);
 
        }
      } catch (\Exception $e) {
@@ -305,8 +307,9 @@ class GroupController extends Controller {
         } else {
        GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
        $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->get();   
-         $this->pusher->trigger('read-channel', 'read_group', $group_data);       
-      return response()->json(array('error' => false, 'data' => $group_data), 200);
+         $array=array('error' => false, 'data' => $group_data);
+         $this->pusher->trigger('read-channel', 'read_group', $array);       
+      return response()->json($array, 200);
        }
      } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
