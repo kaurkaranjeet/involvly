@@ -123,6 +123,8 @@ class GroupController extends Controller {
                {
                 foreach($request->file('images') as $key=>$single)
                 {
+                   $random_number=rand();
+
                   $name=time().$key.'.'.$single->getClientOriginalExtension();    
                   $single->move(public_path().'/assignment_doc/', $name);      
                   $filename= URL::to('/').'/assignment_doc/'.$name; 
@@ -148,6 +150,7 @@ class GroupController extends Controller {
                {
                 foreach($request->file('images') as $key=>$single)
                 {
+                     $random_number=rand();
                   $name=time().$key.'.'.$single->getClientOriginalExtension();    
                   $single->move(public_path().'/assignment_doc/', $name);      
                   $filename= URL::to('/').'/assignment_doc/'.$name; 
@@ -173,6 +176,8 @@ class GroupController extends Controller {
                {
                 foreach($request->file('images') as $key=>$single)
                 {
+
+                     $random_number=rand();
                   $name=time().$key.'.'.$single->getClientOriginalExtension();    
                   $single->move(public_path().'/assignment_doc/', $name);      
                   $filename= URL::to('/').'/assignment_doc/'.$name; 
@@ -242,7 +247,7 @@ class GroupController extends Controller {
           $groups->is_read=0;
           $groups->file=$file_name;
           $groups->save();
-          $messsage='';
+      //    $messsage='';
       
 
     }
@@ -258,7 +263,7 @@ class GroupController extends Controller {
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->groupBy('group_number')->get();           
+          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->groupBy('group_number')->orderBy('id', 'DESC')->get();           
          return response()->json(array('error' => false, 'data' => $group_data), 200);
 
        }
