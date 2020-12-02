@@ -52,11 +52,11 @@ class GroupController extends Controller {
 
              
 
-              $teachers = ParentChildrens::leftJoin('users', 'users.id', '=', 'parent_childrens.children_id')
+              $teachers = ParentChildrens::Join('users', 'users.id', '=', 'parent_childrens.children_id')
                ->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
 
-               $classes = ParentChildrens::leftJoin('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
+               $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
                ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
               if(!empty($teachers->schools)){
@@ -86,9 +86,9 @@ class GroupController extends Controller {
                }
 
                if($single_group->type=='class_group'){
-                $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
-                ->select(DB::raw('count(*)'))
-                ->where('parent_id', $user->id)->where('class_id', $single_group->class_id)->groupBy('parent_id')->count();
+                $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
+                ->select(DB::raw('Distinct count(parent_id))'))
+                ->where('class_id', $single_group->class_id)->count();
                 $single_group->member_count=$count;
               }
 
@@ -119,54 +119,33 @@ class GroupController extends Controller {
               $random_number=rand();
               if($request->group_id=='1'){
                $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
-               foreach($users as $single){
-                 $groups=new GroupMessage;
-                 $groups->to_user_id=$single->id;
-                 $groups->from_user_id=$request->user_id;
-                 $groups->group_id=$request->group_id;
-                 $groups->message=$request->message;
-                  $groups->group_number=$random_number;
-                  $groups->is_read=0;
-                 $groups->save();
-                  
+               foreach($users as $single){ 
+                $this->Sendsinglemessage($single->id,$request,$random_number); 
                }
-                 
-
-             }
-
-            elseif($request->group_id=='2'){
+               } 
+                elseif($request->group_id=='2'){
               $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
               foreach($users as $single){
-               $groups=new GroupMessage;
-               $groups->to_user_id=$single->id;
-               $groups->from_user_id=$request->user_id;
-               $groups->group_id=$request->group_id;
-               $groups->message=$request->message;
-               $groups->is_read=0;
-                $groups->group_number=$random_number;
-               $groups->save();
-               
-             }          
+                $this->Sendsinglemessage($single->id,$request,$random_number);
+                                              }       
 
-           }
-
+            }
            else if(Group::where('group_id',$request->group_id)->where('type','school_admin')->exists()){
              $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('id','!=',$user->id)->where('status',1)->get();
               foreach($users as $single){
-               $groups=new GroupMessage;
-               $groups->to_user_id=$single->id;
-               $groups->from_user_id=$request->user_id;
-               $groups->group_id=$request->group_id;
-               $groups->message=$request->message;
-                $groups->group_number=$random_number;
-               $groups->is_read=0;
-               $groups->save();
-               //$this->pusher->trigger('group-channel', 'group_user', $groups);
+               $this->Sendsinglemessage($single->id,$request,$random_number);
+              
              }
            }
 
-
-
+           else if(Group::where('group_id',$request->group_id)->where('type','class_group')->exists()){
+             $class_id= Group::where('group_id',$request->group_id)->where('type','class_group')->first();           
+             $users = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens .parent_id')
+             ->select(DB::raw('DIstinct users.id'))->where('class_id', $class_id->class_id)->get();
+             foreach($users as $single){
+               $this->Sendsinglemessage($single->id,$request,$random_number);              
+             }
+           }
 
   $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->first();
 
@@ -180,6 +159,40 @@ class GroupController extends Controller {
         }
     }
 
+
+    public function Sendsinglemessage($to_user_id,$input,$random_number){
+      if($input->hasfile('file'))
+      {
+        $message=$input->message;
+        foreach($input->file('file') as $key=>$file)
+        {
+          $name=time().$key.'.'.$file->getClientOriginalExtension();    
+          $file->move(public_path().'/images/', $name);      
+          $filename= URL::to('/').'/images/'.$name; 
+          $groups=new GroupMessage;
+          $groups->to_user_id=$to_user_id;
+          $groups->from_user_id=$input->user_id;
+          $groups->group_id=$input->group_id;
+          $groups->message=$message;
+          $groups->group_number=$random_number;
+          $groups->is_read=0;
+          $groups->file=$filename;
+          $groups->save();
+          $messsage='';
+        }
+      }else{
+        $groups=new GroupMessage;
+        $groups->to_user_id=$to_user_id;
+        $groups->from_user_id=$input->user_id;
+        $groups->group_id=$input->group_id;
+        $groups->message=$input->message;
+        $groups->group_number=$random_number;
+        $groups->is_read=0;
+        $groups->save();
+
+      }
+
+    }
      // Group Messages List
     public function GroupMessages(Request $request) {
       try {
