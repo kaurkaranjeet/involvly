@@ -117,10 +117,12 @@ class GroupController extends Controller {
             } else {
               $user=User::find($request->user_id);
               $random_number=rand();
+              $limit=1;
               if($request->group_id=='1'){
                 $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
                if($request->hasfile('images'))
                {
+                $limit=count($request->file('images'));
                 foreach($request->file('images') as $key=>$single)
                 {
                    $random_number=rand();
@@ -148,6 +150,7 @@ class GroupController extends Controller {
 
               if($request->hasfile('images'))
                {
+                   $limit=count($request->file('images'));
                 foreach($request->file('images') as $key=>$single)
                 {
                      $random_number=rand();
@@ -174,6 +177,7 @@ class GroupController extends Controller {
              $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('id','!=',$user->id)->where('status',1)->get();
              if($request->hasfile('images'))
                {
+                   $limit=count($request->file('images'));
                 foreach($request->file('images') as $key=>$single)
                 {
 
@@ -203,6 +207,7 @@ class GroupController extends Controller {
              ->select(DB::raw('DIstinct users.id'))->where('class_id', $class_id->class_id)->get();
              if($request->hasfile('images'))
              {
+                 $limit=count($request->file('images'));
               foreach($request->file('images') as $key=>$single)
               {
                 $name=time().$key.'.'.$single->getClientOriginalExtension();    
@@ -223,7 +228,7 @@ class GroupController extends Controller {
            }
          }
 
-  $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->first();
+  $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
 
   $this->pusher->trigger('group-channel', 'group_user', $group_data);
                 
