@@ -81,12 +81,13 @@ class GroupController extends Controller {
                    $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
                    $single_group->member_count=$count;
                   }
-
-
-                 /* if($single_group->type=='class_group'){
-                   $count=UserClassCode::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
+                  
+                  if($single_group->type=='class_group'){
+                  $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
+               ->select(DB::raw('count(*)'))
+              ->where('parent_id', $user->id)->where('class_id', $single_group->class_id)->groupBy('parent_id')->count();
                    $single_group->member_count=$count;
-                  }*/
+                  }
 
                  }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
