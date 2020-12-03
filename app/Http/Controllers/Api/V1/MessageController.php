@@ -58,9 +58,17 @@ class MessageController extends Controller {
          if(empty($data->message)){
          	$data->message='';
          } 
+          if($request->hasfile('file'))
+          {
+             
+             $name = time().'.'.$request->file('file')->getClientOriginalExtension();
+             $request->file('file')->move(public_path().'/files/', $name);  
+             $data->file = $name;            
+         }
             $data->is_read = 0; // message will be unread when sending message
             $data->save();
-            $data->message_date = $data->created_at->diffForHumans();
+            $date = Carbon::parse($data->created_at); 
+           $data->message_date = $date->diffForHumans();       
             $data->User;      
             $this->pusher->trigger('chat-channel', 'chat_event', $data);  
          // prepare some data to send with the response
