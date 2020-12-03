@@ -361,6 +361,7 @@ class GroupController extends Controller {
         	 	$groupobj->group_icon=$file_name;
         	 }
         	 $groupobj->type='custom_group';
+        	  $groupobj->status='1';
         	 $groupobj->school_id=0;
         	 $groupobj->class_id=0;
         	$groupobj->save();
