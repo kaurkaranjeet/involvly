@@ -187,7 +187,7 @@ class GroupController extends Controller {
             }
 
             }
-           else if(Group::where('group_id',$request->group_id)->where('type','school_admin')->exists()){
+           else if(Group::where('id',$request->group_id)->where('type','school_admin')->exists()){
              $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('id','!=',$user->id)->where('status',1)->get();
              if($request->hasfile('images'))
                {
