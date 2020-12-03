@@ -121,7 +121,7 @@ class GroupController extends Controller {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                       'message' => 'required',
+                      // 'message' => 'required',
                          'user_id' => 'required|exists:users,id',
                         'group_id' => 'required|exists:groups,id',
             ]);
