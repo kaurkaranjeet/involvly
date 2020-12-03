@@ -60,9 +60,9 @@ class MessageController extends Controller {
          } 
           if($request->hasfile('file'))
           {
-        
-             $name = time().'.'.$file->getClientOriginalExtension();
-             $file->move(public_path().'/files/', $name);  
+             
+             $name = time().'.'.$request->file('file')->getClientOriginalExtension();
+             $request->file('file')->move(public_path().'/files/', $name);  
              $data->file = $name;            
          }
             $data->is_read = 0; // message will be unread when sending message
