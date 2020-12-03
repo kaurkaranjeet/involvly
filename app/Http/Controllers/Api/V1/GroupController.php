@@ -109,8 +109,10 @@ class GroupController extends Controller {
                		$single_group->member_count=$count;
                		$single_group->unread_count=$unread_count;
 
-               		  $single_group->message_date = $single_group->last_created_date->diffForHumans();
+
                	}
+
+               	//  $single_group->message_date = $single_group->last_created_date->diffForHumans();
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
