@@ -14,7 +14,7 @@ use App\User;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\ParentChildrens;
-
+use App\Models\GroupMember;
 use Pusher\Pusher;
 use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -329,6 +329,42 @@ class GroupController extends Controller {
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('read-channel', 'read_group', $array);       
       return response()->json($array, 200);
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+    // Create custom Group
+    public function CreateCustomGroup(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+         'user_id' => 'required|exists:users,id',
+          'group_name' => 'required',
+          'group_members' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+        	$groupobj=	new Group;
+        	$groupobj->user_id=$request->user_id;
+        	$groupobj->group_name=$request->group_name;
+        	$groupobj->group_icon=$request->group_icon;
+        	$groupobj->school_id=0;
+        	$groupobj->class_id=0;
+        	$groupobj->save();
+        	if(!empty($request->group_members)){
+        	foreach($request->group_members as $member_id){
+        		$groupobjmember=new GroupMember;
+        		$groupobjmember->member_id=$member_id;
+        		$groupobjmember->group_id=$groupobj->group_id;        
+        		$groupobjmember->save();
+        	}
+        }
+         
+      return response()->json(array('error' => false, 'data' => $groupobj);, 200);
        }
      } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
