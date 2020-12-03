@@ -74,7 +74,7 @@ class MessageController extends Controller {
             $this->pusher->trigger('chat-channel', 'chat_event', $data);  
          // prepare some data to send with the response
         $response = [
-          'error' =>  true,
+          'error' =>  false,
           'message'  =>'Message send successfully',
           'data' =>  $data
 
@@ -84,7 +84,7 @@ class MessageController extends Controller {
       //catch exception
 catch(Exception $e) {
     $response = [
-        'success' => false,
+        'error' => true,
         'message' =>  $e->getMessage(),
     ]; 
 
@@ -122,9 +122,9 @@ return response()->json($response);
          if($data->unread_count==null) $data->unread_count=0;
        }
        $response = [
-        'success' => 1,
+        'error' => false,
         'message' =>  'Record found',
-        'chat_history' =>  $results,
+        'data' =>  $results,
 
       ];
     }
@@ -139,7 +139,7 @@ return response()->json($response);
 catch(Exception $e) {
 
   $response = [
-    'success' => false,
+    'error' => true,
     'message' =>  $e->getMessage(),
   ]; 
 
@@ -195,7 +195,7 @@ public function chatList(Request $request)
           // $data->key=$key; 
       }
       $response = [
-        'success' => 1,
+        'error' => false,
         'message' =>  'Record found',
         'data' =>  $results,
         //'current_page' =>$page,
@@ -214,7 +214,7 @@ public function chatList(Request $request)
       //catch exception
 catch(Exception $e) {
   $response = [
-    'success' => false,
+    'error' => true,
     'message' =>  $e->getMessage(),
   ]; 
 }
