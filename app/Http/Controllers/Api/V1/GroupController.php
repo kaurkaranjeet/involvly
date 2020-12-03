@@ -359,7 +359,7 @@ class GroupController extends Controller {
         	foreach($request->group_members as $member_id){
         		$groupobjmember=new GroupMember;
         		$groupobjmember->member_id=$member_id;
-        		$groupobjmember->group_id=$groupobj->group_id;        
+        		$groupobjmember->group_id=$groupobj->id;        
         		$groupobjmember->save();
         	}
         }
