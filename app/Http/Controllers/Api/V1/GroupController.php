@@ -234,6 +234,7 @@ class GroupController extends Controller {
              
              if($request->hasfile('images'))
              {
+             	   $random_number=rand();
                  $limit=count($request->file('images'));
               foreach($request->file('images') as $key=>$file)
               {
@@ -257,7 +258,41 @@ class GroupController extends Controller {
          }
            }
          }
+
+         else{
+
+
+         	$class_id= Group::where('id',$request->group_id)->where('type','custom_group')->first();           
+         	$users=GroupMember::where('group_id',$request->group_id)->get();
+         	if($request->hasfile('images'))
+         	{
+         		$limit=count($request->file('images'));
+         		foreach($request->file('images') as $key=>$file)
+         		{
+
+         			$random_number=rand();
+         			$name=time().$key.'.'.$file->getClientOriginalExtension();    
+         			$file->move(public_path().'/assignment_doc/', $name);      
+         			$filename= URL::to('/').'/assignment_doc/'.$name; 
+         			if($key>0){
+         				$request->message='';
+         			}
+         			if(!empty($users)){
+         				foreach($users as $single){ 
+         					$this->Sendsinglemessage($single->member_id,$request,$random_number,$filename); 
+         				}
+         			}
+         		}
+         	}   else{
+         		if(!empty($users)){
+         			foreach($users as $single){
+         				$this->Sendsinglemessage($single->member_id,$request,$random_number);              
+         			}
+         		}
+         	}
+
                // Update user read message to yourself
+         }
            GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
 
          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
