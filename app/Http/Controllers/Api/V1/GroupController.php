@@ -100,6 +100,13 @@ $msql='';
                   $single_group->unread_count=$unread_count;
                }
 
+
+               if($single_group->type=='custom_group'){
+               	$users=GroupMember::where('group_id',$single_group->id)->count();
+               	$single_group->member_count=$count;
+               	$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+               	$single_group->unread_count=$unread_count;
+               }
                if($single_group->type=='class_group'){
                 $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
                 ->select(DB::raw('Distinct count(parent_id))'))
