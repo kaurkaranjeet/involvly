@@ -381,4 +381,30 @@ class GroupController extends Controller {
         }
     }
 
+
+// Group Messages List
+    public function Customeparents(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'user_id' =>'required|exists:users,id',
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else { 
+         $usrobj=User::find($request->user_id);
+         $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->get();   
+         $array=array('error' => false, 'data' => $group_data);
+      return response()->json($array, 200);
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+
+
+
+
 }
