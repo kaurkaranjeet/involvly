@@ -233,7 +233,7 @@ class GroupController extends Controller {
                 }
                 
                 foreach($users as $single){ 
-                  $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
+                  $this->Sendsinglemessage($single->parent_id,$request,$random_number,$filename); 
                 }
               }
             }   else{
