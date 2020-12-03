@@ -63,8 +63,8 @@ class MessageController extends Controller {
           {
              
              $name = time().'.'.$request->file('file')->getClientOriginalExtension();
-             $request->file('file')->move(public_path().'/files/', $name);  
-             $data->file = $name;            
+             $request->file('file')->move(public_path().'/files/', $name);              
+             $data->file =URL::to('/').'/files/'.$name;;            
          }
             $data->is_read = 0; // message will be unread when sending message
             $data->save();

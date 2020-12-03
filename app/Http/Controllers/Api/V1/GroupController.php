@@ -309,11 +309,11 @@ class GroupController extends Controller {
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
          $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date")->where('id',$request->group_id)->first();
-         	$date = Carbon::parse($list_group->message_date); 
-        $list_group->message_date = $date->diffForHumans();
+         $date = Carbon::parse($list_group->message_date); 
+         $list_group->message_date = $date->diffForHumans();
          $group_single=$this->CountGroups($list_group,$request->user_id);
-         $this->pusher->trigger('list-channel', 'list_group', $group_single);              
-         return response()->json($array, 200);               
+         $this->pusher->trigger('list-channel', 'list_group', $group_single);
+         return response()->json(array('error' => false, 'data' => $group_single), 200);               
           }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
