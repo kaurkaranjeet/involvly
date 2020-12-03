@@ -360,8 +360,9 @@ class GroupController extends Controller {
         	 	$file_name=URL::to('/').'/images/'.$filename);  
         	 	$groupobj->group_icon=$file_name;
         	 }
-        	$groupobj->school_id=0;
-        	$groupobj->class_id=0;
+        	 $groupobj->type='custom_group';
+        	 $groupobj->school_id=0;
+        	 $groupobj->class_id=0;
         	$groupobj->save();
         	if(!empty($request->group_members)){
         	foreach($request->group_members as $member_id){
