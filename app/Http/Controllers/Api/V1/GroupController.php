@@ -471,7 +471,7 @@ class GroupController extends Controller {
                		$unread_count=GroupMessage::where('to_user_id',$user_id)->where('is_read',0)->where('group_id', $list_group->id)->count();
                		$list_group->unread_count=$unread_count;
                	}
-               	if($single_group->type=='custom_group'){
+               	if($list_group->type=='custom_group'){
                		$count=GroupMember::where('group_id',$list_group->id)->count();
                		$list_group->member_count=$count;
                		$unread_count=GroupMessage::where('to_user_id',$user_id)->where('is_read',0)->where('group_id', $list_group->id)->count();
