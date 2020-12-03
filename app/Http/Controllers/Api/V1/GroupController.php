@@ -49,76 +49,66 @@ class GroupController extends Controller {
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-              $user=User::find($request->user_id);
-
-              $teachers = ParentChildrens::Join('users', 'users.id', '=', 'parent_childrens.children_id')
-               ->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
-              ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-               $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
-               ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
-              ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-         $members= GroupMember::where('member_id',$request->member_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
-
-         if(!empty($members->groups)){
-         	$msql=' OR (IN('.$members->groups.'))';
-         }
-         else{
-$msql='';
-         }
+            	$user=User::find($request->user_id);
+            	$teachers = ParentChildrens::Join('users', 'users.id', '=', 'parent_childrens.children_id')
+            	->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
+            	->where('parent_id', $user->id)->groupBy('parent_id')->first();
+            	$classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
+            	->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
+            	->where('parent_id', $user->id)->groupBy('parent_id')->first();
+            	$members= GroupMember::where('member_id',$request->member_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
+            	if(!empty($members->groups)){
+            		$msql=' OR (IN('.$members->groups.'))';
+            	}
+            	else{
+            		$msql='';
+            	}
               if(!empty($teachers->schools)){
                $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");
                if(!empty($classes->classes)){
                  $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
                }
-
              }else{
               $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
             }
                $groups=$sql->get();
                  
                foreach($groups as $single_group){
-                if($single_group->type=='parent_community'){
-                 $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
-        $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+               	if($single_group->type=='parent_community'){
+               		$count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
+               		$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+               		$single_group->member_count=$count;
+               		$single_group->unread_count=$unread_count;
+               	}
+               	if($single_group->type=='school'){
+               		$count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
+               		$single_group->member_count=$count;
+               		$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+               		$single_group->unread_count=$unread_count;
+               	}
 
-                 $single_group->member_count=$count;
-                  $single_group->unread_count=$unread_count;
+               	if($single_group->type=='school_admin'){
+               		$count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
+               		$single_group->member_count=$count;
+               		$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+               		$single_group->unread_count=$unread_count;
+               	}
+               	if($single_group->type=='custom_group'){
+               		$users=GroupMember::where('group_id',$single_group->id)->count();
+               		$single_group->member_count=$count;
+               		$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+               		$single_group->unread_count=$unread_count;
+               	}
+               	if($single_group->type=='class_group'){
+               		$count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
+               		->select(DB::raw('Distinct count(parent_id))'))
+               		->where('class_id', $single_group->class_id)->count();
+               		$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+               		$single_group->member_count=$count;
+               		$single_group->unread_count=$unread_count;
+               	}
+
                }
-               if($single_group->type=='school'){
-                 $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
-                 $single_group->member_count=$count;
-                 $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-                  $single_group->unread_count=$unread_count;
-               }
-
-               if($single_group->type=='school_admin'){
-                 $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
-                 $single_group->member_count=$count;
-         $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-
-                 
-                  $single_group->unread_count=$unread_count;
-               }
-
-
-               if($single_group->type=='custom_group'){
-               	$users=GroupMember::where('group_id',$single_group->id)->count();
-               	$single_group->member_count=$count;
-               	$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-               	$single_group->unread_count=$unread_count;
-               }
-               if($single_group->type=='class_group'){
-                $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
-                ->select(DB::raw('Distinct count(parent_id))'))
-                ->where('class_id', $single_group->class_id)->count();
-
-         $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-
-                 $single_group->member_count=$count;
-                  $single_group->unread_count=$unread_count;
-              }
-
-            }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
                
           }
@@ -303,18 +293,13 @@ $msql='';
          		}
          	}
 
-               // Update user read message to yourself
+         // Update user read message to yourself
          }
-           GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
-
+         GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
-
-
          $array=array('error' => false, 'data' => $group_data);
-         $this->pusher->trigger('group-channel', 'group_user', $array);
-                
-         return response()->json($array, 200);
-               
+         $this->pusher->trigger('group-channel', 'group_user', $array);                
+         return response()->json($array, 200);               
           }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
@@ -412,8 +397,8 @@ $msql='';
         	 $groupobj->school_id=0;
         	 $groupobj->class_id=0;
         	 $groupobj->save();
-        	if(!empty($request->group_members)){
-        	$members=$request->group_members; 
+        	if(!empty($request->group_members)){        		
+        	$members=explode(',',$request->group_members);
         	array_push($members,$groupobj->user_id);
         	foreach($members as $member_id){
         		$groupobjmember=new GroupMember;
