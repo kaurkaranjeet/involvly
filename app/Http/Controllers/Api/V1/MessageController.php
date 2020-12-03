@@ -117,8 +117,8 @@ return response()->json($response);
       if($results ){       
 
         foreach($results as $data){
-         $date = Carbon::parse($data->message_date); 
-         $data->message_date = $date->diffForHumans();
+        // $date = Carbon::parse($data->message_date); 
+        // $data->message_date = $date->diffForHumans();
          if($data->unread_count==null) $data->unread_count=0;
        }
        $response = [
