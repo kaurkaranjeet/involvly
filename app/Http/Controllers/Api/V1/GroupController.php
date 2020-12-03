@@ -8,7 +8,7 @@ use JWTAuth;
 use Exception;
 use App\Events\GroupEvent;
 use App\Events\ReadEvent;
-use App\Events\CustomeGroupEvent;
+use App\Events\CustomGroupEvent;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
