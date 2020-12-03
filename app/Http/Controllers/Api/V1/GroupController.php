@@ -58,7 +58,7 @@ class GroupController extends Controller {
             	->where('parent_id', $user->id)->groupBy('parent_id')->first();
             	$members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
             	if(!empty($members->groups)){
-            		$msql=' OR (IN('.$members->groups.'))';
+            		$msql=' OR ( id IN('.$members->groups.'))';
             	}
             	else{
             		$msql='';
