@@ -263,7 +263,7 @@ class GroupController extends Controller {
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('group-channel', 'group_user', $array);
                 
-         return response()->json(array('error' => false, 'data' => $array), 200);
+         return response()->json($array, 200);
                
           }
         } catch (\Exception $e) {
