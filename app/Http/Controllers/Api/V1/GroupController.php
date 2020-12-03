@@ -8,6 +8,7 @@ use JWTAuth;
 use Exception;
 use App\Events\GroupEvent;
 use App\Events\ReadEvent;
+use App\Events\CustomeGroupEvent;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
@@ -15,6 +16,7 @@ use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
+
 use Pusher\Pusher;
 use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -94,7 +96,7 @@ class GroupController extends Controller {
                		$single_group->unread_count=$unread_count;
                	}
                	if($single_group->type=='custom_group'){
-               		$users=GroupMember::where('group_id',$single_group->id)->count();
+               		$count=GroupMember::where('group_id',$single_group->id)->count();
                		$single_group->member_count=$count;
                		$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                		$single_group->unread_count=$unread_count;
@@ -357,7 +359,7 @@ class GroupController extends Controller {
           throw new Exception($validator->errors()->first());
         } else {
        GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
-       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->get();   
+       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->get();   
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('read-channel', 'read_group', $array);       
       return response()->json($array, 200);
@@ -407,7 +409,11 @@ class GroupController extends Controller {
         	 		$groupobjmember->save();
         	}
         }
-         
+         // Send pusher EVent
+        $count=GroupMember::where('group_id',$groupobj->id)->count();
+        $groupobj->member_count=$count;
+        $groupobj->unread_count=0;
+        $this->pusher->trigger('custom-channel', 'custom_group', $groupobj);         
       return response()->json(array('error' => false, 'data' => $groupobj), 200);
        }
      } catch (\Exception $e) {
