@@ -66,12 +66,12 @@ class GroupController extends Controller {
             		$msql='';
             	}
               if(!empty($teachers->schools)){
-               $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");
+               $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_created_date");
                if(!empty($classes->classes)){
-                 $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
+                 $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_created_date");;
                }
              }else{
-              $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
+              $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_created_date");;
             }
                $groups=$sql->get();
                  
@@ -108,6 +108,8 @@ class GroupController extends Controller {
                		$unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                		$single_group->member_count=$count;
                		$single_group->unread_count=$unread_count;
+
+               		  $single_group->message_date = $single_group->last_created_date->diffForHumans();
                	}
 
                }
