@@ -133,7 +133,7 @@ class GroupController extends Controller {
               $random_number=rand();
               $limit=1;
               if($request->group_id=='1'){
-                $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
+                $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->get();
                if($request->hasfile('images'))
                {
                 $limit=count($request->file('images'));
@@ -164,7 +164,7 @@ class GroupController extends Controller {
             } 
           }
                 elseif($request->group_id=='2'){
-              $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->where('id','!=',$user->id)->get();
+              $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->get();
 
               if($request->hasfile('images'))
                {
@@ -196,7 +196,7 @@ class GroupController extends Controller {
 
             }
            else if(Group::where('id',$request->group_id)->where('type','school_admin')->where('school_id',$user->school_id)->exists()){
-             $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('id','!=',$user->id)->where('status',1)->get();
+             $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->get();
              if($request->hasfile('images'))
                {
                    $limit=count($request->file('images'));
@@ -257,8 +257,11 @@ class GroupController extends Controller {
          }
            }
          }
+               // Update user read message to yourself
+           GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
 
          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
+
 
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('group-channel', 'group_user', $array);
