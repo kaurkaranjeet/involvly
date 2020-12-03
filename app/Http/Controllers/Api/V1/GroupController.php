@@ -320,10 +320,14 @@ class GroupController extends Controller {
           $groups->to_user_id=$to_user_id;
           $groups->from_user_id=$input->user_id;
           $groups->group_id=$input->group_id;
+
           $groups->message=$input->message;
           $groups->group_number=$random_number;
           $groups->is_read=0;
           $groups->file=$file_name;
+             if(empty($groups->message)){
+             	$groups->message= '';
+             }
           $groups->save();
       //    $messsage='';
       
@@ -489,5 +493,66 @@ class GroupController extends Controller {
                	return $list_group;
 
     }
+
+
+ /**
+     * sendUserMessage
+     *
+     * @param Request $request
+     */
+      public function sendUserMessage(Request $request)
+    {
+        $input = $request->all();
+        $response =[];
+        try{
+            $validator = Validator::make($input, [
+             'from_user_id' => 'required|exists:users,id',         
+
+             'to_user_id' => 'required|exists:users,id',
+           //  'message'=> 'required_if:file,==,0'
+            ]);
+            if($validator->fails()){
+             throw new Exception( $validator->errors());
+         }  else{
+    
+
+         $data = new Message();
+         $data->from_user_id =  $request->from_user_id;
+         $data->to_user_id =  $request->to_user_id;
+         $data->message = $request->message; 
+        
+            $data->is_read = 0; // message will be unread when sending message
+            $data->save();
+            $data->dateTimeStr = date("Y-m-dTH:i", strtotime($data->created_at->toDateTimeString()));
+            $data->dateHumanReadable = $data->created_at->diffForHumans();
+            $data->fromUserName = $data->fromUser->name;  
+            $data->toUserName = $data->toUser->name;   
+            $data->attachment=$data->attachment;     
+            if(empty($message)){
+           $data->message=	$data->attachment->name;
+            }
+            PusherFactory::make()->trigger('chat', 'send', ['data' => $data]);
+         // prepare some data to send with the response
+        
+         TechnicianNotification::techonline('ADMIN_NOTIFY');   
+        $response = [
+          'success' =>  true,
+          'message'  =>'Message send successfully',
+          'data' =>  $data
+
+        ]; 
+    }
+}
+      //catch exception
+catch(Exception $e) {
+
+    $response = [
+        'success' => false,
+        'message' =>  $e->getMessage(),
+    ]; 
+
+}
+return response()->json($response);
+}
 
 }
