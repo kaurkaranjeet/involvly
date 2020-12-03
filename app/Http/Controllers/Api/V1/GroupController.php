@@ -418,7 +418,8 @@ class GroupController extends Controller {
         	$groupobj->save();
         	if(!empty($request->group_members)){        		
         		$members=explode(',',$request->group_members);
-        		//array_push($members,$groupobj->user_id);
+        		array_push($members,$groupobj->user_id);
+        		$members=array_unique($members);
         		foreach($members as $member_id){
         			$groupobjmember=new GroupMember;
         			$groupobjmember->member_id=$member_id;
