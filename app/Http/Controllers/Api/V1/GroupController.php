@@ -51,23 +51,28 @@ class GroupController extends Controller {
             } else {
               $user=User::find($request->user_id);
 
-             
-
               $teachers = ParentChildrens::Join('users', 'users.id', '=', 'parent_childrens.children_id')
                ->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-
                $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
                ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
+         $members= GroupMember::where('member_id',$request->member_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
+
+         if(!empty($members->groups)){
+         	$msql=' OR (IN('.$members->groups.'))';
+         }
+         else{
+$msql='';
+         }
               if(!empty($teachers->schools)){
-               $sql= Group::whereRaw("type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");
+               $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");
                if(!empty($classes->classes)){
-                 $sql= Group::whereRaw("type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
+                 $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
                }
 
              }else{
-              $sql= Group::whereRaw("type='parent_community' OR type='school') AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
+              $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message");;
             }
                $groups=$sql->get();
                  
@@ -396,10 +401,10 @@ class GroupController extends Controller {
         	 	$groupobj->group_icon=$file_name;
         	 }
         	 $groupobj->type='custom_group';
-        	  $groupobj->status='1';
+        	 $groupobj->status='1';
         	 $groupobj->school_id=0;
         	 $groupobj->class_id=0;
-        	$groupobj->save();
+        	 $groupobj->save();
         	if(!empty($request->group_members)){
         	$members=$request->group_members; 
         	array_push($members,$groupobj->user_id);
