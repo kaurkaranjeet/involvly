@@ -556,5 +556,28 @@ catch(Exception $e) {
 }
 return response()->json($response);
 }
+ // Delete custom Group
+    public function DeleteCustomGroup(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+         'user_id' => 'required|exists:users,id',
+         'group_id' => 'required',
+        ]);
 
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+        $delete=Group::where('user_id',$request->user_id)->where('id',$request->group_id)->delete();
+        if($delete){
+        	      
+      return response()->json(array('error' => false, 'data' => $delete), 200);
+  } else{
+  	    throw new Exception('You have not created this group');
+  }
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
 }
