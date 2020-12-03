@@ -215,8 +215,8 @@ class GroupController extends Controller {
            }
            }
 
-           else if(Group::where('group_id',$request->group_id)->where('type','class_group')->exists()){
-             $class_id= Group::where('group_id',$request->group_id)->where('type','class_group')->first();           
+           else if(Group::where('id',$request->group_id)->where('type','class_group')->exists()){
+             $class_id= Group::where('id',$request->group_id)->where('type','class_group')->first();           
              $users = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens .parent_id')
              ->select(DB::raw('DIstinct users.id'))->where('class_id', $class_id->class_id)->get();
              if($request->hasfile('images'))
