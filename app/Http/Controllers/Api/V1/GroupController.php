@@ -192,12 +192,12 @@ class GroupController extends Controller {
              if($request->hasfile('images'))
                {
                    $limit=count($request->file('images'));
-                foreach($request->file('images') as $key=>$single)
+                foreach($request->file('images') as $key=>$file)
                 {
 
                      $random_number=rand();
-                  $name=time().$key.'.'.$single->getClientOriginalExtension();    
-                  $single->move(public_path().'/assignment_doc/', $name);      
+                  $name=time().$key.'.'.$file->getClientOriginalExtension();    
+                  $file->move(public_path().'/assignment_doc/', $name);      
                   $filename= URL::to('/').'/assignment_doc/'.$name; 
                   if($key>0){
                     $request->message='';
@@ -223,10 +223,10 @@ class GroupController extends Controller {
              if($request->hasfile('images'))
              {
                  $limit=count($request->file('images'));
-              foreach($request->file('images') as $key=>$single)
+              foreach($request->file('images') as $key=>$file)
               {
-                $name=time().$key.'.'.$single->getClientOriginalExtension();    
-                $single->move(public_path().'/assignment_doc/', $name);      
+                $name=time().$key.'.'.$file->getClientOriginalExtension();    
+                $file->move(public_path().'/assignment_doc/', $name);      
                 $filename= URL::to('/').'/assignment_doc/'.$name; 
                 if($key>0){
                   $request->message='';
