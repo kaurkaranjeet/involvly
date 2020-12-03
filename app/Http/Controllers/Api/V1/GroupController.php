@@ -147,15 +147,19 @@ class GroupController extends Controller {
                   if($key>0){
                     $request->message='';
                   }
+                  if(!empty($users)){
                 
                 foreach($users as $single){ 
-                  $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
+                  $this->Sendsinglemessage($single->id,$request,$random_number,$filename);
+                  } 
                 }
               }
             }
             else{
+            	 if(!empty($users)){
                foreach($users as $single){ 
                 $this->Sendsinglemessage($single->id,$request,$random_number); 
+            }
               }
             } 
           }
@@ -174,16 +178,20 @@ class GroupController extends Controller {
                   if($key>0){
                     $request->message='';
                   }
-                
+                 if(!empty($users)){
                 foreach($users as $single){ 
                   $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
+              }
                 }
               }
             }
             else{
+            	 if(!empty($users)){
               foreach($users as $single){
+
                 $this->Sendsinglemessage($single->id,$request,$random_number);
                                               }       
+                                          }
             }
 
             }
@@ -202,16 +210,20 @@ class GroupController extends Controller {
                   if($key>0){
                     $request->message='';
                   }
+                   if(!empty($users)){
                 
                 foreach($users as $single){ 
                   $this->Sendsinglemessage($single->id,$request,$random_number,$filename); 
                 }
+            }
               }
             }else{
+            	 if(!empty($users)){
               foreach($users as $single){
                $this->Sendsinglemessage($single->id,$request,$random_number);
               
              }
+         }
            }
            }
 
@@ -231,15 +243,18 @@ class GroupController extends Controller {
                 if($key>0){
                   $request->message='';
                 }
-                
+                 if(!empty($users)){
                 foreach($users as $single){ 
                   $this->Sendsinglemessage($single->parent_id,$request,$random_number,$filename); 
                 }
+            }
               }
             }   else{
+            	 if(!empty($users)){
              foreach($users as $single){
                $this->Sendsinglemessage($single->parent_id,$request,$random_number);              
              }
+         }
            }
          }
 
