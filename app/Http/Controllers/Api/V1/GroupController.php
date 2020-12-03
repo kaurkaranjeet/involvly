@@ -351,7 +351,7 @@ class GroupController extends Controller {
         	$groupobj=	new Group;
         	$groupobj->user_id=$request->user_id;
         	$groupobj->group_name=$request->group_name;
-        	 $name=time().$key.'.'.$file->getClientOriginalExtension();  
+        	  
         	 if($request->hasfile('group_icon'))
         	 {  
         	 	$file = $request->file('group_icon');
