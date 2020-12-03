@@ -357,7 +357,7 @@ class GroupController extends Controller {
         	 	$file = $request->file('group_icon');
         	 	$filename=trim($file->getClientOriginalName());
         	 	$file->move(public_path().'/images/',$filename) ; 
-        	 	$file_name=URL::to('/').'/images/'.$filename);  
+        	 	$file_name=URL::to('/').'/images/'.$filename;  
         	 	$groupobj->group_icon=$file_name;
         	 }
         	 $groupobj->type='custom_group';
