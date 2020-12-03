@@ -113,11 +113,11 @@ return response()->json($response);
 
       $user_id=$request->user_id;
       
-      $results = DB::select( DB::raw("SELECT m1.message as last_message,m1.created_at,u1.*,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(one_to_one_message.is_read) from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id=m1.from_user_id AND one_to_one_message.to_user_id=".$user_id." group by one_to_one_message.from_user_id) as  unread_count FROM one_to_one_message m1 LEFT JOIN one_to_one_message m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") ORDER BY m1.created_at") );
+      $results = DB::select( DB::raw("SELECT m1.message as last_message,m1.created_at as message_date,u1.*,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(one_to_one_message.is_read) from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id=m1.from_user_id AND one_to_one_message.to_user_id=".$user_id." group by one_to_one_message.from_user_id) as  unread_count FROM one_to_one_message m1 LEFT JOIN one_to_one_message m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") ORDER BY m1.created_at") );
       if($results ){       
 
         foreach($results as $data){
-         $date = Carbon::parse($data->created_at); 
+         $date = Carbon::parse($data->message_date); 
          $data->message_date = $date->diffForHumans();
          if($data->unread_count==null) $data->unread_count=0;
        }
