@@ -383,7 +383,7 @@ class GroupController extends Controller {
 
 
 // Group Messages List
-    public function Customeparents(Request $request) {
+    public function CustomMembers(Request $request) {
       try {
         $input = $request->all();
         $validator = Validator::make($input, [
