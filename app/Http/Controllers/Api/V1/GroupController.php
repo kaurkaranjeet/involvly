@@ -303,7 +303,7 @@ class GroupController extends Controller {
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
-         $list_group=Groups::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message")->where('id',$request->group_id)->first();
+         $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message")->where('id',$request->group_id)->first();
          $group_single=$this->CountGroups($list_group,$request->user_id);
          $this->pusher->trigger('list-channel', 'list_group', $group_single);              
          return response()->json($array, 200);               
