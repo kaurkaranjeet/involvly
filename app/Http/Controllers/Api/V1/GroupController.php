@@ -66,12 +66,12 @@ class GroupController extends Controller {
             		$msql='';
             	}
               if(!empty($teachers->schools)){
-               $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");
+               $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as created_at");
                if(!empty($classes->classes)){
-                 $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
+                 $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as created_at");;
                }
              }else{
-              $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
+              $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as created_at");;
             }
                $groups=$sql->get();
                  
@@ -111,9 +111,9 @@ class GroupController extends Controller {
 
 
                	}
-               	$date = Carbon::parse($single_group->message_date); 
+               //	$date = Carbon::parse($single_group->message_date); 
 
-             $single_group->message_date = $date->diffForHumans();
+          //   $single_group->message_date = $date->diffForHumans();
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
@@ -308,9 +308,9 @@ class GroupController extends Controller {
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
-         $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date")->where('id',$request->group_id)->first();
-         	$date = Carbon::parse($list_group->message_date); 
-         	$list_group->message_date = $date->diffForHumans();
+         $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as created_at")->where('id',$request->group_id)->first();
+         	//$date = Carbon::parse($list_group->message_date); 
+         	//$list_group->message_date = $date->diffForHumans();
          	$group_single=$this->CountGroups($list_group,$request->user_id);
          	$array1=array('data' => $group_single);
          	$this->pusher->trigger('list-channel', 'list_group', $array1);              
@@ -533,7 +533,7 @@ class GroupController extends Controller {
          } 
             $data->is_read = 0; // message will be unread when sending message
             $data->save();
-            $data->message_date = $data->created_at->diffForHumans();
+           // $data->message_date = $data->created_at->diffForHumans();
             $data->User;      
             $this->pusher->trigger('chat-channel', 'chat_event', $data);  
          // prepare some data to send with the response
