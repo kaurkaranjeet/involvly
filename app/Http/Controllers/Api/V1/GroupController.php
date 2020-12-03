@@ -364,7 +364,7 @@ class GroupController extends Controller {
         	}
         }
          
-      return response()->json(array('error' => false, 'data' => $groupobj);, 200);
+      return response()->json(array('error' => false, 'data' => $groupobj), 200);
        }
      } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
