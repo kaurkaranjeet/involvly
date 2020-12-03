@@ -295,17 +295,17 @@ class GroupController extends Controller {
          		}
          	}
 
-         // Update user read message to yourself
-         }
-         // List Group
-         $list_group=Groups::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message")->where('id',$request->group_id)->first();
-         $group_single=$this->CountGroups($list_group,$request->user_id);
-         $this->pusher->trigger('list-channel', 'list_group', $group_single); 
-
+       
+         } 
+  // Update user read message to yourself
          GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
          $array=array('error' => false, 'data' => $group_data);
-         $this->pusher->trigger('group-channel', 'group_user', $array);                
+         $this->pusher->trigger('group-channel', 'group_user', $array);  
+            // List Group
+         $list_group=Groups::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message")->where('id',$request->group_id)->first();
+         $group_single=$this->CountGroups($list_group,$request->user_id);
+         $this->pusher->trigger('list-channel', 'list_group', $group_single);              
          return response()->json($array, 200);               
           }
         } catch (\Exception $e) {
