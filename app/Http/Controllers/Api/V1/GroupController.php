@@ -351,7 +351,15 @@ class GroupController extends Controller {
         	$groupobj=	new Group;
         	$groupobj->user_id=$request->user_id;
         	$groupobj->group_name=$request->group_name;
-        	$groupobj->group_icon=$request->group_icon;
+        	 $name=time().$key.'.'.$file->getClientOriginalExtension();  
+        	 if($request->hasfile('group_icon'))
+        	 {  
+        	 	$file = $request->file('group_icon');
+        	 	$filename=trim($file->getClientOriginalName());
+        	 	$file->move(public_path().'/images/',$filename) ; 
+        	 	$file_name=URL::to('/').'/images/'.$filename);  
+        	 	$groupobj->group_icon=$file_name;
+        	 }
         	$groupobj->school_id=0;
         	$groupobj->class_id=0;
         	$groupobj->save();
