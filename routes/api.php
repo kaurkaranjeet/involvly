@@ -158,5 +158,6 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
   Route::post('read_group_message', 'Api\V1\GroupController@ReadGroupMessage');
  Route::post('create_custom_group', 'Api\V1\GroupController@CreateCustomGroup');
   Route::post('group_members', 'Api\V1\GroupController@CustomMembers');
+    Route::post('send_message', 'Api\V1\MessageController@sendUserMessage');
 });
 
