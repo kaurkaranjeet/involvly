@@ -295,12 +295,17 @@ class GroupController extends Controller {
          		}
          	}
 
-         // Update user read message to yourself
-         }
+       
+         } 
+  // Update user read message to yourself
          GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
          $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
          $array=array('error' => false, 'data' => $group_data);
-         $this->pusher->trigger('group-channel', 'group_user', $array);                
+         $this->pusher->trigger('group-channel', 'group_user', $array);  
+            // List Group
+         $list_group=Groups::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message")->where('id',$request->group_id)->first();
+         $group_single=$this->CountGroups($list_group,$request->user_id);
+         $this->pusher->trigger('list-channel', 'list_group', $group_single);              
          return response()->json($array, 200);               
           }
         } catch (\Exception $e) {
@@ -399,20 +404,21 @@ class GroupController extends Controller {
         	$groupobj->school_id=0;
         	$groupobj->class_id=0;
         	$groupobj->save();
-        	 if(!empty($request->group_members)){        		
-        	 	$members=explode(',',$request->group_members);
-        	 	array_push($members,$groupobj->user_id);
-        	 	foreach($members as $member_id){
-        	 		$groupobjmember=new GroupMember;
-        	 		$groupobjmember->member_id=$member_id;
-        	 		$groupobjmember->group_id=$groupobj->id;        
-        	 		$groupobjmember->save();
+        	if(!empty($request->group_members)){        		
+        		$members=explode(',',$request->group_members);
+        		array_push($members,$groupobj->user_id);
+        		foreach($members as $member_id){
+        			$groupobjmember=new GroupMember;
+        			$groupobjmember->member_id=$member_id;
+        			$groupobjmember->group_id=$groupobj->id;        
+        			$groupobjmember->save();
+        		}
         	}
-        }
-         // Send pusher EVent
-        $count=GroupMember::where('group_id',$groupobj->id)->count();
-        $groupobj->member_count=$count;
-        $groupobj->unread_count=0;
+         // Send pusher Event
+        	$count=GroupMember::where('group_id',$groupobj->id)->count();
+        	$groupobj->member_count=$count;
+        	$groupobj->unread_count=0;
+        	$groupobj->last_message=null;
         $this->pusher->trigger('custom-channel', 'custom_group', $groupobj);         
       return response()->json(array('error' => false, 'data' => $groupobj), 200);
        }
@@ -441,6 +447,47 @@ class GroupController extends Controller {
      } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
+    }
+
+
+    public function CountGroups($list_group,$user_id){
+    	$user=User::find($user_id);
+    	if($list_group->type=='parent_community'){
+               		$count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
+               		$unread_count=GroupMessage::where('to_user_id',$user_id)->where('is_read',0)->where('group_id', $list_group->id)->count();
+               		$list_group->member_count=$count;
+               		$list_group->unread_count=$unread_count;
+               	}
+               	if($list_group->type=='school'){
+               		$count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
+               		$list_group->member_count=$count;
+               		$unread_count=GroupMessage::where('to_user_id',$user_id)->where('is_read',0)->where('group_id', $list_group->id)->count();
+               		$list_group->unread_count=$unread_count;
+               	}
+
+               	if($list_group->type=='school_admin'){
+               		$count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
+               		$list_group->member_count=$count;
+               		$unread_count=GroupMessage::where('to_user_id',$user_id)->where('is_read',0)->where('group_id', $list_group->id)->count();
+               		$list_group->unread_count=$unread_count;
+               	}
+               	if($single_group->type=='custom_group'){
+               		$count=GroupMember::where('group_id',$list_group->id)->count();
+               		$list_group->member_count=$count;
+               		$unread_count=GroupMessage::where('to_user_id',$user_id)->where('is_read',0)->where('group_id', $list_group->id)->count();
+               		$list_group->unread_count=$unread_count;
+               	}
+               	if($list_group->type=='class_group'){
+               		$count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
+               		->select(DB::raw('Distinct count(parent_id))'))
+               		->where('class_id', $list_group->class_id)->count();
+               		$unread_count=GroupMessage::where('to_user_id',$user_id)->where('is_read',0)->where('group_id', $list_group->id)->count();
+               		$list_group->member_count=$count;
+               		$list_group->unread_count=$unread_count;
+               	}
+
+               	return $list_group;
+
     }
 
 }
