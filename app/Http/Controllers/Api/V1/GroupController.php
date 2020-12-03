@@ -16,7 +16,7 @@ use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
-
+use Carbon\Carbon;
 use Pusher\Pusher;
 use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -66,12 +66,12 @@ class GroupController extends Controller {
             		$msql='';
             	}
               if(!empty($teachers->schools)){
-               $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_created_date");
+               $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");
                if(!empty($classes->classes)){
-                 $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_created_date");;
+                 $sql= Group::whereRaw("(type='parent_community' OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
                }
              }else{
-              $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_created_date");;
+              $sql= Group::whereRaw("(type='parent_community' OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
             }
                $groups=$sql->get();
                  
@@ -111,8 +111,9 @@ class GroupController extends Controller {
 
 
                	}
+               	$date = Carbon::parse($single_group->message_date); 
 
-               	//  $single_group->message_date = $single_group->last_created_date->diffForHumans();
+             $single_group->message_date = $date->diffForHumans();
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
