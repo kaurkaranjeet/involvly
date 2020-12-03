@@ -17,8 +17,8 @@ class CreateOneToOneMessageTable extends Migration
             $table->id();
            $table->unsignedBigInteger('to_user_id');
             $table->foreign('to_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->longText('message')->nullable();
-            $table->longText('file')->nullable();
+            $table->longText('message')->default('');
+            $table->longText('file')->default('');
             $table->integer('is_read');
             $table->unsignedBigInteger('from_user_id');
             $table->foreign('from_user_id')->references('id')->on('users')->onDelete('cascade');

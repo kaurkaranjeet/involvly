@@ -303,7 +303,8 @@ class GroupController extends Controller {
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
-         $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message")->where('id',$request->group_id)->first();
+         $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_created_date")->where('id',$request->group_id)->first();
+        $list_group->message_date = $list_group->last_created_date->diffForHumans();
          $group_single=$this->CountGroups($list_group,$request->user_id);
          $this->pusher->trigger('list-channel', 'list_group', $group_single);              
          return response()->json($array, 200);               
@@ -514,29 +515,22 @@ class GroupController extends Controller {
             if($validator->fails()){
              throw new Exception( $validator->errors());
          }  else{
-    
 
          $data = new Message();
          $data->from_user_id =  $request->from_user_id;
          $data->to_user_id =  $request->to_user_id;
          $data->message = $request->message; 
-        
+         if(empty($data->message)){
+         	$data->message='';
+         } 
             $data->is_read = 0; // message will be unread when sending message
             $data->save();
-            $data->dateTimeStr = date("Y-m-dTH:i", strtotime($data->created_at->toDateTimeString()));
-            $data->dateHumanReadable = $data->created_at->diffForHumans();
-            $data->fromUserName = $data->fromUser->name;  
-            $data->toUserName = $data->toUser->name;   
-            $data->attachment=$data->attachment;     
-            if(empty($message)){
-           $data->message=	$data->attachment->name;
-            }
-            PusherFactory::make()->trigger('chat', 'send', ['data' => $data]);
+            $data->message_date = $data->created_at->diffForHumans();
+            $data->User;      
+            $this->pusher->trigger('chat-channel', 'chat_event', $data);  
          // prepare some data to send with the response
-        
-         TechnicianNotification::techonline('ADMIN_NOTIFY');   
         $response = [
-          'success' =>  true,
+          'error' =>  true,
           'message'  =>'Message send successfully',
           'data' =>  $data
 
