@@ -79,7 +79,7 @@ class MessageController extends Controller {
             $pusher_data->message_date= $data->message_date;
             $pusher_data->unread_count=0;
 
-    $this->pusher->trigger('usermassage-channel', 'listuser_event', $data);
+    $this->pusher->trigger('usermassage-channel', 'listuser_event', $pusher_data);
 
          // prepare some data to send with the response
         $response = [
