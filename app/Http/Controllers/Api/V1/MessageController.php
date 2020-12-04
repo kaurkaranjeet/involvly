@@ -246,8 +246,14 @@ return response()->json($response);
           throw new Exception($validator->errors()->first());
         } else {
        Message::with('User')->where('to_user_id',$request->to_user_id)->where('from_user_id',$request->from_user_id)->update(['is_read'=>'1']);   
-       $group_data= Message::with('User')->where('to_user_id',$request->to_user_id)->where('from_user_id',$request->from_user_id)->get();   
-         $array=array('error' => false, 'data' => $group_data);
+       $query1=Message::with('User')->select('message','from_user_id','to_user_id','created_at','is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
+        $query->where('from_user_id', $request->from_user_id)->where('to_user_id', $request->to_user_id);
+      })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
+        $query->where('from_user_id', $request->to_user_id)->where('to_user_id', $request->from_user_id);
+      });
+      $results =  $query1->get();
+      
+         $array=array('error' => false, 'data' => $results);
          $this->pusher->trigger('read-message', 'single_message', $array);       
       return response()->json($array, 200);
        }
