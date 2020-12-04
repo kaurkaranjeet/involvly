@@ -221,4 +221,27 @@ catch(Exception $e) {
 return response()->json($response);     
 }
 
+ // Group Messages List
+    public function ReadMessage(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'user_id' => 'required',
+         
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+       Message::with('User')->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
+       $group_data= Message::with('User')->where('to_user_id',$request->user_id)->get();   
+         $array=array('error' => false, 'data' => $group_data);
+         $this->pusher->trigger('read-message', 'single_message', $array);       
+      return response()->json($array, 200);
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
 }
