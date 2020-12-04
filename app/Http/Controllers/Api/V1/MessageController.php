@@ -201,8 +201,8 @@ public function chatList(Request $request)
     $results =  $query1->get();
     if($results ){
       foreach($results as $key=>$data){
-        $date = Carbon::parse($data->created_at); 
-        $data->message_date = $date->diffForHumans();
+      //  $date = Carbon::parse($data->created_at); 
+      $data->message_date =$data->created_at;
         $data->fromUserName = $data->User->name;
           // $data->key=$key; 
       }
@@ -245,14 +245,17 @@ return response()->json($response);
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-       Message::with('User')->where('to_user_id',$request->to_user_id)->where('from_user_id',$request->from_user_id)->update(['is_read'=>'1']);   
-       $query1=Message::with('User')->select('message','from_user_id','to_user_id','created_at','is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
-        $query->where('from_user_id', $request->from_user_id)->where('to_user_id', $request->to_user_id);
-      })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
-        $query->where('from_user_id', $request->to_user_id)->where('to_user_id', $request->from_user_id);
-      });
+         Message::with('User')->where('to_user_id',$request->to_user_id)->where('from_user_id',$request->from_user_id)->update(['is_read'=>'1']);   
+         $from_user_id=$request->from_user_id;
+         $to_user_id=$request->to_user_id;
+         $query1=Message::with('User')->select('message','from_user_id','to_user_id','created_at','created_at as message_date','is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
+          $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
+        })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
+          $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
+        });
       $results =  $query1->get();
       
+
          $array=array('error' => false, 'data' => $results);
          $this->pusher->trigger('read-message', 'single_message', $array);       
       return response()->json($array, 200);
