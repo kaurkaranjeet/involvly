@@ -70,7 +70,7 @@ class MessageController extends Controller {
             $data->save();
            // $date = Carbon::parse($data->created_at); 
           // $data->message_date = $date->diffForHumans();   
-          $data->message_date = $data->created_date   
+          $data->message_date = $data->created_date; 
             $data->User;      
             $this->pusher->trigger('chat-channel', 'chat_event', $data);
 
