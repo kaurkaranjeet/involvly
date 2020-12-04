@@ -432,6 +432,7 @@ class GroupController extends Controller {
         	$groupobj->member_count=$count;
         	$groupobj->unread_count=0;
         	$groupobj->last_message=null;
+        	$groupobj->message_date=$groupobj->created_at;
         $this->pusher->trigger('custom-channel', 'custom_group', $groupobj);         
       return response()->json(array('error' => false, 'data' => $groupobj), 200);
        }
