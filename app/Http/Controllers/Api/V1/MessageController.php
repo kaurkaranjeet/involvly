@@ -68,8 +68,9 @@ class MessageController extends Controller {
          }
             $data->is_read = 0; // message will be unread when sending message
             $data->save();
-            $date = Carbon::parse($data->created_at); 
-           $data->message_date = $date->diffForHumans();       
+           // $date = Carbon::parse($data->created_at); 
+          // $data->message_date = $date->diffForHumans();   
+          $data->message_date = $data->created_date   
             $data->User;      
             $this->pusher->trigger('chat-channel', 'chat_event', $data);
 
