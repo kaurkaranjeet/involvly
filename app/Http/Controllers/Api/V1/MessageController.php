@@ -71,12 +71,22 @@ class MessageController extends Controller {
             $date = Carbon::parse($data->created_at); 
            $data->message_date = $date->diffForHumans();       
             $data->User;      
-            $this->pusher->trigger('chat-channel', 'chat_event', $data);  
+            $this->pusher->trigger('chat-channel', 'chat_event', $data);
+
+            $pusher_data= $data->User;
+            $pusher_data->last_message= $data->message;
+            $pusher_data->message_date= $data->message_date;
+            $pusher_data->unread_count=0;
+
+    $this->pusher->trigger('usermassage-channel', 'listuser_event', $data);
+
          // prepare some data to send with the response
         $response = [
           'error' =>  false,
           'message'  =>'Message send successfully',
-          'data' =>  $data
+          'data' =>  $data,
+          'pusher_data' => $pusher_data
+         
 
         ]; 
     }
