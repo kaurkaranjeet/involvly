@@ -198,7 +198,7 @@ public function chatList(Request $request)
  }*/
 
 
-    $results =  $query1->orderByDesc('created_at')->get();
+    $results =  $query1->get();
     if($results ){
       foreach($results as $key=>$data){
         $date = Carbon::parse($data->created_at); 
