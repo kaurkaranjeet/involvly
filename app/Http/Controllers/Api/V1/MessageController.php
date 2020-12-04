@@ -226,15 +226,15 @@ return response()->json($response);
       try {
         $input = $request->all();
         $validator = Validator::make($input, [
-          'user_id' => 'required',
-         
+          'from_user_id' => 'required',
+          'to_user_id' => 'required',
         ]);
 
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-       Message::with('User')->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
-       $group_data= Message::with('User')->where('to_user_id',$request->user_id)->get();   
+       Message::with('User')->where('to_user_id',$request->to_user_id)->where('from_user_id',$request->from_user_id)->update(['is_read'=>'1']);   
+       $group_data= Message::with('User')->where('to_user_id',$request->to_user_id)->where('from_user_id',$request->from_user_id)->get();   
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('read-message', 'single_message', $array);       
       return response()->json($array, 200);
