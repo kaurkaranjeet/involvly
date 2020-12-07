@@ -120,7 +120,7 @@ class GroupController extends Controller {
                		$single_group->message_date=null;
                	}
 
-           
+
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
@@ -566,22 +566,28 @@ catch(Exception $e) {
 return response()->json($response);
 }
  // Delete custom Group
-    public function DeleteCustomGroup(Request $request) {
-      try {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-         'user_id' => 'required|exists:users,id',
-         'group_id' => 'required',
-        ]);
+public function DeleteCustomGroup(Request $request) {
+	try {
+		$input = $request->all();
+		$validator = Validator::make($input, [
+			'user_id' => 'required|exists:users,id',
+			'group_id' => 'required',
+		]);
 
-        if ($validator->fails()) {
-          throw new Exception($validator->errors()->first());
-        } else {
-        $delete=Group::where('user_id',$request->user_id)->where('id',$request->group_id)->delete();
-        if($delete){
-        	      
-      return response()->json(array('error' => false, 'data' => $delete), 200);
-  } else{
+		if ($validator->fails()) {
+			throw new Exception($validator->errors()->first());
+		} else {
+			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
+			if($group_info->count()){
+				$delete=$group_info->delete();
+			}
+			else{
+				$delete=GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
+				GroupMessages::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
+			}
+			if($delete){        	      
+				return response()->json(array('error' => false, 'data' => $delete), 200);
+			} else{
   	    throw new Exception('You have not created this group');
   }
        }
