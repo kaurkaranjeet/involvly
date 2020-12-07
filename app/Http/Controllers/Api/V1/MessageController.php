@@ -186,7 +186,7 @@ public function chatList(Request $request)
     //Update read status 
      Message::where(['from_user_id' => $to_user_id, 'to_user_id' => $from_user_id])->update(['is_read' => 1]);
 
-    $query1=Message::with('User')->select('message','from_user_id','to_user_id',DB::Raw('IFNULL( `one_to_one_message`.`created_at` , NULL )'),'is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
+    $query1=Message::with('User')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
     })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
@@ -209,7 +209,7 @@ public function chatList(Request $request)
       foreach($results as $key=>$data){
       //  $date = Carbon::parse($data->created_at); 
 
-      $data->message_date =$data->created_at;
+      //$data->message_date =$data->created_at;
         $data->fromUserName = $data->User->name;
           // $data->key=$key; 
       }
