@@ -111,9 +111,14 @@ class GroupController extends Controller {
 
 
                	}
-              $date = strtotime($single_group->message_date); 
+               	if(!empty($single_group->message_date)){
+               		$date = strtotime($single_group->message_date); 
 
-           $single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
+               		$single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
+               	}
+               	else{
+               		$single_group->message_date=null;
+               	}
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
@@ -304,11 +309,12 @@ class GroupController extends Controller {
          } 
   // Update user read message to yourself
          GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
-         $group_data= GroupMessage::selectRaw("group_messages.*",DB::Raw('IFNULL( `group_messages`.`created_at` , NULL )',"group_messages.created_at as message_date"),)->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
+         $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date")->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
          $array=array('error' => false, 'data' => $group_data,'group_id' =>$request->group_id);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
          $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date")->where('id',$request->group_id)->first();
+       \
          	//$date = Carbon::parse($list_group->message_date); 
          	//$list_group->message_date = $date->diffForHumans();
          	$group_single=$this->CountGroups($list_group,$request->user_id);
