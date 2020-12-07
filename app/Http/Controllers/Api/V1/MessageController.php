@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
 use App\Models\Message;
+use App\Events\MessagesEvent;
 use Pusher\Pusher;
 use Carbon\Carbon;
 use App\Notification;
