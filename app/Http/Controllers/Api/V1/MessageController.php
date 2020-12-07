@@ -132,7 +132,7 @@ return response()->json($response);
         foreach($results as $data){
           $date = strtotime($data->message_date); 
           $data->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
-         if($data->unread_count==null) $data->unread_count=0;
+        // if($data->unread_count==null) $data->unread_count=0;
        }
        $response = [
         'error' => false,
