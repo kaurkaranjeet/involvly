@@ -77,9 +77,10 @@ AND join_community=1)) OR type='school' OR ( type='school_admin' AND school_id I
              }else{
               $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
+AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");
             }
-               $groups=$sql->orderByRaw('FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") asc' ,'created_at ,DESC')->get();
+      $sql=.'  ORDER BY FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") asc ,created_at DESC';
+               $groups=$sql->get();
                  
                foreach($groups as $single_group){
                	if($single_group->type=='parent_community'){
