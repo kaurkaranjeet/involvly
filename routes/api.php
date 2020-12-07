@@ -161,7 +161,8 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('send_message', 'Api\V1\MessageController@sendUserMessage');
     Route::post('chatList', 'Api\V1\MessageController@chatList');
     Route::post('get_history', 'Api\V1\MessageController@GetHistory');
-  Route::post('delete_group', 'Api\V1\GroupController@DeleteCustomGroup');
+    Route::post('delete_group', 'Api\V1\GroupController@DeleteCustomGroup');
     Route::post('read_message', 'Api\V1\MessageController@ReadMessage');
+    Route::post('report_user', 'Api\V1\MessageController@ReportUser');
 });
 
