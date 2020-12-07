@@ -588,7 +588,7 @@ public function DeleteCustomGroup(Request $request) {
 			if($delete){        	      
 				return response()->json(array('error' => false, 'data' => $delete), 200);
 			} else{
-  	    throw new Exception('You have not created this group');
+  	 throw new Exception('Not allowed');
   }
        }
      } catch (\Exception $e) {
