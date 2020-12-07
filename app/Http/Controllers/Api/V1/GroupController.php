@@ -79,8 +79,13 @@ AND join_community=1)) OR type='school' OR ( type='school_admin' AND school_id I
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
 AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
             }
-   $groups=$sql->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") ' ,' asc created_at DESC'))->get();
-
+   $groups=$sql->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
+/*select  groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,
+(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date from `groups`
+ where  ((type='parent_community' AND   EXISTS (SELECT join_community from users WHERE id='242' AND join_community=1))
+ OR type='school' OR ( type='school_admin' AND school_id IN('1'))  OR ( type='class_group' AND class_id IN('11'))  
+ OR ( id IN(84,85,86,87)) )   AND status=1  ORDER BY FIELD(type, "custom_group", "parent_community", "school","school_admin",
+ "class_group")   asc ,created_at DESC*/
                  
                foreach($groups as $single_group){
                	if($single_group->type=='parent_community'){
