@@ -304,7 +304,7 @@ class GroupController extends Controller {
          } 
   // Update user read message to yourself
          GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
-         $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date")->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
+         $group_data= GroupMessage::selectRaw("group_messages.*",DB::Raw('IFNULL( `group_messages`.`created_at` , NULL )',"group_messages.created_at as message_date"),)->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
          $array=array('error' => false, 'data' => $group_data,'group_id' =>$request->group_id);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
