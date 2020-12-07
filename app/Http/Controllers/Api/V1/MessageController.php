@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
 use App\Models\Message;
+use App\Models\ReportUser;
 use App\Events\MessagesEvent;
 use Pusher\Pusher;
 use Carbon\Carbon;
@@ -269,6 +270,32 @@ return response()->json($response);
          $array=array('error' => false, 'data' => $results);
          $this->pusher->trigger('read-message', 'single_message', $array);       
       return response()->json($array, 200);
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+     // Group Messages List
+    public function ReportUser(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'from_user_id' => 'required',
+          'to_user_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+        $report_user= new ReportUser;
+        $report_user->from_user_id=$request->from_user_id;
+        $report_user->to_user_id=$request->to_user_id;
+        $report_user->text_description='';
+        $report_user->save();
+        $array=array('error' => false, 'data' => $report_user);
+        // $this->pusher->trigger('read-message', 'single_message', $array);       
+       return response()->json($array, 200);
        }
      } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
