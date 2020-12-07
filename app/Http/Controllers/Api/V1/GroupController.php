@@ -113,7 +113,7 @@ class GroupController extends Controller {
                	}
               $date = strtotime($single_group->message_date); 
 
-           $single_group->message_date =date('Y-m-d\TH:i:s.000',$date);
+           $single_group->message_date =date('Y-m-d\TH:i:s.000000'.'Z',$date);
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
