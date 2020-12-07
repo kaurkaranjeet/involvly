@@ -207,11 +207,14 @@ public function chatList(Request $request)
     $results =  $query1->get();
     if($results ){
       foreach($results as $key=>$data){
-      //  $date = Carbon::parse($data->created_at); 
-
-      //$data->message_date =$data->created_at;
-        $data->fromUserName = $data->User->name;
-          // $data->key=$key; 
+      if(!empty($data->message_date)){
+          $date = strtotime($data->message_date); 
+          $data->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
+        }
+        else{
+          $data->message_date =null;
+        }
+        
       }
       $response = [
         'error' => false,
