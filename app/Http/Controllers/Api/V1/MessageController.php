@@ -137,7 +137,7 @@ return response()->json($response);
         else{
           $data->message_date =null;
         }
-        // if($data->unread_count==null) $data->unread_count=0;
+       if($data->unread_count==null) $data->unread_count=0;
        }
        $response = [
         'error' => false,
