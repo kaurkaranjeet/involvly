@@ -111,7 +111,7 @@ class GroupController extends Controller {
 
 
                	}
-               	if(!empty($single_group->message_date)){
+           	if(!empty($single_group->message_date)){
                		$date = strtotime($single_group->message_date); 
 
                		$single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
@@ -119,6 +119,8 @@ class GroupController extends Controller {
                	else{
                		$single_group->message_date=null;
                	}
+
+           
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
@@ -314,7 +316,7 @@ class GroupController extends Controller {
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
          $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date")->where('id',$request->group_id)->first();
-       \
+
          	//$date = Carbon::parse($list_group->message_date); 
          	//$list_group->message_date = $date->diffForHumans();
          	$group_single=$this->CountGroups($list_group,$request->user_id);
