@@ -320,6 +320,14 @@ class GroupController extends Controller {
          	//$date = Carbon::parse($list_group->message_date); 
          	//$list_group->message_date = $date->diffForHumans();
          	$group_single=$this->CountGroups($list_group,$request->user_id);
+         		if(!empty($group_single->message_date)){
+               		$date = strtotime($group_single->message_date); 
+
+               		$group_single->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
+               	}
+               	else{
+               		$group_single->message_date=null;
+               	}
          	$array1=array('data' => $group_single);
          	$this->pusher->trigger('list-channel', 'list_group', $array1);              
          return response()->json($array, 200);               
