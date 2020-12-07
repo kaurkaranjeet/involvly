@@ -113,7 +113,7 @@ class GroupController extends Controller {
                	}
               $date = Carbon::parse($single_group->message_date); 
 
-           $single_group->message_date =date('Y-m-d\TH:i:s.000') . 'Z',$date);
+           $single_group->message_date =date('Y-m-d\TH:i:s.000',$date);
 
                }
                  return response()->json(array('error' => false, 'data' => $groups), 200);
