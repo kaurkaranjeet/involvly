@@ -111,7 +111,7 @@ class GroupController extends Controller {
 
 
                	}
-              $date = Carbon::parse($single_group->message_date); 
+              $date = strtotime($single_group->message_date); 
 
            $single_group->message_date =date('Y-m-d\TH:i:s.000',$date);
 
