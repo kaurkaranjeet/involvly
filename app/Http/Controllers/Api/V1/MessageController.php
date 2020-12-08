@@ -86,8 +86,8 @@ class MessageController extends Controller {
           }else{
         $pusher_data->unread_count='0';
           }
-            $array=array('error' => false, 'data' => $pusher_data);
-            $this->pusher->trigger('usermassage-channel', 'listuser_event', $array);
+            $array_new=array('error' => false, 'data' => $pusher_data);
+            $this->pusher->trigger('usermassage-channel', 'listuser_event', $array_new);
 
          // prepare some data to send with the response
         $response = [
