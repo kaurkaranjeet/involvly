@@ -404,12 +404,12 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
           throw new Exception($validator->errors()->first());
         } else {
        GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
-       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->get();   
+       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->first();   
        if(empty($group_data)){
        	$group_data=array();
        }
          $array=array('error' => false, 'data' => $group_data);
-         $this->pusher->trigger('read-channel', 'read_group', $group_data);       
+         $this->pusher->trigger('read-channel', 'read_group', $array);       
       return response()->json($array, 200);
        }
      } catch (\Exception $e) {
