@@ -412,7 +412,7 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
 /*SELECT COUNT(CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read,id  from group_messages where group_id=84
  and is_read=0  GROUP by id*/
 
- $group_data=DB::select( DB::raw("select ( CASE when count(id) > 0 then 0 else 1 end  ) as is_read from group_messages WHERE is_read=0 and  group_id=" .$request->group_id." " ));
+ $group_data=DB::select( DB::raw("sELECT (CASE when (SELECT COUNT(id)  from group_messages WHERE is_read=0 AND group_number=	g.group_number) > 0 THEN 0 ELSE 1 END) as is_read, group_number from group_messages as g where group_id=" .$request->group_id." GROUP by group_number" ));
 
 
 
