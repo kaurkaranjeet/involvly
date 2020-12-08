@@ -81,7 +81,7 @@ class MessageController extends Controller {
             $pusher_data->last_message= $data->message;
             $pusher_data->message_date= $data->message_date;
           $count= DB::select( DB::raw( "SELECT count(one_to_one_message.is_read) as  unread_count from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id= ".$request->from_user_id." AND one_to_one_message.to_user_id=".$request->to_user_id." group by one_to_one_message.from_user_id "));
-            $pusher_data->unread_count=$count;
+            $pusher_data->unread_count=$count->unread_count;
             $array=array('error' => false, 'data' => $pusher_data);
             $this->pusher->trigger('usermassage-channel', 'listuser_event', $array);
 
