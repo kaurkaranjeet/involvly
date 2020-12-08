@@ -404,7 +404,7 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
           throw new Exception($validator->errors()->first());
         } else {
        GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
-       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->first();   
+       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->orderBy('id', 'DESC')->first();    
        if(empty($group_data)){
        	$group_data=array();
        }
