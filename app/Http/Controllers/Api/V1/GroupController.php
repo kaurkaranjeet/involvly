@@ -409,7 +409,7 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
        	$group_data=array();
        }
          $array=array('error' => false, 'data' => $group_data);
-         $this->pusher->trigger('read-channel', 'read_group', $group_data);       
+         $this->pusher->trigger('read-channel', 'read_group', $array);       
       return response()->json($array, 200);
        }
      } catch (\Exception $e) {
