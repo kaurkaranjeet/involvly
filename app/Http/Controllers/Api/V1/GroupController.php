@@ -407,11 +407,11 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
       // $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->selectget();
        //SELECT (CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read  from group_messages where group_id=84 and is_read=0
 //GroupMessage::selectRaw(" (CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read")->where('id',$request->group_id)->where('is_read',0)->first();
-
+ 
 /*SELECT COUNT(CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read,id  from group_messages where group_id=84
  and is_read=0  GROUP by id*/
 
- $group_data=DB::select( DB::raw("SELECT COUNT(CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read,id  from group_messages where group_id=" .$request->group_id." and is_read=0  GROUP by id " ));
+ $group_data=DB::select( DB::raw("SELECT COUNT(CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read,id  from group_messages where group_id=" .$request->group_id." and is_read=0  AND to_user_id= " .$request->user_id." GROUP by id " ));
 
 
 
