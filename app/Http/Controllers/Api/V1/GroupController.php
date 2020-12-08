@@ -323,7 +323,7 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
          } 
   // Update user read message to yourself
          GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
-         $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date,(CASE when (SELECT COUNT(id)  from group_messages as p WHERE p.is_read=0 AND p.group_number=	group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number")->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
+         $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date,(CASE when (SELECT COUNT(p.id)  from group_messages as p WHERE p.is_read=0 AND p.group_number=	group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number")->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
          $array=array('error' => false, 'data' => $group_data,'group_id' =>$request->group_id);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
