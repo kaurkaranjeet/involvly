@@ -403,7 +403,8 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-       GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
+       GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);  
+
       // $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->selectget();
        //SELECT (CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read  from group_messages where group_id=84 and is_read=0
 //GroupMessage::selectRaw(" (CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read")->where('id',$request->group_id)->where('is_read',0)->first();
@@ -411,7 +412,7 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
 /*SELECT COUNT(CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read,id  from group_messages where group_id=84
  and is_read=0  GROUP by id*/
 
- $group_data=DB::select( DB::raw("select  is_read,id  from group_messages where group_id=" .$request->group_id."  GROUP by id " ));
+ $group_data=DB::select( DB::raw("select ( CASE when count(id) > 0 then 0 else 1 end  ) from group_messages WHERE is_read=0 and  group_id=" .$request->group_id." " ));
 
 
 
