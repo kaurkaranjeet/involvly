@@ -403,11 +403,9 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-       GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
-       $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->orderBy('id', 'DESC')->first();    
-       if(empty($group_data)){
-       	$group_data=array();
-       }
+       GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);   
+      // $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->selectget();
+   $group_data= GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->select('id','is_read')->get();
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('read-channel', 'read_group', $array);       
       return response()->json($array, 200);
