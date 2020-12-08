@@ -84,7 +84,7 @@ class MessageController extends Controller {
           if(!empty($count[0])){
            $pusher_data->unread_count=$count[0]->unread_count;
           }else{
-        $pusher_data->unread_count='0';
+        $pusher_data->unread_count=0;
           }
             $array_new=array('error' => false, 'data' => $pusher_data);
             $this->pusher->trigger('usermassage-channel', 'listuser_event', $array_new);
