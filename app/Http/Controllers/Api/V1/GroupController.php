@@ -383,7 +383,7 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-          sELECT 
+         
           $group_data= GroupMessage::selectRaw("(CASE when (SELECT COUNT(id) WHERE is_read=0) > 0 THEN 0 ELSE 1 END) as read_number,group_messages.*")->where('id',$request->group_id)->with('User')->where('group_id',$request->group_id)->groupBy('group_number')->orderBy('id', 'ASC')->get();           
           $array=array('error' => false, 'data' => $group_data);
          return response()->json($array, 200);
