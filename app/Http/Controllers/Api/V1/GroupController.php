@@ -70,12 +70,12 @@ class GroupController extends Controller {
               if(!empty($teachers->schools)){
                $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-AND join_community=1)) OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE report_group.user_id = '".$user->id."' AND report_groups.group_id = groups.id
+AND join_community=1)) OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql." ) AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE report_groups.user_id = '".$user->id."' AND report_groups.group_id = groups.id
 )")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");
                if(!empty($classes->classes)){
                  $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-AND join_community=1)) OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE report_group.user_id = '".$user->id."' AND report_groups.group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
+AND join_community=1)) OR type='school' OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )   AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE report_groups.user_id = '".$user->id."' AND report_groups.group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date");;
                }
              }else{
               $sql= Group::whereRaw(" ((type='parent_community' AND 
