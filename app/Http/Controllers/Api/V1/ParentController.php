@@ -310,7 +310,7 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTaskAssigned::with('User','ParentTask:task_name,task_date,task_time')->where('task_assigned_to', $request->user_id)->orderBy('id', 'DESC')->get();
+            $tasks = ParentTaskAssigned::with('User')->with('ParentTask:task_name,task_date,task_time')->where('task_assigned_to', $request->user_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
