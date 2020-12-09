@@ -261,7 +261,7 @@ return response()->json($response);
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-         Message::with('User')->where('to_user_id',$request->to_user_id)->update(['is_read'=>'1']);   
+         Message::with('User')->where('to_user_id',$request->to_user_id)->where('from_user_id',$request->from_user_id)->update(['is_read'=>'1']);   
          $from_user_id=$request->from_user_id;
          $to_user_id=$request->to_user_id;
          $query1=Message::with('User')->select('is_read','id')->where(function ($query) use ($from_user_id, $to_user_id) {
