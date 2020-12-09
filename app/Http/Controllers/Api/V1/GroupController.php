@@ -16,6 +16,8 @@ use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
+use App\Models\ReportGroup;
+
 use Carbon\Carbon;
 use Pusher\Pusher;
 use App\Notification;
@@ -628,6 +630,34 @@ public function DeleteCustomGroup(Request $request) {
   }
        }
      } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+    public function ReportGroup(Request $request) {
+  try {
+    $input = $request->all();
+    $validator = Validator::make($input, [
+      'user_id' => 'required|exists:users,id',
+      'group_id' => 'required|exists:groups,id',
+    ]);
+
+    if ($validator->fails()) {
+      throw new Exception($validator->errors()->first());
+    } else {
+      $group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
+      $report_group= new ReportGroup;
+      $report_group->user_id=$request->user_id;
+      $report_group->group_id=$request->group_id;
+      $report_group->save();
+      if($group_info->type=='custom_group'){
+     $delete=   GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
+      }
+     $delete= GroupMessages::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->delete();
+      }
+      return response()->json(array('error' => false, 'data' => $delete), 200);
+    }
+      catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
     }
