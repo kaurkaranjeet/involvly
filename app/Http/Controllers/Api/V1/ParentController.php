@@ -323,6 +323,17 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->first();
+         if(!empty($accept_reject_data)){
+          if($request->accept_reject==1){
+            $message=$accept_reject_data->User->name.' has accepted the task ' .$accept_reject_data->ParentTask->task_name;
+          }
+          else
+          {
+           $message=$accept_reject_data->User->name.' has rejected the task ' .$accept_reject_data->ParentTask->task_name;
+
+         }
+        // SElect parent_tasks.*, (CASE WHEN (Select Count(id) from parent_task_assigned where task_id=parent_tasks.id AND (parent_task_assigned.accept_reject=1 OR parent_task_assigned.accept_reject=0)) > 0  THEN parent_task_assigned.accept_reject ELSE '2' END )   from parent_tasks 
             $tasks = ParentTask::with('User')->with('AssignedUser.User')->where('id', $request->task_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
