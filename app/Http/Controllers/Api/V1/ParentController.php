@@ -301,6 +301,19 @@ $data_document = [];
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+
+     //Get tasks assigned to me 
+    public function TaskAssignedToMe(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'user_id' => 'required|exists:users,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $tasks = ParentTaskAssigned::with('User')->where('task_assigned_to', $request->user_id)->orderBy('id', 'DESC')->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
+        }
+    }
     
     //task detail
     public function GetScheduleTaskDetail(Request $request){
