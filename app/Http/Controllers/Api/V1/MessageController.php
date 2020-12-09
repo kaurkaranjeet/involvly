@@ -190,7 +190,7 @@ public function chatList(Request $request)
     $from_user_id=$request->from_user_id;
     $to_user_id=$request->to_user_id;
     //Update read status 
-     Message::where(['from_user_id' => $from_user_id, 'to_user_id' => $to_user_id])->update(['is_read' => 1]);
+   //  Message::where(['from_user_id' => $from_user_id, 'to_user_id' => $to_user_id])->update(['is_read' => 1]);
 
     $query1=Message::with('User')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
