@@ -164,5 +164,6 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('delete_group', 'Api\V1\GroupController@DeleteCustomGroup');
     Route::post('read_message', 'Api\V1\MessageController@ReadMessage');
     Route::post('report_user', 'Api\V1\MessageController@ReportUser');
+    Route::post('task_assigned_to_me', 'Api\V1\ParentController@TaskAssignedToMe');
 });
 
