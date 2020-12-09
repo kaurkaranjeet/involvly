@@ -325,7 +325,7 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
          } 
   // Update user read message to yourself
          GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
-         $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date")->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
+         $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date, (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number")->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
          $array=array('error' => false, 'data' => $group_data,'group_id' =>$request->group_id);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
@@ -406,24 +406,8 @@ AND join_community=1)) OR type='school' ".$msql." )  AND status=1")->selectRaw("
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-       GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);  
-
-      // $group_data= GroupMessage::with('User')->where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->selectget();
-       //SELECT (CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read  from group_messages where group_id=84 and is_read=0
-//GroupMessage::selectRaw(" (CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read")->where('id',$request->group_id)->where('is_read',0)->first();
- 
-/*SELECT COUNT(CASE WHEN id > 1 THEN 0 ELSE 1 END) as is_read,id  from group_messages where group_id=84
- and is_read=0  GROUP by id*/
-
- $group_data=DB::select( DB::raw("sELECT (CASE when (SELECT COUNT(id)  from group_messages WHERE is_read=0 AND group_number=	g.group_number) > 0 THEN 0 ELSE 1 END) as read_number , group_number from group_messages as g where group_id=" .$request->group_id." GROUP by group_number" ));
-
-
-
-  
-
-
-  
-  // $group_data= GroupMessage::where('group_id',$request->group_id)->where('is_read',0)->select('id','is_read')->get();
+       GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);
+       $group_data=DB::select( DB::raw("sELECT (CASE when (SELECT COUNT(id)  from group_messages WHERE is_read=0 AND group_number=	g.group_number) > 0 THEN 0 ELSE 1 END) as read_number , group_number from group_messages as g where group_id=" .$request->group_id." GROUP by group_number" ));
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('read-channel', 'read_group', $array);       
       return response()->json($array, 200);
