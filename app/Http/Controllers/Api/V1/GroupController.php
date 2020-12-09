@@ -655,10 +655,10 @@ public function DeleteCustomGroup(Request $request) {
       if($group_info->type=='custom_group'){
      $delete=   GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
       }
-     $delete= GroupMessages::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->delete();
+     $delete= GroupMessages::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->where('from_user_id',$request->user_id)->delete();
       }
     }
-      return response()->json(array('error' => false, 'data' => $delete), 200);
+      return response()->json(array('error' => false, 'data' => $report_group), 200);
     }
       catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
