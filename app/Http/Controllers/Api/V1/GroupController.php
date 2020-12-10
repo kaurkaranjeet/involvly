@@ -606,9 +606,21 @@ public function DeleteCustomGroup(Request $request) {
 				$delete=$group_info->delete();
 			}
 			else{
+        if($group_info->type=='parent_community' || $group_info->type=='school'){
+          User::where('id',$request->user_id)->update(['join_community',0])
+        }
+        else{
+        if($group_info->type=='custom_group'){
 				$delete=GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
-				GroupMessages::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
+      }
+			$delete=	GroupMessages::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
+      User::where('user_id',$request->user_id)->update(['exit_groups',$request->group_id]);
+
 			}
+
+    }
+
+
 			if($delete){        	      
 				return response()->json(array('error' => false, 'data' => $delete), 200);
 			} else{
