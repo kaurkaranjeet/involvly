@@ -603,6 +603,7 @@ public function DeleteCustomGroup(Request $request) {
 		} else {
 			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
 			if($group_info->count()){
+          $delete=GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
 				$delete=$group_info->delete();
 			}
 			else{
@@ -612,11 +613,9 @@ public function DeleteCustomGroup(Request $request) {
           User::where('id',$request->user_id)->update(['join_community',0]);
         }
         else{
-        if($get_group->type=='custom_group'){
-				$delete=GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
-      }
 			$delete=	GroupMessages::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
-      User::where('user_id',$request->user_id)->update(['exit_groups',$request->group_id]);
+
+      User::where('user_id',$request->user_id)->update(['exit_groups' => DB::raw('CONCAT(exit_groups,", '.$request->group_id.'")')]);
 
 			}
 
