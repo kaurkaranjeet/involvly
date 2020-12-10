@@ -601,8 +601,8 @@ public function DeleteCustomGroup(Request $request) {
 		if ($validator->fails()) {
 			throw new Exception($validator->errors()->first());
 		} else {
-			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id)->get();
-			if(!empty($group_info)){
+			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
+			if($group_info->count(){
 				$group_info->delete();
 			}
 			else{
