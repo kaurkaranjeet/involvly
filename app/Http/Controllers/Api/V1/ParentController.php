@@ -337,6 +337,7 @@ $data_document = [];
             $tasks = ParentTask::with('User')->with('AssignedUser.User')->where('id', $request->task_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
+         return response()->json(array('error' => false, 'message' => 'this task is pending', 'data' => []), 200);
     }
   }
 
