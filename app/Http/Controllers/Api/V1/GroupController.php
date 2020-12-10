@@ -611,7 +611,7 @@ public function DeleteCustomGroup(Request $request) {
         if($get_group->type=='parent_community' || $get_group->type=='school'){
           User::where('id',$request->user_id)->update(['join_community'=>0]);
         }
-        else{
+        
     
         
            // GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
@@ -620,7 +620,7 @@ public function DeleteCustomGroup(Request $request) {
 
       User::where('user_id',$request->user_id)->update(['exit_groups' => DB::raw('CONCAT(exit_groups,", '.$request->group_id.'")')]);
 
-			}
+			
 
     }
      return response()->json(array('error' => false, 'data' => []), 200);
