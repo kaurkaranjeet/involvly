@@ -606,11 +606,12 @@ public function DeleteCustomGroup(Request $request) {
 				$delete=$group_info->delete();
 			}
 			else{
-        if($group_info->type=='parent_community' || $group_info->type=='school'){
+        $get_group=$group_info->first();
+        if($get_group->type=='parent_community' || $get_group->type=='school'){
           User::where('id',$request->user_id)->update(['join_community',0]);
         }
         else{
-        if($group_info->type=='custom_group'){
+        if($get_group->type=='custom_group'){
 				$delete=GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
       }
 			$delete=	GroupMessages::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
