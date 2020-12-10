@@ -14,6 +14,11 @@ class ParentTaskAssigned extends Model {
     public function User() {
         return $this->belongsTo('App\User', 'task_assigned_to', 'id');
     }
+
+    public function AssignedTo() {
+        return $this->belongsTo('App\User', 'task_assigned_to', 'id');
+    }
+    
     
     public function ParentTask() {
         return $this->belongsTo('App\Models\ParentTask', 'task_id', 'id');

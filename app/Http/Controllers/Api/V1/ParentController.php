@@ -340,7 +340,7 @@ $data_document = [];
         $status='2';
 
        }
-            $tasks = ParentTask::with('User:id,name')->with('AssignedUser.User')->where('id', $request->task_id)->get();
+            $tasks = ParentTask::with('User:id,name')->with('AssignedUser.AssignedTo')->where('id', $request->task_id)->get();
             $tasks[0]->task_status=$status;
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
        
