@@ -603,8 +603,8 @@ public function DeleteCustomGroup(Request $request) {
 		} else {
 			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
 			if($group_info->count()){
-          $delete=GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
-				$delete=$group_info->delete();
+        GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
+				$group_info->delete();
 			}
 			else{
       $get_group=Group::where('id',$request->group_id)->first();
@@ -613,7 +613,7 @@ public function DeleteCustomGroup(Request $request) {
           User::where('id',$request->user_id)->update(['join_community'=>0]);
         }
         else{
-			$delete=	GroupMessages::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
+				GroupMessages::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
 
       User::where('user_id',$request->user_id)->update(['exit_groups' => DB::raw('CONCAT(exit_groups,", '.$request->group_id.'")')]);
 
@@ -623,7 +623,7 @@ public function DeleteCustomGroup(Request $request) {
 
 
 			if($delete){        	      
-				return response()->json(array('error' => false, 'data' => $delete), 200);
+				return response()->json(array('error' => false, 'data' => []), 200);
 			} else{
   	 throw new Exception('Not allowed');
   }
