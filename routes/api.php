@@ -149,7 +149,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('update_user_name', 'Api\V1\CommonController@UpdateUserName');
     Route::post('update_user_password', 'Api\V1\CommonController@UpdateUserPassword');
     Route::post('delete_my_account', 'Api\V1\CommonController@DeleteAccount');
-   Route::post('update_notification_settings', 'Api\V1\NotificationController@NotificationSetting');
+    Route::post('update_notification_settings', 'Api\V1\NotificationController@NotificationSetting');
     Route::post('join_class_by_student', 'Api\V1\StudentController@JoinStudentByClass');
     Route::post('leave_class_by_student', 'Api\V1\StudentController@LeaveStudentByClass');
     Route::post('group_list', 'Api\V1\GroupController@GroupList');
@@ -166,5 +166,6 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('report_user', 'Api\V1\MessageController@ReportUser');
     Route::post('task_assigned_to_me', 'Api\V1\ParentController@TaskAssignedToMe');
     Route::post('report_group', 'Api\V1\GroupController@ReportGroup');
+    Route::post('clear_chat', 'Api\V1\MessageController@ClearChat');
 });
 
