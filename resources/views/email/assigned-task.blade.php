@@ -18,7 +18,7 @@
   <body>
     <h2>Hello {{ $name}}, </h2>
     <br/>
-    You have assigned a new task assign by {{ $task_creator}} .
+    You have been assigned a new task by {{ $task_creator}} .
 
     <br/>
 	  Task Details as follow 
