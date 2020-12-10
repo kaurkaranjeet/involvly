@@ -132,7 +132,7 @@ return response()->json($response);
 
       $user_id=$request->user_id;
       
-      $results = DB::select( DB::raw("SELECT m1.message as last_message,m1.created_at as message_date,u1.*,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(one_to_one_message.is_read) from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id=m1.from_user_id AND one_to_one_message.to_user_id=".$user_id." group by one_to_one_message.from_user_id) as  unread_count FROM one_to_one_message m1 LEFT JOIN one_to_one_message m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") ORDER BY m1.created_at DESC") );
+      $results = DB::select( DB::raw("SELECT m1.message as last_message,m1.created_at as message_date,m1.file,u1.*,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(one_to_one_message.is_read) from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id=m1.from_user_id AND one_to_one_message.to_user_id=".$user_id." group by one_to_one_message.from_user_id) as  unread_count FROM one_to_one_message m1 LEFT JOIN one_to_one_message m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") ORDER BY m1.created_at DESC") );
       if($results ){       
 
         foreach($results as $data){
@@ -190,8 +190,6 @@ public function chatList(Request $request)
     $from_user_id=$request->from_user_id;
     $to_user_id=$request->to_user_id;
     //Update read status 
-   //  Message::where(['from_user_id' => $from_user_id, 'to_user_id' => $to_user_id])->update(['is_read' => 1]);
-
     $query1=Message::with('User')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
     })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
@@ -216,6 +214,8 @@ public function chatList(Request $request)
       if(!empty($data->message_date)){
           $date = strtotime($data->message_date); 
           $data->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
+
+
         }
         else{
           $data->message_date =null;
