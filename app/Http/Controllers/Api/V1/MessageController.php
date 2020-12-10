@@ -307,4 +307,32 @@ return response()->json($response);
         }
     }
 
+ // Group Messages List
+    public function ClearChat(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'from_user_id' => 'required',
+          'to_user_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+     $from_user_id=$request->from_user_id;
+         $to_user_id=$request->to_user_id;
+         $query1=Message::where(function ($query) use ($from_user_id, $to_user_id) {
+          $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
+        })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
+          $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
+        })->update(['deleted_by_members'=>$request->from_user_id]);
+        $array=array('error' => false, 'data' => $query1);       
+       return response()->json($array, 200);
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+
 }
