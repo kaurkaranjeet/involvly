@@ -606,7 +606,8 @@ public function DeleteCustomGroup(Request $request) {
 				$delete=$group_info->delete();
 			}
 			else{
-        $get_group=$group_info->first();
+      $get_group=Group::where('id',$request->group_id)->first();
+        //$get_group=$group_info->first();
         if($get_group->type=='parent_community' || $get_group->type=='school'){
           User::where('id',$request->user_id)->update(['join_community',0]);
         }
