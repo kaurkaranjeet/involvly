@@ -325,7 +325,10 @@ return response()->json($response);
           $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
         })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
           $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
-        })->update(['deleted_by_members'=>$request->from_user_id]);
+        })->update(['deleted_by_members' => DB::raw("IFNULL(CONCAT(deleted_by_members, '," . $request->from_user_id . "')," . $request->from_user_id . ")")]);
+
+
+       
         $array=array('error' => false, 'data' => $query1);       
        return response()->json($array, 200);
        }
