@@ -338,6 +338,7 @@ $data_document = [];
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+  }
 
     //remove task
     public function RemoveScheduleTask(Request $request){
