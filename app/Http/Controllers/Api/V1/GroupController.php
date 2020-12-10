@@ -618,7 +618,7 @@ public function DeleteCustomGroup(Request $request) {
 
 				GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->delete();
 
-      User::where('user_id',$request->user_id)->update(['exit_groups' => DB::raw('CONCAT(exit_groups,", '.$request->group_id.'")')]);
+      User::where('id',$request->user_id)->update(['exit_groups' => DB::raw('CONCAT(exit_groups,", '.$request->group_id.'")')]);
 
 			
 
