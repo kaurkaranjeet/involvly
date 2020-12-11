@@ -190,12 +190,38 @@ public function chatList(Request $request)
     $from_user_id=$request->from_user_id;
     $to_user_id=$request->to_user_id;
     //Update read status 
-    DB::enableQueryLog(); 
+   DB::enableQueryLog(); 
     $query1=Message::with('User:id,name,email,profile_image')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','id','file','deleted_by_members')->whereRaw(' (from_user_id='.$from_user_id.' AND to_user_id='.$to_user_id.') OR
-     (from_user_id='.$to_user_id.' AND to_user_id='.$from_user_id.') and  id NOT IN(select id from one_to_one_message as l 
-     where FIND_IN_SET('.$from_user_id.', l.deleted_by_members))');
-    $count= $query1->count();
+ (from_user_id='.$to_user_id.' AND to_user_id='.$from_user_id.') and  id NOT IN(select id from one_to_one_message as l 
+where FIND_IN_SET('.$from_user_id.', l.deleted_by_members))');
+/*
+    SELECT * FROM one_to_one_message WHERE 
+(from_user_id=190 AND to_user_id=242) OR
+ (from_user_id=242 AND to_user_id=190) and 
+id NOT IN(SELECT id FROM one_to_one_message as l 
+WHERE FIND_IN_SET(190, l.deleted_by_members))*/
+
+
+/*SELECT count(* )FROM one_to_one_message WHERE (from_user_id=190 OR to_user_id=242) OR (from_user_id=242 OR to_user_id=190) AND id NOT IN(SELECT id FROM one_to_one_message as l WHERE FIND_IN_SET(242, l.deleted_by_members))*/
+
+/*    SELECT count(*) as aggregate FROM one_to_one_message WHERE (from_user_id=190 AND to_user_id=242) OR (from_user_id=242 AND to_user_id=190) and id NOT IN(SELECT id FROM one_to_one_message as l WHERE FIND_IN_SET(242, l.deleted_by_members))*/
+
+     // $perPage=10;
+ /*   $page = $request->page;
+    $start = ($page-1)*$perPage;   
+
+    if($start < 0) $start = 0;*/
+
+   $count= $query1->count();
+/* $total_pages = ceil($count / $perPage);
+ if($page>$total_pages){
+     throw new Exception("Invalid page number");
+ }*/
+
+
     $results =  $query1->get();
+
+   dd(DB::getQueryLog());
     if($results ){
       foreach($results as $key=>$data){
        
