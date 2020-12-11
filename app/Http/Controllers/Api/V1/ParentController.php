@@ -415,8 +415,7 @@ if(!empty($results)){
           if($request->accept_reject==1){
             $message=$accept_reject_data->User->name.' has accepted the task ' .$accept_reject_data->ParentTask->task_name;
           }
-          else
-          {
+           if($request->accept_reject==2){
            $message=$accept_reject_data->User->name.' has rejected the task ' .$accept_reject_data->ParentTask->task_name;
 
          }
