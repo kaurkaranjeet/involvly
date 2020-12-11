@@ -414,15 +414,19 @@ if(!empty($results)){
          if(!empty($accept_reject_data)){
           if($request->accept_reject==1){
             $message=$accept_reject_data->User->name.' has accepted the task ' .$accept_reject_data->ParentTask->task_name;
-          }
-           if($request->accept_reject==2){
-           $message=$accept_reject_data->User->name.' has rejected the task ' .$accept_reject_data->ParentTask->task_name;
-
-         }
-         
             if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
               SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
             }
+          }
+           if($request->accept_reject==2){
+           $message=$accept_reject_data->User->name.' has rejected the task ' .$accept_reject_data->ParentTask->task_name;
+           if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
+              SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
+            }
+
+         }
+         
+            
             $notificationobj=new Notification;
             $notificationobj->user_id=$accept_reject_data->ParentTask->User->id;
             $notificationobj->notification_message=$message;
