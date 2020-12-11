@@ -352,9 +352,9 @@ return response()->json($response);
           }else{
             $explode=array();
           }
-          if(count($explode)==2) {
+          /*if(count($explode)==2) {
             Message::where('id',$data->id)->delete();
-          }
+          }*/
         }       
         $array=array('error' => false, 'data' => $update);       
        return response()->json($array, 200);
