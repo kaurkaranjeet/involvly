@@ -17,7 +17,7 @@ use App\Models\GroupMessage;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
 use App\Models\ReportGroup;
-
+use App\Models\ClearChatGroup;
 use Carbon\Carbon;
 use Pusher\Pusher;
 use App\Notification;
@@ -77,16 +77,16 @@ class GroupController extends Controller {
               if(!empty($teachers->schools)){
                $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql."  )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE report_groups.user_id = '".$user->id."' AND report_groups.group_id = groups.id
+AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql."  )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
 )")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
                if(!empty($classes->classes)){
                  $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE report_groups.user_id = '".$user->id."' AND report_groups.group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
+AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
                }
              }else{
               $sql= Group::whereRaw(" ((type='parent_community' AND 
-  EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE report_groups.user_id = '".$user->id."' AND report_group.group_id = groups.id
+  EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
 )")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
             }
    $groups=$sql->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
@@ -386,13 +386,14 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
         $input = $request->all();
         $validator = Validator::make($input, [
           'group_id' => 'required',
+          'user_id' => 'required',
         ]);
 
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
       //  select (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number ,group_messages.* from `group_messages` where `group_id` = 1 group by `group_number` order by `id` asc
-        $group_data= GroupMessage::selectRaw(" (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number ,group_messages.*")->with('User')->where('group_id',$request->group_id)->groupBy('group_number')->orderBy('id', 'ASC')->get();           
+        $group_data= GroupMessage::selectRaw(" (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number ,group_messages.*")->with('User')->where('group_id',$request->group_id)->whereRaw("group_number NOT IN( Select group_number FROM clear_chat_groups WHERE user_id=".$request->user_id." AND group_number=clear_chat_groups.group_number)" )->groupBy('group_number')->orderBy('id', 'ASC')->get();           
           $array=array('error' => false, 'data' => $group_data);
          return response()->json($array, 200);
 
@@ -662,6 +663,35 @@ public function DeleteCustomGroup(Request $request) {
     }
       return response()->json(array('error' => false, 'data' => $report_group), 200);
     }
+      catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+      public function CLearchatByUser(Request $request) {
+     try {
+    $input = $request->all();
+    $validator = Validator::make($input, [
+      'user_id' => 'required|exists:users,id',
+      'group_id' => 'required|exists:groups,id',
+    ]);
+
+    if ($validator->fails()) {
+      throw new Exception($validator->errors()->first());
+    } else {
+    
+
+     $groups= GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->orWhere('from_user_id',$request->user_id)->select('group_number')->groupBy('group_number')->get();
+     foreach($groups as $single_group){
+      $ClearChatGroup= new ClearChatGroup;
+      $ClearChatGroup->user_id=$request->user_id;
+      $ClearChatGroup->group_id=$request->group_id;
+      $ClearChatGroup->group_number=$single_group->group_number;
+      $ClearChatGroup->save();
+    }
+      return response()->json(array('error' => false, 'data' => $groups), 200);
+    }
+  }
       catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
