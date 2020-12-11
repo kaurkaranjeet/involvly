@@ -190,11 +190,18 @@ public function chatList(Request $request)
     $from_user_id=$request->from_user_id;
     $to_user_id=$request->to_user_id;
     //Update read status 
-    $query1=Message::with('User')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','updated_at','id','file')->where(function ($query) use ($from_user_id, $to_user_id) {
+    DB::enableQueryLog(); 
+    $query1=Message::with('User:id,name,email,profile_image')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','updated_at','id','file','deleted_by_members')->where(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
     })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
-    });
+    })->whereRaw(' id NOT IN(select id from one_to_one_message as l 
+where FIND_IN_SET('.$from_user_id.', l.deleted_by_members))');
+
+/*SELECT count(* )FROM one_to_one_message WHERE (from_user_id=190 OR to_user_id=242) OR (from_user_id=242 OR to_user_id=190) AND id NOT IN(SELECT id FROM one_to_one_message as l WHERE FIND_IN_SET(242, l.deleted_by_members))*/
+
+/*    SELECT count(*) as aggregate FROM one_to_one_message WHERE (from_user_id=190 AND to_user_id=242) OR (from_user_id=242 AND to_user_id=190) and id NOT IN(SELECT id FROM one_to_one_message as l WHERE FIND_IN_SET(242, l.deleted_by_members))*/
+
      // $perPage=10;
  /*   $page = $request->page;
     $start = ($page-1)*$perPage;   
@@ -209,8 +216,12 @@ public function chatList(Request $request)
 
 
     $results =  $query1->get();
+
+    // dd(DB::getQueryLog());
     if($results ){
       foreach($results as $key=>$data){
+       
+     
       if(!empty($data->message_date)){
           $date = strtotime($data->message_date); 
           $data->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
@@ -220,8 +231,12 @@ public function chatList(Request $request)
         else{
           $data->message_date =null;
         }
-        
       }
+    
+
+      
+        
+      
       $response = [
         'error' => false,
         'message' =>  'Record found',
@@ -325,11 +340,23 @@ return response()->json($response);
           $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
         })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
           $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
-        })->update(['deleted_by_members' => DB::raw("IFNULL(CONCAT(deleted_by_members, '," . $request->from_user_id . "')," . $request->from_user_id . ")")]);
+        });
 
 
-       
-        $array=array('error' => false, 'data' => $query1);       
+       $update= $query1->update(['deleted_by_members' => DB::raw("IFNULL(CONCAT(deleted_by_members, '," . $request->from_user_id . "')," . $request->from_user_id . ")")]);
+
+        $all_messages=$query1->get();
+        foreach($all_messages as $data){
+          if(!empty($data->deleted_by_members)){
+            $explode=explode(',',$data->deleted_by_members);
+          }else{
+            $explode=array();
+          }
+          if(count($explode)==2) {
+            Message::where('id',$data->id)->delete();
+          }
+        }       
+        $array=array('error' => false, 'data' => $update);       
        return response()->json($array, 200);
        }
      } catch (\Exception $e) {
