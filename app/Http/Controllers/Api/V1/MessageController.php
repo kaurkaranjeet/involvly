@@ -191,7 +191,7 @@ public function chatList(Request $request)
     $to_user_id=$request->to_user_id;
     //Update read status 
     DB::enableQueryLog(); 
-    $query1=Message::with('User:id,name,email,profile_image')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','updated_at','id','file','deleted_by_members')->where(function ($query) use ($from_user_id, $to_user_id) {
+    $query1=Message::with('User:id,name,email,profile_image')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','id','file','deleted_by_members')->where(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
     })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
