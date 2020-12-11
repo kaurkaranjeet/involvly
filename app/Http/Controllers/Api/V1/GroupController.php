@@ -415,8 +415,14 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
-       GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);
+          $group_info=Group::where('id',$request->group_id)->first();
+       $count_member=   $this->CountGroups($group_info,$request->user_id);
+       if($count_member->member_count>1){
+         GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);
+       }
        $group_data=DB::select( DB::raw("sELECT (CASE when (SELECT COUNT(id)  from group_messages WHERE is_read=0 AND group_number=	g.group_number) > 0 THEN 0 ELSE 1 END) as read_number , group_number from group_messages as g where group_id=" .$request->group_id." GROUP by group_number order by id ASc" ));
+       
+
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('read-channel', 'read_group', $array);       
       return response()->json($array, 200);
