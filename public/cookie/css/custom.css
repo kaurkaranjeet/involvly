@@ -1,0 +1,34 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    max-width: 1140px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+}
+.banner-section{
+    background-image: url('../images/vuexy-login-bg.jpg');
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+.content-section {
+    padding: 45px 20px;
+    font-family: 'Montserrat', sans-serif;
+}
+.content-section {
+    padding: 45px 0;
+}
+.content-section p {
+    margin-bottom: 15px;
+    line-height: 23px;
+}
+.content-section ul {
+    padding-left: 40px;
+}
