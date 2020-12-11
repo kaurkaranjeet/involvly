@@ -171,7 +171,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               $random_number=rand();
               $limit=1;
               if($request->group_id=='1'){
-                $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id)->get();
+                $users= User::where('role_id',3)->where('join_community',1)->where('status',1)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id.')')->get();
                if($request->hasfile('images'))
                {
                 $limit=count($request->file('images'));
@@ -202,7 +202,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
             } 
           }
                 elseif($request->group_id=='2'){
-              $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id)->get();
+              $users= User::where('city',$user->city)->where('join_community',1)->where('status',1)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id.')')->get();
 
               if($request->hasfile('images'))
                {
@@ -234,7 +234,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 
             }
            else if(Group::where('id',$request->group_id)->where('type','school_admin')->where('school_id',$user->school_id)->exists()){
-             $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id)->get();
+             $users= User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id.')')->get();
              if($request->hasfile('images'))
                {
                    $limit=count($request->file('images'));
@@ -268,7 +268,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
            else if(Group::where('id',$request->group_id)->where('type','class_group')->exists()){
              $class_id= Group::where('id',$request->group_id)->where('type','class_group')->first();           
              $users = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
-             ->select(DB::raw('DIstinct parent_childrens .parent_id'))->where('class_id', $class_id->class_id)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id)->get();
+             ->select(DB::raw('DIstinct parent_childrens .parent_id'))->where('class_id', $class_id->class_id)->whereRaw(' NOT EXISTS (SELECT id FROM report_groups WHERE user_id = users.id AND group_id ='.$request->group_id.')')->get();
              
              if($request->hasfile('images'))
              {
