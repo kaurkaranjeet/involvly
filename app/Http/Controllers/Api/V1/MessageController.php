@@ -345,17 +345,7 @@ return response()->json($response);
 
        $update= $query1->update(['deleted_by_members' => DB::raw("IFNULL(CONCAT(deleted_by_members, '," . $request->from_user_id . "')," . $request->from_user_id . ")")]);
 
-        $all_messages=$query1->get();
-        foreach($all_messages as $data){
-          if(!empty($data->deleted_by_members)){
-            $explode=explode(',',$data->deleted_by_members);
-          }else{
-            $explode=array();
-          }
-          /*if(count($explode)==2) {
-            Message::where('id',$data->id)->delete();
-          }*/
-        }       
+         
         $array=array('error' => false, 'data' => $update);       
        return response()->json($array, 200);
        }
