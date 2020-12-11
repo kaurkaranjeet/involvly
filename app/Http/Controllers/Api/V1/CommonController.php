@@ -188,7 +188,7 @@ WHERE class_id= class_code_subject .class_code_id AND
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-                User::where('id', $request->user_id)->update(['join_community' => '1']);
+                User::where('id', $request->user_id)->update(['join_community' => $request->join_community]);
                 return response()->json(array('error' => false, 'data' => [], 'message' => 'Updated Successfully'), 200);
             }
         } catch (\Exception $e) {
