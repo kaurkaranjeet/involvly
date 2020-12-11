@@ -393,7 +393,15 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
           throw new Exception($validator->errors()->first());
         } else {
       //  select (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number ,group_messages.* from `group_messages` where `group_id` = 1 group by `group_number` order by `id` asc
-        $group_data= GroupMessage::selectRaw(" (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number ,group_messages.*")->with('User')->where('group_id',$request->group_id)->whereRaw("group_number NOT IN( Select group_number FROM clear_chat_groups WHERE user_id=".$request->user_id." AND group_number=clear_chat_groups.group_number)" )->groupBy('group_number')->orderBy('id', 'ASC')->get();           
+           $group_info=Group::where('id',$request->group_id)->first();
+            $count_member=   $this->CountGroups($group_info,$request->user_id);
+       if($count_member->member_count==1){
+
+        $group_data= GroupMessage::selectRaw(" (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number ,group_messages.*")->with('User')->where('group_id',$request->group_id)->whereRaw("group_number NOT IN( Select group_number FROM clear_chat_groups WHERE user_id=".$request->user_id." AND group_number=clear_chat_groups.group_number)" )->groupBy('group_number')->orderBy('id', 'ASC')->get();  
+        }else{
+          $group_data= GroupMessage::selectRaw(" (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 0 END) as read_number ,group_messages.*")->with('User')->where('group_id',$request->group_id)->whereRaw("group_number NOT IN( Select group_number FROM clear_chat_groups WHERE user_id=".$request->user_id." AND group_number=clear_chat_groups.group_number)" )->groupBy('group_number')->orderBy('id', 'ASC')->get(); 
+
+        }         
           $array=array('error' => false, 'data' => $group_data);
          return response()->json($array, 200);
 
@@ -421,7 +429,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
          GroupMessage::where('group_id',$request->group_id)->where('to_user_id',$request->user_id)->update(['is_read'=>'1']);
        }
        $group_data=DB::select( DB::raw("sELECT (CASE when (SELECT COUNT(id)  from group_messages WHERE is_read=0 AND group_number=	g.group_number) > 0 THEN 0 ELSE 1 END) as read_number , group_number from group_messages as g where group_id=" .$request->group_id." GROUP by group_number order by id ASc" ));
-       
+
 
          $array=array('error' => false, 'data' => $group_data);
          $this->pusher->trigger('read-channel', 'read_group', $array);       
