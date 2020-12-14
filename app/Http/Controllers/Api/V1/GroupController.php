@@ -411,7 +411,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
           $group_data= GroupMessage::selectRaw(" (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 0 END) as read_number ,group_messages.*")->with('User')->where('group_id',$request->group_id)->whereRaw("group_number NOT IN( Select group_number FROM clear_chat_groups WHERE user_id=".$request->user_id." AND group_number=clear_chat_groups.group_number)" )->groupBy('group_number')->orderBy('id', 'ASC')->get(); 
 
         }         
-          $array=array('error' => false, 'data' => $group_data);
+          $array=array('error' => false, 'data' => $group_data,'group_id' => $request->group_id);
          return response()->json($array, 200);
 
        }
