@@ -342,8 +342,8 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
          } 
   // Update user read message to yourself
          GroupMessage::where('from_user_id',$request->user_id)->where('to_user_id',$request->user_id)->update(['is_read'=>1]);
-    $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date, (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number")->with('User')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
-         $array=array('error' => false, 'data' => $group_data,'group_id' =>$request->group_id);
+    $group_data= GroupMessage::selectRaw("group_messages.*,group_messages.created_at as message_date, (CASE when (SELECT COUNT(id) from group_messages as l WHERE l.is_read=0 AND l.group_number= group_messages.group_number) > 0 THEN 0 ELSE 1 END) as read_number")->with('User:id,name,email,profile_image,role_id')->where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->where('to_user_id','!=',$request->user_id)->groupBy('group_number')->orderBy('id', 'DESC')->limit($limit)->get();
+         $array=array('error' => false, 'data' => $group_data,'group_id' =>$request->group_id,);
          $this->pusher->trigger('group-channel', 'group_user', $array);  
             // List Group
          $list_group=Group::selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file")->where('id',$request->group_id)->first();
