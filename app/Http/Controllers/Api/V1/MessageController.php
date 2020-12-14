@@ -64,7 +64,7 @@ class MessageController extends Controller {
           if($request->hasfile('file'))
           {
              
-             $name = time().'.'.$request->file('file')->getClientOriginalExtension();
+             $name = rand().'.'.$request->file('file')->getClientOriginalExtension();
              $request->file('file')->move(public_path().'/files/', $name);              
              $data->file =URL::to('/').'/files/'.$name;;            
          }
