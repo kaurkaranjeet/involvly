@@ -78,7 +78,7 @@ class GroupController extends Controller {
 
               $clear_chat_groups= ClearChatGroup::where('user_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_number)) as group_number'))->first();
               if(!empty($members->groups)){
-                $group_number_sql=' AND  ( id NOT IN('.$members->group_number.'))';
+                $group_number_sql=' AND  ( group_id NOT IN('.$members->group_number.'))';
               }
               else{
                 $group_number_sql='';
