@@ -382,7 +382,7 @@ $data_document = [];
              return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
          } else {
                $delete_assigned =  ParentTaskAssigned::where('task_id',$request->task_id)->where('task_assigned_to',$request->task_assigned_to)->delete();                 
-             if ($delete) {
+             if ($delete_assigned) {
                  return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
              } else {
                  return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
