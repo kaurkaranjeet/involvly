@@ -74,20 +74,29 @@ class GroupController extends Controller {
               else{
                 $msql1='';
               }
+
+
+              $clear_chat_groups= ClearChatGroup::where('user_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_number)) as group_number'))->first();
+              if(!empty($members->groups)){
+                $group_number_sql=' AND  ( id NOT IN('.$members->group_number.'))';
+              }
+              else{
+                $group_number_sql='';
+              }
               if(!empty($teachers->schools)){
                $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
 AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql."  )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
+)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  '".$group_number_sql."'  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
                if(!empty($classes->classes)){
                  $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
+AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id '".$group_number_sql."'  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
                }
              }else{
               $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
+)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  '".$group_number_sql."' ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as file");
             }
    $groups=$sql->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
 /*select  groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,
