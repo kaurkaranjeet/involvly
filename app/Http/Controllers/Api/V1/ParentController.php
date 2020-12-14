@@ -406,7 +406,7 @@ $data_document = [];
   $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id',$request->parent_id)->first();
    $childrens= $results->childrens;
   if(!empty($childrens)){
- $results= ParentChildrens::select('parent_id')->with('ParentDetails')->whereIn('children_id', array($childrens))->where('parent_id','!=',$request->parent_id)->get();
+ $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereIn('children_id', array($childrens))->where('parent_id','!=',$request->parent_id)->get();
 if(!empty($results)){
    return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
 }else{
