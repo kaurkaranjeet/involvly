@@ -403,26 +403,26 @@ $data_document = [];
                 throw new Exception($validator->errors()->first());
        }  
        else{ 
-  $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id',$request->parent_id)->first();
-   $childrens= $results->childrens;
+        $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS childrens'))->where('parent_id',$request->parent_id)->first();
+        $childrens= $results->childrens;
 
-  if(!empty($childrens)){
- $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,email,profile_image,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
-if(!empty($results)){
-   return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
-}else{
-                        throw new Exception('No another parents');
-                    }
-  }
-  else{
-                    throw new Exception('No children');
-                }
-            }
-}
- catch (\Exception $e) {
-            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        if(!empty($childrens)){
+         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,email,profile_image,role_id,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
+         if(!empty($results)){
+           return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
+         }else{
+          throw new Exception('No another parents');
         }
+      }
+      else{
+        throw new Exception('No children');
+      }
     }
+  }
+  catch (\Exception $e) {
+    return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+  }
+}
 
      public function AcceptRejectTask(Request $request){
         $validator = Validator::make($request->all(), [
