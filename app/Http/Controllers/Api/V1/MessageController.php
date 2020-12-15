@@ -53,8 +53,8 @@ class MessageController extends Controller {
             if($validator->fails()){
              throw new Exception( $validator->errors());
          }  else{
-          $from_user_id=$data->from_user_id;
-           $to_user_id=$data->to_user_id;
+          $from_user_id=$request->from_user_id;
+           $to_user_id=$request->to_user_id;
            $query1=Message::where(function ($query) use ($from_user_id, $to_user_id) {
             $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
           })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
