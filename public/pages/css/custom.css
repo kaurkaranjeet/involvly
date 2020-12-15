@@ -31,4 +31,22 @@
 }
 .content-section ul {
     padding-left: 40px;
+    margin: 15px 0;
+}
+.content-section ul li {
+    margin-bottom: 10px;
+}
+.content-section table {
+    border: 1px solid #000;
+    margin-bottom: 25px;
+}
+.content-section table tr th {
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #000;
+    padding: 12px;
+}
+.content-section table tr td {
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 6px 22px 22px;
 }
