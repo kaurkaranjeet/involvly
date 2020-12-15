@@ -53,6 +53,15 @@ class MessageController extends Controller {
             if($validator->fails()){
              throw new Exception( $validator->errors());
          }  else{
+          $from_user_id=$data->from_user_id;
+           $to_user_id=$data->to_user_id;
+           $query1=Message::where(function ($query) use ($from_user_id, $to_user_id) {
+            $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
+          })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
+            $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
+          });
+
+          $response=$query1->count();
 
          $data = new Message();
          $data->from_user_id =  $request->from_user_id;
@@ -87,8 +96,19 @@ class MessageController extends Controller {
            }else{
             $pusher_data->unread_count=0;
           }
-            $array_new=array('error' => false, 'data' => $pusher_data);
+
+           $array_new=array('error' => false, 'data' => $pusher_data);
+          
+
+
+          if($response==1){
             $this->pusher->trigger('usermassage-channel', 'listuser_event', $array_new);
+          }else{
+            $this->pusher->trigger('first-channel', 'first_event', $array_new);
+          }
+
+           
+      
 
          // prepare some data to send with the response
         $response = [
