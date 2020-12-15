@@ -101,7 +101,7 @@ class MessageController extends Controller {
           
 
 
-          if($response==1){
+          if($response>0){
             $this->pusher->trigger('usermassage-channel', 'listuser_event', $array_new);
           }else{
             $this->pusher->trigger('first-channel', 'first_event', $array_new);
