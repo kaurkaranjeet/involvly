@@ -61,7 +61,7 @@ class MessageController extends Controller {
             $query->where('from_user_id', $from_user_id)->where('to_user_id', $to_user_id);
           });
 
-          $response=$query1->count();
+          $response1=$query1->count();
 
          $data = new Message();
          $data->from_user_id =  $request->from_user_id;
@@ -101,7 +101,7 @@ class MessageController extends Controller {
           
 
 
-          if($response==1){
+          if($response1>0){
             $this->pusher->trigger('usermassage-channel', 'listuser_event', $array_new);
           }else{
             $this->pusher->trigger('first-channel', 'first_event', $array_new);
