@@ -88,7 +88,7 @@ class MessageController extends Controller {
 
             $pusher_data= $data->User;
             $pusher_data->last_message= $data->message;
-             $pusher_data->last_message= $data->message;
+            $pusher_data->message_date= $data->created_at;
             $pusher_data->to_user_id= $data->to_user_id;
             if(!empty($data->file)){
             $pusher_data->file= $data->file;
