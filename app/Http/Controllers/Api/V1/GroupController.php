@@ -653,9 +653,10 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             ->select('users.*')->where('group_id',$group_info->id);
            // $count=GroupMember::where('group_id',$group_info->id);
             $group_info->member_count=$users->count();
-            $group_info->members=$users->get();
-            $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
+             $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
             $group_info->unread_count=$unread_count;
+            $group_info->members=$users->get();
+           
           }
           $array=array('error' => false, 'data' => $group_info);
 
