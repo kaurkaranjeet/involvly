@@ -617,6 +617,32 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         }
     }
 
+
+// Group Detail API
+    public function GroupDetail(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+          'user_id' => 'required',
+          'group_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {
+          $group_info=Group::where('id',$request->group_id)->first();
+           $count_member=   $this->CountGroups($group_info,$request->user_id);
+            $group_info->member_count=$count_member->member_count;
+
+         $array=array('error' => false, 'data' => $group_info);
+        
+      return response()->json($array, 200);
+       }
+     } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
     // Create custom Group
     public function CreateCustomGroup(Request $request) {
       try {
