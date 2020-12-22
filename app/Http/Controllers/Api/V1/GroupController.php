@@ -646,7 +646,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             $group_info->unread_count=$unread_count;
             $group_info->members=$count->get();
           }
-          if($single_group->type=='custom_group'){
+          if($group_info->type=='custom_group'){
 
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
             ->select('users.*')->where('group_id',$group_info->id)->get();
