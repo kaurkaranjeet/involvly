@@ -582,8 +582,11 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
         $input = $request->all();
         $validator = Validator::make($input, [
          'user_id' => 'required|exists:users,id',
-          'group_name' => 'required',
-          'group_members' => 'required',
+         'group_name' => 'required',
+         'group_description' => 'required',
+         'group_category' => 'required',
+         'view_status' => 'required',
+         'group_members' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -592,6 +595,9 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
         	$groupobj=	new Group;
         	$groupobj->user_id=$request->user_id;
         	$groupobj->group_name=$request->group_name;
+          $groupobj->group_description=$request->group_description;
+          $groupobj->group_category=$request->group_category;
+          $groupobj->view_status=$request->view_status;
         	  
         	if($request->hasfile('group_icon'))
         	{  
