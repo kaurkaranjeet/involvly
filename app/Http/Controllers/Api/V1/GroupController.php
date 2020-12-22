@@ -14,6 +14,7 @@ use App\Mail\SendMailable;
 use App\User;
 use App\Models\Group;
 use App\Models\GroupMessage;
+use App\Models\GroupDiscussion;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
 use App\Models\ReportGroup;
@@ -941,6 +942,34 @@ public function DeleteCustomGroup(Request $request) {
       $ClearChatGroup->group_number=$single_group->group_number;
       $ClearChatGroup->save();
     }
+      return response()->json(array('error' => false, 'data' => $groups), 200);
+    }
+  }
+      catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+
+     public function CreateGroupDiscussion(Request $request) {
+     try {
+    $input = $request->all();
+    $validator = Validator::make($input, [
+      'user_id' => 'required|exists:users,id',
+      'group_id' => 'required|exists:groups,id',
+      'description' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      throw new Exception($validator->errors()->first());
+    } else {  
+
+      $GroupDiscussion=new GroupDiscussion();
+      $GroupDiscussion->user_id=$request->user_id;
+      $GroupDiscussion->group_id=$request->group_id;
+      $GroupDiscussion->description=$request->description;
+      $GroupDiscussion->save();
+
       return response()->json(array('error' => false, 'data' => $groups), 200);
     }
   }
