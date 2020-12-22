@@ -15,6 +15,11 @@ class CreateGroupDiscussionsTable extends Migration
     {
         Schema::create('group_discussions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('group_id');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');            
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }
