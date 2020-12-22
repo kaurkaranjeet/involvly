@@ -322,7 +322,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
 
            
 
-                 return response()->json(array('error' => false, 'data' => $groups, 'digital_learning' => $digital_learning ',community_group' => $sql_oo), 200);
+                 return response()->json(array('error' => false, 'data' => $groups, 'digital_learning' => $digital_learning ,'community_group' => $sql_oo), 200);
                
           }
         } catch (\Exception $e) {
