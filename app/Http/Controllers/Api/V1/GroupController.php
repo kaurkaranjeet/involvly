@@ -631,9 +631,31 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
           throw new Exception($validator->errors()->first());
         } else {
           $group_info=Group::where('id',$request->group_id)->first();
-          $count_member=   $this->CountGroups($group_info,$request->user_id);
-          $group_info->member_count=$count_member->member_count;
+          $user=User::find($request->user_id);
+          if($group_info->type=='parent_community'){
+            $count= User::where('role_id',3)->where('join_community',1)->where('status',1);
+            $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
+            $group_info->member_count=$count->count();
+            $group_info->members=$count->get();
+            $group_info->unread_count=$unread_count;
+          } 
+          if($group_info->type=='school_admin'){
+            $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1);
+            $group_info->member_count=$count->count();
+            $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
+            $group_info->unread_count=$unread_count;
+            $group_info->members=$count->get();
+          }
+          if($single_group->type=='custom_group'){
 
+            $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
+            ->select('users.*')->where('group_id',$group_info->id)->get();
+           // $count=GroupMember::where('group_id',$group_info->id);
+            $group_info->member_count=$users->count();
+            $group_info->members=$users->get();
+            $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
+            $group_info->unread_count=$unread_count;
+          }
           $array=array('error' => false, 'data' => $group_info);
 
           return response()->json($array, 200);
@@ -642,6 +664,10 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
       }
     }
+
+
+
+
 
     // Create custom Group
     public function CreateCustomGroup(Request $request) {
