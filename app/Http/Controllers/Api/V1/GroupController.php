@@ -747,8 +747,10 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         } else { 
          $usrobj=User::find($request->user_id);
 
-         $group_data= User::where('role_id',$usrobj->role_id)->where('status',1)->where('school_id',$usrobj->school_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get();   
-         $array=array('error' => false, 'data' => $group_data);
+         $parents= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get(); 
+
+           $teachers= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get();   
+         $array=array('error' => false, 'data' => [], 'parents' => $parents, 'teachers' => $teachers);
       return response()->json($array, 200);
        }
      } catch (\Exception $e) {
