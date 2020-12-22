@@ -970,7 +970,7 @@ public function DeleteCustomGroup(Request $request) {
       $GroupDiscussion->description=$request->description;
       $GroupDiscussion->save();
 
-      return response()->json(array('error' => false, 'data' => $groups), 200);
+      return response()->json(array('error' => false, 'data' => $GroupDiscussion), 200);
     }
   }
       catch (\Exception $e) {
