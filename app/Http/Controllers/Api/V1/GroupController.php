@@ -186,10 +186,10 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
               $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
               if(!empty($members->groups)){
-                $msql=' And ( id IN('.$members->groups.'))';
+                $msql=' OR ( id IN('.$members->groups.'))';
               }
               else{
-                $msql='';
+                $msql=' OR view_status=\'public\'';
               }
 
               if(!empty($user->exit_groups)){
@@ -631,16 +631,16 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
           throw new Exception($validator->errors()->first());
         } else {
           $group_info=Group::where('id',$request->group_id)->first();
-           $count_member=   $this->CountGroups($group_info,$request->user_id);
-            $group_info->member_count=$count_member->member_count;
+          $count_member=   $this->CountGroups($group_info,$request->user_id);
+          $group_info->member_count=$count_member->member_count;
 
-         $array=array('error' => false, 'data' => $group_info);
-        
-      return response()->json($array, 200);
-       }
-     } catch (\Exception $e) {
-            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+          $array=array('error' => false, 'data' => $group_info);
+
+          return response()->json($array, 200);
         }
+      } catch (\Exception $e) {
+        return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+      }
     }
 
     // Create custom Group
