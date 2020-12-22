@@ -186,7 +186,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
               $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
               if(!empty($members->groups)){
-                $msql=' OR ( id IN('.$members->groups.'))';
+                $msql=' And ( id IN('.$members->groups.'))';
               }
               else{
                 $msql='';
@@ -210,7 +210,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
             if(!empty($teachers->schools)){
                $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-AND join_community=1))  OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  ".$msql."  )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
+AND join_community=1))  OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
 )")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ".$group_number_sql." ORDER by id DESC limit 1) as file");
                /*  if(!empty($classes->classes)){
                  $sql= Group::whereRaw(" ((type='parent_community' AND 
@@ -219,16 +219,17 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
                }*/
              }else{
               $sql= Group::whereRaw(" ((type='parent_community' AND 
-  EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR   ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
+  EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1))  )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
 )")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file");
            }
-   $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
-/*select  groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as last_message,
-(SELECT created_at FROM group_messages WHERE group_id=groups.id ORDER by id DESC limit 1) as message_date from `groups`
- where  ((type='parent_community' AND   EXISTS (SELECT join_community from users WHERE id='242' AND join_community=1))
- OR type='school' OR ( type='school_admin' AND school_id IN('1'))  OR ( type='class_group' AND class_id IN('11'))  
- OR ( id IN(84,85,86,87)) )   AND status=1  ORDER BY FIELD(type, "custom_group", "parent_community", "school","school_admin",
- "class_group")   asc ,created_at DESC*/
+
+$groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
+
+   $sql_oo= Group::whereRaw("(type='custom_group' AND  group_category='community_group'   ".$msql." ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
+)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->get();
+
+ $digital_learning= Group::whereRaw("(type='custom_group' AND  group_category='digital_learning'   ".$msql." ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
+)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->get();
                  
                foreach($groups as $single_group){
                 if($single_group->type=='parent_community'){
@@ -279,9 +280,49 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 
                }
 
+               foreach($sql_oo as $single_group){
+            
+                $count=GroupMember::where('group_id',$single_group->id)->count();
+                  $single_group->member_count=$count;
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $single_group->unread_count=$unread_count;
+           
+                
+            if(!empty($single_group->message_date)){
+                  $date = strtotime($single_group->message_date); 
+
+                  $single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
+                }
+                else{
+                  $single_group->message_date=null;
+                }
+             }
+
+             foreach($digital_learning as $single_group){
+               if($single_group->type=='parent_community'){
+                $count=GroupMember::where('group_id',$single_group->id)->count();
+                  $single_group->member_count=$count;
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $single_group->unread_count=$unread_count;
+           
+                
+            if(!empty($single_group->message_date)){
+                  $date = strtotime($single_group->message_date); 
+
+                  $single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
+                }
+                else{
+                  $single_group->message_date=null;
+                }
+
+
+
+               }
+             }
+
            
 
-                 return response()->json(array('error' => false, 'data' => $groups), 200);
+                 return response()->json(array('error' => false, 'data' => $groups, 'digital_learning' => $digital_learning ',community_group' => $sql_oo), 200);
                
           }
         } catch (\Exception $e) {
