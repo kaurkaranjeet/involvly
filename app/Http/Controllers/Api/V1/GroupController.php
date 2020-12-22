@@ -225,10 +225,10 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 
 $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
 
-   $sql_oo= Group::whereRaw("type='custom_group' AND  group_category='community_group'   ".$msql." ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
+   $sql_oo= Group::whereRaw("type='custom_group' AND  group_category='community_group'   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
 )")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->get();
 
- $digital_learning= Group::whereRaw("type='custom_group' AND  group_category='digital_learning'   ".$msql." ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
+ $digital_learning= Group::whereRaw("type='custom_group' AND  group_category='digital_learning'   AND ( ".$msql."  ) ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
 )")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->get();
                  
                foreach($groups as $single_group){
