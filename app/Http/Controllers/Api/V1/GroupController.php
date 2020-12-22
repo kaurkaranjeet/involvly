@@ -636,8 +636,9 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             $count= User::where('role_id',3)->where('join_community',1)->where('status',1);
             $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
             $group_info->member_count=$count->count();
+             $group_info->unread_count=$unread_count;
             $group_info->members=$count->get();
-            $group_info->unread_count=$unread_count;
+           
           } 
           if($group_info->type=='school_admin'){
             $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1);
@@ -649,7 +650,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
           if($group_info->type=='custom_group'){
 
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select('users.*')->where('group_id',$group_info->id)->get();
+            ->select('users.*')->where('group_id',$group_info->id);
            // $count=GroupMember::where('group_id',$group_info->id);
             $group_info->member_count=$users->count();
             $group_info->members=$users->get();
