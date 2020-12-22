@@ -153,6 +153,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('join_class_by_student', 'Api\V1\StudentController@JoinStudentByClass');
     Route::post('leave_class_by_student', 'Api\V1\StudentController@LeaveStudentByClass');
      Route::post('group_list', 'Api\V1\GroupController@GroupListNew');
+      Route::post('group_detail', 'Api\V1\GroupController@GroupDetail');
 /*    Route::post('group_list', 'Api\V1\GroupController@GroupList');*/
     Route::post('send_group_message', 'Api\V1\GroupController@SendGroupMessage');
     Route::post('group_messages', 'Api\V1\GroupController@GroupMessages');
