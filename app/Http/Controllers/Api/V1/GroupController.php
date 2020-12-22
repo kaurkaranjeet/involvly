@@ -977,4 +977,24 @@ public function DeleteCustomGroup(Request $request) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
     }
+
+
+    public function GetGroupDiscussions(Request $request) {
+     try {
+    $input = $request->all();
+    $validator = Validator::make($input, [
+      'group_id' => 'required|exists:groups,id'
+    ]);
+
+    if ($validator->fails()) {
+      throw new Exception($validator->errors()->first());
+    } else {  
+   $group_discussions=  GroupDiscussion::where('group_id',$request->group_id)->get();     
+      return response()->json(array('error' => false, 'data' => $group_discussions), 200);
+    }
+  }
+  catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
 }
