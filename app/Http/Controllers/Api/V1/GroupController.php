@@ -1056,7 +1056,7 @@ public function DeleteCustomGroup(Request $request) {
      
       $GroupDiscussion->save();
 
-     $data_discuss= GroupDiscussion::with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->orderBy('id', 'DESC')->get();
+     $data_discuss= GroupDiscussion::with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->orderBy('id', 'DESC')->get();
 
       return response()->json(array('error' => false, 'data' => $data_discuss), 200);
     }
