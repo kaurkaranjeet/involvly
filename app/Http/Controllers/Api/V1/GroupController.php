@@ -682,7 +682,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
          'group_description' => 'required',
          'group_category' => 'required',
          'view_status' => 'required',
-         'group_members' => 'required',
+        // 'group_members' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -708,7 +708,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         	$groupobj->school_id=0;
         	$groupobj->class_id=0;
         	$groupobj->save();
-        	if(!empty($request->group_members)){        		
+        	/*if(!empty($request->group_members)){        		
         		$members=explode(',',$request->group_members);
         		array_push($members,$groupobj->user_id);
         		$members=array_unique($members);
@@ -718,7 +718,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         			$groupobjmember->group_id=$groupobj->id;        
         			$groupobjmember->save();
         		}
-        	}
+        	}*/
          // Send pusher Event
         	$count=GroupMember::where('group_id',$groupobj->id)->count();
         	$groupobj->member_count=$count;
