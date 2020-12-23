@@ -795,6 +795,40 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
   }
 
 
+public function GroupMembers(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+        /*  'user_id' =>'required|exists:users,id',*/
+           'group_id' =>'required|exists:groups,id'
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else { 
+        	$group_info=Group::find($request->group_id);
+        	if($group_info->type=='parent_community'){
+           $members= User::where('role_id',3)->where('join_community',1)->where('status',1)->get();
+          } 
+          if($group_info->type=='school_admin'){
+            $members=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->get();         
+          }
+          if($group_info->type=='custom_group'){
+            $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
+            ->select("users.*")->where('group_id',$group_info->id);
+          $members=$users->get();
+          }
+        
+        $array=array('error' => false, 'data' => $members);
+        return response()->json($array, 200);
+      }
+    } catch (\Exception $e) {
+      return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+    }
+  }
+
+
+
     public function CountGroups($list_group,$user_id){
     	$user=User::find($user_id);
     	if($list_group->type=='parent_community'){
