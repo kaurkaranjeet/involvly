@@ -15,4 +15,12 @@ class GroupDiscussion extends Model
 	public function User(){
      return $this->belongsTo('App\User','user_id','id');
    }
+
+   public function likes(){
+   return $this->hasMany('App\Models\DiscussionsLike','discussion_id')->where('like','=', 1);
+}
+/*public function comments(){
+   return $this->hasMany('App\Models\Comment','post_id');
+}*/
+
 }

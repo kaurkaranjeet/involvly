@@ -158,6 +158,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('get_group_discussions', 'Api\V1\GroupController@GetGroupDiscussions');
     Route::post('get_members', 'Api\V1\GroupController@GroupMembers');
     Route::post('delete_member', 'Api\V1\GroupController@Deletemember');
+       Route::post('like_discussion', 'Api\V1\GroupController@LikeUnlikeDiscussion');
 
     
       

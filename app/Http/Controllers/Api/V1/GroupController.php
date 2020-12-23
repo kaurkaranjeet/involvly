@@ -15,6 +15,7 @@ use App\User;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\GroupDiscussion;
+use App\Models\DiscussionsLike;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
 use App\Models\ReportGroup;
@@ -767,6 +768,74 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
     }
+
+
+     public function LikeUnlikeDiscussion(Request $request){
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'user_id' => 'required|exists:users,id',
+        'discussion_id' => 'required|exists:posts,id',
+        'like' => 'required'
+
+    ]);    
+       if ($validator->fails()) {
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+    }
+    else{
+    $like_unlike_id = DiscussionsLike::where('user_id', $request->user_id)->where('discussion_id', $request->discussion_id)->first();
+    if(!empty($like_unlike_id)){
+    /* $notify_id=1;
+     if($like_unlike_id->like!=$request->like){
+      $notify_id=0;
+    }*/
+     $flight = LikeUnlike::find($like_unlike_id->id);
+  } 
+  else
+  {
+  //$notify_id=0;
+  $flight= new LikeUnlike;//then create new object
+}
+    $flight->user_id=$request->user_id;
+    $flight->discussion_id=$request->discussion_id;
+    $flight->like=$request->like;
+    $flight->save();
+  // total likes
+
+        if($request->like=='1'){
+
+         $like='liked';
+         $this->pusher->trigger('like-discussion', 'like_discussion', $flight);
+       }
+       else{
+       $like='disliked';
+         $this->pusher->trigger('like-discussion', 'dislike_discussion', $flight);
+       }
+
+       $posts = DiscussionsLike::select((DB::raw("( CASE WHEN EXISTS (
+        SELECT *
+        FROM discussions_like
+        WHERE group_discussions.id = discussions_like.discussion_id
+        AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
+        ) THEN TRUE
+        ELSE FALSE END)
+        AS is_like,group_discussions.*")))->with('User')->withCount('likes'/*,'comments'*/)->where('id', $request->discussion_id)->orderBy('id', 'DESC')->first();
+       $this->pusher->trigger('count-discussions', 'discussion_count', $posts);
+      /* $post_user=DiscussionsLike::with('User')->where('id',$request->discussion_id)->first();
+        // send notification    
+       if($post_user->user->id!=$request->user_id){ 
+
+         $message= $flight->User->name .' has '.$like.' your discussion.';
+         if(!empty($post_user->user->device_token)){
+          SendAllNotification($post_user->user->device_token,$message,'social_notification');        
+        }
+
+      Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like','from_user_id'=>$request->user_id]); 
+       } */
+       return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
+
+
+}
+}
 
 // Group Messages List
     public function CustomMembers(Request $request) {
