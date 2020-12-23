@@ -707,21 +707,15 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         	$groupobj->status='1';
         	$groupobj->school_id=0;
         	$groupobj->class_id=0;
-        	$groupobj->save();
-        	/*if(!empty($request->group_members)){        		
-        		$members=explode(',',$request->group_members);
-        		array_push($members,$groupobj->user_id);
-        		$members=array_unique($members);
-        		foreach($members as $member_id){
-        			$groupobjmember=new GroupMember;
-        			$groupobjmember->member_id=$member_id;
-        			$groupobjmember->group_id=$groupobj->id;        
-        			$groupobjmember->save();
-        		}
-        	}*/
+        	$groupobj->save();        	
+        	$groupobjmember=new GroupMember;
+        	$groupobjmember->member_id=$request->user_id;
+        	$groupobjmember->group_id=$groupobj->id;        
+        	$groupobjmember->save();
+        	
          // Send pusher Event
-        	$count=GroupMember::where('group_id',$groupobj->id)->count();
-        	$groupobj->member_count=$count;
+        	//$count=GroupMember::where('group_id',$groupobj->id)->count();
+        	$groupobj->member_count=1;
         	$groupobj->unread_count=0;
         	$groupobj->last_message=null;
         	$groupobj->message_date=$groupobj->created_at;
@@ -733,6 +727,34 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         }
     }
 
+
+
+// Create custom Group
+    public function AddMemberOfGroup(Request $request) {
+      try {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+         'member_id' => 'required|exists:users,id',
+         'group_id' => 'required|exists:groups,id'
+        ]);
+
+        if ($validator->fails()) {
+          throw new Exception($validator->errors()->first());
+        } else {        	
+        
+        			$groupobjmember=new GroupMember;
+        			$groupobjmember->member_id=$request->member_id;
+        			$groupobjmember->group_id=$request->group_id;        
+        			$groupobjmember->save();
+        		
+        	}
+                 
+      return response()->json(array('error' => false, 'data' => $groupobjmember), 200);
+       }
+      catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
 
 // Group Messages List
     public function CustomMembers(Request $request) {
