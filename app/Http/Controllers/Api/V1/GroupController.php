@@ -894,7 +894,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
       ELSE FALSE END)
       AS is_like,group_discussions.*")))->with('User')->withCount('likes','comments')->where('id', $request->discussion_id)->orderBy('id', 'DESC')->first();
 
-    $this->pusher->trigger('count-discussions', 'count_discussions', $posts);
+    $this->pusher->trigger('count-discussions', 'comment_count_discussion', $posts);
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
 }
