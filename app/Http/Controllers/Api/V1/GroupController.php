@@ -659,14 +659,14 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
           if($group_info->type=='custom_group'){
 
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select('users.*','( CASE WHEN EXISTS (
-              SELECT d.member_id
+            ->select((DB::raw('users.*,( CASE WHEN EXISTS (
+              SELECT member_id
               FROM group_members as d
               WHERE d.member_id ='. $request->user_id.'
               AND d.group_id = '. $group_info->id.'
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_joined')->where('group_id',$group_info->id);
+              AS is_joined'))->where('group_id',$group_info->id);
            // $count=GroupMember::where('group_id',$group_info->id);
             $group_info->member_count=$users->count();
              $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
