@@ -1010,13 +1010,17 @@ public function DeleteCustomGroup(Request $request) {
       $GroupDiscussion->group_id=$request->group_id;
       $GroupDiscussion->description=$request->description;
       if($request->hasfile('image'))
-      {  
-        $file = $request->file('image');
-        $filename=trim($file->getClientOriginalName());
-        $file->move(public_path().'/images/',$filename) ; 
-        $file_name=URL::to('/').'/images/'.$filename;  
-        $GroupDiscussion->image=$file_name;
+      {
+      	$PostObj->is_image=1;
+      	foreach($request->file('image') as $key=>$file)
+      	{
+      		$name=time().$key.'.'.$file->getClientOriginalExtension();    
+      		$file->move(public_path().'/images/', $name);      
+      		$data[$key] = URL::to('/').'/images/'.$name;  
+      	}
       }
+
+      $GroupDiscussion->image=$data;
       $GroupDiscussion->save();
 
       return response()->json(array('error' => false, 'data' => $GroupDiscussion), 200);
