@@ -661,9 +661,9 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
             ->select('users.*,( CASE WHEN EXISTS (
               SELECT member_id
-              FROM group_members
-              WHERE member_id ='. $request->user_id.'
-              AND group_id = '. $group_info->id.'
+              FROM group_members as d
+              WHERE d.member_id ='. $request->user_id.'
+              AND d.group_id = '. $group_info->id.'
               ) THEN TRUE
               ELSE FALSE END)
               AS is_joined')->where('group_id',$group_info->id);
