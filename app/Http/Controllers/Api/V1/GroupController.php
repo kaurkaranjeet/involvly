@@ -659,8 +659,8 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
           if($group_info->type=='custom_group'){
 
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select('users.*,( CASE WHEN EXISTS (
-              SELECT member_id
+            ->select('users.*','( CASE WHEN EXISTS (
+              SELECT d.member_id
               FROM group_members as d
               WHERE d.member_id ='. $request->user_id.'
               AND d.group_id = '. $group_info->id.'
