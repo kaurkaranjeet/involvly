@@ -160,7 +160,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('delete_member', 'Api\V1\GroupController@Deletemember');
     Route::post('like_discussion', 'Api\V1\GroupController@LikeUnlikeDiscussion');
     Route::post('add_discussion_comment', 'Api\V1\GroupController@AddDiscussionComments');
-    
+     Route::post('get_discussion_comments', 'Api\V1\GroupController@GetComments');
       
 /*    Route::post('group_list', 'Api\V1\GroupController@GroupList');*/
     Route::post('send_group_message', 'Api\V1\GroupController@SendGroupMessage');
