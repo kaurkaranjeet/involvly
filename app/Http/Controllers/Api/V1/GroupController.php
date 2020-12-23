@@ -788,12 +788,12 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
      if($like_unlike_id->like!=$request->like){
       $notify_id=0;
     }*/
-     $flight = LikeUnlike::find($like_unlike_id->id);
+     $flight = DiscussionsLike::find($like_unlike_id->id);
   } 
   else
   {
   //$notify_id=0;
-  $flight= new LikeUnlike;//then create new object
+  $flight= new DiscussionsLike;//then create new object
 }
     $flight->user_id=$request->user_id;
     $flight->discussion_id=$request->discussion_id;
