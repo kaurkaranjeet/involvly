@@ -799,13 +799,14 @@ public function GroupMembers(Request $request) {
       try {
         $input = $request->all();
         $validator = Validator::make($input, [
-        /*  'user_id' =>'required|exists:users,id',*/
+          'user_id' =>'required|exists:users,id',
            'group_id' =>'required|exists:groups,id'
         ]);
 
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else { 
+        	$user=User::find($request->user_id);
         	$group_info=Group::find($request->group_id);
         	if($group_info->type=='parent_community'){
            $members= User::where('role_id',3)->where('join_community',1)->where('status',1)->get();
