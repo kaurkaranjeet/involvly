@@ -640,6 +640,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             if($user->role_id==3 && $user->join_community==1){
             	$is_joined=1;
             }
+              $group_info->is_joined=$is_joined;
             $group_info->member_count=$count->count();
              $group_info->unread_count=$unread_count;
             $group_info->members=$count->get();
@@ -653,25 +654,21 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             	$is_joined=1;
             }
             $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
+               $group_info->is_joined=$is_joined;
             $group_info->unread_count=$unread_count;
             $group_info->members=$count->get();
           }
           if($group_info->type=='custom_group'){
 
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select((DB::raw("( CASE WHEN EXISTS (
-              SELECT member_id
-              FROM group_members as d
-              WHERE d.member_id =". $request->user_id."
-              AND d.group_id = ". $group_info->id."
-              ) THEN TRUE
-              ELSE FALSE END)
-              AS is_joined, users.*")))->where('group_id',$group_info->id);
+            ->select("users.*")->where('group_id',$group_info->id);
            // $count=GroupMember::where('group_id',$group_info->id);
             $group_info->member_count=$users->count();
              $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
+             $is_joined=GroupMember::where('group_id',$group_info->id)->where('member_id',$request->user_id)->count;
             $group_info->unread_count=$unread_count;
             $group_info->members=$users->get();
+             $group_info->is_joined=$is_joined;
            
           }
           $array=array('error' => false, 'data' => $group_info);
