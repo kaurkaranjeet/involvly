@@ -811,14 +811,14 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
          $this->pusher->trigger('like-discussion', 'dislike_discussion', $flight);
        }
 
-       $posts = DiscussionsLike::select((DB::raw("( CASE WHEN EXISTS (
+       $posts = GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
         SELECT *
         FROM discussions_like
         WHERE group_discussions.id = discussions_like.discussion_id
         AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
         ) THEN TRUE
         ELSE FALSE END)
-        AS is_like,group_discussions.*")))->with('User')->withCount('likes'/*,'comments'*/)->where('id', $request->discussion_id)->orderBy('id', 'DESC')->first();
+        AS is_like,group_discussions.*")))->with('User')->withCount('likes')->where('id', $request->discussion_id)->orderBy('id', 'DESC')->first();
        $this->pusher->trigger('count-discussions', 'discussion_count', $posts);
       /* $post_user=DiscussionsLike::with('User')->where('id',$request->discussion_id)->first();
         // send notification    
