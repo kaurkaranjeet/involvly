@@ -839,6 +839,24 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
 }
 
 
+public function GetComments(Request $request){
+    $validator = Validator::make($request->all(), [
+        'discussion_id' => 'required|exists:group_discussions,id'
+    ]);
+    if($validator->fails()){
+        return response()->json(array('errors' => $validator->errors(),'error' => true));
+    }
+    else{
+
+
+    $comments= DiscussionComment::with('User')->/*withCount('replycomments')->with('replycomments.User')->*/where('discussion_id' , $request->discussion_id)->get();
+
+    return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $comments), 200);
+
+    }
+
+}
+
 	  public function AddDiscussionComments(Request $request){
        $input = $request->all();
        $validator = Validator::make($input, [
