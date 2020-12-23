@@ -993,6 +993,29 @@ public function DeleteCustomGroup(Request $request) {
         }
     }
 
+     public function Deletemember(Request $request) {
+  try {
+    $input = $request->all();
+    $validator = Validator::make($input, [
+      'member_id' => 'required|exists:users,id',
+      'group_id' => 'required|exists:groups,id',
+    ]);
+
+    if ($validator->fails()) {
+      throw new Exception($validator->errors()->first());
+    } else {
+    	$delete=GroupMember::where('member_id',$request->member_id)->where('group_id',$request->group_id)->delete();
+
+
+     
+      return response()->json(array('error' => false, 'data' => $delete), 200);
+    }
+}
+      catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
       public function CLearchatByUser(Request $request) {
      try {
     $input = $request->all();

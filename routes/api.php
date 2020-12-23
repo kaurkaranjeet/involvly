@@ -157,6 +157,9 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('add_group_discussion', 'Api\V1\GroupController@CreateGroupDiscussion');
     Route::post('get_group_discussions', 'Api\V1\GroupController@GetGroupDiscussions');
     Route::post('get_members', 'Api\V1\GroupController@GroupMembers');
+    Route::post('delete_member', 'Api\V1\GroupController@Deletemember');
+
+    
       
 /*    Route::post('group_list', 'Api\V1\GroupController@GroupList');*/
     Route::post('send_group_message', 'Api\V1\GroupController@SendGroupMessage');
