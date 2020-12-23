@@ -1056,9 +1056,9 @@ public function DeleteCustomGroup(Request $request) {
      
       $GroupDiscussion->save();
 
-     $data_discuss= GroupDiscussion::with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->orderBy('id', 'DESC')->get();
+    
 
-      return response()->json(array('error' => false, 'data' => $data_discuss), 200);
+      return response()->json(array('error' => false, 'data' => $GroupDiscussion), 200);
     }
   }
       catch (\Exception $e) {
@@ -1077,7 +1077,7 @@ public function DeleteCustomGroup(Request $request) {
     if ($validator->fails()) {
       throw new Exception($validator->errors()->first());
     } else {  
-   $group_discussions=  GroupDiscussion::where('group_id',$request->group_id)->get();     
+   $group_discussions= GroupDiscussion::with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->where('group_id',$request->group_id)->get();     
       return response()->json(array('error' => false, 'data' => $group_discussions), 200);
     }
   }
