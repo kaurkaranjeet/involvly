@@ -15,6 +15,7 @@ use App\User;
 use App\Models\Group;
 use App\Models\GroupMessage;
 use App\Models\GroupDiscussion;
+use App\Models\DiscussionComment;
 use App\Models\DiscussionsLike;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
@@ -834,6 +835,67 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 
 
+}
+}
+
+
+	  public function AddDiscussionComments(Request $request){
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'user_id' => 'required|exists:users,id',
+        'discussion_id' => 'required|exists:group_discussions,id',
+        'comment' => 'required'
+
+    ]);    
+       if ($validator->fails()) {
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+    }
+    else{
+    
+    $flight= new DiscussionComment;//then create new object
+    $flight->user_id=$request->user_id;
+    $flight->discussion_id=$request->discussion_id;
+    $flight->comment=$request->comment;
+    $flight->save();
+    $flight->name= $flight->User->name;
+    // total comments
+        $results1 = DB::select( DB::raw("select count(*) as total_comments from `discussions_comments` where `discussion_id` = ".$request->discussion_id."") );
+        if(isset($results1[0])){
+            $flight->total_comments=(int)$results1[0]->total_comments;
+        }
+        else{
+             $flight->total_comments=0;
+        }
+
+        $flight->user_id=(int) $request->user_id;
+        $flight->discussion_id=(int) $request->discussion_id;
+
+        // $comments=  DiscussionComment::with('User')->/*withCount('replycomments')->with('replycomments')->*/where('id' , $flight->id)->first();
+      //   $comments->comment_id=(int) $comments->comment_id;
+         //$post_user=Post::with('user')->where('id',$request->post_id)->first();
+        // send notification         
+      /* $message= $comments->User->name .' has commented on your post.';
+
+      if($post_user->user->id!=$request->user_id){
+       if(!empty($post_user->user->device_token)){
+        SendAllNotification($post_user->user->device_token,$message,'social_notification');          
+      }
+       Notification::create(['user_id'=>$post_user->user->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment']);
+     }
+*/
+        $this->pusher->trigger('discuss-channel', 'discuss_comment', $comments);
+
+    $posts = GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
+      SELECT *
+      FROM group_discussions
+      WHERE group_discussions.id = discussions_like.discussion_id
+      AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
+      ) THEN TRUE
+      ELSE FALSE END)
+      AS is_like,group_discussions.*")))->with('User')->withCount('likes','comments')->where('id', $request->discussion_id)->orderBy('id', 'DESC')->first();
+
+    $this->pusher->trigger('count-discussions', 'count_discussions', $posts);
+       return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 }
 }
 
