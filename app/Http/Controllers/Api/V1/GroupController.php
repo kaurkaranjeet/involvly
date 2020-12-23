@@ -887,7 +887,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
 
     $posts = GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
       SELECT *
-      FROM group_discussions
+      FROM discussions_like
       WHERE group_discussions.id = discussions_like.discussion_id
       AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
       ) THEN TRUE
