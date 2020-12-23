@@ -859,7 +859,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
     $flight->save();
     $flight->name= $flight->User->name;
     // total comments
-        $results1 = DB::select( DB::raw("select count(*) as total_comments from `discussions_comments` where `discussion_id` = ".$request->discussion_id."") );
+        $results1 = DB::select( DB::raw("select count(*) as total_comments from `group_discussion_comments` where `discussion_id` = ".$request->discussion_id."") );
         if(isset($results1[0])){
             $flight->total_comments=(int)$results1[0]->total_comments;
         }
