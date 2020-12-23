@@ -9,7 +9,7 @@ class DiscussionComment extends Model {
 
 
 
-   protected $table='discussions_comments';
+   protected $table='group_discussion_comments';
 
     /**
      * The attributes that are mass assignable.
