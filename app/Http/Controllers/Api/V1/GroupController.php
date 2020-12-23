@@ -1009,9 +1009,10 @@ public function DeleteCustomGroup(Request $request) {
       $GroupDiscussion->user_id=$request->user_id;
       $GroupDiscussion->group_id=$request->group_id;
       $GroupDiscussion->description=$request->description;
+      $data=array();
       if($request->hasfile('image'))
       {
-      	$PostObj->is_image=1;
+      
       	foreach($request->file('image') as $key=>$file)
       	{
       		$name=time().$key.'.'.$file->getClientOriginalExtension();    
