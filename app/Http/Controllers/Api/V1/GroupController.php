@@ -1053,9 +1053,12 @@ public function DeleteCustomGroup(Request $request) {
       }
 
       $GroupDiscussion->image=$data;
+     
       $GroupDiscussion->save();
 
-      return response()->json(array('error' => false, 'data' => $GroupDiscussion), 200);
+     $data_discuss= GroupDiscussion::with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->orderBy('id', 'DESC')->get();
+
+      return response()->json(array('error' => false, 'data' => $data_discuss), 200);
     }
   }
       catch (\Exception $e) {
