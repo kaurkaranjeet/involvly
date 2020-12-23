@@ -19,8 +19,8 @@ class GroupDiscussion extends Model
    public function likes(){
    return $this->hasMany('App\Models\DiscussionsLike','discussion_id')->where('like','=', 1);
 }
-/*public function comments(){
-   return $this->hasMany('App\Models\Comment','post_id');
-}*/
+public function comments(){
+   return $this->hasMany('App\Models\DiscussionComment','discussion_id');
+}
 
 }
