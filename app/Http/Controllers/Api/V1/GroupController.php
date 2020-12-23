@@ -1244,13 +1244,21 @@ public function DeleteCustomGroup(Request $request) {
      try {
     $input = $request->all();
     $validator = Validator::make($input, [
-      'group_id' => 'required|exists:groups,id'
+      'group_id' => 'required|exists:groups,id',
+       'user_id' => 'required|exists:users,id'
     ]);
 
     if ($validator->fails()) {
       throw new Exception($validator->errors()->first());
     } else {  
-   $group_discussions= GroupDiscussion::with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();    
+   $group_discussions= GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
+      SELECT *
+      FROM discussions_like
+      WHERE group_discussions.id = discussions_like.discussion_id
+      AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
+      ) THEN TRUE
+      ELSE FALSE END)
+      AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();    
       return response()->json(array('error' => false, 'data' => $group_discussions), 200);
     }
   }
