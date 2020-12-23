@@ -870,7 +870,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         $flight->user_id=(int) $request->user_id;
         $flight->discussion_id=(int) $request->discussion_id;
 
-        // $comments=  DiscussionComment::with('User')->/*withCount('replycomments')->with('replycomments')->*/where('id' , $flight->id)->first();
+      $comments=  DiscussionComment::with('User')->/*withCount('replycomments')->with('replycomments')->*/where('id' , $flight->id)->first();
       //   $comments->comment_id=(int) $comments->comment_id;
          //$post_user=Post::with('user')->where('id',$request->post_id)->first();
         // send notification         
