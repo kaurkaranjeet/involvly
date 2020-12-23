@@ -1101,7 +1101,7 @@ public function DeleteCustomGroup(Request $request) {
     if ($validator->fails()) {
       throw new Exception($validator->errors()->first());
     } else {  
-   $group_discussions= GroupDiscussion::with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->where('group_id',$request->group_id)->get();     
+   $group_discussions= GroupDiscussion::with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();    
       return response()->json(array('error' => false, 'data' => $group_discussions), 200);
     }
   }
