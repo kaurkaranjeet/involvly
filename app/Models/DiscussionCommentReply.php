@@ -7,8 +7,8 @@ use App\User;
 
 class DiscussionCommentReply extends Model {
 
-   protected $table='discussion_comment_replies';
-  
+   protected $table='discussion_comments_reply';
+
     /**
      * The attributes that are mass assignable.
      *
