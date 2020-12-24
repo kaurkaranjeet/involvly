@@ -1206,7 +1206,7 @@ public function DeleteCustomGroup(Request $request) {
     $validator = Validator::make($input, [
       'user_id' => 'required|exists:users,id',
       'group_id' => 'required|exists:groups,id',
-      'description' => 'required',
+     // 'description' => 'required',
     ]);
 
     if ($validator->fails()) {
