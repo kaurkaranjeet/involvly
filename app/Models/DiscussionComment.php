@@ -24,8 +24,8 @@ class DiscussionComment extends Model {
    return $this->belongsTo('App\User','user_id','id');
    }
 
- /*public function replycomments(){
-    return $this->hasMany('App\Models\CommentReply','comment_id');
- }*/
+ public function replycomments(){
+    return $this->hasMany('App\Models\DiscussionCommentReply','comment_id');
+ }
     
 }
