@@ -191,7 +191,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
               $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
               if(!empty($members->groups)){
-                $msql='  ( id IN('.$members->groups.'))';
+                $msql='  ( id IN('.$members->groups.'))  OR  view_status=\'public\'';
               }
               else{
                 $msql='  view_status=\'public\'';
