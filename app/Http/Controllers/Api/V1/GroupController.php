@@ -946,7 +946,7 @@ public function GetComments(Request $request){
     }
   }
   else{
-    $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get(); 
+    $group_data= User::where('role_id',$usrobj->role_id)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get(); 
   }
 
         $array=array('error' => false, 'data' => $group_data);
