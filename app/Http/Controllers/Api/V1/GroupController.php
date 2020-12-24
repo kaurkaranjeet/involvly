@@ -762,6 +762,8 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         			$groupobjmember->member_id=$request->member_id;
         			$groupobjmember->group_id=$request->group_id;        
         			$groupobjmember->save();
+
+           $this->pusher->trigger('member-channel', 'add_member', $flight);
         		
         	}
                  
@@ -823,7 +825,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         ELSE FALSE END)
         AS is_like,group_discussions.*")))->with('User')->withCount('likes','comments')->where('id', $request->discussion_id)->orderBy('id', 'DESC')->first();
        $this->pusher->trigger('count-discussions', 'discussion_count', $posts);
-       $post_user=GroupDiscussion::with('User')->where('id',$request->discussion_id)->first();
+      /* $post_user=GroupDiscussion::with('User')->where('id',$request->discussion_id)->first();
         // send notification    
        if($post_user->User->id!=$request->user_id){ 
 
@@ -833,7 +835,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         }
 
       Notification::create(['user_id'=>$post_user->User->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like','from_user_id'=>$request->user_id]); 
-       } 
+       } */
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 
 
@@ -896,12 +898,12 @@ public function GetComments(Request $request){
         // send notification         
         $message= $comments->User->name .' has commented on your discussion.';
 
-        if($post_user->user->id!=$request->user_id){
+       /* if($post_user->user->id!=$request->user_id){
          if(!empty($post_user->User->device_token)){
           SendAllNotification($post_user->User->device_token,$message,'social_notification');          
         }
         Notification::create(['user_id'=>$post_user->User->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment']);
-      }
+      }*/
 
         $this->pusher->trigger('discuss-channel', 'discuss_comment', $comments);
 
