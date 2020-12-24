@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 
 class DiscussionCommentReply extends Model {
+
+   protected $table='discussion_comment_replies';
+  
     /**
      * The attributes that are mass assignable.
      *
