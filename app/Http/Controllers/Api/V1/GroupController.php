@@ -779,7 +779,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
        $input = $request->all();
        $validator = Validator::make($input, [
         'user_id' => 'required|exists:users,id',
-        'discussion_id' => 'required|exists:posts,id',
+        'discussion_id' => 'required|exists:group_discussions,id',
         'like' => 'required'
 
     ]);    
