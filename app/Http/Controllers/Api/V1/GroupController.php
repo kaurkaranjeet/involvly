@@ -823,17 +823,17 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         ELSE FALSE END)
         AS is_like,group_discussions.*")))->with('User')->withCount('likes','comments')->where('id', $request->discussion_id)->orderBy('id', 'DESC')->first();
        $this->pusher->trigger('count-discussions', 'discussion_count', $posts);
-      /* $post_user=DiscussionsLike::with('User')->where('id',$request->discussion_id)->first();
+       $post_user=GroupDiscussion::with('User')->where('id',$request->discussion_id)->first();
         // send notification    
-       if($post_user->user->id!=$request->user_id){ 
+       if($post_user->User->id!=$request->user_id){ 
 
          $message= $flight->User->name .' has '.$like.' your discussion.';
-         if(!empty($post_user->user->device_token)){
-          SendAllNotification($post_user->user->device_token,$message,'social_notification');        
+         if(!empty($post_user->User->device_token)){
+          SendAllNotification($post_user->User->device_token,$message,'social_notification');        
         }
 
-      Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like','from_user_id'=>$request->user_id]); 
-       } */
+      Notification::create(['user_id'=>$post_user->User->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like','from_user_id'=>$request->user_id]); 
+       } 
        return response()->json(array('error' => false, 'message' => 'Success', 'data' => $flight), 200);
 
 
@@ -890,19 +890,19 @@ public function GetComments(Request $request){
         $flight->user_id=(int) $request->user_id;
         $flight->discussion_id=(int) $request->discussion_id;
 
-      $comments=  DiscussionComment::with('User')->withCount('replycomments')->with('replycomments')->where('id' , $flight->id)->first();
-      //   $comments->comment_id=(int) $comments->comment_id;
-         //$post_user=Post::with('user')->where('id',$request->post_id)->first();
+        $comments=  DiscussionComment::with('User')->where('id' , $flight->id)->first();
+    //    $comments->comment_id=(int) $comments->comment_id;
+        $post_user=GroupDiscussion::with('User')->where('id',$request->discussion_id)->first();
         // send notification         
-      /* $message= $comments->User->name .' has commented on your post.';
+        $message= $comments->User->name .' has commented on your discussion.';
 
-      if($post_user->user->id!=$request->user_id){
-       if(!empty($post_user->user->device_token)){
-        SendAllNotification($post_user->user->device_token,$message,'social_notification');          
+        if($post_user->user->id!=$request->user_id){
+         if(!empty($post_user->User->device_token)){
+          SendAllNotification($post_user->User->device_token,$message,'social_notification');          
+        }
+        Notification::create(['user_id'=>$post_user->User->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment']);
       }
-       Notification::create(['user_id'=>$post_user->user->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment']);
-     }
-*/
+
         $this->pusher->trigger('discuss-channel', 'discuss_comment', $comments);
 
     $posts = GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
