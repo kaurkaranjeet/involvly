@@ -179,5 +179,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('clear_chat', 'Api\V1\MessageController@ClearChat');
     Route::post('clear_chat_by_group', 'Api\V1\GroupController@CLearchatByUser');
     Route::post('delete_task_assigned_to_me', 'Api\V1\ParentController@RemoveAssignScheduleTask');
+    Route::post('add_reply_to_comment', 'Api\V1\GroupController@AddReplyComments');
+     Route::post('replies_of_comment', 'Api\V1\GroupController@GetReplyComments');
 });
 

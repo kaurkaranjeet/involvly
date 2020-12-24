@@ -20,6 +20,8 @@ use App\Models\DiscussionsLike;
 use App\Models\ParentChildrens;
 use App\Models\GroupMember;
 use App\Models\ReportGroup;
+use App\Models\DiscussionCommentReply;
+
 use App\Models\ClearChatGroup;
 use Carbon\Carbon;
 use Pusher\Pusher;
@@ -888,7 +890,7 @@ public function GetComments(Request $request){
         $flight->user_id=(int) $request->user_id;
         $flight->discussion_id=(int) $request->discussion_id;
 
-      $comments=  DiscussionComment::with('User')->/*withCount('replycomments')->with('replycomments')->*/where('id' , $flight->id)->first();
+      $comments=  DiscussionComment::with('User')->withCount('replycomments')->with('replycomments')->where('id' , $flight->id)->first();
       //   $comments->comment_id=(int) $comments->comment_id;
          //$post_user=Post::with('user')->where('id',$request->post_id)->first();
         // send notification         
@@ -1266,4 +1268,65 @@ public function DeleteCustomGroup(Request $request) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
     }
+
+     public function AddReplyComments(Request $request){
+            $input = $request->all();
+            $validator = Validator::make($input, [
+             'user_id' => 'required|exists:users,id',
+             'discussion_id' => 'required|exists:group_discussions,id',
+             'comment_id' => 'required|exists:group_discussion_comments,id',
+             'reply_comment' => 'required'
+
+ 
+
+         ]);    
+            if ($validator->fails()) {
+             return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+         }
+         else{
+
+ 
+
+         $reply= new DIscussionCommentReply;//then create new object
+         $reply->user_id=$request->user_id;
+         $reply->discussion_id=$request->discussion_id;
+         $reply->comment_id=$request->comment_id;
+         $reply->reply_comment=$request->reply_comment;
+         $reply->save();
+         $reply->name= $reply->User->name;
+//          total reply comments
+         $results1 = DB::select( DB::raw("select count(*) as total_reply_comments from `discussion_comments_reply` where `comment_id` = ".$request->comment_id."") );
+             if(isset($results1[0])){
+                 $reply->total_reply_comments=(int)$results1[0]->total_reply_comments;
+             }
+             else{
+                  $reply->total_reply_comments=0;
+             }
+
+ 
+
+         $reply->user_id=(int) $request->user_id;
+         $reply->discussion_id=(int) $request->discussion_id;
+         $reply->comment_id=(int) $request->comment_id;
+ 
+
+           $this->pusher->trigger('reply-discuss-channel', 'add_reply_discussion', $reply);
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $reply), 200);
+     }
+    }
+
+    public function GetReplyComments(Request $request){
+      $validator = Validator::make($request->all(), [
+          'comment_id' => 'required|exists:group_discussion_comments,id'
+      ]);
+      if($validator->fails()){
+          return response()->json(array('errors' => $validator->errors(),'error' => true));
+      }
+      else{
+      $replycomments= DIscussionCommentReply::with('User')->where('comment_id' , $request->comment_id)->get();
+      return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $replycomments), 200);
+  
+      }
+  
+  }
 }
