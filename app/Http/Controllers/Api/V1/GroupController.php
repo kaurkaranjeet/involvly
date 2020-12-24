@@ -763,7 +763,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         			$groupobjmember->group_id=$request->group_id;        
         			$groupobjmember->save();
 
-           $this->pusher->trigger('member-channel', 'add_member', $flight);
+           $this->pusher->trigger('member-channel', 'add_member', $groupobjmember);
         		
         	}
                  
