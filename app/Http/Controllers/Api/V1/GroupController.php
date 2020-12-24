@@ -937,12 +937,14 @@ public function GetComments(Request $request){
     $members_sql=GroupMember::select(DB::raw('group_concat(member_id) as members'))->where('group_id',$request->group_id)->first();
 
          if($request->type=='parent'){
-          $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereNotIn('id', [$members_sql->members])->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get(); 
+          $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')')->get(); 
+
+         
         }
         else{
-          $group_data= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereNotIn('id', [$members_sql->members])->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get(); 
+          $group_data= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')')get(); 
         }
-        $array=array('error' => false, 'data' => $group_data,'members'=>$members_sql->members);
+        $array=array('error' => false, 'data' => $group_data);
         return response()->json($array, 200);
       }
     } catch (\Exception $e) {
