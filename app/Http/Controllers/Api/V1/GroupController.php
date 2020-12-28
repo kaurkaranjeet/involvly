@@ -946,15 +946,16 @@ public function GetComments(Request $request){
     if($request->has('type')){
        $members_sql=GroupMember::select(DB::raw('group_concat(member_id) as members'))->where('group_id',$request->group_id)->first();
      if($request->type=='parent'){
-       $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')')->get(); 
+
+       $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')')->whereRaw(' ( id NOT IN('.$usrobj->exit_groups.'))')->get(); 
 
      }
      else{
-      $group_data= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')')->get(); 
+      $group_data= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')')->whereRaw(' ( id NOT IN('.$usrobj->exit_groups.'))')->get(); 
     }
   }
   else{
-    $group_data= User::where('role_id',$usrobj->role_id)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get(); 
+    $group_data= User::where('role_id',$usrobj->role_id)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw(' ( id NOT IN('.$usrobj->exit_groups.'))')->get(); 
   }
 
         $array=array('error' => false, 'data' => $group_data);
@@ -980,14 +981,14 @@ public function GroupMembers(Request $request) {
         	$user=User::find($request->user_id);
         	$group_info=Group::find($request->group_id);
         	if($group_info->type=='parent_community'){
-           $members= User::where('role_id',3)->where('join_community',1)->where('status',1)->get();
+           $members= User::where('role_id',3)->where('join_community',1)->where('status',1)->whereRaw(' ( id NOT IN('.$user->exit_groups.'))')->get();
           } 
           if($group_info->type=='school_admin'){
-            $members=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->get();         
+            $members=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->whereRaw(' ( id NOT IN('.$user->exit_groups.'))')->get();         
           }
           if($group_info->type=='custom_group'){
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select("users.*")->where('group_id',$group_info->id);
+            ->select("users.*")->where('group_id',$group_info->id)->whereRaw(' ( users.id NOT IN('.$user->exit_groups.'))')->;
           $members=$users->get();
           }
         
