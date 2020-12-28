@@ -1187,6 +1187,27 @@ public function DeleteCustomGroup(Request $request) {
         }
     }
 
+
+        public function DeleteDiscussion(Request $request) {
+  try {
+    $input = $request->all();
+    $validator = Validator::make($input, [
+      'discussion_id' => 'required|exists:group_discussions,id',
+      'user_id' => 'required|exists:users,id',
+    ]);
+
+    if ($validator->fails()) {
+      throw new Exception($validator->errors()->first());
+    } else {
+      GroupDiscussion::where('discussion_id',$request->discussion_id)->where('user_id',$request->user_id)->delete();
+      return response()->json(array('error' => false, 'data' => $delete), 200);
+    }
+}
+catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
       public function CLearchatByUser(Request $request) {
      try {
     $input = $request->all();
