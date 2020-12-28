@@ -1108,24 +1108,26 @@ public function DeleteCustomGroup(Request $request) {
 		} else {
 			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
 			if($group_info->count()){
+       $this->pusher->trigger('custom-groupchannel', 'custom_delete', $group_info->first());
 				$group_info->delete();
-       $this->pusher->trigger('custom-groupchannel', 'custom_delete', $group_info);
+   
 			}
 			else{
       $get_group=Group::where('id',$request->group_id)->first();
+         
         //$get_group=$group_info->first();
         if($get_group->type=='parent_community' || $get_group->type=='school'){
           User::where('id',$request->user_id)->update(['join_community'=>0]);
         }
         
-    
+    $this->pusher->trigger('custom-groupchannel', 'custom_delete', $get_group);
         
            // GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
 //update `users` set `exit_groups` =IFNULL( CONCAT(exit_groups, ',2') , '2') where `id` = 242
 				GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->delete();
 
       User::where('id',$request->user_id)->update(['exit_groups' => DB::raw("IFNULL(CONCAT(exit_groups, '," . $request->group_id . "')," . $request->group_id . ")")]);
-        $this->pusher->trigger('custom-groupchannel', 'custom_delete', $get_group);
+     
     }
      return response()->json(array('error' => false, 'data' => []), 200);
        }
@@ -1178,7 +1180,7 @@ public function DeleteCustomGroup(Request $request) {
       $group_obj=GroupMember::where('member_id',$request->member_id)->where('group_id',$request->group_id)->first();
     	$delete=GroupMember::where('member_id',$request->member_id)->where('group_id',$request->group_id)->delete();
 
-      
+
        $this->pusher->trigger('delete-member-channel', 'member_delete', $group_obj);
 
      
