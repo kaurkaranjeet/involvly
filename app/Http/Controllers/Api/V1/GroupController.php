@@ -767,10 +767,10 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
 
         }
         $groupobjmember->member_id=$request->member_id;
-        $groupobjmember->profile=$groupobjmember->User;
+       
         $groupobjmember->group_id=$request->group_id;        
         $groupobjmember->save();
-
+ $groupobjmember->profile=$groupobjmember->User;
            $this->pusher->trigger('member-channel', 'add_member', $groupobjmember);
         		
         	}
