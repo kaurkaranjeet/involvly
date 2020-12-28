@@ -1201,7 +1201,7 @@ public function DeleteCustomGroup(Request $request) {
     } else {
       $gd=GroupDiscussion::where('id',$request->discussion_id)->where('user_id',$request->user_id);
      if($gd->count()>0){
-      $gd->delete();
+     $delete)= $gd->delete();
     }else{
       return response()->json(array('error' => false, 'data' =>'You have not created this discussion' ), 200);
     }
