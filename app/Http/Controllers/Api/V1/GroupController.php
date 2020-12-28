@@ -766,9 +766,10 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
           $groupobjmember=new GroupMember;
 
         }
-            $groupobjmember->member_id=$request->member_id;
-        			$groupobjmember->group_id=$request->group_id;        
-        			$groupobjmember->save();
+        $groupobjmember->member_id=$request->member_id;
+        $groupobjmember->profile=$groupobjmember->User;
+        $groupobjmember->group_id=$request->group_id;        
+        $groupobjmember->save();
 
            $this->pusher->trigger('member-channel', 'add_member', $groupobjmember);
         		
@@ -1176,6 +1177,8 @@ public function DeleteCustomGroup(Request $request) {
     } else {
       $group_obj=GroupMember::where('member_id',$request->member_id)->where('group_id',$request->group_id)->first();
     	$delete=GroupMember::where('member_id',$request->member_id)->where('group_id',$request->group_id)->delete();
+
+      
        $this->pusher->trigger('delete-member-channel', 'member_delete', $group_obj);
 
      
