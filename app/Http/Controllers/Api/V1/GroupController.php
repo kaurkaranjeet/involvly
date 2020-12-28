@@ -988,7 +988,7 @@ public function GroupMembers(Request $request) {
           }
           if($group_info->type=='custom_group'){
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select("users.*")->where('group_id',$group_info->id)->whereRaw(' ( users.id NOT IN('.$user->exit_groups.'))')->;
+            ->select("users.*")->where('group_id',$group_info->id)->whereRaw(' ( users.id NOT IN('.$user->exit_groups.'))');
           $members=$users->get();
           }
         
