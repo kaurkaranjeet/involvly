@@ -945,8 +945,8 @@ public function GetComments(Request $request){
    
     if($request->has('type')){
        $members_sql=GroupMember::select(DB::raw('group_concat(member_id) as members'))->where('group_id',$request->group_id)->first();
-       if(!empty($usrobj->exit_groups)){
-        $mysql1=' AND ( id NOT IN('.$usrobj->exit_groups.'))';
+        if(!empty($usrobj->exit_groups)){
+        $mysql1='  AND (NOT FIND_IN_SET(' .$request->group_id.' , '.$usrobj->exit_groups.'))';
        }else{
         $mysql1='';
        }
@@ -985,7 +985,7 @@ public function GroupMembers(Request $request) {
         } else { 
         	$user=User::find($request->user_id);
           if(!empty($usrobj->exit_groups)){
-        $mysql1=' AND ( id NOT IN('.$user->exit_groups.'))';
+        $mysql1='  AND (NOT FIND_IN_SET(' .$request->group_id.' , '.$user->exit_groups.'))';
        }else{
         $mysql1='';
        }
