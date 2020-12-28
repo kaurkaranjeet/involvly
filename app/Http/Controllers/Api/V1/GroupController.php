@@ -756,10 +756,17 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
 
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
-        } else {        	
-        
-        			$groupobjmember=new GroupMember;
-        			$groupobjmember->member_id=$request->member_id;
+        } else {     
+
+        $grup_obj=GroupMember::where('group_id',$request->group_id)->where('member_id',$request->member_id)->first();      
+        if(!empty($grup_obj)){
+          $group_member_id= $grup_obj->id; 
+          $groupobjmember= GroupMember::find($group_member_id); 
+        }else{
+          $groupobjmember=new GroupMember;
+
+        }
+            $groupobjmember->member_id=$request->member_id;
         			$groupobjmember->group_id=$request->group_id;        
         			$groupobjmember->save();
 
