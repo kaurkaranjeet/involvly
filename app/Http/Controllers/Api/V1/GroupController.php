@@ -1175,8 +1175,9 @@ public function DeleteCustomGroup(Request $request) {
     if ($validator->fails()) {
       throw new Exception($validator->errors()->first());
     } else {
+      $group_obj=GroupMember::where('member_id',$request->member_id)->where('group_id',$request->group_id)->first();
     	$delete=GroupMember::where('member_id',$request->member_id)->where('group_id',$request->group_id)->delete();
-
+       $this->pusher->trigger('delete-member-channel', 'member_delete', $group_obj);
 
      
       return response()->json(array('error' => false, 'data' => $delete), 200);
