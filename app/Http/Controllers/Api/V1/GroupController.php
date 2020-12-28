@@ -1199,7 +1199,7 @@ public function DeleteCustomGroup(Request $request) {
     if ($validator->fails()) {
       throw new Exception($validator->errors()->first());
     } else {
-      GroupDiscussion::where('discussion_id',$request->discussion_id)->where('user_id',$request->user_id)->delete();
+      GroupDiscussion::where('id',$request->discussion_id)->where('user_id',$request->user_id)->delete();
       return response()->json(array('error' => false, 'data' => $delete), 200);
     }
 }
