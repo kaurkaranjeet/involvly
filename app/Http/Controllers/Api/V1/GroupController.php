@@ -981,14 +981,14 @@ public function GroupMembers(Request $request) {
         	$user=User::find($request->user_id);
         	$group_info=Group::find($request->group_id);
         	if($group_info->type=='parent_community'){
-           $members= User::where('role_id',3)->where('join_community',1)->where('status',1)->get();
+           $members= User::where('role_id',3)->where('join_community',1)->where('status',1)->whereRaw(' ( id NOT IN('.$user->exit_groups.'))')->get();
           } 
           if($group_info->type=='school_admin'){
-            $members=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->get();         
+            $members=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->whereRaw(' ( id NOT IN('.$user->exit_groups.'))')->get();         
           }
           if($group_info->type=='custom_group'){
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select("users.*")->where('group_id',$group_info->id);
+            ->select("users.*")->where('group_id',$group_info->id)->whereRaw(' ( users.id NOT IN('.$user->exit_groups.'))')->;
           $members=$users->get();
           }
         
