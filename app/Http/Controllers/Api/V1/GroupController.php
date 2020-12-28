@@ -1108,6 +1108,7 @@ public function DeleteCustomGroup(Request $request) {
 			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
 			if($group_info->count()){
 				$group_info->delete();
+       $this->pusher->trigger('custom-groupchannel', 'custom_delete', $group_info);
 			}
 			else{
       $get_group=Group::where('id',$request->group_id)->first();
@@ -1123,9 +1124,7 @@ public function DeleteCustomGroup(Request $request) {
 				GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->delete();
 
       User::where('id',$request->user_id)->update(['exit_groups' => DB::raw("IFNULL(CONCAT(exit_groups, '," . $request->group_id . "')," . $request->group_id . ")")]);
-
-			
-
+        $this->pusher->trigger('custom-groupchannel', 'custom_delete', $get_group);
     }
      return response()->json(array('error' => false, 'data' => []), 200);
        }
