@@ -1106,13 +1106,13 @@ public function DeleteCustomGroup(Request $request) {
 		if ($validator->fails()) {
 			throw new Exception($validator->errors()->first());
 		} else {
-			$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
+		/*	$group_info=Group::where('user_id',$request->user_id)->where('id',$request->group_id);
 			if($group_info->count()){
        $this->pusher->trigger('custom-groupchannel', 'custom_delete', $group_info->first());
 				$group_info->delete();
    
 			}
-			else{
+			else{*/
       $get_group=Group::where('id',$request->group_id)->first();
          
         //$get_group=$group_info->first();
@@ -1120,15 +1120,16 @@ public function DeleteCustomGroup(Request $request) {
           User::where('id',$request->user_id)->update(['join_community'=>0]);
         }
         
-    $this->pusher->trigger('custom-groupchannel', 'custom_delete', $get_group);
+    
         
            // GroupMember::where('group_id',$request->group_id)->where('member_id',$request->user_id)->delete();
 //update `users` set `exit_groups` =IFNULL( CONCAT(exit_groups, ',2') , '2') where `id` = 242
 				GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->delete();
 
+      $this->pusher->trigger('custom-groupchannel', 'custom_delete', $get_group);
       User::where('id',$request->user_id)->update(['exit_groups' => DB::raw("IFNULL(CONCAT(exit_groups, '," . $request->group_id . "')," . $request->group_id . ")")]);
      
-    }
+   // }
      return response()->json(array('error' => false, 'data' => []), 200);
        }
      } catch (\Exception $e) {
