@@ -985,7 +985,7 @@ public function GroupMembers(Request $request) {
         } else { 
         	$user=User::find($request->user_id);
           if(!empty($user->exit_groups)){
-        $mysql1='AND  (NOT FIND_IN_SET(' .$request->group_id.' , '.$user->exit_groups.'))';
+        $mysql1='  AND  (NOT FIND_IN_SET(' .$request->group_id.' , '.$user->exit_groups.'))';
        }else{
         $mysql1='';
        }
