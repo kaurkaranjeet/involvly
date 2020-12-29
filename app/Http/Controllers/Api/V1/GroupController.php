@@ -942,23 +942,28 @@ public function GetComments(Request $request){
         } else { 
          $usrobj=User::find($request->user_id);
 
-        $mysql1='  AND (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
+       // $mysql1='  AND (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
       
    
     if($request->has('type')){
        $members_sql=GroupMember::select(DB::raw('group_concat(member_id) as members'))->where('group_id',$request->group_id)->first();
+       if(!empty($members_sql->members)){
+        $mysql='id NOT IN ('.$members_sql->members.')  AND  NOT FIND_IN_SET(' .$request->group_id.' , exit_groups)';
+       }else{
+         $mysql=' (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))'
+       }
        
      if($request->type=='parent'){
 
-       $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')' .   $mysql1)->get(); 
+       $group_data= User::where('role_id',3)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw($mysql)->get(); 
 
      }
      else{
-      $group_data= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw('id NOT IN ('.$members_sql->members.')'  .$mysql1)->get(); 
+      $group_data= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->whereRaw($mysql)->get(); 
     }
   }
   else{
-    $group_data= User::where('role_id',$usrobj->role_id)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')'  .$mysql1)->get(); 
+    $group_data= User::where('role_id',$usrobj->role_id)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')'  .$mysql)->get(); 
   }
 
         $array=array('error' => false, 'data' => $group_data);
