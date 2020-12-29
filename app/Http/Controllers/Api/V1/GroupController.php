@@ -983,7 +983,7 @@ public function GroupMembers(Request $request) {
         } else { 
         	$user=User::find($request->user_id);
          
-        $mysql1='  AND  (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
+        $mysql1='   (NOT FIND_IN_SET(' .$request->group_id.' , users.exit_groups))';
        
 
        $group_info=Group::find($request->group_id);
@@ -994,13 +994,10 @@ public function GroupMembers(Request $request) {
         $members=User::where('role_id',3)->where('school_id',$user->school_id)->whereRaw('status=1' .$mysql1)->get();         
       }
       if($group_info->type=='custom_group'){
-        if(!empty($user->exit_groups)){
+      
           $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
           ->select("users.*")->where('group_id',$group_info->id)->whereRaw($mysql1);
-        }else{
-         $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-         ->select("users.*")->where('group_id',$group_info->id);
-       }
+        
        $members=$users->get();
      }
         
