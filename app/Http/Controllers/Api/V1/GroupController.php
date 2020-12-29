@@ -950,7 +950,7 @@ public function GetComments(Request $request){
        if(!empty($members_sql->members)){
         $mysql='id NOT IN ('.$members_sql->members.')  AND  NOT FIND_IN_SET(' .$request->group_id.' , exit_groups)';
        }else{
-         $mysql=' (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))'
+         $mysql=' (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
        }
        
      if($request->type=='parent'){
