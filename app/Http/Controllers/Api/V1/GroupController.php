@@ -635,12 +635,15 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
         if ($validator->fails()) {
           throw new Exception($validator->errors()->first());
         } else {
+             $mysql1='   (NOT FIND_IN_SET(' .$request->group_id.' , users.exit_groups))';
         	$is_joined=0;
           $group_info=Group::where('id',$request->group_id)->first();
           $user=User::find($request->user_id);
           if($group_info->type=='parent_community'){
-            $count= User::where('role_id',3)->where('join_community',1)->where('status',1);
+            $count= User::where('role_id',3)->where('join_community',1)->whereRaw('status=1 AND ' .$mysql1);
             $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
+
+
             if($user->role_id==3 && $user->join_community==1){
             	$is_joined=1;
             }
@@ -651,7 +654,8 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
            
           } 
           if($group_info->type=='school_admin'){
-            $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1);
+          
+            $count=User::where('role_id',3)->where('school_id',$user->school_id)->whereRaw('status=1 AND ' .$mysql1);
             $group_info->member_count=$count->count();
             $is_joined=0;
             if($user->role_id==3){
@@ -665,7 +669,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
           if($group_info->type=='custom_group'){
 
             $users = GroupMember::join('users', 'group_members.member_id', '=', 'users.id')
-            ->select("users.*")->where('group_id',$group_info->id);
+            ->select("users.*")->where('group_id',$group_info->id)->whereRaw('users.status=1 AND ' .$mysql1);;
            // $count=GroupMember::where('group_id',$group_info->id);
             $group_info->member_count=$users->count();
              $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $group_info->id)->count();
