@@ -988,10 +988,10 @@ public function GroupMembers(Request $request) {
 
        $group_info=Group::find($request->group_id);
        if($group_info->type=='parent_community'){
-         $members= User::where('role_id',3)->where('join_community',1)->whereRaw('status=1' .$mysql1)->get();
+         $members= User::where('role_id',3)->where('join_community',1)->whereRaw('status=1 AND ' .$mysql1)->get();
        } 
        if($group_info->type=='school_admin'){
-        $members=User::where('role_id',3)->where('school_id',$user->school_id)->whereRaw('status=1' .$mysql1)->get();         
+        $members=User::where('role_id',3)->where('school_id',$user->school_id)->whereRaw('status=1 AND ' .$mysql1)->get();         
       }
       if($group_info->type=='custom_group'){
       
