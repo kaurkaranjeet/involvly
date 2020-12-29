@@ -942,15 +942,12 @@ public function GetComments(Request $request){
         } else { 
          $usrobj=User::find($request->user_id);
 
-       // $mysql1='  AND (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
-      
+      $mysql=' AND (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
    
     if($request->has('type')){
        $members_sql=GroupMember::select(DB::raw('group_concat(member_id) as members'))->where('group_id',$request->group_id)->first();
        if(!empty($members_sql->members)){
         $mysql=' AND id NOT IN ('.$members_sql->members.')  AND  NOT FIND_IN_SET(' .$request->group_id.' , exit_groups)';
-       }else{
-         $mysql=' AND (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
        }
        DB::enableQueryLog(); // Enable query log
        
@@ -960,8 +957,11 @@ public function GetComments(Request $request){
 
      }
      else{
+
+
+     
       $group_data= User::where('role_id',4)->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')' .$mysql)->get(); 
-      //dd(DB::getQueryLog()); // Show results of log
+     //dd(DB::getQueryLog()); // Show results of log
     }
   }
   else{
@@ -1144,7 +1144,7 @@ public function DeleteCustomGroup(Request $request) {
 				GroupMessage::where('group_id',$request->group_id)->where('from_user_id',$request->user_id)->orWhere('to_user_id',$request->user_id)->delete();
 
       $this->pusher->trigger('custom-groupchannel', 'custom_delete', $get_group);
-      User::where('id',$request->user_id)->update(['exit_groups' => DB::raw("IFNULL(CONCAT(exit_groups, '," . $request->group_id . "')," . $request->group_id . ")")]);
+      User::where('id',$request->user_id)->update(['exit_groups' => DB::raw("CONCAT(exit_groups, '," . $request->group_id . "'))")]);
      
    // }
      return response()->json(array('error' => false, 'data' => []), 200);
