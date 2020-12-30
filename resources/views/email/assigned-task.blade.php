@@ -26,7 +26,7 @@
 		<div>Name:  {{$task_name}}</div>		
 		<div>Description:  {{$task_description}}</div>
 		<div>Date:  {{$task_date}}</div>
-		<div>Time:  {{$task_time}}</div>
+		<div>From:  {{$from_time}}  To:  {{$to_time}} </div>
 	 </div>
   </body>
 </html>
