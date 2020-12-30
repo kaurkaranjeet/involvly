@@ -10,6 +10,9 @@ class ParentTask extends Model {
 
     protected $table = 'parent_tasks';
     protected $fillable = ['task_assigned_by', 'task_assigned_to', 'task_name', 'task_date', 'task_time', 'task_description'];
+     protected $casts = [
+        'selected_days' => 'array'
+    ];
 
     public function User() {
         return $this->belongsTo('App\User', 'task_assigned_by', 'id');

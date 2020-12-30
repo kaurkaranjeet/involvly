@@ -233,7 +233,8 @@ $data_document = [];
                     'task_assigned_to' => 'required',
                     'task_name' => 'required',
                     'task_date' => 'required',
-                    'task_time' => 'required',
+                    'from_time' => 'required',
+                    'to_time' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -243,7 +244,16 @@ $data_document = [];
             $task->task_name = $request->task_name;
             $task->task_date = $request->task_date;
             $task->task_time = $request->task_time;
+            $task->from_time = $request->from_time;
+            $task->to_time = $request->to_time;
             $task->task_description = $request->task_description;
+            $days_data = [];
+            if (!empty($request->selected_days)) {
+                foreach ($request->selected_days as $key => $selected_days) {
+                    $days_data[$key] = $selected_days;
+                }
+            }
+           $task->selected_days = $days_data;
             $task->save();
             $tasks = [];
             $users_explode = explode(',', $request->task_assigned_to);
@@ -276,7 +286,8 @@ $data_document = [];
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
                    'task_date' => date('m/d/Y',strtotime($request->task_date)),
-                   'task_time' => $request->task_time,
+                   'task_time' => $request->from_time,
+                    'to_time' => $request->to_time,
                    'task_description' => $request->task_description,
                 );
                Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
