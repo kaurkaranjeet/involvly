@@ -1252,7 +1252,15 @@ public function DeleteCustomGroup(Request $request) {
     } else {
       $gd=GroupDiscussion::where('id',$request->discussion_id)->where('user_id',$request->user_id);
      if($gd->count()>0){
-      $this->pusher->trigger('create-channel', 'delete_discussion', $gd);
+        $group_discussions= GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
+        SELECT *
+        FROM discussions_like
+        WHERE group_discussions.id = discussions_like.discussion_id
+        AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
+        ) THEN TRUE
+        ELSE FALSE END)
+        AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('id',$request->discussion_id)->first();
+      $this->pusher->trigger('create-channel', 'delete_discussion', $group_discussions);
      $delete= $gd->delete();
     }else{
       return response()->json(array('error' => false, 'data' =>'You have not created this discussion' ), 200);
@@ -1327,7 +1335,15 @@ catch (\Exception $e) {
       $GroupDiscussion->image=$data;
      
       $GroupDiscussion->save();
-$this->pusher->trigger('create-channel', 'create_discussion', $GroupDiscussion);
+      $group_discussions= GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
+        SELECT *
+        FROM discussions_like
+        WHERE group_discussions.id = discussions_like.discussion_id
+        AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
+        ) THEN TRUE
+        ELSE FALSE END)
+        AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('id',$GroupDiscussion->id)->first();
+              $this->pusher->trigger('create-channel', 'create_discussion', $group_discussions);
     
 
       return response()->json(array('error' => false, 'data' => $GroupDiscussion), 200);
