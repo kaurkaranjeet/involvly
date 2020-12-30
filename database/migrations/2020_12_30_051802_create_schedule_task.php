@@ -17,6 +17,7 @@ class CreateScheduleTask extends Migration
            
            $table->string('from_time')->nullable();
             $table->string('to_time')->nullable();
+             $table->dropColumn('task_time');
         
         });
     }

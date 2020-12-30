@@ -243,7 +243,7 @@ $data_document = [];
             $task->task_assigned_by = $request->task_assigned_by;
             $task->task_name = $request->task_name;
             $task->task_date = $request->task_date;
-            $task->task_time = $request->task_time;
+           
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
             $task->task_description = $request->task_description;
@@ -286,7 +286,7 @@ $data_document = [];
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
                    'task_date' => date('m/d/Y',strtotime($request->task_date)),
-                   'task_time' => $request->from_time,
+                   'from_time' => $request->from_time,
                     'to_time' => $request->to_time,
                    'task_description' => $request->task_description,
                 );
