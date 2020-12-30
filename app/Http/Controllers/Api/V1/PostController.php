@@ -251,7 +251,7 @@ public function GetComments(Request $request){
         } else {
               $delete= Post::where('id',$request->post_id)->delete();                   
             if ($delete) {
-                return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+                return response()->json(array('error' => false, 'message' => 'Post deleted successfully', 'data' => []), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
             }
