@@ -190,6 +190,8 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
               $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
+
+              if()
               if(!empty($members->groups)){
                 $msql='  ( id IN('.$members->groups.'))  OR  view_status=\'public\'';
               }
@@ -979,7 +981,7 @@ public function GetComments(Request $request){
     }
   } 
   else{
-    $group_data= User::whereIn('role_id', [3,4])->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')'  .$mysql)->get(); 
+    $group_data= User::whereIn('role_id', [3,4])->where('status',1)->where('school_id',$usrobj->school_id)->where('id','!=',$request->user_id)->whereRaw('id NOT IN( Select to_user_id FROM report_users WHERE from_user_id='.$request->user_id.')')->whereRaw('id NOT IN( Select from_user_id FROM report_users WHERE to_user_id='.$request->user_id.')')->get(); 
   }
 
         $array=array('error' => false, 'data' => $group_data);
