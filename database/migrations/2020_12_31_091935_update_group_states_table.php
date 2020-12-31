@@ -17,7 +17,7 @@ class UpdateGroupStatesTable extends Migration
 
          Schema::table('groups', function (Blueprint $table) {
             $table->unsignedBigInteger('state_id');
-            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+         //   $table->foreign('state_id')->references('id')->on('states');
             
         });
     }
