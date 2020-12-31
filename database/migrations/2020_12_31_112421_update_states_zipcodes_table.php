@@ -15,7 +15,7 @@ class UpdateStatesZipcodesTable extends Migration
     {
         //
 
-        Schema::table('states', function (Blueprint $table) {
+        Schema::table('cities', function (Blueprint $table) {
             $table->string('zipcode')->nullable();
            
             
