@@ -192,7 +192,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
               if($request->has('search')){
                 $search=$request->search;
-                  $search='  AND  group_name LIKE "' .$search.'"%';
+                  $search="  AND  group_name LIKE '" .$search."'%";
 
               }else{
                  $search='';
