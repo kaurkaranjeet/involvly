@@ -242,7 +242,7 @@ $data_document = [];
             $task = new ParentTask; //then create new object
             $task->task_assigned_by = $request->task_assigned_by;
             $task->task_name = $request->task_name;
-            $task->task_date = $request->task_date;
+           // $task->task_date = $request->task_date;
            
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
@@ -286,7 +286,7 @@ $data_document = [];
                    'email'=>$user_data_to->email,
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
-                   'task_date' => date('m/d/Y',strtotime($request->task_date)),
+                  // 'task_date' => date('m/d/Y',strtotime($request->task_date)),
                    'from_time' => $request->from_time,
                     'to_time' => $request->to_time,
                    'task_description' => $request->task_description,
