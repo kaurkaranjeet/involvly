@@ -250,6 +250,7 @@ $data_document = [];
             $days_data = [];
             if (!empty($request->selected_days)) {
                 foreach ($request->selected_days as $key => $selected_days) {
+                  $selected_days = date("d/m/Y", strtotime($selected_days));
                     $days_data[$key] = $selected_days;
                 }
             }
