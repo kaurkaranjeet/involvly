@@ -233,7 +233,7 @@ $data_document = [];
                     'task_assigned_by' => 'required|exists:users,id',
                     'task_assigned_to' => 'required',
                     'task_name' => 'required',
-                    //'task_date' => 'required',
+                    'schedule_id' => 'required',
                     'from_time' => 'required',
                     'to_time' => 'required',
         ]);
