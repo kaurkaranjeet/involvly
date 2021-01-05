@@ -15,6 +15,7 @@ use App\Models\UnapproveStudent;
 use App\Models\ParentTask;
 use App\Models\ParentTaskAssigned;
 use App\Models\ParentChildrens;
+use App\Models\Schedule;
 use App\Notification;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
@@ -300,6 +301,73 @@ $data_document = [];
             }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
         }
+    }
+
+
+    public function AddSchedule(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'task_assigned_by' => 'required|exists:users,id',
+                    'task_assigned_to' => 'required',
+                    'schedule_name' => 'required',                 
+                    'from_time' => 'required',
+                    'to_time' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $task = new ParentTask; //then create new object
+            $task->created_by = $request->created_by;
+            $task->schedule_name = $request->schedule_name; 
+            $task->from_time = $request->from_time;
+            $task->to_time = $request->to_time;
+            $task->task_assigned_to = $request->task_assigned_to;
+             $task->description = $request->description;
+            $days_data = [];
+            if (!empty($request->selected_days)) {
+                foreach ($request->selected_days as $key => $selected_days) {
+                  $selected_days = date("d/m/Y", strtotime($selected_days));
+                    $days_data[$key] = $selected_days;
+                }
+            }
+           $task->selected_days = $days_data;
+            $task->save();
+            $tasks = [];
+           
+            $user_data_by = User::where('id', $request->created_by)->first();
+   
+            //email notification 
+            if($request->notify_parent=='1'){
+              $message='A new Schedule has been assigned to you';
+              if (!empty($user_data_to->device_token)) { 
+                SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+              }
+              $notificationobj=new Notification;
+              $notificationobj->user_id=$user_data_to->id;
+              $notificationobj->notification_message=$message;
+              $notificationobj->notification_type='TaskAssigned';
+              $notificationobj->type='school_notification';
+              $notificationobj->from_user_id=$user_data_by->id;
+              $notificationobj->save();
+            }
+               $data=array(
+                   'name'=>$user_data_to->name,
+                   'email'=>$user_data_to->email,
+                   'task_creator' => $user_data_by->name,
+                   'task_name' => $request->task_name,
+                   'task_date' =>$days_data,
+                   'from_time' => $request->from_time,
+                    'to_time' => $request->to_time,
+                   'task_description' => $request->task_description,
+                );
+               Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
+               $m->from('involvvely@gmail.com','Involvvely');
+               $m->to($user_data_to->email);
+               $m->subject('Assigned Task');
+               }); 
+            }
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
+        
     }
 
     //Get tasks
