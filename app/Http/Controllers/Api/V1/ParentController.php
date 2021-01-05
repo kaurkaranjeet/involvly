@@ -360,11 +360,11 @@ $data_document = [];
                    'name'=>$user_data_to->name,
                    'email'=>$user_data_to->email,
                    'task_creator' => $user_data_by->name,
-                   'task_name' => $request->task_name,
+                   'task_name' => $request->schedule_name,
                    'task_date' =>$days_data,
                    'from_time' => $request->from_time,
                     'to_time' => $request->to_time,
-                   'task_description' => $request->task_description,
+                   'task_description' => $request->description,
                 );
                Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
                $m->from('involvvely@gmail.com','Involvvely');
