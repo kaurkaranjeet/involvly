@@ -10,8 +10,7 @@ class Schedule extends Model {
 
  
      protected $casts = [
-        'selected_days' => 'array',
-        'assigned_to' => 'array'
+        'selected_days' => 'array'
     ];
 
     public function User() {
