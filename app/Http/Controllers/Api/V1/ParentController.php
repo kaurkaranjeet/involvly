@@ -307,7 +307,7 @@ $data_document = [];
     public function AddSchedule(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'task_assigned_by' => 'required|exists:users,id',
+                    'created_by' => 'required|exists:users,id',
                     'task_assigned_to' => 'required',
                     'schedule_name' => 'required',                 
                     'from_time' => 'required',
