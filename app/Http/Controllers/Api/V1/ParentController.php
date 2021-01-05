@@ -316,7 +316,7 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $task = new ParentTask; //then create new object
+            $task = new Schedule; //then create new object
             $task->created_by = $request->created_by;
             $task->schedule_name = $request->schedule_name; 
             $task->from_time = $request->from_time;
