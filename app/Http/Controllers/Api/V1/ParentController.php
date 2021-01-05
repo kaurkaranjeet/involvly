@@ -269,18 +269,19 @@ $data_document = [];
             $user_data_by = User::where('id', $request->task_assigned_by)->first();
             $user_data_to = User::where('id', $single)->first();
             //email notification 
-
-            $message='A new task has been assigned to you';
-            if (!empty($user_data_to->device_token)) { 
-              SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+            if($request->notify_parent=='1'){
+              $message='A new task has been assigned to you';
+              if (!empty($user_data_to->device_token)) { 
+                SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+              }
+              $notificationobj=new Notification;
+              $notificationobj->user_id=$user_data_to->id;
+              $notificationobj->notification_message=$message;
+              $notificationobj->notification_type='TaskAssigned';
+              $notificationobj->type='school_notification';
+              $notificationobj->from_user_id=$user_data_by->id;
+              $notificationobj->save();
             }
-            $notificationobj=new Notification;
-            $notificationobj->user_id=$user_data_to->id;
-            $notificationobj->notification_message=$message;
-            $notificationobj->notification_type='TaskAssigned';
-            $notificationobj->type='school_notification';
-            $notificationobj->from_user_id=$user_data_by->id;
-            $notificationobj->save();
                $data=array(
                    'name'=>$user_data_to->name,
                    'email'=>$user_data_to->email,
