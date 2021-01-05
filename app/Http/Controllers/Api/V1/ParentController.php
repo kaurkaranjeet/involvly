@@ -372,7 +372,7 @@ $data_document = [];
                $m->subject('Assigned Task');
                }); 
             }
-            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         
     }
 
