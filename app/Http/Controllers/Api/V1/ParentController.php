@@ -287,7 +287,7 @@ $data_document = [];
                    'email'=>$user_data_to->email,
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
-                   'task_date' =>$days_data,
+                   'task_date' =>$request->selected_days,
                    'from_time' => $request->from_time,
                     'to_time' => $request->to_time,
                    'task_description' => $request->task_description,
@@ -333,7 +333,7 @@ $data_document = [];
             $task->save();
             
            
-            $user_data_to = User::where('id', $request->created_by)->first();
+           /* $user_data_to = User::where('id', $request->created_by)->first();
    
             $users_explode = explode(',', $request->assigned_to);
             foreach ($users_explode as $single) {            
@@ -370,7 +370,7 @@ $data_document = [];
                $m->to($user_data_to->email);
                $m->subject('Assigned Task');
                }); 
-            }
+            }*/
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         
     }
