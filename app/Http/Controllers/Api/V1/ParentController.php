@@ -322,17 +322,17 @@ $data_document = [];
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
             $task->assigned_to = $request->assigned_to;
-             $task->description = $request->description;
+            $task->description = $request->description;
             $days_data = [];
             if (!empty($request->selected_days)) {
-                foreach ($request->selected_days as $key => $selected_days) {
-                  $selected_days = date("d/m/Y", strtotime($selected_days));
-                    $days_data[$key] = $selected_days;
-                }
+              foreach ($request->selected_days as $key => $selected_days) {
+                $selected_days = date("d/m/Y", strtotime($selected_days));
+                $days_data[$key] = $selected_days;
+              }
             }
-           $task->selected_days = $days_data;
+            $task->selected_days = $days_data;
             $task->save();
-            $tasks = [];
+            
            
             $user_data_to = User::where('id', $request->created_by)->first();
    
