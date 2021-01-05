@@ -110,6 +110,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
       Route::post('add_member', 'Api\V1\GroupController@AddMemberOfGroup');
           Route::post('delete_discussion', 'Api\V1\GroupController@DeleteDiscussion');
     // Schedule Task
+     Route::post('get_schedules', 'Api\V1\ParentController@Getschedules');
     Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
