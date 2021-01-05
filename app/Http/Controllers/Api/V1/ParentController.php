@@ -381,14 +381,28 @@ $data_document = [];
 
 
     //Get tasks
-    public function GetScheduleTask(Request $request) {
+    public function Getschedules(Request $request) {
         $validator = Validator::make($request->all(), [
                     'user_id' => 'required|exists:users,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::with('User')->where('task_assigned_by', $request->user_id)->orderBy('id', 'DESC')->get();
+            $tasks = Schedule::with('User')->where('created_by', $request->user_id)->orderBy('id', 'DESC')->get();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
+        }
+    }
+
+
+    //Get tasks
+    public function GetScheduleTask(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'schedule_id' => 'required|exists:schedules,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+            $tasks = ParentTask::with('User')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
