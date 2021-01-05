@@ -247,13 +247,19 @@ $data_document = [];
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
             $task->task_description = $request->task_description;
-          //  $days_data = [];
-           /* if (!empty($request->selected_days)) {
-                foreach ($request->selected_days as $key => $selected_days) {
-                  $selected_days = date("d/m/Y", strtotime($selected_days));
-                    $days_data[$key] = $selected_days;
-                }
-            }*/
+            $data = [];
+            if($request->hasfile('image'))
+            {
+
+              foreach($request->file('image') as $key=>$file)
+              {
+                $name=time().$key.'.'.$file->getClientOriginalExtension();    
+                $file->move(public_path().'/images/', $name);      
+                $data[$key] = URL::to('/').'/images/'.$name;  
+              }
+            }
+            $task->image=$data;
+              $task->notes=$request->notes;
            $task->selected_days = $request->selected_days;
             $task->save();
             $tasks = [];
