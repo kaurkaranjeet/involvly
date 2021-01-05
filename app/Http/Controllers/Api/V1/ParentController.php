@@ -321,7 +321,7 @@ $data_document = [];
             $task->schedule_name = $request->schedule_name; 
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
-            $task->task_assigned_to = $request->task_assigned_to;
+            $task->assigned_to = $request->assigned_to;
              $task->description = $request->description;
             $days_data = [];
             if (!empty($request->selected_days)) {
