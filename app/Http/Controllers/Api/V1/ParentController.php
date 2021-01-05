@@ -233,7 +233,7 @@ $data_document = [];
                     'task_assigned_by' => 'required|exists:users,id',
                     'task_assigned_to' => 'required',
                     'task_name' => 'required',
-                    //'task_date' => 'required',
+                    'schedule_id' => 'required',
                     'from_time' => 'required',
                     'to_time' => 'required',
         ]);
@@ -322,17 +322,17 @@ $data_document = [];
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
             $task->assigned_to = $request->assigned_to;
-             $task->description = $request->description;
+            $task->description = $request->description;
             $days_data = [];
             if (!empty($request->selected_days)) {
-                foreach ($request->selected_days as $key => $selected_days) {
-                  $selected_days = date("d/m/Y", strtotime($selected_days));
-                    $days_data[$key] = $selected_days;
-                }
+              foreach ($request->selected_days as $key => $selected_days) {
+                $selected_days = date("d/m/Y", strtotime($selected_days));
+                $days_data[$key] = $selected_days;
+              }
             }
-           $task->selected_days = $days_data;
+            $task->selected_days = $days_data;
             $task->save();
-            $tasks = [];
+            
            
             $user_data_to = User::where('id', $request->created_by)->first();
    
@@ -360,11 +360,11 @@ $data_document = [];
                    'name'=>$user_data_to->name,
                    'email'=>$user_data_to->email,
                    'task_creator' => $user_data_by->name,
-                   'task_name' => $request->task_name,
+                   'task_name' => $request->schedule_name,
                    'task_date' =>$days_data,
                    'from_time' => $request->from_time,
                     'to_time' => $request->to_time,
-                   'task_description' => $request->task_description,
+                   'task_description' => $request->description,
                 );
                Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
                $m->from('involvvely@gmail.com','Involvvely');
@@ -372,7 +372,7 @@ $data_document = [];
                $m->subject('Assigned Task');
                }); 
             }
-            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         
     }
 
