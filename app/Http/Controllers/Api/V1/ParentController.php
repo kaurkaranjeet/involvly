@@ -233,7 +233,7 @@ $data_document = [];
                     'task_assigned_by' => 'required|exists:users,id',
                     'task_assigned_to' => 'required',
                     'task_name' => 'required',
-                    'schedule_id' => 'required',
+                    'schedule_id' => 'required|exists:schedules,id',
                     'from_time' => 'required',
                     'to_time' => 'required',
         ]);
@@ -243,19 +243,18 @@ $data_document = [];
             $task = new ParentTask; //then create new object
             $task->task_assigned_by = $request->task_assigned_by;
             $task->task_name = $request->task_name;
-           // $task->task_date = $request->task_date;
-           
+            $task->schedule_id = $request->schedule_id;
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
             $task->task_description = $request->task_description;
-            $days_data = [];
-            if (!empty($request->selected_days)) {
+          //  $days_data = [];
+           /* if (!empty($request->selected_days)) {
                 foreach ($request->selected_days as $key => $selected_days) {
                   $selected_days = date("d/m/Y", strtotime($selected_days));
                     $days_data[$key] = $selected_days;
                 }
-            }
-           $task->selected_days = $days_data;
+            }*/
+           $task->selected_days = $request->selected_days;
             $task->save();
             $tasks = [];
             $users_explode = explode(',', $request->task_assigned_to);
@@ -270,7 +269,7 @@ $data_document = [];
             $user_data_by = User::where('id', $request->task_assigned_by)->first();
             $user_data_to = User::where('id', $single)->first();
             //email notification 
-            if($request->notify_parent=='1'){
+           // if($request->notify_parent=='1'){
               $message='A new task has been assigned to you';
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
@@ -282,7 +281,7 @@ $data_document = [];
               $notificationobj->type='school_notification';
               $notificationobj->from_user_id=$user_data_by->id;
               $notificationobj->save();
-            }
+          //  }
                $data=array(
                    'name'=>$user_data_to->name,
                    'email'=>$user_data_to->email,
