@@ -334,11 +334,17 @@ $data_document = [];
             $task->save();
             $tasks = [];
            
-            $user_data_by = User::where('id', $request->created_by)->first();
+            $user_data_to = User::where('id', $request->created_by)->first();
    
+            $users_explode = explode(',', $request->assigned_to);
+            foreach ($users_explode as $single) {            
+            
+            //get data according to user id
+            $user_data_by = User::where('id', $request->created_by)->first();
+            $user_data_to = User::where('id', $single)->first();
             //email notification 
             if($request->notify_parent=='1'){
-              $message='A new Schedule has been assigned to you';
+              $message='A new schedule has been assigned to you';
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
