@@ -232,7 +232,7 @@ $data_document = [];
                     'task_assigned_by' => 'required|exists:users,id',
                     'task_assigned_to' => 'required',
                     'task_name' => 'required',
-                    'task_date' => 'required',
+                    //'task_date' => 'required',
                     'from_time' => 'required',
                     'to_time' => 'required',
         ]);
@@ -242,7 +242,7 @@ $data_document = [];
             $task = new ParentTask; //then create new object
             $task->task_assigned_by = $request->task_assigned_by;
             $task->task_name = $request->task_name;
-            $task->task_date = $request->task_date;
+           // $task->task_date = $request->task_date;
            
             $task->from_time = $request->from_time;
             $task->to_time = $request->to_time;
@@ -250,6 +250,7 @@ $data_document = [];
             $days_data = [];
             if (!empty($request->selected_days)) {
                 foreach ($request->selected_days as $key => $selected_days) {
+                  $selected_days = date("d/m/Y", strtotime($selected_days));
                     $days_data[$key] = $selected_days;
                 }
             }
@@ -268,24 +269,25 @@ $data_document = [];
             $user_data_by = User::where('id', $request->task_assigned_by)->first();
             $user_data_to = User::where('id', $single)->first();
             //email notification 
-
-            $message='A new task has been assigned to you';
-            if (!empty($user_data_to->device_token)) { 
-              SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+            if($request->notify_parent=='1'){
+              $message='A new task has been assigned to you';
+              if (!empty($user_data_to->device_token)) { 
+                SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+              }
+              $notificationobj=new Notification;
+              $notificationobj->user_id=$user_data_to->id;
+              $notificationobj->notification_message=$message;
+              $notificationobj->notification_type='TaskAssigned';
+              $notificationobj->type='school_notification';
+              $notificationobj->from_user_id=$user_data_by->id;
+              $notificationobj->save();
             }
-            $notificationobj=new Notification;
-            $notificationobj->user_id=$user_data_to->id;
-            $notificationobj->notification_message=$message;
-            $notificationobj->notification_type='TaskAssigned';
-            $notificationobj->type='school_notification';
-            $notificationobj->from_user_id=$user_data_by->id;
-            $notificationobj->save();
                $data=array(
                    'name'=>$user_data_to->name,
                    'email'=>$user_data_to->email,
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
-                   'task_date' => date('m/d/Y',strtotime($request->task_date)),
+                  // 'task_date' => date('m/d/Y',strtotime($request->task_date)),
                    'from_time' => $request->from_time,
                     'to_time' => $request->to_time,
                    'task_description' => $request->task_description,
