@@ -376,6 +376,8 @@ $data_document = [];
         
     }
 
+  }
+
     //Get tasks
     public function GetScheduleTask(Request $request) {
         $validator = Validator::make($request->all(), [
