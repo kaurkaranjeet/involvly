@@ -27,7 +27,7 @@
 		<div>Description:  {{$task_description}}</div>
     <div> Selected Dates</div>
     @foreach ($task_date as $single)
-    <div> {{single}}</div>
+    <div> {{$single}}</div>
 @endforeach
 	
 		<div>From:  {{$from_time}}  To:  {{$to_time}} </div>
