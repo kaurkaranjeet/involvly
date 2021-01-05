@@ -25,10 +25,9 @@
     <div class="container">
 		<div>Name:  {{$task_name}}</div>		
 		<div>Description:  {{$task_description}}</div>
-    <div> Selected Dates</div>
-    @foreach ($task_date as $single)
-    <div> {{$single}}</div>
-@endforeach
+    <div> 
+  {{$task_date}}</div>
+
 	
 		<div>From:  {{$from_time}}  To:  {{$to_time}} </div>
 	 </div>
