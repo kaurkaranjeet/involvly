@@ -633,7 +633,7 @@ $data_document = [];
          if(!empty($schedule)){
           if($request->accept_reject==1){
             if(!empty($schedule->accept_reject_schedule)){
-              $schedule->accept_reject_schedule=$request->parent_id;
+              $schedule->accept_reject_schedule=$schedule->accept_reject_schedule.','.$request->parent_id;
 
             }else{
               $schedule->accept_reject_schedule=$request->parent_id;
@@ -642,8 +642,18 @@ $data_document = [];
             $message=$user->name.' has accepted the schedule ' .$schedule->schedule_name; 
           }
           if($request->accept_reject==2){
+            if(!empty($schedule->rejected_user)){
+              $schedule->rejected_user=$schedule->rejected_user.','.$request->parent_id;
+
+            }else{
+              $schedule->rejected_user=$request->parent_id;
+            }
+
             $message=$user->name.' has rejected the schedule ' .$schedule->schedule_name;
           }
+
+
+
                $schedule->save();
 
 
