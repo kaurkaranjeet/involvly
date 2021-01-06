@@ -618,7 +618,7 @@ $data_document = [];
 
 
             $notificationobj=new Notification;
-            $notificationobj->user_id=$schedule->user_id;
+            $notificationobj->user_id=$schedule->created_by;
             $notificationobj->notification_message=$message;
             $notificationobj->notification_type='ScheduleAssign';
             $notificationobj->type='school_notification';
