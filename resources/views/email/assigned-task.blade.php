@@ -15,10 +15,12 @@
                 border: 1px solid black;
             }
         </style>
-        <body>
-          <h2>Hello {{ $name}}, </h2>
-          <br/>
-          You have assigned a new task placed by {{ $task_creator}} .
+
+  <body>
+    <h2>Hello {{ $name}}, </h2>
+    <br/>
+    You have been assigned a new task by {{ $task_creator}} .
+
 
           <br/>
           Task Details as follow 
