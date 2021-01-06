@@ -599,12 +599,11 @@ $data_document = [];
          $user=User::find($request->parent_id);        
          if(!empty($schedule)){
           if($request->accept_reject==1){
-            if(!empty($schedule->accept_reject_schedule)){
-              $schedule->accept_reject_schedule=','.$request->parent_id;
+           
+              $array=$schedule->accept_reject_schedule;
+              $schedule->accept_reject_schedule=array_push($array,$request->parent_id);
 
-            }else{
-              $schedule->accept_reject_schedule=$request->parent_id;
-            }
+           
 
             $message=$user->name.' has accepted the schedule ' .$schedule->schedule_name; 
           }
