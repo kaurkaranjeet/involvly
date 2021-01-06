@@ -596,7 +596,27 @@ $data_document = [];
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $accept_reject_data), 200);
         }
     }
-
+ public function SendAcceptNotification(Request $request){
+        $validator = Validator::make($request->all(), [
+                    'schedule_id' => 'required|exists:schedules,id'
+                    
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+        $tasks=  ParentTask::where('schedule_id',$request->schedule_id)->get();
+        foreach($tasks  as $single_task){
+        $task_assigned= ParentTaskAssigned::where('AssignedTo')->where('task_id',$single_task->task_id)->first();
+          $notificationobj=new Notification;
+            $notificationobj->user_id=$task_assigned->task_assigned_to;
+            $notificationobj->notification_message='A new task has been assigned to you.';
+            $notificationobj->notification_type='ScheduleAssign';
+            $notificationobj->type='school_notification';
+            $notificationobj->from_user_id=$single_task->task_assigned_by;
+            $notificationobj->save();
+        }
+        }
+      }
 
  public function AcceptRejectSchedule(Request $request){
         $validator = Validator::make($request->all(), [
