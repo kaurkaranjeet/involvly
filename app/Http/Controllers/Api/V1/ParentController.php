@@ -556,17 +556,17 @@ END
      public function AcceptRejectTask(Request $request){
         $validator = Validator::make($request->all(), [
                     'task_id' => 'required|exists:parent_tasks,id',
-                     'accept_reject' => 'required',
+                    // 'accept_reject' => 'required',
                      'parent_id' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
 
-          ParentTaskAssigned::where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->update(['accept_reject'=>$request->accept_reject]);
+          ParentTaskAssigned::where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->update(['accept_reject'=>'3']);
          $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->first();
          if(!empty($accept_reject_data)){
-          if($request->accept_reject==1){
+         /* if($request->accept_reject==1){
             $message=$accept_reject_data->User->name.' has accepted the task ' .$accept_reject_data->ParentTask->task_name;
             if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
               SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
@@ -579,14 +579,14 @@ END
             }
 
          }
-
-          if($request->accept_reject==3){
+*/
+       
            $message=$accept_reject_data->User->name.' has completed the task ' .$accept_reject_data->ParentTask->task_name;
            if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
               SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
             }
 
-         }
+       
          
             
             $notificationobj=new Notification;
