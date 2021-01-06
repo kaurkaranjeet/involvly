@@ -239,13 +239,12 @@ $data_document = [];
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
-        } else {
+          } else {
             $task = new ParentTask; //then create new object
             $task->task_assigned_by = $request->task_assigned_by;
             $task->task_name = $request->task_name;
-            $task->schedule_id = $request->schedule_id;
-            $task->from_time = $request->from_time;
-            $task->to_time = $request->to_time;
+            $task->schedule_id = $request->schedule_id;            
+            $task->task_time = $request->task_time;
             $task->task_description = $request->task_description;
             $data = [];
             if($request->hasfile('image'))

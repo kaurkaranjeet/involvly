@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class ParentTask extends Model {
 
     protected $table = 'parent_tasks';
-    protected $fillable = ['task_assigned_by', 'task_assigned_to', 'task_name', 'from_time', 'to_time', 'task_description'];
+    protected $fillable = ['task_assigned_by', 'task_assigned_to', 'task_name', 'task_time', 'task_description'];
      protected $casts = [
         'image' => 'array',
          'selected_days' => 'array'
