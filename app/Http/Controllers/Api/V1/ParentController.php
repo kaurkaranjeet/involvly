@@ -600,7 +600,7 @@ $data_document = [];
          if(!empty($schedule)){
           if($request->accept_reject==1){
             if(!empty($schedule->accept_reject_schedule)){
-              $schedule->accept_reject_schedule=','.$request->parent_id;
+              $schedule->accept_reject_schedule=$schedule->accept_reject_schedule.','.$request->parent_id;
 
             }else{
               $schedule->accept_reject_schedule=$request->parent_id;
