@@ -589,4 +589,45 @@ $data_document = [];
     }
 
 
+ public function AcceptRejectSchedule(Request $request){
+        $validator = Validator::make($request->all(), [
+                    'schedule_id' => 'required|exists:parent_tasks,id',
+                     'accept_reject' => 'required',
+                     'parent_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+         $schedule= Schedule::with('User')->find($request->schedule_id);
+         $user=User::find($request->parent_id);        
+         if(!empty($schedule->accept_reject_schedule)){
+          if($request->accept_reject==1){
+            if(!empty($schedule->accept_reject_schedule)){
+              $schedule->accept_reject_schedule=','.$request->parent_id;
+
+            }else{
+              $schedule->accept_reject_schedule=$request->parent_id;
+            }
+
+            $message=$user->name.' has accepted the schedule ' .$schedule->schedule_name; 
+          }
+          if($request->accept_reject==2){
+            $message=$user->name.' has rejected the schedule ' .$schedule->schedule_name;
+          }
+
+            $notificationobj=new Notification;
+            $notificationobj->user_id=$schedule->user_id;
+            $notificationobj->notification_message=$message;
+            $notificationobj->notification_type='ScheduleAssign';
+            $notificationobj->type='school_notification';
+            $notificationobj->from_user_id=$user->id;
+            $notificationobj->save();
+          
+          
+
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $schedule), 200);
+          }
+        }
+    }
+
 }
