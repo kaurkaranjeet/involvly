@@ -349,14 +349,11 @@ $data_document = [];
             $task->save();
             
            
-           /* $user_data_to = User::where('id', $request->created_by)->first();
+            $user_data_by = User::where('id', $request->created_by)->first();
    
             $users_explode = explode(',', $request->assigned_to);
-            foreach ($users_explode as $single) {            
-            
-            //get data according to user id
-            $user_data_by = User::where('id', $request->created_by)->first();
-            $user_data_to = User::where('id', $single)->first();
+            foreach ($users_explode as $single) {   
+             $user_data_to = User::where('id', $single)->first();
             //email notification 
             if($request->notify_parent=='1'){
               $message='A new schedule has been assigned to you';
@@ -381,12 +378,12 @@ $data_document = [];
                     'to_time' => $request->to_time,
                    'task_description' => $request->description,
                 );
-               Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {
+               Mail::send("email.assigned-schedule", $data, function ($m) use ($user_data_to) {
                $m->from('involvvely@gmail.com','Involvvely');
                $m->to($user_data_to->email);
                $m->subject('Assigned Task');
                }); 
-            }*/
+            }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         
     }
