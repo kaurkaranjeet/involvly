@@ -107,6 +107,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
      Route::post('accept_reject_task', 'Api\V1\ParentController@AcceptRejectTask');
+      Route::post('accept_reject_schedule', 'Api\V1\ParentController@AcceptRejectSchedule');
       Route::post('add_member', 'Api\V1\GroupController@AddMemberOfGroup');
           Route::post('delete_discussion', 'Api\V1\GroupController@DeleteDiscussion');
     // Schedule Task
