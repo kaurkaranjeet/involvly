@@ -103,15 +103,16 @@ Route::prefix('v1')->group(function () {
     Route::post('get_comments', 'Api\V1\PostController@GetComments');
     Route::post('like_post', 'Api\V1\PostController@LikeUnlikePost');
     Route::post('list_home_students', 'Api\V1\ParentController@GethomeStudents');
-Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications');
+    Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications');
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
-     Route::post('accept_reject_task', 'Api\V1\ParentController@AcceptRejectTask');
-      Route::post('accept_reject_schedule', 'Api\V1\ParentController@AcceptRejectSchedule');
-      Route::post('add_member', 'Api\V1\GroupController@AddMemberOfGroup');
-          Route::post('delete_discussion', 'Api\V1\GroupController@DeleteDiscussion');
+    Route::post('accept_reject_task', 'Api\V1\ParentController@AcceptRejectTask');
+    Route::post('accept_reject_schedule', 'Api\V1\ParentController@AcceptRejectSchedule');
+    Route::post('add_member', 'Api\V1\GroupController@AddMemberOfGroup');
+    Route::post('delete_discussion', 'Api\V1\GroupController@DeleteDiscussion');
     // Schedule Task
-     Route::post('get_schedules', 'Api\V1\ParentController@Getschedules');
+    Route::post('send_notification_to_parents', 'Api\V1\ParentController@SendAcceptNotification');
+    Route::post('get_schedules', 'Api\V1\ParentController@Getschedules');
     Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
@@ -129,7 +130,7 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('remove_assignment', 'Api\V1\AssignmentController@RemoveAssignments');
     Route::post('remove_submitted_assignment', 'Api\V1\AssignmentController@RemoveSubmittedAssignments');
     // Student Assignment
-     Route::post('get_student_assigment_submission', 'Api\V1\AssignmentController@GetSubmittedAssignments');
+    Route::post('get_student_assigment_submission', 'Api\V1\AssignmentController@GetSubmittedAssignments');
     Route::post('get_student_assignment_list', 'Api\V1\AssignmentController@GetStudentAssignmentList');
     Route::post('upload_assignment_by_student', 'Api\V1\AssignmentController@UploadAssignmentByStudents');
     Route::post('get_uploaded_assignment_by_student', 'Api\V1\AssignmentController@GetUploadAssignmentByStudents');
@@ -164,9 +165,9 @@ Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications
     Route::post('delete_member', 'Api\V1\GroupController@Deletemember');
     Route::post('like_discussion', 'Api\V1\GroupController@LikeUnlikeDiscussion');
     Route::post('add_discussion_comment', 'Api\V1\GroupController@AddDiscussionComments');
-     Route::post('get_discussion_comments', 'Api\V1\GroupController@GetComments');
-      
-/*    Route::post('group_list', 'Api\V1\GroupController@GroupList');*/
+    Route::post('get_discussion_comments', 'Api\V1\GroupController@GetComments');
+    
+    /*    Route::post('group_list', 'Api\V1\GroupController@GroupList');*/
     Route::post('send_group_message', 'Api\V1\GroupController@SendGroupMessage');
     Route::post('group_messages', 'Api\V1\GroupController@GroupMessages');
     Route::post('read_group_message', 'Api\V1\GroupController@ReadGroupMessage');
