@@ -601,7 +601,7 @@ $data_document = [];
           if($request->accept_reject==1){
            
               $array=$schedule->accept_reject_schedule;
-              $schedule->accept_reject_schedule=array_push($array,$request->parent_id);
+              array_push($array,$request->parent_id);
 
            
 
