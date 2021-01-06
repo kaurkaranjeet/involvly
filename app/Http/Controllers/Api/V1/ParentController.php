@@ -234,8 +234,8 @@ $data_document = [];
                     'task_assigned_to' => 'required',
                     'task_name' => 'required',
                     'schedule_id' => 'required|exists:schedules,id',
-                    'from_time' => 'required',
-                    'to_time' => 'required',
+                    'task_time' => 'required',
+                   
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -260,7 +260,16 @@ $data_document = [];
             }
             $task->image=$data;
               $task->notes=$request->notes;
-           $task->selected_days = $request->selected_days;
+                $days_data = [];
+
+            if (!empty($request->selected_days)) {
+              $selected_days=explode(",",$request->selected_days);
+              foreach ($selected_days as $key => $selected_day) {
+                $days_data[$key] = $selected_day;
+              }
+            }
+            $task->selected_days = $days_data;
+
             $task->save();
             $tasks = [];
             $users_explode = explode(',', $request->task_assigned_to);
@@ -293,7 +302,7 @@ $data_document = [];
                    'email'=>$user_data_to->email,
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
-                   'task_date' =>$request->selected_days,
+                   'task_date' =>$days_data,
                    'from_time' => $request->from_time,
                     'to_time' => $request->to_time,
                    'task_description' => $request->task_description,
