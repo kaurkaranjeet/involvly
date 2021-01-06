@@ -615,6 +615,7 @@ $data_document = [];
             $notificationobj->from_user_id=$single_task->task_assigned_by;
             $notificationobj->save();
         }
+        return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
       }
 
@@ -632,7 +633,7 @@ $data_document = [];
          if(!empty($schedule)){
           if($request->accept_reject==1){
             if(!empty($schedule->accept_reject_schedule)){
-              $schedule->accept_reject_schedule=$schedule->accept_reject_schedule.','.$request->parent_id;
+              $schedule->accept_reject_schedule=$request->parent_id;
 
             }else{
               $schedule->accept_reject_schedule=$request->parent_id;
