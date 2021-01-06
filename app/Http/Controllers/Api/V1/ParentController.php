@@ -264,7 +264,7 @@ $data_document = [];
             if (!empty($request->selected_days)) {
               $selected_days=explode(",",$request->selected_days);
               foreach ($selected_days as $key => $selected_day) {
-                 $selected_day = date("d/m/Y", strtotime($selected_day));
+                // $selected_day = date("d/m/Y", strtotime($selected_day));
                 $days_data[$key] = $selected_day;
               }
             }
@@ -341,7 +341,7 @@ $data_document = [];
             if (!empty($request->selected_days)) {
               $selected_days=explode(",",$request->selected_days);
               foreach ($selected_days as $key => $selected_day) {
-               $selected_day = date("d/m/Y", strtotime($selected_day));
+             //  $selected_day = date("d/m/Y", strtotime($selected_day));
                 $days_data[$key] = $selected_day;
               }
             }
