@@ -410,7 +410,7 @@ $data_document = [];
   ELSE 0
 END
             )
-              AS is_accept,schedules.*"))->with('User')->where('created_by', $request->user_id)->orderBy('id', 'DESC')->get();
+              AS is_accept,schedules.*")))->with('User')->where('created_by', $request->user_id)->orderBy('id', 'DESC')->get();
 
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
