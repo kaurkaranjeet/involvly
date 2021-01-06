@@ -614,6 +614,8 @@ $data_document = [];
           if($request->accept_reject==2){
             $message=$user->name.' has rejected the schedule ' .$schedule->schedule_name;
           }
+ $schedule->save();
+
 
             $notificationobj=new Notification;
             $notificationobj->user_id=$schedule->user_id;
