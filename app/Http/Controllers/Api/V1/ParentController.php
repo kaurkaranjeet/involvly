@@ -273,7 +273,7 @@ $data_document = [];
             $tasks = [];
             $users_explode = explode(',', $request->task_assigned_to);
             foreach ($users_explode as $single) {
-             
+
             $task_assigned = new ParentTaskAssigned; //then create new object
             $task_assigned->task_id = $task->id;
             $task_assigned->task_assigned_to = $single; 
@@ -302,8 +302,7 @@ $data_document = [];
                    'task_creator' => $user_data_by->name,
                    'task_name' => $request->task_name,
                    'task_date' =>$days_data,
-                   'from_time' => $request->from_time,
-                    'to_time' => $request->to_time,
+                   'task_time' => $request->task_time,                
                    'task_description' => $request->task_description,
                 );
                Mail::send("email.assigned-task", $data, function ($m) use ($user_data_to) {

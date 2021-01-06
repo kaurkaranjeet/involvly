@@ -15,21 +15,25 @@
                 border: 1px solid black;
             }
         </style>
-  <body>
-    <h2>Hello {{ $name}}, </h2>
-    <br/>
-    You have assigned a new task placed by {{ $task_creator}} .
+        <body>
+          <h2>Hello {{ $name}}, </h2>
+          <br/>
+          You have assigned a new task placed by {{ $task_creator}} .
 
-    <br/>
-	  Task Details as follow 
-    <div class="container">
-		<div>Name:  {{$task_name}}</div>		
-		<div>Description:  {{$task_description}}</div>
-    <div> 
-  {{$task_date}}</div>
+          <br/>
+          Task Details as follow 
+          <div class="container">
+            <div>Name:  {{$task_name}}</div>		
+            <div>Description:  {{$task_description}}</div>
+            <div> Task Dates:
+              @foreach($task_date as $single)
+              {{$single}}
+              <br>
+              @endforeach
 
-	
-		<div>From:  {{$from_time}}  To:  {{$to_time}} </div>
-	 </div>
-  </body>
+            </div>
+            <div>Task time:  {{$task_time}}</div>
+            <div>Description:  {{$task_description}}</div>
+          </div>
+        </body>
 </html>
