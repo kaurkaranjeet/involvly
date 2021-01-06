@@ -591,7 +591,7 @@ $data_document = [];
 
  public function AcceptRejectSchedule(Request $request){
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:parent_tasks,id',
+                    'schedule_id' => 'required|exists:schedules,id',
                      'accept_reject' => 'required',
                      'parent_id' => 'required'
         ]);
