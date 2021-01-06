@@ -357,8 +357,9 @@ $data_document = [];
             foreach ($users_explode as $single) {   
              $user_data_to = User::where('id', $single)->first();
             //email notification 
+             $notify_date=date('d/m/Y',strtotime($request->notify_date));
             
-              $message='A new schedule has been assigned to you';
+      $message='A new schedule has been assigned to you. You will be assigned task on '.$notify_date. 'at'.$request->notify_time;
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
