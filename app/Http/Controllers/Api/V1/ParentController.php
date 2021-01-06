@@ -287,7 +287,9 @@ $data_document = [];
             $user_data_to = User::where('id', $single)->first();
             //email notification 
          if($request->notify_parent=='1'){
-              $message='A new task has been assigned to you on '.$dates_implode.' at '.$task->task_time ;
+           $notify_date=date('d/m/Y',strtotime($request->notify_date));
+         
+              $message='A new task has been assigned to you on '.$notify_date.' at '.$request->notify_time ;
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
@@ -358,9 +360,9 @@ $data_document = [];
              $user_data_to = User::where('id', $single)->first();
             //email notification 
 
-             $notify_date=date('d/m/Y',strtotime($request->notify_date));
             
-      $message='A new schedule has been assigned to you. You will be assigned task on '.$notify_date. 'at'.$request->notify_time;
+            
+      $message='A new schedule has been assigned to you';
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
