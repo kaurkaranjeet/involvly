@@ -600,7 +600,7 @@ $data_document = [];
         } else {
          $schedule= Schedule::with('User')->find($request->schedule_id);
          $user=User::find($request->parent_id);        
-         if(!empty($schedule->accept_reject_schedule)){
+         if(!empty($schedule)){
           if($request->accept_reject==1){
             if(!empty($schedule->accept_reject_schedule)){
               $schedule->accept_reject_schedule=','.$request->parent_id;
@@ -614,7 +614,7 @@ $data_document = [];
           if($request->accept_reject==2){
             $message=$user->name.' has rejected the schedule ' .$schedule->schedule_name;
           }
- $schedule->save();
+               $schedule->save();
 
 
             $notificationobj=new Notification;
