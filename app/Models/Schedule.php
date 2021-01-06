@@ -10,8 +10,7 @@ class Schedule extends Model {
 
  
      protected $casts = [
-        'selected_days' => 'array',
-        'accept_reject_schedule' => 'array'
+        'selected_days' => 'array'
     ];
 
     public function User() {

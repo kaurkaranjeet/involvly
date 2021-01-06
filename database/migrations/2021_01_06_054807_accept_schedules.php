@@ -16,7 +16,7 @@ class AcceptSchedules extends Migration
         //
         Schema::table('schedules', function (Blueprint $table) {
           
-            $table->string('accept_reject_schedule');
+            $table->integer('accept_reject_schedule')->default('0');
         });
     }
 
