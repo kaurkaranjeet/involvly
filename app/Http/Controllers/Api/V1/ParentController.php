@@ -355,7 +355,7 @@ $data_document = [];
             foreach ($users_explode as $single) {   
              $user_data_to = User::where('id', $single)->first();
             //email notification 
-            if($request->notify_parent=='1'){
+            
               $message='A new schedule has been assigned to you';
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
@@ -367,7 +367,7 @@ $data_document = [];
               $notificationobj->type='school_notification';
               $notificationobj->from_user_id=$user_data_by->id;
               $notificationobj->save();
-            }
+            
                $data=array(
                    'name'=>$user_data_to->name,
                    'email'=>$user_data_to->email,
