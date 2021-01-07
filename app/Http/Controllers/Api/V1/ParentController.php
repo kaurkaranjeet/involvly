@@ -406,18 +406,21 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = Schedule::select((DB::raw("(SELECT CASE
-  WHEN  FIND_IN_SET(".$request->user_id." ,schedules.accept_reject_schedule ) THEN 1
-  WHEN FIND_IN_SET(".$request->user_id.", schedules.rejected_user) THEN 2
-  ELSE 0
-END
+          $tasks = Schedule::select((DB::raw("(SELECT CASE
+            WHEN  FIND_IN_SET(".$request->user_id." ,schedules.accept_reject_schedule ) THEN 1
+            WHEN FIND_IN_SET(".$request->user_id.", schedules.rejected_user) THEN 2
+            ELSE 0
+            END
             )
-              AS is_accept,schedules.*")))->with('User')->where('created_by', $request->user_id)->orderBy('id', 'DESC')->get();
+            AS is_accept,schedules.*")))->with('User')->whereRaw('FIND_IN_SET(assigned_to,'.$request->user_id.')')->orWhere('created_by', $request->user_id)->orderBy('id', 'DESC')->get();
 
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+
+
+
 
 
     //Get tasks
