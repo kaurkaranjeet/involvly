@@ -408,6 +408,7 @@ $data_document = [];
         } else {
           $tasks = Schedule::select((DB::raw("(SELECT CASE
             WHEN  FIND_IN_SET(".$request->user_id." ,schedules.accept_reject_schedule ) THEN 1
+
             WHEN FIND_IN_SET(".$request->user_id.", schedules.rejected_user) THEN 2
             ELSE 0
             END
@@ -481,7 +482,14 @@ $data_document = [];
   
 
        }
-            $tasks = ParentTask::with('User:id,name')->with('AssignedUser.AssignedTo')->where('id', $request->task_id)->get();
+       $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
+              SELECT *
+              FROM parent_task_assigned
+              WHERE parent_task_assigned.task_id = parent_tasks.id
+               AND parent_task_assigned.accept_reject = 3
+              ) THEN TRUE
+              ELSE FALSE END)
+              AS is_complete,parent_tasks.*")))->with('User:id,name')->with('AssignedUser.AssignedTo')->where('id', $request->task_id)->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
        
          return response()->json(array('error' => false, 'message' => 'this task is pending', 'data' => []), 200);
