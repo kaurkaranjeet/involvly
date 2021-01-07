@@ -485,7 +485,21 @@ END
     }
   }
 
-   
+   //Schedule Detail
+    public function GetScheduleDetail(Request $request){
+        $validator = Validator::make($request->all(), [
+                    'schedule_id' => 'required|exists:schedules,id'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+         
+            $tasks = Schedule::with('User:id,name')->where('id', $request->schedule_id)->first();
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
+       
+         return response()->json(array('error' => false, 'message' => 'this task is pending', 'data' => []), 200);
+    }
+  }  
 
       //remove task
     public function RemoveScheduleTask(Request $request){
