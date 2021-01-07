@@ -496,7 +496,7 @@ END
          
             $tasks = Schedule::with('User:id,name')->where('id', $request->schedule_id)->first();
            $user= User::whereIn('id', explode(',',$tasks->assigned_to))->select('name')->get();
-           $tasks->user=$user;
+           $tasks->assigned_to=$user;
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
        
