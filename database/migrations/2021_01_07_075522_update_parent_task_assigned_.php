@@ -16,7 +16,7 @@ class UpdateParentTaskAssigned extends Migration
         //
         Schema::table('parent_task_assigned', function (Blueprint $table) {
           
-            $table->string('images')->nullable();
+            $table->string('image')->nullable();
             $table->string('notes')->nullable();
         });
     }

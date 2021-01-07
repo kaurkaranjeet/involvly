@@ -596,10 +596,10 @@ END
         } else {
 
             $data = [];
-            if($request->hasfile('images'))
+            if($request->hasfile('image'))
             {
 
-              foreach($request->file('images') as $key=>$file)
+              foreach($request->file('image') as $key=>$file)
               {
                 $name=time().$key.'.'.$file->getClientOriginalExtension();    
                 $file->move(public_path().'/images/', $name);      
