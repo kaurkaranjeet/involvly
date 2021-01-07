@@ -351,7 +351,16 @@ $data_document = [];
             }
             $task->selected_days = $days_data;
             $task->save();
-            
+
+            $single_task_object = Schedule::select((DB::raw("(SELECT CASE
+              WHEN  FIND_IN_SET(".$request->assigned_to." ,schedules.accept_reject_schedule ) THEN 1
+
+              WHEN FIND_IN_SET(".$request->assigned_to.", schedules.rejected_user) THEN 2
+              ELSE 0
+              END
+              )
+              AS is_accept,schedules.*")))->with('User')->where('id', $task->id)->first();
+            $this->pusher->trigger('schedule-channel', 'schedule_user', $single_task_object);
            
             $user_data_by = User::where('id', $request->created_by)->first();
    
@@ -359,6 +368,8 @@ $data_document = [];
             foreach ($users_explode as $single) {   
              $user_data_to = User::where('id', $single)->first();
             //email notification 
+
+
 
             
             
