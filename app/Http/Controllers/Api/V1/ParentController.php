@@ -595,7 +595,20 @@ END
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
 
-          ParentTaskAssigned::where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->update(['accept_reject'=>'3']);
+            $data = [];
+            if($request->hasfile('images'))
+            {
+
+              foreach($request->file('images') as $key=>$file)
+              {
+                $name=time().$key.'.'.$file->getClientOriginalExtension();    
+                $file->move(public_path().'/images/', $name);      
+                $data[$key] = URL::to('/').'/images/'.$name;  
+              }
+            }
+          
+
+          ParentTaskAssigned::where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->update(['accept_reject'=>'3','image'=>$data,'notes'=>$request->notes]);
          $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->first();
          if(!empty($accept_reject_data)){
          /* if($request->accept_reject==1){
@@ -617,10 +630,6 @@ END
            if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
               SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
             }
-
-       
-         
-            
             $notificationobj=new Notification;
             $notificationobj->user_id=$accept_reject_data->ParentTask->User->id;
             $notificationobj->notification_message=$message;
