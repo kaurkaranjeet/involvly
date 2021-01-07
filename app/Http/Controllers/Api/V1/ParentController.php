@@ -495,6 +495,9 @@ END
         } else {
          
             $tasks = Schedule::with('User:id,name')->where('id', $request->schedule_id)->first();
+           $user= User::whereIn('id', explode(',',$tasks->assigned_to))->select('name')->get();
+           $tasks->user=$user;
+
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
        
          return response()->json(array('error' => false, 'message' => 'this task is pending', 'data' => []), 200);
