@@ -646,14 +646,22 @@ END
         } else {
         $tasks=  ParentTask::where('schedule_id',$request->schedule_id)->get();
         foreach($tasks  as $single_task){
-        $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->task_id)->first();
+        $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->task_id)->get();
+
+        if(!empty($task_assigned)){
+          foreach($task_assigned as $single_task){
+             if (!empty($single_task->AssignedTo->device_token)) { 
+              SendAllNotification($single_task->AssignedTo->device_token, 'A task has been assigned to you.', 'school_notification');
+            }
           $notificationobj=new Notification;
-            $notificationobj->user_id=$task_assigned->task_assigned_to;
+            $notificationobj->user_id=$single_task->task_assigned_to;
             $notificationobj->notification_message='A task has been assigned to you.';
             $notificationobj->notification_type='ScheduleAssign';
             $notificationobj->type='school_notification';
-            $notificationobj->from_user_id=$single_task->task_assigned_by;
+            $notificationobj->from_user_id=$task_assigned->task_assigned_by;
             $notificationobj->save();
+          }
+        }
         }
         return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
