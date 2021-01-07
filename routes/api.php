@@ -113,6 +113,7 @@ Route::prefix('v1')->group(function () {
     // Schedule Task
     Route::post('send_notification_to_parents', 'Api\V1\ParentController@SendAcceptNotification');
     Route::post('get_schedules', 'Api\V1\ParentController@Getschedules');
+    Route::post('get_schedule_detail', 'Api\V1\ParentController@GetScheduleDetail');
     Route::post('add_schedule_task', 'Api\V1\ParentController@AddScheduleTask');
     Route::post('get_schedule_task', 'Api\V1\ParentController@GetScheduleTask');
     Route::post('get_schedule_task_detail', 'Api\V1\ParentController@GetScheduleTaskDetail');
