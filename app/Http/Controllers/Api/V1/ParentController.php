@@ -17,6 +17,7 @@ use App\Models\ParentTaskAssigned;
 use App\Models\ParentChildrens;
 use App\Models\Schedule;
 use App\Notification;
+use Pusher\Pusher;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
@@ -24,8 +25,17 @@ use URL;
 
 class ParentController extends Controller {
 
-    public function __construct() {
-        
+      public function __construct() {
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'encrypted' => true
+        );
+        $this->pusher = new Pusher(
+                env('PUSHER_APP_KEY'),
+                env('PUSHER_APP_SECRET'),
+                env('PUSHER_APP_ID'),
+                $options
+        );
     }
 
     // Register Student
@@ -273,6 +283,14 @@ $data_document = [];
             $task->selected_days = $days_data;
 
             $task->save();
+              $addded = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
+              SELECT *
+              FROM parent_task_assigned
+              WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
+              ) THEN TRUE
+              ELSE FALSE END)
+              AS is_complete,parent_tasks.*")))->with('User')->where('task_id', $task->id)->first();
+                 $this->pusher->trigger('task-channel', 'task_add', $addded);
             $dates_implode=implode(',', $dates);
             $tasks = [];
             $users_explode = explode(',', $request->task_assigned_to);
