@@ -289,7 +289,7 @@ $data_document = [];
               WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_complete,parent_tasks.*")))->with('User')->where('task_id', $task->id)->first();
+              AS is_complete,parent_tasks.*")))->with('User')->where('id', $task->id)->first();
                  $this->pusher->trigger('task-channel', 'task_add', $addded);
             $dates_implode=implode(',', $dates);
             $tasks = [];
