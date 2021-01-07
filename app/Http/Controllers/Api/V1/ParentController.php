@@ -646,7 +646,7 @@ END
         } else {
         $tasks=  ParentTask::where('schedule_id',$request->schedule_id)->get();
         foreach($tasks  as $single_task){
-        $task_assigned= ParentTaskAssigned::where('AssignedTo')->where('task_id',$single_task->task_id)->first();
+        $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->task_id)->first();
           $notificationobj=new Notification;
             $notificationobj->user_id=$task_assigned->task_assigned_to;
             $notificationobj->notification_message='A task has been assigned to you.';
