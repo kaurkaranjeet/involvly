@@ -446,8 +446,7 @@ $data_document = [];
             $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM parent_task_assigned
-              WHERE parent_task_assigned.task_id = parent_tasks.id
-              AND parent_task_assigned.task_assigned_to = ".$request->user_id."  AND parent_task_assigned.accept_reject = 3
+              WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
               ) THEN TRUE
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
