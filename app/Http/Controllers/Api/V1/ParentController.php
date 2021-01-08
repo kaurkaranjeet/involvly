@@ -268,7 +268,7 @@ $data_document = [];
               }
             }
             $task->image=$data;
-              $task->notes=$request->notes;
+             // $task->notes=$request->notes;
                 $days_data = [];
                 $dates=[];
 
