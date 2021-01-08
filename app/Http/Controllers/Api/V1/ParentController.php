@@ -444,8 +444,11 @@ $data_document = [];
             END
             )
             AS is_accept,schedules.*")))->with('User')->whereRaw('( FIND_IN_SET('.$request->user_id.', assigned_to)  OR  created_by=' .$request->user_id.')  AND  ( FIND_IN_SET('.$request->user_id.' ,rejected_user) IS NULL)')->orderBy('id', 'DESC')->get();
- $user= User::whereIn('id', explode(',',$tasks->assigned_to))->select('name','id')->get();
-           $tasks->assigned_to=$user;
+          foreach($tasks as $singlke_task){
+             $user= User::whereIn('id', explode(',',$singlke_task->assigned_to))->select('name','id')->get();
+           $singlke_task->assigned_to=$user;
+          }
+
 
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
