@@ -374,15 +374,7 @@ $data_document = [];
             $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get();
            $task->assigned_to=$user;
 
-            $single_task_object = Schedule::select((DB::raw("(SELECT CASE
-              WHEN  FIND_IN_SET(".$request->created_by." ,schedules.accept_reject_schedule ) THEN 1
-
-              WHEN FIND_IN_SET(".$request->created_by.", schedules.rejected_user) THEN 2
-              ELSE 0
-              END
-              )
-              AS is_accept,schedules.*")))->with('User')->where('id', $task->id)->first();
-               $single_task_object->assigned_to=$user
+            $task->User;
 
             $this->pusher->trigger('schedule-channel', 'schedule_user', $single_task_object);
            
