@@ -465,7 +465,9 @@ $data_document = [];
               WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (parent_tasks.assigned_to)  OR  task_assigned_by=' .$request->user_id.')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
+              AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT id
+              FROM parent_task_assigned
+              WHERE parent_task_assigned.task_id = parent_tasks.id  AND task_assigned_to=' .$request->user_id.')  OR  task_assigned_by=' .$request->user_id.')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
