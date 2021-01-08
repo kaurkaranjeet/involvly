@@ -303,7 +303,7 @@ $data_document = [];
             $task_assigned->task_assigned_to = $request->task_assigned_to; 
             $task_assigned->save();
            
-            $user_data_to = User::where('id', $task_assigned_to)->first();
+            $user_data_to = User::where('id', $task_assigned->task_assigned_to)->first();
             //email notification 
          if($request->notify_parent=='1'){
            $notify_date=date('d/m/Y',strtotime($request->notify_date));
