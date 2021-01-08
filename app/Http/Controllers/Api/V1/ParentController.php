@@ -520,7 +520,7 @@ $data_document = [];
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User:id,name')->where('id', $request->task_id)->get();
 
-      $task_user=  ParentTaskAssigned::select('image','notes')->with('User:id,name')->where(['task_id'=>$request->task_id)->first();
+      $task_user=  ParentTaskAssigned::select('image','notes')->with('User:id,name')->where('task_id',$request->task_id)->first();
       $tasks->assigned_to= $task_user;
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
