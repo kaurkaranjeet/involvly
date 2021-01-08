@@ -378,6 +378,8 @@ $data_document = [];
               END
               )
               AS is_accept,schedules.*")))->with('User')->where('id', $task->id)->first();
+               $single_task_object->assigned_to= explode(',',$task->assigned_to);
+
             $this->pusher->trigger('schedule-channel', 'schedule_user', $single_task_object);
            
             $user_data_by = User::where('id', $request->created_by)->first();
