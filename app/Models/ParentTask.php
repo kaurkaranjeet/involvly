@@ -20,7 +20,7 @@ class ParentTask extends Model {
     }
     
     public function AssignedUser(){
-        return $this->hasMany('App\Models\ParentTaskAssigned','task_id');
+        return $this->hasOne('App\Models\ParentTaskAssigned','task_id');
     }
 
 }
