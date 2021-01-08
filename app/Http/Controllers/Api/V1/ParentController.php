@@ -376,7 +376,7 @@ $data_document = [];
 
             $task->User;
 
-            $this->pusher->trigger('schedule-channel', 'schedule_user', $single_task_object);
+            $this->pusher->trigger('schedule-channel', 'schedule_user', $task);
            
             $user_data_by = User::where('id', $request->created_by)->first();
    
