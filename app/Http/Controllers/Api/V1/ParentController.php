@@ -371,7 +371,7 @@ $data_document = [];
             $task->selected_days = $days_data;
             $task->save();
 
-            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name')->get();
+            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get();
            $task->assigned_to=$user;
 
             $single_task_object = Schedule::select((DB::raw("(SELECT CASE
