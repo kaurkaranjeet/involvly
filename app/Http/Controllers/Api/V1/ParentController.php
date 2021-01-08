@@ -648,25 +648,19 @@ $data_document = [];
                 $data[$key] = URL::to('/').'/images/'.$name;  
               }
             }
+
+         $task_schedule= ParentTask::find($request->task_id);
           
 
           ParentTaskAssigned::where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->update(['accept_reject'=>'3','image'=>$data,'notes'=>$request->notes]);
          $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->first();
          if(!empty($accept_reject_data)){
-         /* if($request->accept_reject==1){
-            $message=$accept_reject_data->User->name.' has accepted the task ' .$accept_reject_data->ParentTask->task_name;
-            if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
-              SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
-            }
-          }
-           if($request->accept_reject==2){
-           $message=$accept_reject_data->User->name.' has rejected the task ' .$accept_reject_data->ParentTask->task_name;
-           if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
-              SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
-            }
 
-         }
-*/
+          $obj=new ParentController();
+          $obj->task_id=$request->task_id;
+          $obj->is_complete='1';
+          $obj->schedule_id=$task_schedule->schedule_id;
+          $this->pusher->trigger('task-channel', 'complete_task', $obj);
        
            $message=$accept_reject_data->User->name.' has completed the task ' .$accept_reject_data->ParentTask->task_name;
            if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
@@ -683,6 +677,8 @@ $data_document = [];
           else{
             $accept_reject_data=new ParentController();
           }
+
+
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $accept_reject_data), 200);
         }
