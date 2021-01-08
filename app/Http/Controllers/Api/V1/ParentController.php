@@ -520,7 +520,7 @@ $data_document = [];
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User:id,name')->where('id', $request->task_id)->get();
        foreach($tasks as $signle_user){
-            $task_user=  ParentTaskAssigned::select('image','notes')->with('User:id,name')->where('task_id',$request->task_id)->first();
+            $task_user=  ParentTaskAssigned::select('image','notes','task_assigned_to')->with('User:id,name')->where('task_id',$request->task_id)->first();
   $signle_user->assigned_to= $task_user;
        }
      
