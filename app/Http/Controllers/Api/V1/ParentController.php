@@ -382,7 +382,7 @@ $data_document = [];
               END
               )
               AS is_accept,schedules.*")))->with('User')->where('id', $task->id)->first();
-               $single_task_object->assigned_to= explode(',',$task->assigned_to);
+               $single_task_object->assigned_to= $user;
 
             $this->pusher->trigger('schedule-channel', 'schedule_user', $single_task_object);
            
