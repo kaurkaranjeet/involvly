@@ -371,6 +371,9 @@ $data_document = [];
             $task->selected_days = $days_data;
             $task->save();
 
+            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name')->get();
+           $task->assigned_to=$user;
+
             $single_task_object = Schedule::select((DB::raw("(SELECT CASE
               WHEN  FIND_IN_SET(".$request->assigned_to." ,schedules.accept_reject_schedule ) THEN 1
 
@@ -388,12 +391,7 @@ $data_document = [];
             $users_explode = explode(',', $request->assigned_to);
             foreach ($users_explode as $single) {   
              $user_data_to = User::where('id', $single)->first();
-            //email notification 
-
-
-
-            
-            
+            //email notification             
       $message='A new schedule has been assigned to you';
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
