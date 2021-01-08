@@ -442,7 +442,7 @@ $data_document = [];
             ELSE 0
             END
             )
-            AS is_accept,schedules.*")))->with('User')->whereRaw('FIND_IN_SET(assigned_to,'.$request->user_id.')')->orWhere('created_by', $request->user_id)->orderBy('id', 'DESC')->get();
+            AS is_accept,schedules.*")))->with('User')->whereRaw('FIND_IN_SET('.$request->user_id.', assigned_to)')->orWhere('created_by', $request->user_id)->whereRaw(' (NOT FIND_IN_SET('.$request->user_id.' ,rejected_user))')->orderBy('id', 'DESC')->get();
 
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
