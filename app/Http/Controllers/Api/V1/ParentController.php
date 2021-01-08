@@ -290,19 +290,20 @@ $data_document = [];
               ) THEN TRUE
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User')->where('id', $task->id)->first();
+             $addded->task_assigned_to=$request->task_assigned_to;
                  $this->pusher->trigger('task-channel', 'task_add', $addded);
             $dates_implode=implode(',', $dates);
-            $tasks = [];
-            $users_explode = explode(',', $request->task_assigned_to);
+          
+           // $users_explode = explode(',', $request->task_assigned_to);
             $user_data_by = User::where('id', $request->task_assigned_by)->first();
-            foreach ($users_explode as $single) {
+           // foreach ($users_explode as $single) {
 
             $task_assigned = new ParentTaskAssigned; //then create new object
             $task_assigned->task_id = $task->id;
-            $task_assigned->task_assigned_to = $single; 
+            $task_assigned->task_assigned_to = $request->task_assigned_to; 
             $task_assigned->save();
-            array_push($tasks , $task_assigned);
-            $user_data_to = User::where('id', $single)->first();
+           
+            $user_data_to = User::where('id', $task_assigned_to)->first();
             //email notification 
          if($request->notify_parent=='1'){
            $notify_date=date('d/m/Y',strtotime($request->notify_date));
@@ -333,8 +334,8 @@ $data_document = [];
                $m->to($user_data_to->email);
                $m->subject('Assigned Task');
                }); 
-            }
-            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $tasks), 200);
+            //}
+            return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
     }
 
@@ -378,6 +379,8 @@ $data_document = [];
               END
               )
               AS is_accept,schedules.*")))->with('User')->where('id', $task->id)->first();
+               $single_task_object->assigned_to= explode(',',$task->assigned_to);
+
             $this->pusher->trigger('schedule-channel', 'schedule_user', $single_task_object);
            
             $user_data_by = User::where('id', $request->created_by)->first();
