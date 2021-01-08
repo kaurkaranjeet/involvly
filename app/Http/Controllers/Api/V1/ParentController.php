@@ -370,16 +370,8 @@ $data_document = [];
             }
             $task->selected_days = $days_data;
             $task->save();
-           $count= explode(',',$task->assigned_to);
-           if(count($count)==1){
-          
-                  $user= User::where('id',$task->assigned_to)->select('name','id')->get();
-           }else{
-            $user= User::whereIn('id', $count)->select('name','id')->get();
 
-           }
-
-            
+            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get();
            $task->assigned_to=$user;
 
             $single_task_object = Schedule::select((DB::raw("(SELECT CASE
@@ -390,7 +382,7 @@ $data_document = [];
               END
               )
               AS is_accept,schedules.*")))->with('User')->where('id', $task->id)->first();
-               $single_task_object->assigned_to= $user;
+               $single_task_object->assigned_to= explode(',',$task->assigned_to);
 
             $this->pusher->trigger('schedule-channel', 'schedule_user', $single_task_object);
            
@@ -452,6 +444,8 @@ $data_document = [];
             END
             )
             AS is_accept,schedules.*")))->with('User')->whereRaw('( FIND_IN_SET('.$request->user_id.', assigned_to)  OR  created_by=' .$request->user_id.')  AND  ( FIND_IN_SET('.$request->user_id.' ,rejected_user) IS NULL)')->orderBy('id', 'DESC')->get();
+ $user= User::whereIn('id', explode(',',$tasks->assigned_to))->select('name','id')->get();
+           $tasks->assigned_to=$user;
 
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
