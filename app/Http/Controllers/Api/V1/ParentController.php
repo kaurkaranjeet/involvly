@@ -375,9 +375,9 @@ $data_document = [];
            $task->assigned_to=$user;
 
             $single_task_object = Schedule::select((DB::raw("(SELECT CASE
-              WHEN  FIND_IN_SET(".$request->assigned_to." ,schedules.accept_reject_schedule ) THEN 1
+              WHEN  FIND_IN_SET(".$request->created_by." ,schedules.accept_reject_schedule ) THEN 1
 
-              WHEN FIND_IN_SET(".$request->assigned_to.", schedules.rejected_user) THEN 2
+              WHEN FIND_IN_SET(".$request->created_by.", schedules.rejected_user) THEN 2
               ELSE 0
               END
               )
