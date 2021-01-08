@@ -518,7 +518,11 @@ $data_document = [];
                AND parent_task_assigned.accept_reject = 3
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_complete,parent_tasks.*")))->with('User:id,name')->with('AssignedUser.AssignedTo')->where('id', $request->task_id)->get();
+              AS is_complete,parent_tasks.*")))->with('User:id,name')->where('id', $request->task_id)->get();
+
+      $task_user=  ParentTaskAssigned::select('image','notes')->with('User:id,name')->where(['task_id'=>$request->task_id)->first();
+      $tasks->assigned_to= $task_user;
+
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
        
          return response()->json(array('error' => false, 'message' => 'this task is pending', 'data' => []), 200);
