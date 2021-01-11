@@ -305,10 +305,10 @@ $data_document = [];
            
             $user_data_to = User::where('id', $task_assigned->task_assigned_to)->first();
             //email notification 
-         if($request->notify_parent=='1'){
-           $notify_date=date('d/m/Y',strtotime($request->notify_date));
+       
+          
 
-              $message='A new task has been assigned to you on '.$notify_date.' at '.$request->notify_time ;
+              $message='A new task has been assigned to you';
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
@@ -319,7 +319,7 @@ $data_document = [];
               $notificationobj->type='school_notification';
               $notificationobj->from_user_id=$user_data_by->id;
               $notificationobj->save();
-           }
+       
                $data=array(
                    'name'=>$user_data_to->name,
                    'email'=>$user_data_to->email,
@@ -379,12 +379,17 @@ $data_document = [];
             $this->pusher->trigger('schedule-channel', 'schedule_user', $task);
            
             $user_data_by = User::where('id', $request->created_by)->first();
-   
+
+
+
             $users_explode = explode(',', $request->assigned_to);
             foreach ($users_explode as $single) {   
              $user_data_to = User::where('id', $single)->first();
             //email notification             
-      $message='A new schedule has been assigned to you';
+        if($request->notify_parent=='1'){
+           $notify_date=date('d/m/Y',strtotime($request->notify_date));
+
+              $message='A new task has been assigned to you on '.$notify_date.' at '.$request->notify_time ;
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
@@ -395,6 +400,7 @@ $data_document = [];
               $notificationobj->type='school_notification';
               $notificationobj->from_user_id=$user_data_by->id;
               $notificationobj->save();
+           }
             
                $data=array(
                    'name'=>$user_data_to->name,
