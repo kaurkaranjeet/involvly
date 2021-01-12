@@ -721,7 +721,7 @@ $data_document = [];
           $notificationobj=new Notification;
             $notificationobj->user_id=$single_task->task_assigned_to;
             $notificationobj->notification_message='A task has been assigned to you.';
-            $notificationobj->notification_type='ScheduleAssign';
+            $notificationobj->notification_type='task_assign';
             $notificationobj->type='school_notification';
             $notificationobj->from_user_id=$task_assigned->task_assigned_by;
             $notificationobj->save();
