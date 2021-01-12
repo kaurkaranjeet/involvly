@@ -724,6 +724,8 @@ $data_document = [];
             $notificationobj->notification_type='task_assign';
             $notificationobj->type='school_notification';
             $notificationobj->from_user_id=$single_task->task_assigned_by;
+             $notificationobj->task_id=$single_task->id;
+              $notificationobj->schedule_id=$single_task->schedule_id;
             $notificationobj->save();
           }
         }
