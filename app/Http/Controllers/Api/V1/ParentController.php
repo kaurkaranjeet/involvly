@@ -711,7 +711,7 @@ $data_document = [];
         } else {
         $tasks=  ParentTask::where('schedule_id',$request->schedule_id)->get();
         foreach($tasks  as $single_task){
-        $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->task_id)->get();
+        $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
 
         if(!empty($task_assigned)){
           foreach($task_assigned as $single_task){
