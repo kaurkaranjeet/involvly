@@ -317,6 +317,7 @@ $data_document = [];
               $notificationobj->notification_message=$message;
               $notificationobj->notification_type='task_assign';
               $notificationobj->task_id=$task->id;
+              $notificationobj->schedule_id=$task->schedule_id;
               $notificationobj->type='school_notification';
               $notificationobj->from_user_id=$user_data_by->id;
               $notificationobj->save();
