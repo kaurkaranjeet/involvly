@@ -763,6 +763,9 @@ $data_document = [];
 
 
                $schedule->save();
+                 if (!empty($schedule->User->device_token)) { 
+              SendAllNotification($schedule->User->device_token,$message, 'school_notification');
+            }
 
 
             $notificationobj=new Notification;
