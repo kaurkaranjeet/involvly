@@ -688,6 +688,8 @@ $data_document = [];
             $notificationobj->notification_type='complete_task';
             $notificationobj->type='school_notification';
             $notificationobj->from_user_id=$accept_reject_data->User->id;
+             $notificationobj->task_id=$accept_reject_data->task_id;
+                $notificationobj->schedule_id=$task_schedule->schedule_id;
             $notificationobj->save();
           }
           else{
@@ -777,6 +779,7 @@ $data_document = [];
             $notificationobj->notification_type='accept_reject';
             $notificationobj->type='school_notification';
             $notificationobj->from_user_id=$user->id;
+             $notificationobj->schedule_id=$schedule->id;
             $notificationobj->save();
           
           
