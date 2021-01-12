@@ -28,6 +28,7 @@ class LoginController extends Controller {
         $validator = Validator::make($input, [
                     'email' => 'required',
                     'password' => 'required',
+                    'device_token' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
