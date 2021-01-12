@@ -400,6 +400,7 @@ $data_document = [];
               $notificationobj->notification_type='schedule_assign';
               $notificationobj->type='school_notification';
               $notificationobj->from_user_id=$user_data_by->id;
+                $notificationobj->schedule_id=$task->id;
               $notificationobj->save();
            }
             
