@@ -714,12 +714,12 @@ $data_document = [];
         $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
 
         if(!empty($task_assigned)){
-          foreach($task_assigned as $single_task){
-             if (!empty($single_task->AssignedTo->device_token)) { 
-              SendAllNotification($single_task->AssignedTo->device_token, 'A task has been assigned to you.', 'school_notification');
+          foreach($task_assigned as $single_task_to){
+             if (!empty($single_task_to->AssignedTo->device_token)) { 
+              SendAllNotification($single_task_to->AssignedTo->device_token, 'A task has been assigned to you.', 'school_notification');
             }
           $notificationobj=new Notification;
-            $notificationobj->user_id=$single_task->task_assigned_to;
+            $notificationobj->user_id=$single_task_to->task_assigned_to;
             $notificationobj->notification_message='A task has been assigned to you.';
             $notificationobj->notification_type='task_assign';
             $notificationobj->type='school_notification';
