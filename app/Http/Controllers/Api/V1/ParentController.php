@@ -391,7 +391,7 @@ $data_document = [];
         if($request->notify_parent=='1'){
            $notify_date=date('d/m/Y',strtotime($request->notify_date));
 
-              $message='A new task has been assigned to you on '.$notify_date.' at '.$request->notify_time ;
+              $message='A new schedule has been assigned to you on '.$notify_date.' at '.$request->notify_time ;
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
