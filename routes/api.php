@@ -140,6 +140,7 @@ Route::prefix('v1')->group(function () {
     Route::post('add_timetable', 'Api\V1\TimetableController@AddTimetable');
     Route::post('get_timetable', 'Api\V1\TimetableController@getTimetable');
     Route::post('remove_timetable', 'Api\V1\TimetableController@RemoveTimetable');
+      Route::post('remove_schedule', 'Api\V1\ParentController@RemoveSchedule');
     Route::post('fetch_assigned_teachers_by_students', 'Api\V1\TimetableController@FetchAssignedTeachersByStudent');
     Route::post('fetch_child_by_parents', 'Api\V1\TimetableController@FetchChildByParents');
     
