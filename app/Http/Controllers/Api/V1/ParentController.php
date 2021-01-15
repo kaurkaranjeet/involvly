@@ -589,6 +589,27 @@ $data_document = [];
      }
 
 
+       //remove task
+    public function RemoveSchedule(Request $request){
+
+        $validator = Validator::make($request->all(), [
+         'schedule_id' => 'required|exists:schedules,id',
+          'user_id' => 'required|exists:users,id',
+ 
+     ]);
+         if ($validator->fails()) {
+             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+         } else {
+               $delete= Schedule::where('id',$request->schedule_id)->where('created_by',$request->user_id)->delete();                
+             if ($delete) {
+                 return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
+             } else {
+                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+             }
+         }
+     }
+
+
         //remove task
     public function RemoveAssignScheduleTask(Request $request){
 
