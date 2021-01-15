@@ -600,7 +600,8 @@ $data_document = [];
          if ($validator->fails()) {
              return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
          } else {
-               $delete= Schedule::where('id',$request->schedule_id)->where('created_by',$request->user_id)->delete();                
+               $delete= Schedule::where('id',$request->schedule_id)->where('created_by',$request->user_id)->delete();
+                 $this->pusher->trigger('delete-schedule', 'delete_schedule', $obj);                
              if ($delete) {
                  return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
              } else {
