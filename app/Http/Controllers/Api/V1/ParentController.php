@@ -305,6 +305,7 @@ $data_document = [];
             $task_assigned->task_id = $task->id;
 //            $task_assigned->task_assigned_to = $request->task_assigned_to; 
             $task_assigned->task_assigned_to = $taskassignedids->assigned_to; 
+            $task_assigned->handover = '0'; 
             $task_assigned->save();
            
             $user_data_to = User::where('id', $task_assigned->task_assigned_to)->first();
@@ -482,6 +483,7 @@ $data_document = [];
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
               FROM parent_task_assigned
+              WHERE parent_task_assigned.handover = 1
               WHERE parent_task_assigned.task_id = parent_tasks.id  AND task_assigned_to=' .$request->user_id.')  OR  task_assigned_by=' .$request->user_id.')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
@@ -508,7 +510,7 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->first();
+           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id, 'handover'=>'1'])->first();
          if(!empty($accept_reject_data)){
        
           if($request->accept_reject==1){
@@ -744,6 +746,7 @@ $data_document = [];
         } else {
         $tasks=  ParentTask::where('schedule_id',$request->schedule_id)->get();
         foreach($tasks  as $single_task){
+        ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
         $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
 
         if(!empty($task_assigned)){
