@@ -378,8 +378,8 @@ $data_document = [];
             $task->save();
 
 //            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get();
-            $user= User::whereIn('id', $task->assigned_to)->select('name','id')->get();
-           $task->assigned_to=$user;
+            $user= User::where('id', $task->assigned_to)->select('name','id')->first();
+            $task->assigned_to=$user;
 
             $task->User;
 
