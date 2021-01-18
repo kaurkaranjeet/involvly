@@ -305,7 +305,7 @@ $data_document = [];
             $task_assigned->task_id = $task->id;
 //            $task_assigned->task_assigned_to = $request->task_assigned_to; 
             $task_assigned->task_assigned_to = $taskassignedids->assigned_to; 
-            $task_assigned->handover = '0'; 
+//            $task_assigned->handover = '0'; 
             $task_assigned->save();
            
             $user_data_to = User::where('id', $task_assigned->task_assigned_to)->first();
@@ -366,6 +366,11 @@ $data_document = [];
             $task->to_time = $request->to_time;
             $task->assigned_to = $request->assigned_to;
             $task->description = $request->description;
+            if($request->created_by == $request->assigned_to){
+            $task_assigned->handover = '1';     
+            }else{
+            $task_assigned->handover = '0'; 
+            }
             $days_data = [];
 
             if (!empty($request->selected_days)) {
@@ -408,7 +413,7 @@ $data_document = [];
               $notificationobj->notification_type='schedule_assign';
               $notificationobj->type='school_notification';
               $notificationobj->from_user_id=$user_data_by->id;
-                $notificationobj->schedule_id=$task->id;
+              $notificationobj->schedule_id=$task->id;
               $notificationobj->save();
            }
             
@@ -479,11 +484,11 @@ $data_document = [];
               SELECT *
               FROM parent_task_assigned
               WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
+              WHERE parent_tasks.schedule_id = schedules.id  AND schedules.handover = 1
               ) THEN TRUE
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
               FROM parent_task_assigned
-              WHERE parent_task_assigned.handover = 1
               WHERE parent_task_assigned.task_id = parent_tasks.id  AND task_assigned_to=' .$request->user_id.')  OR  task_assigned_by=' .$request->user_id.')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
@@ -510,7 +515,8 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id, 'handover'=>'1'])->first();
+            $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id])->first();
+//           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id, 'handover'=>'1'])->first();
          if(!empty($accept_reject_data)){
        
           if($request->accept_reject==1){
@@ -744,9 +750,10 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+        Schedule::where('id',$request->schedule_id)->update(['handover' => '1']);
         $tasks=  ParentTask::where('schedule_id',$request->schedule_id)->get();
         foreach($tasks  as $single_task){
-        ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
+//        ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
         $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
 
         if(!empty($task_assigned)){
