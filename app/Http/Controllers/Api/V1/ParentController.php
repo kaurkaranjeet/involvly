@@ -480,11 +480,13 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
+            $tasks = ParentTask::
+                    Join('schedules', 'parent_tasks.schedule_id', '=', 'schedules.id')
+                    ->where('schedules.handover', '1')
+                    ->select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM parent_task_assigned
               WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
-              WHERE parent_tasks.schedule_id = schedules.id  AND schedules.handover = 1
               ) THEN TRUE
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
