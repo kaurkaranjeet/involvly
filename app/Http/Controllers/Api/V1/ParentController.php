@@ -578,8 +578,11 @@ $data_document = [];
          if ($validator->fails()) {
              return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
          } else {
+              $task_first= ParentTask::where('id',$request->task_id)->first();
+
                $delete= ParentTask::where('id',$request->task_id)->delete();
-               $delete_assigned =  ParentTaskAssigned::where('task_id',$request->task_id)->delete();                 
+               $delete_assigned =  ParentTaskAssigned::where('task_id',$request->task_id)->delete();   
+                $this->pusher->trigger('remove-channel', 'remove_task', $task_first);               
              if ($delete) {
                  return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
              } else {
