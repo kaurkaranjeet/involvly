@@ -377,8 +377,9 @@ $data_document = [];
             $task->selected_days = $days_data;
             $task->save();
 
-//            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get();
-            $user= User::where('id', $task->assigned_to)->select('name','id')->first();
+//            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get(); 
+            $user = [];
+            $user= User::where('id', $task->assigned_to)->select('name','id')->get();
             $task->assigned_to=$user;
 
             $task->User;
