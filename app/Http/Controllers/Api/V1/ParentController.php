@@ -241,7 +241,7 @@ $data_document = [];
         $input = $request->all();
         $validator = Validator::make($input, [
                     'task_assigned_by' => 'required|exists:users,id',
-//                    'task_assigned_to' => 'required',
+                    'task_assigned_to' => 'required',
                     'task_name' => 'required',
                     'schedule_id' => 'required|exists:schedules,id',
 //                  'task_time' => 'required',
@@ -284,7 +284,7 @@ $data_document = [];
 
             $task->save();
             //get task_assigned_to values
-            $taskassignedids = Schedule::where('id', $request->schedule_id)->first();
+//            $taskassignedids = Schedule::where('id', $request->schedule_id)->first();
               $addded = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM parent_task_assigned
@@ -292,8 +292,8 @@ $data_document = [];
               ) THEN TRUE
               ELSE FALSE END)
               AS is_complete,parent_tasks.*")))->with('User')->where('id', $task->id)->first();
-//             $addded->task_assigned_to=$request->task_assigned_to;
-             $addded->task_assigned_to=$taskassignedids->assigned_to;
+             $addded->task_assigned_to=$request->task_assigned_to;
+//             $addded->task_assigned_to=$taskassignedids->assigned_to;
              $this->pusher->trigger('task-channel', 'task_add', $addded);
              $dates_implode=implode(',', $dates);
           
@@ -303,8 +303,8 @@ $data_document = [];
 
             $task_assigned = new ParentTaskAssigned; //then create new object
             $task_assigned->task_id = $task->id;
-//            $task_assigned->task_assigned_to = $request->task_assigned_to; 
-            $task_assigned->task_assigned_to = $taskassignedids->assigned_to; 
+            $task_assigned->task_assigned_to = $request->task_assigned_to; 
+//            $task_assigned->task_assigned_to = $taskassignedids->assigned_to; 
             $task_assigned->save();
            
             $user_data_to = User::where('id', $task_assigned->task_assigned_to)->first();
