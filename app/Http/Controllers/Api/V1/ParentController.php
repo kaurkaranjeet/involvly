@@ -846,6 +846,9 @@ $data_document = [];
               $schedule->rejected_user=$request->parent_id;
             }
 
+            $schedule->handover='0';
+            $schedule->save();
+
             $message=$user->name.' has rejected the schedule ' .$schedule->schedule_name;
           }
 
