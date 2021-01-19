@@ -766,7 +766,7 @@ $data_document = [];
       
         $scheduke=Schedule::find($request->schedule_id);
         $scheduke->handover= '1';
-        $scheduke->rejected= '';
+        $scheduke->rejected_user= '';
         $scheduke->save();
 
 
