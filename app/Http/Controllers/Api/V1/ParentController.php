@@ -767,7 +767,7 @@ $data_document = [];
         $scheduke->handover= '1';
         $scheduke->save();
 
-        $tasks=  ParentTask::with('AssignedUser:id,device_token,name')->where('schedule_id',$request->schedule_id)->first();
+        $tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$request->schedule_id)->first();
         ParentTaskAssigned::where('task_id',$tasks->id)->update(['handover' => '1']);
 
         if(!empty($tasks)){
