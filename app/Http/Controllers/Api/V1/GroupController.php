@@ -232,7 +232,8 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
                   $single_group->member_count=$count;
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
-           
+                $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
+                $single_group->is_joined=$is_joined;
                 
             if(!empty($single_group->message_date)){
                   $date = strtotime($single_group->message_date); 
@@ -276,12 +277,14 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                 if($single_group->type=='parent_community'){
                   $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
+                   $single_group->is_joined=1;
                   $single_group->member_count=$count;
                   $single_group->unread_count=$unread_count;
                 }
                 if($single_group->type=='school'){
                   $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
                   $single_group->member_count=$count;
+                   $single_group->is_joined=1;
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
                 }
@@ -289,14 +292,17 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                 if($single_group->type=='school_admin'){
                   $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
                   $single_group->member_count=$count;
+                   $single_group->is_joined=1;
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
                 }
                 if($single_group->type=='custom_group'){
+                    $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
                   $count=GroupMember::where('group_id',$single_group->id)->count();
                   $single_group->member_count=$count;
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
+                  $single_group->is_joined=$is_joined;
                 }
                 if($single_group->type=='class_group'){
                   $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
@@ -305,6 +311,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->member_count=$count;
                   $single_group->unread_count=$unread_count;
+                   $single_group->is_joined=1;
 
 
                 }
@@ -327,8 +334,9 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                   $single_group->member_count=$count;
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
-           
-                
+             $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
+
+                 $single_group->is_joined=$is_joined;
             if(!empty($single_group->message_date)){
                   $date = strtotime($single_group->message_date); 
 
@@ -345,6 +353,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                   $single_group->member_count=$count;
                   $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
+                    $single_group->is_joined=1;
            
                 
             if(!empty($single_group->message_date)){
