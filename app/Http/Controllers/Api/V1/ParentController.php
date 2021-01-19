@@ -374,7 +374,7 @@ $data_document = [];
             if (!empty($request->selected_days)) {
               $selected_days=explode(",",$request->selected_days);
               foreach ($selected_days as $key => $selected_day) {
-              $contain= Schedule::whereJsonContains('selectsed_days', $selected_day)->where('created_by', $request->created_by)->count();
+              $contain= Schedule::whereRaw('json_contains(selected_days, \'["'.$selected_day.'"]\')')->where('created_by', $request->created_by)->count();
               if($contain > 0){
                  return response()->json(array('error' => true, 'message' => 'You have already created schedule with this date.', 'data' => []), 200);
 
