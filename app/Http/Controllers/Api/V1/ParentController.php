@@ -375,7 +375,7 @@ $data_document = [];
                // 
         $contain= Schedule::whereRaw('JSON_CONTAINS(selected_days,\'["'.$selected_day.'"]\')')->where('from_time',$request->from_time)->where('to_time',$request->to_time)->where('created_by',$request->created_by)->count();
           if($contain > 0){
-   return response()->json(array('error' => true, 'message' =>'You have already selected this date'), 200);
+   return response()->json(array('error' => true, 'message' =>'You have already selected this date and time'), 200);
           }
         }
          // Schedule::whereJsonContains('selected_days', 1)
