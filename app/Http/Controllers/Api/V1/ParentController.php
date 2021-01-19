@@ -370,24 +370,7 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-           $days_data = [];
-            if (!empty($request->selected_days)) {
-              $selected_days=explode(",",$request->selected_days);
-              foreach ($selected_days as $key => $selected_day) {
-                  $days_data[$key] = $selected_day;
-              $contain= Schedule::whereRaw('json_contains(selected_days, \'["'.$selected_day.'"]\')')->where('created_by', $request->created_by)->count();
-              if($contain > 0){
-                 return response()->json(array('error' => true, 'message' => 'You have already created schedule with this date.', 'data' => []), 200);
-
-              }
-              
-              
-              }
-            }
-
-            
-
-        
+         // Schedule::whereJsonContains('selected_days', 1)
             $task = new Schedule; //then create new object
             $task->created_by = $request->created_by;
             $task->schedule_name = $request->schedule_name; 
@@ -400,7 +383,15 @@ $data_document = [];
             }else{
             $task->handover = '0'; 
             }
-           
+            $days_data = [];
+
+            if (!empty($request->selected_days)) {
+              $selected_days=explode(",",$request->selected_days);
+              foreach ($selected_days as $key => $selected_day) {
+             //  $selected_day = date("d/m/Y", strtotime($selected_day));
+                $days_data[$key] = $selected_day;
+              }
+            }
             $task->selected_days = $days_data;
             $task->save();
 
