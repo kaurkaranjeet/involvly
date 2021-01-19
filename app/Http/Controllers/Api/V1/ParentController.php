@@ -461,7 +461,7 @@ $data_document = [];
             ELSE 0
             END
             )
-            AS is_accept,schedules.*")))->with('User')->whereRaw('( FIND_IN_SET('.$request->user_id.', assigned_to ) AND  handover=1)  OR  created_by=' .$request->user_id.')  AND  ( FIND_IN_SET('.$request->user_id.' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
+            AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET('.$request->user_id.', assigned_to ) AND  handover=1)  OR  created_by=' .$request->user_id.')  AND  ( FIND_IN_SET('.$request->user_id.' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
           foreach($tasks as $singlke_task){
              $user= User::whereIn('id', explode(',',$singlke_task->assigned_to))->select('name','id')->get();
            $singlke_task->assigned_to=$user;
