@@ -401,6 +401,7 @@ $data_document = [];
 
             $task->User;
             if($task->handover=='1'){
+               $task->is_accept='0';
 
             $this->pusher->trigger('schedule-channel', 'schedule_user', $task);
           }
@@ -788,6 +789,7 @@ $data_document = [];
            
            
              $scheduke->assigned_to=$user;
+                $scheduke->is_accept='0';
               $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
         /*foreach($tasks  as $single_task){
         ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
