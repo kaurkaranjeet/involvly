@@ -285,16 +285,7 @@ $data_document = [];
             $task->save();
             //get task_assigned_to values
             $taskassignedids = Schedule::where('id', $request->schedule_id)->first();
-              $addded = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
-              SELECT *
-              FROM parent_task_assigned
-              WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
-              ) THEN TRUE
-              ELSE FALSE END)
-              AS is_complete,parent_tasks.*")))->with('User')->where('id', $task->id)->first();
-//             $addded->task_assigned_to=$request->task_assigned_to;
-             $addded->task_assigned_to=$taskassignedids->assigned_to;
-             $this->pusher->trigger('task-channel', 'task_add', $addded);
+              
              $dates_implode=implode(',', $dates);
           
            // $users_explode = explode(',', $request->task_assigned_to);
@@ -312,6 +303,19 @@ $data_document = [];
             }
             $task_assigned->handover = '0'; 
             $task_assigned->save();
+
+            if( $taskassignedids->handover=='1'){
+
+              $addded = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
+              SELECT *
+              FROM parent_task_assigned
+              WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
+              ) THEN TRUE
+              ELSE FALSE END)
+              AS is_complete,parent_tasks.*")))->with('User')->where('id', $task->id)->first();
+//             $addded->task_assigned_to=$request->task_assigned_to;
+             $addded->task_assigned_to=$taskassignedids->assigned_to;
+             $this->pusher->trigger('task-channel', 'task_add', $addded);
            
             $user_data_to = User::where('id', $task_assigned->task_assigned_to)->first();
             //email notification 
@@ -346,6 +350,8 @@ $data_document = [];
                $m->to($user_data_to->email);
                $m->subject('Assigned Task');
                }); 
+
+             }
             //}
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         }
@@ -394,8 +400,10 @@ $data_document = [];
             $task->assigned_to=$user;
 
             $task->User;
+            if($task->handover=='1'){
 
             $this->pusher->trigger('schedule-channel', 'schedule_user', $task);
+          }
            
             $user_data_by = User::where('id', $request->created_by)->first();
 
@@ -407,7 +415,7 @@ $data_document = [];
             //email notification             
         if($request->notify_parent=='1'){
            $notify_date=date('d/m/Y',strtotime($request->notify_date));
-
+//Good News! Your schedule |schedule name here| is set for Saturday , January 4th, 2018 to Sunday, January 5th, 2018.
               $message='A new schedule has been assigned to you on '.$notify_date.' at '.$request->notify_time ;
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
@@ -420,7 +428,7 @@ $data_document = [];
               $notificationobj->from_user_id=$user_data_by->id;
               $notificationobj->schedule_id=$task->id;
               $notificationobj->save();
-           }
+        
             
                $data=array(
                    'name'=>$user_data_to->name,
@@ -437,7 +445,7 @@ $data_document = [];
                $m->to($user_data_to->email);
                $m->subject('Assigned Task');
                }); 
-//            }
+          }
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
         
     }
@@ -755,8 +763,24 @@ $data_document = [];
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
         Schedule::where('id',$request->schedule_id)->update(['handover' => '1']);
-        $tasks=  ParentTask::where('schedule_id',$request->schedule_id)->get();
-        foreach($tasks  as $single_task){
+        $tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$request->schedule_id)->first();
+        ParentTaskAssigned::where('task_id',$tasks->id)->update(['handover' => '1']);
+
+        if(!empty($tasks)){
+          
+           SendAllNotification($tasks->AssignedUser->device_token, 'A Schedule has been handed over to you.', 'school_notification');
+            }
+
+         $notificationobj=new Notification;
+            $notificationobj->user_id=$tasks->task_assigned_to;
+            $notificationobj->notification_message='A Schedule has been handed over to you';
+            $notificationobj->notification_type='task_assign';
+            $notificationobj->type='school_notification';
+            $notificationobj->from_user_id=$tasks->task_assigned_by;
+             $notificationobj->task_id=$tasks->id;
+              $notificationobj->schedule_id=$tasks->schedule_id;
+            $notificationobj->save();
+        /*foreach($tasks  as $single_task){
         ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
         $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
 
@@ -776,7 +800,7 @@ $data_document = [];
             $notificationobj->save();
           }
         }
-        }
+        }*/
         return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
       }
