@@ -374,7 +374,7 @@ $data_document = [];
             if (!empty($request->selected_days)) {
               $selected_days=explode(",",$request->selected_days);
               foreach ($selected_days as $key => $selected_day) {
-              $contain= Schedule::whereJsonContains('selected_days', $selected_day)->where('created_by', $request->created_by)->count();
+              $contain= Schedule::whereJsonContains('selectsed_days', $selected_day)->where('created_by', $request->created_by)->count();
               if($contain > 0){
                  return response()->json(array('error' => true, 'message' => 'You have already created schedule with this date.', 'data' => []), 200);
 
@@ -384,11 +384,7 @@ $data_document = [];
               }
             }
 
-            $contain= Schedule::where('from_time', $request->from_time)->orWhere('to_time', $request->to_time)->where('created_by', $request->created_by)->count();
-              if($contain > 0){
-                 return response()->json(array('error' => true, 'message' => 'You have already selected this time', 'data' => []), 200);
-
-              }
+            
 
         
             $task = new Schedule; //then create new object
