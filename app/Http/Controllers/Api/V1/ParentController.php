@@ -305,6 +305,11 @@ $data_document = [];
             $task_assigned->task_id = $task->id;
 //            $task_assigned->task_assigned_to = $request->task_assigned_to; 
             $task_assigned->task_assigned_to = $taskassignedids->assigned_to; 
+            if($request->task_assigned_by == $taskassignedids->assigned_to){
+            $task_assigned->handover = '1';     
+            }else{
+            $task_assigned->handover = '0'; 
+            }
             $task_assigned->handover = '0'; 
             $task_assigned->save();
            
