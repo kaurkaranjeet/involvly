@@ -372,7 +372,8 @@ $data_document = [];
         } else {
            $selected_days=explode(",",$request->selected_days);
               foreach ($selected_days as $key => $selected_day) {
-        $contain= Schedule:: whereRaw("JSON_CONTAINS(selected_days,\"['".$selected_day."']\")")->where('created_by',$request->created_by)->count();
+               // 
+        $contain= Schedule::whereRaw('JSON_CONTAINS(selected_days,\'["'.$selected_day.'"]\')')->where('created_by',$request->created_by)->count();
           if($contain > 0){
    return response()->json(array('error' => true, 'message' =>'You have already selected this date'), 200);
           }
