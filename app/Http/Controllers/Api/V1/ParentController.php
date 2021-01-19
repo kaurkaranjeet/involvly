@@ -299,9 +299,9 @@ $data_document = [];
             if($request->task_assigned_by == $taskassignedids->assigned_to){
             $task_assigned->handover = '1';     
             }else{
-            $task_assigned->handover = '0'; 
+            $task_assigned->handover = $taskassignedids->handover; 
             }
-            $task_assigned->handover = '0'; 
+           
             $task_assigned->save();
 
             if( $taskassignedids->handover=='1'){
