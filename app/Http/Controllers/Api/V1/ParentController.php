@@ -367,9 +367,9 @@ $data_document = [];
             $task->assigned_to = $request->assigned_to;
             $task->description = $request->description;
             if($request->created_by == $request->assigned_to){
-            $task_assigned->handover = '1';     
+            $task->handover = '1';     
             }else{
-            $task_assigned->handover = '0'; 
+            $task->handover = '0'; 
             }
             $days_data = [];
 
