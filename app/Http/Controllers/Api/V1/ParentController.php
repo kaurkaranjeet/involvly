@@ -847,14 +847,16 @@ $data_document = [];
             }
 
             $schedule->handover='0';
-            $schedule->save();
+            
+
 
             $message=$user->name.' has rejected the schedule ' .$schedule->schedule_name;
           }
 
-
-
-               $schedule->save();
+                       $schedule->save();
+                           if($request->accept_reject==2){
+                    $this->pusher->trigger('decline-channel', 'decline_schedule', $schedule);
+                  }
                  if (!empty($schedule->User->device_token)) { 
               SendAllNotification($schedule->User->device_token,$message, 'school_notification');
             }
