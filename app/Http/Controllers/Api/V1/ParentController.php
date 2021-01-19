@@ -322,7 +322,7 @@ $data_document = [];
        
           
 
-              $message='A new task has been assigned to you';
+              $message='A new task has been assigned to you in this schedule \''. $taskassignedids.'\'';
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
