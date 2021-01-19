@@ -787,7 +787,7 @@ $data_document = [];
             $notificationobj->schedule_id=$tasks->schedule_id;
             $notificationobj->save();
            
-           
+              $scheduke->User;
              $scheduke->assigned_to=$user;
                 $scheduke->is_accept='0';
               $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
