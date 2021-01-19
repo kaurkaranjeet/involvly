@@ -371,7 +371,7 @@ $data_document = [];
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
            $selected_days=explode(",",$request->selected_days);
-        $contain= Schedule:: whereRaw('JSON_CONTAINS(selected_days,'.$selected_days.')')->where('created_by',$request->created_by)->count();
+        $contain= Schedule:: whereRaw('JSON_CONTAINS(selected_days,['.$selected_days.'])')->where('created_by',$request->created_by)->count();
           if($contain > 0){
    return response()->json(array('error' => true, 'message' =>'You have already selected this date'), 200);
           }
