@@ -772,7 +772,7 @@ $data_document = [];
             }
 
          $notificationobj=new Notification;
-            $notificationobj->user_id=$tasks->task_assigned_to;
+            $notificationobj->user_id=$tasks->AssignedUser->id;
             $notificationobj->notification_message='A Schedule has been handed over to you';
             $notificationobj->notification_type='task_assign';
             $notificationobj->type='school_notification';
