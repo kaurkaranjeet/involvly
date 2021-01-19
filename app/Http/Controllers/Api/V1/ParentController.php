@@ -767,25 +767,28 @@ $data_document = [];
         $scheduke->handover= '1';
         $scheduke->save();
 
+
         $tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$request->schedule_id)->first();
         ParentTaskAssigned::where('task_id',$tasks->id)->update(['handover' => '1']);
-
-        if(!empty($tasks)){
+        $user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token')->first();
+        if(!empty($user->device_token)){
           
-           SendAllNotification($tasks->AssignedUser->device_token, 'A Schedule has been handed over to you.', 'school_notification');
-            }
+         SendAllNotification($user->device_token, 'A Schedule has been handed over to you.', 'school_notification');
+       }
 
-         $notificationobj=new Notification;
+            $notificationobj=new Notification;
             $notificationobj->user_id=$tasks->AssignedUser->id;
             $notificationobj->notification_message='A Schedule has been handed over to you';
             $notificationobj->notification_type='task_assign';
             $notificationobj->type='school_notification';
             $notificationobj->from_user_id=$tasks->task_assigned_by;
-             $notificationobj->task_id=$tasks->id;
-              $notificationobj->schedule_id=$tasks->schedule_id;
+            $notificationobj->task_id=$tasks->id;
+            $notificationobj->schedule_id=$tasks->schedule_id;
             $notificationobj->save();
-             $scheduke->assigned_to=$tasks->AssignedUser;;
-                $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
+           
+           
+             $scheduke->assigned_to=$user;
+              $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
         /*foreach($tasks  as $single_task){
         ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
         $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
