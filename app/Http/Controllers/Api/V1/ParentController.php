@@ -762,8 +762,12 @@ $data_document = [];
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-        Schedule::where('id',$request->schedule_id)->update(['handover' => '1']);
-        $tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$request->schedule_id)->first();
+      
+        $scheduke=Schedule::find($request->schedule_id);
+        $scheduke->handover= '1';
+        $scheduke->save();
+
+        $tasks=  ParentTask::with('AssignedUser:id,device_token,name')->where('schedule_id',$request->schedule_id)->first();
         ParentTaskAssigned::where('task_id',$tasks->id)->update(['handover' => '1']);
 
         if(!empty($tasks)){
@@ -780,6 +784,8 @@ $data_document = [];
              $notificationobj->task_id=$tasks->id;
               $notificationobj->schedule_id=$tasks->schedule_id;
             $notificationobj->save();
+             $scheduke->assigned_to=$tasks->AssignedUser;;
+                $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
         /*foreach($tasks  as $single_task){
         ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
         $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
