@@ -426,7 +426,7 @@ $data_document = [];
         if($request->notify_parent=='1'){
            $notify_date=date('d/m/Y',strtotime($request->notify_date));
 //Good News! Your schedule |schedule name here| is set for Saturday , January 4th, 2018 to Sunday, January 5th, 2018.
-              $message='A new schedule has been assigned to you on '.$notify_date.' at '.$request->notify_time ;
+              $message='Good News! Your schedule '.$task->schedule_name.' is set for '.$notify_date.' at '.$request->notify_time ;
               if (!empty($user_data_to->device_token)) { 
                 SendAllNotification($user_data_to->device_token, $message, 'school_notification');
               }
