@@ -1209,6 +1209,12 @@ public function DeleteCustomGroup(Request $request) {
       $objnew->member_id=$request->user_id;
       $objnew->group_id=$request->group_id;
        $this->pusher->trigger('delete-member-channel', 'member_delete', $objnew);
+
+       if($get_group->group_category=='digital_learning'){
+
+          Group::where('id',$request->group_id)->delete();
+       }
+       else{
       if(!empty( $user->exit_groups)){
           User::where('id',$request->user_id)->update(['exit_groups' => DB::raw("CONCAT(exit_groups, '," . $request->group_id . "')")]);
       }
@@ -1216,6 +1222,7 @@ public function DeleteCustomGroup(Request $request) {
         User::where('id',$request->user_id)->update(['exit_groups' => $request->group_id]);
 
       }
+    }
      // User::where('id',$request->user_id)->update(['exit_groups' => DB::raw("IFNULL(CONCAT(exit_groups, '," . $request->group_id . "')," . $request->group_id . ")")]);
      
    // }
