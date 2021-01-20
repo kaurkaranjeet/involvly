@@ -1210,7 +1210,7 @@ public function DeleteCustomGroup(Request $request) {
       $objnew->group_id=$request->group_id;
        $this->pusher->trigger('delete-member-channel', 'member_delete', $objnew);
 
-       if($get_group->group_category=='digital_learning'){
+       if($get_group->group_category=='digital_learning' && $get_group->user_id==$request->user_id){
 
           Group::where('id',$request->group_id)->delete();
        }
