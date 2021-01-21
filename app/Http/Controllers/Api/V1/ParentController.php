@@ -324,7 +324,7 @@ $data_document = [];
 
               $message='A new task has been assigned to you in this schedule \''. $taskassignedids->schedule_name.'\'';
               if (!empty($user_data_to->device_token)) { 
-                SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+                SendAllNotification($user_data_to->device_token, $message, 'social_notification');
               }
               $notificationobj=new Notification;
               $notificationobj->user_id=$user_data_to->id;
@@ -428,7 +428,7 @@ $data_document = [];
 //Good News! Your schedule |schedule name here| is set for Saturday , January 4th, 2018 to Sunday, January 5th, 2018.
               $message='Good News! Your schedule '.$task->schedule_name.' is set for '.$notify_date.' at '.$request->notify_time ;
               if (!empty($user_data_to->device_token)) { 
-                SendAllNotification($user_data_to->device_token, $message, 'school_notification');
+                SendAllNotification($user_data_to->device_token, $message, 'social_notification');
               }
               $notificationobj=new Notification;
               $notificationobj->user_id=$user_data_to->id;
@@ -743,7 +743,7 @@ $data_document = [];
        
            $message=$accept_reject_data->User->name.' has completed the task ' .$accept_reject_data->ParentTask->task_name;
            if (!empty($accept_reject_data->ParentTask->User->device_token)) { 
-              SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'school_notification');
+              SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'social_notification');
             }
             $notificationobj=new Notification;
             $notificationobj->user_id=$accept_reject_data->ParentTask->User->id;
@@ -784,7 +784,7 @@ $data_document = [];
         $user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token')->get();
         if(!empty($user[0]->device_token)){
 
-         SendAllNotification($user[0]->device_token, 'A Schedule has been handed over to you.', 'school_notification');
+         SendAllNotification($user[0]->device_token, 'A Schedule has been handed over to you.', 'social_notification');
        }
 
             $notificationobj=new Notification;
@@ -868,7 +868,7 @@ $data_document = [];
                     $this->pusher->trigger('decline-channel', 'decline_schedule', $schedule);
                   }
                  if (!empty($schedule->User->device_token)) { 
-              SendAllNotification($schedule->User->device_token,$message, 'school_notification');
+              SendAllNotification($schedule->User->device_token,$message, 'social_notification');
             }
 
 
