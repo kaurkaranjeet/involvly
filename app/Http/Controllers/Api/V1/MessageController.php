@@ -186,8 +186,7 @@ return response()->json($response);
        $response = [
         'error' => false,
         'message' =>  'Record found',
-        'data' =>  $results,
-        'parents' =>  $parents,
+        'data' =>  $results
 
       ];
   }
