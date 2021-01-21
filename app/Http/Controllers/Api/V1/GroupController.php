@@ -1005,12 +1005,14 @@ public function GetComments(Request $request){
          if(!empty($request->group_id)){
           $mysql=' AND (NOT FIND_IN_SET(' .$request->group_id.' , exit_groups))';
         }
-   
+        
     if($request->has('type')){
 
        $members_sql=GroupMember::select(DB::raw('group_concat(member_id) as members'))->where('group_id',$request->group_id)->first();
        if(!empty($members_sql->members)){
+        if(!empty($request->group_id)){
         $mysql=' AND id NOT IN ('.$members_sql->members.')  AND  NOT FIND_IN_SET(' .$request->group_id.' , exit_groups)';
+      }
        }
        DB::enableQueryLog(); // Enable query log
        
