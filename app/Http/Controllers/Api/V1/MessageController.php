@@ -150,15 +150,23 @@ return response()->json($response);
     $response =[];
     try{
       $validator = Validator::make($input, [
-        'user_id' => 'required'
+        'user_id' => 'required',
+         'type' => 'required'
       ]);
       if($validator->fails()){
        throw new Exception( $validator->errors());
      }  else{
 
       $user_id=$request->user_id;
-      
-      $results = DB::select( DB::raw("SELECT m1.created_at as message_date,(SELECT message FROM one_to_one_message WHERE (NOT FIND_IN_SET(".$user_id.",m1.deleted_by_members) OR m1.deleted_by_members IS NULL) AND id=m1.id ) as last_message,(SELECT file FROM one_to_one_message WHERE (NOT FIND_IN_SET(".$user_id.",m1.deleted_by_members) OR m1.deleted_by_members IS NULL) AND id=m1.id ) as file,u1.*,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(one_to_one_message.is_read) from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id=m1.from_user_id AND one_to_one_message.to_user_id=".$user_id." group by one_to_one_message.from_user_id) as  unread_count FROM one_to_one_message m1 LEFT JOIN one_to_one_message m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") AND  u1.id NOT IN( Select to_user_id FROM report_users WHERE from_user_id=".$user_id.") AND  u1.id NOT IN( Select from_user_id FROM report_users WHERE to_user_id=".$user_id.") AND  u1.role_id=4 ORDER BY m1.created_at DESC") );
+
+      if($request->type=="teacher"){
+      	$sql=" u1.role_id= 4";
+      }else{
+      	$sql=" u1.role_id= 3";
+
+      }
+
+      $results = DB::select( DB::raw("SELECT m1.created_at as message_date,(SELECT message FROM one_to_one_message WHERE (NOT FIND_IN_SET(".$user_id.",m1.deleted_by_members) OR m1.deleted_by_members IS NULL) AND id=m1.id ) as last_message,(SELECT file FROM one_to_one_message WHERE (NOT FIND_IN_SET(".$user_id.",m1.deleted_by_members) OR m1.deleted_by_members IS NULL) AND id=m1.id ) as file,u1.*,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(one_to_one_message.is_read) from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id=m1.from_user_id AND one_to_one_message.to_user_id=".$user_id." group by one_to_one_message.from_user_id) as  unread_count FROM one_to_one_message m1 LEFT JOIN one_to_one_message m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") AND  u1.id NOT IN( Select to_user_id FROM report_users WHERE from_user_id=".$user_id.") AND  u1.id NOT IN( Select from_user_id FROM report_users WHERE to_user_id=".$user_id.") AND  ".$sql." ORDER BY m1.created_at DESC") );
       if($results ){       
 
         foreach($results as $data){
@@ -174,24 +182,7 @@ return response()->json($response);
 
    }
 
-
-
-    $parents = DB::select( DB::raw("SELECT m1.created_at as message_date,(SELECT message FROM one_to_one_message WHERE (NOT FIND_IN_SET(".$user_id.",m1.deleted_by_members) OR m1.deleted_by_members IS NULL) AND id=m1.id ) as last_message,(SELECT file FROM one_to_one_message WHERE (NOT FIND_IN_SET(".$user_id.",m1.deleted_by_members) OR m1.deleted_by_members IS NULL) AND id=m1.id ) as file,u1.*,if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) as user_id ,(SELECT count(one_to_one_message.is_read) from one_to_one_message  WHERE one_to_one_message.is_read=0 and one_to_one_message.from_user_id=m1.from_user_id AND one_to_one_message.to_user_id=".$user_id." group by one_to_one_message.from_user_id) as  unread_count FROM one_to_one_message m1 LEFT JOIN one_to_one_message m2 ON (CONCAT(GREATEST(m1.from_user_id,m1.to_user_id),' ',LEAST(m1.from_user_id,m1.to_user_id)) = CONCAT(GREATEST(m2.from_user_id,m2.to_user_id),' ',LEAST(m2.from_user_id,m2.to_user_id)) AND m1.id < m2.id) JOIN users u1 on u1.id=if(m1.from_user_id=".$user_id.",m1.to_user_id,m1.from_user_id) WHERE m2.id IS NULL AND (m1.from_user_id=".$user_id." or m1.to_user_id=".$user_id.") AND  u1.id NOT IN( Select to_user_id FROM report_users WHERE from_user_id=".$user_id.") AND  u1.id NOT IN( Select from_user_id FROM report_users WHERE to_user_id=".$user_id.") AND  u1.role_id=3 ORDER BY m1.created_at DESC") );
-      if($parents ){       
-
-        foreach($parents as $data){
-          if(!empty($data->message_date)){
-          $date = strtotime($data->message_date); 
-          $data->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
-        }
-        else{
-          $data->message_date =null;
-        }
-       if($data->unread_count==null){ $data->unread_count=0;}
-       }
-
-   }
-   if(!empty($results) ||!empty($parents) ) {
+   if(!empty($results)) {
        $response = [
         'error' => false,
         'message' =>  'Record found',
