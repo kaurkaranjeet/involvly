@@ -166,6 +166,7 @@ class AssignmentController extends Controller {
                          $notificationobj->user_id=$assignment_assign_to;
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='Assignment';
+                          $notificationobj->class_id=$request->class_id;
                           $notificationobj->type='school_notification';
                          $notificationobj->from_user_id=$getData->Assignments->teacher_id;
                          $notificationobj->save();
@@ -185,6 +186,7 @@ class AssignmentController extends Controller {
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='Assignment';
                           $notificationobj->type='school_notification';
+                            $notificationobj->class_id=$request->class_id;
                          $notificationobj->from_user_id=$getData->Student->id;
                          $notificationobj->save();
                                    /* Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); */
@@ -231,6 +233,7 @@ class AssignmentController extends Controller {
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='Assignment';
                           $notificationobj->type='school_notification';
+                           $notificationobj->class_id = $request->class_id;
                          $notificationobj->from_user_id=$getData->Assignments->teacher_id;
                          $notificationobj->save();
                  //Notification::create(['user_id'=>$getData->Student->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
@@ -252,6 +255,7 @@ class AssignmentController extends Controller {
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='Assignment';
                           $notificationobj->type='school_notification';
+                              $notificationobj->class_id = $request->class_id;
                          $notificationobj->from_user_id=$getData->Student->id;
                          $notificationobj->save();
                                   //  Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
@@ -416,6 +420,7 @@ class AssignmentController extends Controller {
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='Assignment';
                           $notificationobj->type='school_notification';
+                              $notificationobj->class_id = $request->class_id;
                          $notificationobj->from_user_id=$request->student_id;
                          $notificationobj->save();
 
@@ -435,6 +440,7 @@ class AssignmentController extends Controller {
                          $notificationobj->notification_message=$message;
                          $notificationobj->notification_type='Assignment';
                           $notificationobj->type='school_notification';
+                              $notificationobj->class_id = $request->class_id;
                          $notificationobj->from_user_id=$request->student_id;
                          $notificationobj->save();
                        // Notification::create(['user_id'=>$users->parent_id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$request->student_id]); 
