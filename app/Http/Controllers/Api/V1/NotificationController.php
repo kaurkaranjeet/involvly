@@ -101,7 +101,7 @@ public function GetNotificationbyClass(Request $request){
 		return response()->json(array('errors' => $validator->errors(),'error' => true));
 	}
 	else{
-	$notifications=	Notification::where('user_id' , $request->teacher_id)->orWhere('from_user_id' , $request->teacher_id)->where('class_id' , $request->class_id)->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
+	$notifications=	Notification::where('user_id' , $request->teacher_id)->where('class_id' , $request->class_id)->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
 if(count($notifications)>0){
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 }else{
