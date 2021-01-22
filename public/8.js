@@ -697,8 +697,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     }],
     tooltip: {
+      custom: function custom(_ref) {
+        var series = _ref.series,
+            seriesIndex = _ref.seriesIndex,
+            dataPointIndex = _ref.dataPointIndex,
+            w = _ref.w;
+        return '<div class="arrow_box">' + "<span>" + w.globals.labels[dataPointIndex] + ": " + series[seriesIndex][dataPointIndex] + "</span>" + "</div>";
+      },
       x: {
-        show: false
+        show: true
+      },
+      y: {
+        title: false
       }
     }
   },

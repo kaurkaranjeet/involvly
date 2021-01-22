@@ -134,7 +134,9 @@ class UserController extends Controller {
         if (!empty($series_sql)) {
 
             foreach ($series_sql as $rr) {
-                $data[] = $rr->views;
+
+                $rv= ['x'=>$rr->date,'y'=>$rr->views];
+                $data[] = $rv;
             }
         }
         $Studentseries[]['data'] = $data;
@@ -143,8 +145,10 @@ class UserController extends Controller {
         $tseries_sql = User::getteachers($id)->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
         if (!empty($tseries_sql)) {
 
+
             foreach ($tseries_sql as $rr) {
-                $tdata[] = $rr->views;
+                 $rva= ['x'=>$rr->date,'y'=>$rr->views];
+                $tdata[] = $rva;
             }
         }
         $Teacherseries[]['data'] = $tdata;
