@@ -65,9 +65,23 @@ public function NotificationSetting(Request $request){
 
 }
 
-
-
-
+	public function GetNotificationbyChild(Request $request){
+	$validator = Validator::make($request->all(), [
+		'user_id' => 'required|exists:users,id',
+		'children_id' => 'required|exists:users,id'
+	]);
+	if($validator->fails()){
+		return response()->json(array('errors' => $validator->errors(),'error' => true));
+	}
+	else{
+	$notifications=	Notification::where('user_id' , $request->children_id)->where('from_user_id' , $request->user_id)->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
+if(count($notifications)>0){
+	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
+}else{
+	return response()->json(array('error' => true, 'message' => ' No Record found', 'data' => []), 200);
 }
-
+	      
+}
+}
+}
 ?> 
