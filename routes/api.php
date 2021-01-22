@@ -189,5 +189,6 @@ Route::prefix('v1')->group(function () {
     Route::post('add_reply_to_comment', 'Api\V1\GroupController@AddReplyComments');
      Route::post('replies_of_comment', 'Api\V1\GroupController@GetReplyComments');
        Route::post('get_all_notifications_by_child', 'Api\V1\NotificationController@GetNotificationbyChild');
+        Route::post('get_notification_by_class', 'Api\V1\NotificationController@GetNotificationbyClass');
 });
 
