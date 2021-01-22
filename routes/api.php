@@ -188,5 +188,6 @@ Route::prefix('v1')->group(function () {
     Route::post('delete_task_assigned_to_me', 'Api\V1\ParentController@RemoveAssignScheduleTask');
     Route::post('add_reply_to_comment', 'Api\V1\GroupController@AddReplyComments');
      Route::post('replies_of_comment', 'Api\V1\GroupController@GetReplyComments');
+       Route::post('get_all_notifications_by_child', 'Api\V1\NotificationController@GetNotificationbyChild');
 });
 
