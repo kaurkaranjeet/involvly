@@ -75,14 +75,14 @@ public function NotificationSetting(Request $request){
 	}
 	else{
 
-		$children_id=$request->children_id;
-		$user_id=$request->user_id;
-		 $notifications=Notification::where(function ($query) use ($children_id, $user_id) {
+		/*$children_id=$request->children_id;
+		$user_id=$request->user_id;*/
+		 /*$notifications=Notification::where(function ($query) use ($children_id, $user_id) {
             $query->where('user_id', $children_id)->where('from_user_id', $user_id);
           })->oRwhere(function ($query) use ($children_id, $user_id) {
             $query->where('from_user_id', $children_id)->where('user_id', $user_id);
-          })->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
-//	$notifications=	Notification::where('user_id' , $request->children_id)->where('from_user_id' , $request->user_id)->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
+          })->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();*/
+$notifications=	Notification::where('from_user_id' , $request->children_id)->where('user_id' , $request->user_id)->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
 if(count($notifications)>0){
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 }else{
@@ -101,7 +101,7 @@ public function GetNotificationbyClass(Request $request){
 		return response()->json(array('errors' => $validator->errors(),'error' => true));
 	}
 	else{
-	$notifications=	Notification::where('user_id' , $request->teacher_id)->orWhere('from_user_id' , $request->teacher_id)->where('class_id' , $request->class_id)->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
+	$notifications=	Notification::where('user_id' , $request->teacher_id)->where('class_id' , $request->class_id)->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
 if(count($notifications)>0){
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 }else{
