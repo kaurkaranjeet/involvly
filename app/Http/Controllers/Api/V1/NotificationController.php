@@ -95,7 +95,7 @@ if(count($notifications)>0){
 public function GetNotificationbyClass(Request $request){
 	$validator = Validator::make($request->all(), [
 		'teacher_id' => 'required|exists:users,id',
-		'class_id' => 'required|exists:users,id'
+		'class_id' => 'required|exists:class_code,id'
 	]);
 	if($validator->fails()){
 		return response()->json(array('errors' => $validator->errors(),'error' => true));
