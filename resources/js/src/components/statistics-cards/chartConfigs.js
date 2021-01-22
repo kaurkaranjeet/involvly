@@ -53,7 +53,21 @@ export default {
       }
     ],
     tooltip: {
-      x: { show: false }
+       custom: function({ series, seriesIndex, dataPointIndex, w }) {
+      return (
+        '<div class="arrow_box">' +
+        "<span>" +
+        w.globals.labels[dataPointIndex] +
+        ": " +
+        series[seriesIndex][dataPointIndex] +
+        "</span>" +
+        "</div>"
+      );
+    },
+
+      x: { show: true },
+        y: {  title: false },
+
     }
   },
   lineChartOptions: {
