@@ -686,36 +686,12 @@ $data_document = [];
           else{ 
 
             $users=DB::select( DB::raw("SELECt *, (SELECT group_concat(u.name) as childrens from parent_childrens
-              INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens from users where role_id=3 and school_id=".$request->school_id));
-            if(!empty($users)){
-              foreach($users as $user){
-                $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS child'))->where('parent_id',$user->id)->first();
-                $childrens= $results->child;
-                if(!empty($childrens)){ 
-                 $resultsq= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name')->whereRaw('children_id IN('.$childrens.')')->get();
-
-                 foreach($resultsq as $related_child){
-                  $related_child->childrens=$user->childrens;
-
-                 }
-                 $user->associated_parents= $resultsq;
-               }
-
-               else{
-                 $obj= new ParentController;
-                 $user->associated_parents= $obj;
-               }
-
-             }
-
+            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens from users where role_id=3 and school_id=".$request->school_id));
+           if(!empty($users)){
 
              return response()->json(array('error' => false, 'message' => 'record found','data' => $users ), 200);
-
-           } 
-         
-
-         else{
-             throw new Exception('No parents');
+           } else{
+             throw new Exception('No another parents');
            }
 
 
