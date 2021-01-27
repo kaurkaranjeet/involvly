@@ -698,7 +698,7 @@ $data_document = [];
                   $related_child->childrens=$user->childrens;
 
                  }
-                 $user->associated_parents= $results;
+                 $user->associated_parents= $resultsq;
                }
 
                else{
