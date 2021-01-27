@@ -692,7 +692,7 @@ $data_document = [];
                 $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS child'))->where('parent_id',$user->id)->first();
                 $childrens= $results->child;
                 if(!empty($childrens)){ 
-                 $results= ParentChildrens::select(DB::raw('DISTINCT parent_id','(SELECT group_concat(u.name) as childrens from parent_childrens
+                 $results= ParentChildrens::select(DB::raw('DISTINCT parent_id, (SELECT group_concat(u.name) as childrens from parent_childrens
               INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=parent_childrens.parent_id)  as childrens'))->with('ParentDetails:id,name')->whereRaw('children_id IN('.$childrens.')')->get();
 
 
