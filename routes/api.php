@@ -191,5 +191,7 @@ Route::prefix('v1')->group(function () {
        Route::post('get_all_notifications_by_child', 'Api\V1\NotificationController@GetNotificationbyChild');
         Route::post('get_notification_by_class', 'Api\V1\NotificationController@GetNotificationbyClass');
          Route::post('get_list_of_parents', 'Api\V1\ParentController@GetListofParents');
+Route::post('get_list_of_teachers', 'Api\V1\ParentController@GetListofTeachers');
+Route::post('get_list_of_students', 'Api\V1\ParentController@GetListofStudents');
 });
 

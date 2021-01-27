@@ -677,7 +677,7 @@ $data_document = [];
 
           $input = $request->all();
           $validator = Validator::make($input, [
-            'school_id' => 'required|exists:users,id',
+            'school_id' => 'required|exists:schools,id',
           ]);
 
           if ($validator->fails()) {
@@ -686,7 +686,7 @@ $data_document = [];
           else{ 
 
             $users=DB::select( DB::raw("SELECt id,name,(SELECT group_concat(u.name) as childrens from parent_childrens
-            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens from users where role_id=3 and school_id=".$request->school_id));
+            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens from users where role_id=3 AND status=1  and school_id=".$request->school_id));
            if(!empty($users)){
 
              return response()->json(array('error' => false, 'message' => 'record found','data' => $users ), 200);
@@ -703,6 +703,64 @@ $data_document = [];
 }
 
 
+ public function GetListofStudents(Request $request) {
+        try {
+
+          $input = $request->all();
+          $validator = Validator::make($input, [
+            'school_id' => 'required|exists:schools,id',
+          ]);
+
+          if ($validator->fails()) {
+            throw new Exception($validator->errors()->first());
+          }  
+          else{ 
+
+            $users=User::where('school_id',$request->school_id)->where('role_id',2)->where('status',1)->get();
+
+           if(!empty($users)){
+
+             return response()->json(array('error' => false, 'message' => 'record found','data' => $users ), 200);
+           } else{
+             throw new Exception('No Record found');
+           }
+
+
+         }
+       }
+  catch (\Exception $e) {
+    return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+  }
+}
+ public function GetListofTeachers(Request $request) {
+        try {
+
+          $input = $request->all();
+          $validator = Validator::make($input, [
+            'school_id' => 'required|exists:schools,id',
+          ]);
+
+          if ($validator->fails()) {
+            throw new Exception($validator->errors()->first());
+          }  
+          else{ 
+
+            $users=User::where('school_id',$request->school_id)->where('role_id',4)->where('status',1)->get();
+
+           if(!empty($users)){
+
+             return response()->json(array('error' => false, 'message' => 'record found','data' => $users ), 200);
+           } else{
+             throw new Exception('No Record found');
+           }
+
+
+         }
+       }
+  catch (\Exception $e) {
+    return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+  }
+}
 
     public function GetRelatedParents(Request $request) {
         try {
@@ -725,6 +783,7 @@ $data_document = [];
          $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
          if(!empty($results)){
           foreach($results as $single){
+
             $single->childrens=$resultsa->childrens;
             }
            return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
