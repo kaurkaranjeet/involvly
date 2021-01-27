@@ -677,7 +677,7 @@ $data_document = [];
 
           $input = $request->all();
           $validator = Validator::make($input, [
-            'school_id' => 'required',
+            'school_id' => 'required|exists:users,id',
           ]);
 
           if ($validator->fails()) {
