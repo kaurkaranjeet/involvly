@@ -716,16 +716,16 @@ $data_document = [];
                 throw new Exception($validator->errors()->first());
        }  
        else{ 
-        $results= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children,(SELECT group_concat(u.name)  from parent_childrens
+        $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children,(SELECT group_concat(u.name)  from parent_childrens
             INNER join users as u On u.id= parent_childrens.children_id  where  parent_id='.$request->parent_id.')  as childrens'))->where('parent_id',$request->parent_id)->first();
-        $childrens= $results->children;
+        $childrens= $resultsa->children;
 
         if(!empty($childrens)){
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
          $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->get();
          if(!empty($results)){
           foreach($results as $single){
-            $single->childrens=$results->childrens;
+            $single->childrens=$resultsa->childrens;
             }
            return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
         
