@@ -672,6 +672,38 @@ $data_document = [];
      }
 
 
+      public function GetListofParents(Request $request) {
+        try {
+
+          $input = $request->all();
+          $validator = Validator::make($input, [
+            'school_id' => 'required',
+          ]);
+
+          if ($validator->fails()) {
+            throw new Exception($validator->errors()->first());
+          }  
+          else{ 
+
+            $users=DB::select( DB::raw("SELECt *, (SELECT group_concat(u.name) as childrens from parent_childrens
+            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens from users where role_id=3 and school_id=".$request->school_id));
+           if(!empty($users)){
+
+             return response()->json(array('error' => false, 'message' => 'record found','data' => $users ), 200);
+           } else{
+             throw new Exception('No another parents');
+           }
+
+
+         }
+       }
+  catch (\Exception $e) {
+    return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+  }
+}
+
+
+
     public function GetRelatedParents(Request $request) {
         try {
 
