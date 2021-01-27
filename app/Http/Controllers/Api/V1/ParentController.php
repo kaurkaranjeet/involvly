@@ -722,7 +722,7 @@ $data_document = [];
 
         if(!empty($childrens)){
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
-         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name')->whereRaw('children_id IN('.$childrens.')')->get();
+         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
          if(!empty($results)){
           foreach($results as $single){
             $single->childrens=$resultsa->childrens;
