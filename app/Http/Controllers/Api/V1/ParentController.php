@@ -835,10 +835,10 @@ foreach($users as $user){
          $results->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->where('parent_id',$request->parent_id)->get();
          if(!empty($results)){
 
-          foreach($results as $single){
+         // foreach($results as $single){
             //$single->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->where('parent_id',$single->parent_id)->get();
 
-          }
+        //  }
           
            return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
         
