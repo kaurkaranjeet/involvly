@@ -830,7 +830,7 @@ foreach($users as $user){
 
         if(!empty($childrens)){
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
-         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->with('ChildDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
+         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id.children_id'))->with('ParentDetails:id,name,first_name,last_name')->with('ChildDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
          if(!empty($results)){
           
            return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
