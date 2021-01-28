@@ -188,11 +188,15 @@ Route::prefix('v1')->group(function () {
     Route::post('clear_chat_by_group', 'Api\V1\GroupController@CLearchatByUser');
     Route::post('delete_task_assigned_to_me', 'Api\V1\ParentController@RemoveAssignScheduleTask');
     Route::post('add_reply_to_comment', 'Api\V1\GroupController@AddReplyComments');
-     Route::post('replies_of_comment', 'Api\V1\GroupController@GetReplyComments');
-       Route::post('get_all_notifications_by_child', 'Api\V1\NotificationController@GetNotificationbyChild');
-        Route::post('get_notification_by_class', 'Api\V1\NotificationController@GetNotificationbyClass');
-         Route::post('get_list_of_parents', 'Api\V1\ParentController@GetListofParents');
-Route::post('get_list_of_teachers', 'Api\V1\ParentController@GetListofTeachers');
-Route::post('get_list_of_students', 'Api\V1\ParentController@GetListofStudents');
+    Route::post('replies_of_comment', 'Api\V1\GroupController@GetReplyComments');
+    Route::post('get_all_notifications_by_child', 'Api\V1\NotificationController@GetNotificationbyChild');
+    Route::post('get_notification_by_class', 'Api\V1\NotificationController@GetNotificationbyClass');
+    Route::post('get_list_of_parents', 'Api\V1\ParentController@GetListofParents');
+    Route::post('get_list_of_teachers', 'Api\V1\ParentController@GetListofTeachers');
+    Route::post('get_list_of_students', 'Api\V1\ParentController@GetListofStudents');
+    Route::post('get_associated_parents', 'Api\V1\ParentController@GetAssociatedParents');
+
+
+
 });
 
