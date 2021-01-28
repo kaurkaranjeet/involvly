@@ -156,13 +156,30 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             throw new Exception($validator->errors()->first());
         } else {
-$parents = User::leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
-                            ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
+$parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_id')
+                            ->Join('class_code', 'user_class_code.class_id', '=', 'class_code.id')
                             ->select('users.*', 'class_code.class_name')->where('role_id', 3)->where('status', 1)->where('class_code.id', $request->class_id)->get();
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
         }
     }
 
+
+  public function GetAssociatedClasses(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'parent_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            throw new Exception($validator->errors()->first());
+        } else {
+
+
+$parents = ClassCode::join('user_class_code', 'class_code.id', '=', 'user_class_code.class_id')
+                            ->select('class_code.*')->where('user_class_code.user_id', $request->parent_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
+        }
+    }
      public function MyParents(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
