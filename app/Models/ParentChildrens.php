@@ -17,7 +17,7 @@ class ParentChildrens extends Model {
    return $this->belongsTo('App\User','children_id','id');
  }
  public function ChildrenDetails(){
-   return $this->belongsToMany('App\User','children_id','id');
+   return $this->hasMany('App\User','children_id','id');
  }
     
 }
