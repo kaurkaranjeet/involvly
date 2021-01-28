@@ -195,7 +195,8 @@ Route::prefix('v1')->group(function () {
     Route::post('get_list_of_teachers', 'Api\V1\ParentController@GetListofTeachers');
     Route::post('get_list_of_students', 'Api\V1\ParentController@GetListofStudents');
     Route::post('get_associated_parents', 'Api\V1\ParentController@GetAssociatedParents');
-     Route::post('my_parents', 'Api\V1\ParentController@MyParents');
+    Route::post('my_parents', 'Api\V1\ParentController@MyParents');
+    Route::post('get_associated_classes', 'Api\V1\ParentController@GetAssociatedClasses');
 
 
 
