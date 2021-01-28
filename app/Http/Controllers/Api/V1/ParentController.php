@@ -179,7 +179,7 @@ $childrens= $resultsa->children;
 if(!empty($childrens)){
 $users=DB::select( DB::raw("Select DISTINCT class_code.* from class_code INNER JOIN user_class_code ON class_code .id =user_class_code .class_id WHERE user_id IN(".$childrens.")"));
 
-            return response()->json(array('error' => false, 'message' => $childrens, 'data' => $users), 200);
+            return response()->json(array('error' => false, 'message' => 'Classes fetched successfully', 'data' => $users), 200);
         }
         else{
             throw new Exception('No classes');
@@ -198,7 +198,7 @@ $users=DB::select( DB::raw("Select DISTINCT class_code.* from class_code INNER J
         } else {
 
 $parents =  ParentChildren::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name')->get();
-      return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
+      return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
         }
 
         }
