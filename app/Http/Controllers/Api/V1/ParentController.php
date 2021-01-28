@@ -834,7 +834,7 @@ foreach($users as $user){
          if(!empty($results)){
 
           foreach($results as $single){
-            $single->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->get();
+            $single->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->where('parent_id',$single->parent_id)->get();
 
           }
           
