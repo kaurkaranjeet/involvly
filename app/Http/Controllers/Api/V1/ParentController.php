@@ -163,6 +163,20 @@ $parents = User::leftJoin('user_class_code', 'users.id', '=', 'user_class_code.u
         }
     }
 
+     public function MyParents(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'student_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            throw new Exception($validator->errors()->first());
+        } else {
+$parents =  ParentChildren::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name')->get();
+      return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
+        }
+    }
+
     public function GethomeStudents(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
