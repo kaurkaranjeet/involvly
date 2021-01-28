@@ -204,7 +204,7 @@ $users=DB::select( DB::raw("Select DISTINCT class_code.* from class_code INNER J
             throw new Exception($validator->errors()->first());
         } else {
 
-$parents =  ParentChildren::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name')->get();
+$parents =  ParentChildrens::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name')->get();
       return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
         }
       }
