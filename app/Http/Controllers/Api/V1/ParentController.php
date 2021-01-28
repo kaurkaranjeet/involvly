@@ -177,7 +177,7 @@ $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_
  $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
 $childrens= $resultsa->children;
 if(!empty($childrens)){
-  $parents = ClassCode::join('user_class_code', 'class_code.id', '=', 'user_class_code.class_id')->select('class_code.*')->whereRaw('user_id IN('.$childrens.')')->get();
+  $parents = ClassCode::join('user_class_code', 'class_code.id', '=', 'user_class_code.class_id')->select('class_code.*')->whereRaw('user_id IN('.$childrens.')')->distinct('class_code.id')->get();
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
         }
         else{
