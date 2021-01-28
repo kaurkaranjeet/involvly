@@ -812,6 +812,42 @@ foreach($users as $user){
   }
 }
 
+
+  public function GetFamily(Request $request) {
+        try {
+
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'parent_id' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+       }  
+       else{ 
+        $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
+        $childrens= $resultsa->children;
+
+        if(!empty($childrens)){
+//         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
+         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->with('ChildDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
+         if(!empty($results)){
+          
+           return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
+        
+         }else{
+          throw new Exception('No another parents');
+        }
+      }
+      else{
+        throw new Exception('No children');
+      }
+    }
+  }
+  catch (\Exception $e) {
+    return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+  }
+}
      public function AcceptRejectTask(Request $request){
         $validator = Validator::make($request->all(), [
                     'task_id' => 'required|exists:parent_tasks,id',
