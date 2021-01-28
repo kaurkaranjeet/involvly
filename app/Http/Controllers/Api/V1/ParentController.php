@@ -199,7 +199,7 @@ if(!empty($childrens)){
 $parents =  ParentChildren::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name')->get();
       return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
         }
-    }
+   
 
     public function GethomeStudents(Request $request) {
         $input = $request->all();
