@@ -829,12 +829,14 @@ foreach($users as $user){
         $childrens= $resultsa->children;
 
         if(!empty($childrens)){
+
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
          $results= ParentChildrens::select(DB::raw('DISTINCT parent_id,children_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
+         $results->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->where('parent_id',$request->parent_id)->get();
          if(!empty($results)){
 
           foreach($results as $single){
-            $single->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->where('parent_id',$single->parent_id)->get();
+            //$single->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->where('parent_id',$single->parent_id)->get();
 
           }
           
