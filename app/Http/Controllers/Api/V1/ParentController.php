@@ -748,6 +748,12 @@ $data_document = [];
 
             $users=User::where('school_id',$request->school_id)->where('role_id',4)->where('status',1)->select( DB::raw('users.id,users.name,(SELECT group_concat( distinct class_name)  from class_code
             INNER join assigned_teachers as u On u.class_id= class_code.id  where  teacher_id=users.id)  as classes'))->get();
+foreach($users as $user){
+            $teachers_subject = AssignedTeacher::with('Subjects')->where('teacher_id', $user->id)->where('school_id', $request->school_id)->get();
+
+            $user->subjects= $teachers_subject;
+
+          }
 
            if(!empty($users)){
 
