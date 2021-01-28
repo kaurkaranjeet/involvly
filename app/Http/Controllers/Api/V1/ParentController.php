@@ -142,8 +142,24 @@ class ParentController extends Controller {
             $students = User::with('SchoolDetail:id,school_name')
                             ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
                             ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
-                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('class_code.class_code', $request->class_code)->where('users.school_id', $request->school_id)->get();
+                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('status', 1)->where('class_code.class_code', $request->class_code)->where('users.school_id', $request->school_id)->get();
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $students), 200);
+        }
+    }
+
+    public function GetAssociatedParents(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'class_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            throw new Exception($validator->errors()->first());
+        } else {
+$parents = User::leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
+                            ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
+                            ->select('users.*', 'class_code.class_name')->where('role_id', 3)->where('status', 1)->where('class_code.id', $request->class_id)->get();
+            return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
         }
     }
 
