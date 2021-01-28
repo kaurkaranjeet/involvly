@@ -165,6 +165,8 @@ $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_
 
 
   public function GetAssociatedClasses(Request $request) {
+
+    try{
         $input = $request->all();
         $validator = Validator::make($input, [
                     'parent_id' => 'required'
@@ -186,8 +188,13 @@ $users=DB::select( DB::raw("Select DISTINCT class_code.* from class_code INNER J
         }
 
     }
+     }
+ catch (\Exception $e) {
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+   }
   }
      public function MyParents(Request $request) {
+       try {
         $input = $request->all();
         $validator = Validator::make($input, [
                     'student_id' => 'required'
@@ -200,6 +207,10 @@ $users=DB::select( DB::raw("Select DISTINCT class_code.* from class_code INNER J
 $parents =  ParentChildren::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name')->get();
       return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
         }
+      }
+ catch (\Exception $e) {
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+   }
 
         }
    
