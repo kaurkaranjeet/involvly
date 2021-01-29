@@ -158,7 +158,7 @@ class ParentController extends Controller {
             throw new Exception($validator->errors()->first());
         } else {
 $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_id')->Join('class_code', 'user_class_code.class_id', '=', 'class_code.id')->select( DB::raw('users.id,users.name,users.role_id, class_code.class_name,(SELECT group_concat( distinct u.name)  from parent_childrens
-            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens'))->where('role_id', 3)->where('status', 1)->where('class_code.id', $request->class_id)->get();
+            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens'))->where('role_id', 3)->where('status', 1)->where('class_code.id', $request->class_id)->groupBy('users.id')->get();
 
 
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
