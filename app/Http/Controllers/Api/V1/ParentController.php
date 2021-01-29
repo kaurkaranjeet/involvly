@@ -148,6 +148,7 @@ class ParentController extends Controller {
     }
 
     public function GetAssociatedParents(Request $request) {
+          try{
         $input = $request->all();
         $validator = Validator::make($input, [
                     'class_id' => 'required'
@@ -156,12 +157,16 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             throw new Exception($validator->errors()->first());
         } else {
-$parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_id')->Join('class_code', 'user_class_code.class_id', '=', 'class_code.id')->select( DB::raw('users.id,users.name, class_code.class_name,(SELECT group_concat( distinct u.name)  from parent_childrens
+$parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_id')->Join('class_code', 'user_class_code.class_id', '=', 'class_code.id')->select( DB::raw('users.id,users.name,users.role_id, class_code.class_name,(SELECT group_concat( distinct u.name)  from parent_childrens
             INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens'))->where('role_id', 3)->where('status', 1)->where('class_code.id', $request->class_id)->get();
 
 
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
+          }
         }
+         catch (\Exception $e) {
+     return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+   }
     }
 
 
@@ -205,7 +210,7 @@ $users=DB::select( DB::raw("Select DISTINCT class_code.* from class_code INNER J
             throw new Exception($validator->errors()->first());
         } else {
 
-$parents =  ParentChildrens::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name')->get();
+$parents =  ParentChildrens::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name,role_id')->get();
       return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
         }
       }
