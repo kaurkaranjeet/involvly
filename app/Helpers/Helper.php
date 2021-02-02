@@ -85,7 +85,7 @@ else
 fclose ($tSocket);
 }
 
-function SendAllNotification($token,$message,$notify_type){
+function SendAllNotification($token,$message,$notify_type,$schedule=null){
 $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0DRK4BLTUAGpz6FbDKF9a4UmrIm8Sb6tajxHfCJBzKnDnf7jgg9dgu3oLDNFD0bonhRNUOf9-Cl8jQhbs3mPoaqKxge';
  $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 // $token='235zgagasd634sdgds46436';
@@ -97,7 +97,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             "click_action"=>"FLUTTER_NOTIFICATION_CLICK",
             'badge' => '1'
         ];
-        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type];
+        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"schedule"=>$schedule];
 
         $fcmNotification = [
             //'registration_ids' => $tokenList, //multple token array

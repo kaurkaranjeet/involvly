@@ -1001,10 +1001,7 @@ $data_document = [];
         $tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$request->schedule_id)->first();
         ParentTaskAssigned::where('task_id',$tasks->id)->update(['handover' => '1']);
         $user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token')->get();
-        if(!empty($user[0]->device_token)){
-
-         SendAllNotification($user[0]->device_token, 'A Schedule has been handed over to you.', 'social_notification');
-       }
+        
 
             $notificationobj=new Notification;
             $notificationobj->user_id=$tasks->AssignedUser->id;
@@ -1019,6 +1016,10 @@ $data_document = [];
               $scheduke->User;
              $scheduke->assigned_to=$user;
                 $scheduke->is_accept='0';
+                if(!empty($user[0]->device_token)){
+
+         SendAllNotification($user[0]->device_token, 'A Schedule has been handed over to you.', 'social_notification',$scheduke);
+       }
               $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
         /*foreach($tasks  as $single_task){
         ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
