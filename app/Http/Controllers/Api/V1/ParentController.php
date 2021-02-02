@@ -1090,7 +1090,7 @@ $data_document = [];
                     $this->pusher->trigger('decline-channel', 'decline_schedule', $schedule);
                   }
                  if (!empty($schedule->User->device_token)) { 
-              SendAllNotification($schedule->User->device_token,$message, 'social_notification',$type);
+              SendAllNotification($schedule->User->device_token,$message, 'social_notification',null,$type);
             }
 
 
