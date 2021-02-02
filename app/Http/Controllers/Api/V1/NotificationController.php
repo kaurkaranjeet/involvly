@@ -8,6 +8,7 @@ use JWTAuth;
 use Exception;
 use App\User;
 use App\Models\Notification;
+use App\Models\Schedule;
 use DB;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
