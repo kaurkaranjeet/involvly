@@ -400,7 +400,7 @@ $data_document = [];
 
               $message='A new task has been assigned to you in this schedule \''. $taskassignedids->schedule_name.'\'';
               if (!empty($user_data_to->device_token)) { 
-                SendAllNotification($user_data_to->device_token, $message, 'social_notification',$task->id);
+                SendAllNotification($user_data_to->device_token, $message, 'social_notification',$task->id,'add_task');
               }
               $notificationobj=new Notification;
               $notificationobj->user_id=$user_data_to->id;
@@ -1018,7 +1018,7 @@ $data_document = [];
                 $scheduke->is_accept='0';
                 if(!empty($user[0]->device_token)){
 
-         SendAllNotification($user[0]->device_token, 'A Schedule has been handed over to you.', 'social_notification',$scheduke);
+         SendAllNotification($user[0]->device_token, 'A Schedule has been handed over to you.', 'social_notification',$scheduke, 'handover');
        }
               $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
         /*foreach($tasks  as $single_task){
@@ -1059,6 +1059,7 @@ $data_document = [];
          $user=User::find($request->parent_id);        
          if(!empty($schedule)){
           if($request->accept_reject==1){
+            $type='accepted';
             if(!empty($schedule->accept_reject_schedule)){
               $schedule->accept_reject_schedule=$schedule->accept_reject_schedule.','.$request->parent_id;
 
@@ -1069,6 +1070,7 @@ $data_document = [];
             $message=$user->name.' has accepted the schedule ' .$schedule->schedule_name; 
           }
           if($request->accept_reject==2){
+            $type='rejected';
             if(!empty($schedule->rejected_user)){
               $schedule->rejected_user=$schedule->rejected_user.','.$request->parent_id;
 
@@ -1088,7 +1090,7 @@ $data_document = [];
                     $this->pusher->trigger('decline-channel', 'decline_schedule', $schedule);
                   }
                  if (!empty($schedule->User->device_token)) { 
-              SendAllNotification($schedule->User->device_token,$message, 'social_notification');
+              SendAllNotification($schedule->User->device_token,$message, 'social_notification',$type);
             }
 
 

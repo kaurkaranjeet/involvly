@@ -85,7 +85,7 @@ else
 fclose ($tSocket);
 }
 
-function SendAllNotification($token,$message,$notify_type,$schedule=null){
+function SendAllNotification($token,$message,$notify_type,$schedule=null,$type=null){
 $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0DRK4BLTUAGpz6FbDKF9a4UmrIm8Sb6tajxHfCJBzKnDnf7jgg9dgu3oLDNFD0bonhRNUOf9-Cl8jQhbs3mPoaqKxge';
  $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 // $token='235zgagasd634sdgds46436';
@@ -98,10 +98,12 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             'badge' => '1'
         ];
         if(is_object($schedule)){
-        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"schedule"=>$schedule];
+        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"schedule"=>$schedule,"type"=>$type];
     }else{
-    	$extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"task_id"=>$schedule];
+    	$extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"task_id"=>$schedule,"type"=>$type];
     }
+
+
 
         $fcmNotification = [
             //'registration_ids' => $tokenList, //multple token array
