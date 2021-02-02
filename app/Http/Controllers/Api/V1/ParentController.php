@@ -1004,7 +1004,7 @@ $data_document = [];
         
 
             $notificationobj=new Notification;
-            $notificationobj->user_id=$tasks->AssignedUser->id;
+            $notificationobj->user_id=$tasks->AssignedUser->task_assigned_to;
             $notificationobj->notification_message='A Schedule has been handed over to you';
             $notificationobj->notification_type='task_assign';
             $notificationobj->type='social_notification';
