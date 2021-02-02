@@ -160,7 +160,7 @@ class AssignmentController extends Controller {
                  $message = 'You have been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name.' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
                 if (!empty($getData->Student->device_token)) {  
                   //  $notify_type = 'Assignment';
-                 SendAllNotification($getData->Student->device_token, $message, 'school_notification');
+                 SendAllNotification($getData->Student->device_token, $message, 'school_notification',$request->assignment_id,'add_assignment');
              }
               $notificationobj=new Notification;
                          $notificationobj->user_id=$assignment_assign_to;
@@ -168,6 +168,7 @@ class AssignmentController extends Controller {
                          $notificationobj->notification_type='Assignment';
                           $notificationobj->class_id=$request->class_id;
                           $notificationobj->type='school_notification';
+                          $notificationobj->assignment_id=$request->assignment_id;
                          $notificationobj->from_user_id=$getData->Assignments->teacher_id;
                          $notificationobj->save();
                 // Notification::create(['user_id'=>$assignment_assign_to,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
