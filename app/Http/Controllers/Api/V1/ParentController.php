@@ -409,6 +409,7 @@ $data_document = [];
               $notificationobj->task_id=$task->id;
               $notificationobj->schedule_id=$task->schedule_id;
               $notificationobj->type='social_notification';
+               $notificationobj->push_type='add_task';
               $notificationobj->from_user_id=$user_data_by->id;
               $notificationobj->save();
        
@@ -1011,6 +1012,7 @@ $data_document = [];
             $notificationobj->from_user_id=$tasks->task_assigned_by;
             $notificationobj->task_id=$tasks->id;
             $notificationobj->schedule_id=$tasks->schedule_id;
+               $notificationobj->push_type='handover';
             $notificationobj->save();
            
               $scheduke->User;
@@ -1101,6 +1103,7 @@ $data_document = [];
             $notificationobj->type='social_notification';
             $notificationobj->from_user_id=$user->id;
              $notificationobj->schedule_id=$schedule->id;
+                $notificationobj->push_type=$type;
             $notificationobj->save();
           
           
