@@ -101,10 +101,10 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
         $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"schedule"=>$schedule];
     }else{
         if($type=='add_assignment'){
-                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"task_id"=>$schedule];
+                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"assignment_id"=>$schedule];
             }
                 else{
-                        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"assignment_id"=>$schedule];
+                        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"task_id"=>$schedule];
 
                 }  
         }
