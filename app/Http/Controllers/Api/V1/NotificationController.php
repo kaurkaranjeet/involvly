@@ -33,7 +33,22 @@ class NotificationController extends Controller {
 			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User')->get();
 		}
 	
-if(count($notifications)>0){
+
+		foreach($notifications as $single_notification){
+			if(!empty($single_notification->schedule_id)){
+				$scheduke=	Schedule::with('User')->where('schedule_id',$single_notification->schedule_id)->first();
+				$tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$single_notification->schedule_id)->first();
+				$user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token')->get();
+				$scheduke->assigned_to=$user;
+
+				$single_notification->schedule=$scheduke;
+			}
+			else{
+				$single_notification->schedule=null;
+
+			}
+		}
+		if(count($notifications)>0){
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 }else{
 	return response()->json(array('error' => true, 'message' => ' No Record found', 'data' => []), 200);
