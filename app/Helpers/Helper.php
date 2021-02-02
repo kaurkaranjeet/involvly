@@ -98,9 +98,9 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             'badge' => '1'
         ];
         if(is_object($schedule)){
-        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"schedule"=>$schedule,"push_type"=>$type];
+        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"schedule"=>$schedule];
     }else{
-    	$extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"task_id"=>$schedule,"type"=>$type];
+    	$extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"task_id"=>$schedule];
     }
 
 
