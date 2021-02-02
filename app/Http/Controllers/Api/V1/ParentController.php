@@ -400,7 +400,7 @@ $data_document = [];
 
               $message='A new task has been assigned to you in this schedule \''. $taskassignedids->schedule_name.'\'';
               if (!empty($user_data_to->device_token)) { 
-                SendAllNotification($user_data_to->device_token, $message, 'social_notification');
+                SendAllNotification($user_data_to->device_token, $message, 'social_notification',$task->id);
               }
               $notificationobj=new Notification;
               $notificationobj->user_id=$user_data_to->id;

@@ -97,7 +97,11 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             "click_action"=>"FLUTTER_NOTIFICATION_CLICK",
             'badge' => '1'
         ];
+        if(is_object($schedule)){
         $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"schedule"=>$schedule];
+    }else{
+    	$extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"task_id"=>$schedule];
+    }
 
         $fcmNotification = [
             //'registration_ids' => $tokenList, //multple token array
