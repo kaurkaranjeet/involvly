@@ -213,7 +213,7 @@ $users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_cod
 //DB::enableQueryLog(); // Enable query log
 $parents =  ParentChildrens::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name,role_id')->get();
 foreach($parents as $single){
-   $children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$single->parent_id)->get();
+   $children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$single->parent_id)->distinct()->get();
    $single->childrens=$children;
  }
 
