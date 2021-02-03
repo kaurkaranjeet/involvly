@@ -19,7 +19,7 @@ class ParentChildrens extends Model {
  
 
  public function childrens(){
-  return $this->belongsToMany('App\User','parent_childrens' ,'parent_id', 'parent_id');
+  return $this->belongsToMany('App\User','parent_childrens' ,'parent_id', 'children_id');
 }
     
 }

@@ -210,9 +210,9 @@ $users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_cod
             throw new Exception($validator->errors()->first());
         } else {
 
-DB::enableQueryLog(); // Enable query log
-$parents =  ParentChildrens::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name,role_id')->with('childrens')->get();
-dd(DB::getQueryLog());
+//DB::enableQueryLog(); // Enable query log
+$parents =  ParentChildrens::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name,role_id')->get();
+//dd(DB::getQueryLog());
       return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
         }
       }
