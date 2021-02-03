@@ -139,7 +139,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
         curl_close($ch);
 
 
-        print_r( $extraNotificationData);
+     //   print_r( $extraNotificationData);
 
 }
 
