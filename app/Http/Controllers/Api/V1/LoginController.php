@@ -44,6 +44,7 @@ class LoginController extends Controller {
             $user_details = User::validateLogin($request->all());
             //Update Device Token
             User::where('id',$user_details->id)->update(['device_token' => $request->device_token]);
+            $user_details->device_token=$request->device_token;
             // get class code 
            // if ($user_details->role_id == 2) {
                 $classCode = UserClassCode::where('user_id', $user_details->id)->orderBy('id', 'DESC')->first();
