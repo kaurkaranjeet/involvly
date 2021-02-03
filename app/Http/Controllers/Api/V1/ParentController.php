@@ -216,7 +216,7 @@ foreach($parents as $single){
    $children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$single->parent_id)->get();
    $single->childrens=$children;
  }
-}
+
 //dd(DB::getQueryLog());
       return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
         }
