@@ -160,7 +160,7 @@ class AssignmentController extends Controller {
                  $message = 'You have been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name.' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
                 if (!empty($getData->Student->device_token)) {  
                   //  $notify_type = 'Assignment';
-                 SendAllNotification($getData->Student->device_token, $message, 'school_notification',$request->assignment_id,'add_assignment');
+                 SendAllNotification($getData->Student->device_token, $message, 'school_notification',$request->assignment_id,'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
              }
               $notificationobj=new Notification;
                          $notificationobj->user_id=$assignment_assign_to;
@@ -434,7 +434,7 @@ class AssignmentController extends Controller {
                        // $usersData = User::where('id', $users->parent_id)->first();
                     //send notification
                         $message =  $getData->Student->name .' has submitted an assignment.';
-                        if (!empty($users->ParentDetails->device_token) && $users->ParentDetails->device_token != null) { SendAllNotification($users->ParentDetails->device_token, $message, 'school_notification');
+                        if (!empty($users->ParentDetails->device_token) && $users->ParentDetails->device_token != null) { SendAllNotification($users->ParentDetails->device_token, $message, 'school_notification',$request->assignment_id,'submitted');
                         }
                          $notificationobj=new Notification;
                          $notificationobj->user_id=$users->parent_id;
