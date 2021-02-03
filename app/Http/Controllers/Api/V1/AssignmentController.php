@@ -168,6 +168,7 @@ class AssignmentController extends Controller {
                          $notificationobj->notification_type='Assignment';
                           $notificationobj->class_id=$request->class_id;
                           $notificationobj->type='school_notification';
+                            $notificationobj->push_type='add_assign';
                           $notificationobj->assignment_id=$request->assignment_id;
                          $notificationobj->from_user_id=$getData->Assignments->teacher_id;
                          $notificationobj->save();
