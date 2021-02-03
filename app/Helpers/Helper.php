@@ -1,5 +1,5 @@
 <?php
-use App\Models\AssignedAssignments;
+//use App\Models\AssignedAssignments;
 function number_format_short( $n, $precision = 1 ) {
 	if ($n < 900) {
 		// 0 - 900
@@ -101,7 +101,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
         $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"schedule"=>$schedule];
     }else{
         if($type=='add_assign'||$type=='submitted'){
-           $subject= AssignedAssignments::where("assignment_id",$schedule)->select("subject_id","class_id")->first();
+           //$subject= AssignedAssignments::where("assignment_id",$schedule)->select("subject_id","class_id")->first();
                 $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"assignment_id"=>$schedule];
             }
                 else{
