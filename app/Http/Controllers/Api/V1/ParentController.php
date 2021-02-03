@@ -210,7 +210,7 @@ $users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_cod
             throw new Exception($validator->errors()->first());
         } else {
 
-$parents =  ParentChildrens::where('children_id',$request->student_id)->with('ParentDetails:id,name,first_name,last_name,role_id')->get();
+$parents =  ParentChildrens::where('children_id',$request->student_id)->whereRaw('(SELECT group_concat(u.name) from  users as u where  u.id=parent_childrens.parent_id)  as childrens')->with('ParentDetails:id,name,first_name,last_name,role_id')->get();
       return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
         }
       }
