@@ -197,7 +197,7 @@ Route::prefix('v1')->group(function () {
     Route::post('get_associated_parents', 'Api\V1\ParentController@GetAssociatedParents');
     Route::post('my_parents', 'Api\V1\ParentController@MyParents');
     Route::post('get_associated_classes', 'Api\V1\ParentController@GetAssociatedClasses');
-
+ Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
 
 
 });

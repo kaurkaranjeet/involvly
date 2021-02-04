@@ -40,6 +40,40 @@ class ParentController extends Controller {
         );
     }
 
+      // Register Student
+    public function FirststepParentRegister(Request $request) {
+        try {
+
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'first_name' => 'required',
+                        'device_token' => 'required',
+                        'last_name' => 'required',
+                        'email' => 'required|unique:users',
+                        'password' => 'required',
+                        'type_of_schooling' => 'required',
+                        'country' => 'required',
+                        'state_id' => 'required|exists:states,id',
+                        'city_id' => 'required|exists:cities,id',
+                      //  'school_id' => 'required_if:type_of_schooling, =,school'
+            ]);
+
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                $student_obj = new User;
+                $addUser = $student_obj->store($request);
+                $token = JWTAuth::fromUser($addUser);
+                $addUser->jwt_token = $token;
+           return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$addUser), 200);
+              
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+
     // Register Student
     public function ParentRegister(Request $request) {
         try {
