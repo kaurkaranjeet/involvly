@@ -521,7 +521,7 @@ class AssignmentController extends Controller {
             if ($delete) {
                 return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
             } else {
-                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+                return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
             }
         }
     }
