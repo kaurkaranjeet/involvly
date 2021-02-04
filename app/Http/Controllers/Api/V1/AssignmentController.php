@@ -306,7 +306,7 @@ class AssignmentController extends Controller {
             $assignment = Assignment::select((DB::raw("assignments.*,( CASE WHEN EXISTS (
               SELECT id
               FROM submitted_assignments
-              WHERE assignment_id = assignments.id  AND submitted_assignments.submit_status = 1 AND student_id=".$request->user_id."
+              WHERE assignment_id = assignments.id  AND submitted_assignments.submit_status = '1' AND student_id=".$request->user_id."
               ) THEN TRUE ELSE FALSE END) AS is_submit")))->with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
 
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
