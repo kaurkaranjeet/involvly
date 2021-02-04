@@ -444,7 +444,7 @@ class AssignmentController extends Controller {
                     foreach ($results as $users) {
                        // $usersData = User::where('id', $users->parent_id)->first();
                     //send notification
-                        $message =  $getData->Student->name .' has submitted an assignment. '.$getData->Assignments->assignments_name;
+                        $message =  $getData->Student->name .' has submitted an assignment '.$getData->Assignments->assignments_name;
                         if (!empty($users->ParentDetails->device_token) && $users->ParentDetails->device_token != null) { SendAllNotification($users->ParentDetails->device_token, $message, 'school_notification');
                         }
                          $notificationobj=new Notification;
