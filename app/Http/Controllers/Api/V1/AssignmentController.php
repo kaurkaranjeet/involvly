@@ -307,9 +307,8 @@ class AssignmentController extends Controller {
               SELECT id
               FROM submitted_assignments
               WHERE assignment_id = assignments.id  AND submitted_assignments.submit_status = 1
-              ) THEN TRUE
-              ELSE FALSE END)
-              AS is_submit"))->with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
+              ) THEN TRUE ELSE FALSE END) AS is_submit")))->with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
+
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
     }
