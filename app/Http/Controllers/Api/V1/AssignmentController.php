@@ -356,7 +356,9 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+          $delete = SubmittedAssignments::where('assignment_id', $request->assignment_id)->delete();
             $delete = Assignment::where('id', $request->assignment_id)->delete();
+
             if ($delete) {
                 return response()->json(array('error' => false, 'message' => 'Removed successfully', 'data' => []), 200);
             } else {
