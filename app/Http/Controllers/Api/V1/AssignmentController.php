@@ -162,16 +162,16 @@ class AssignmentController extends Controller {
                   //  $notify_type = 'Assignment';
                  SendAllNotification($getData->Student->device_token, $message, 'school_notification',$request->assignment_id,'add_assign');
              }
-              $notificationobj=new Notification;
-                         $notificationobj->user_id=$assignment_assign_to;
-                         $notificationobj->notification_message=$message;
-                         $notificationobj->notification_type='Assignment';
-                          $notificationobj->class_id=$request->class_id;
-                          $notificationobj->type='school_notification';
-                            $notificationobj->push_type='add_assign';
-                          $notificationobj->assignment_id=$request->assignment_id;
-                         $notificationobj->from_user_id=$getData->Assignments->teacher_id;
-                         $notificationobj->save();
+             $notificationobj=new Notification;
+             $notificationobj->user_id=$assignment_assign_to;
+             $notificationobj->notification_message=$message;
+             $notificationobj->notification_type='Assignment';
+             $notificationobj->class_id=$request->class_id;
+             $notificationobj->type='school_notification';
+             $notificationobj->push_type='add_assign';
+             $notificationobj->assignment_id=$request->assignment_id;
+             $notificationobj->from_user_id=$getData->Assignments->teacher_id;
+             $notificationobj->save();
                 // Notification::create(['user_id'=>$assignment_assign_to,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
                         $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->groupBy('parent_id')->get();
                         if (!empty($results)) {
@@ -183,14 +183,14 @@ class AssignmentController extends Controller {
                                    //  $notify_type = 'Assignment';
                                     SendAllNotification($usersData->device_token, $message, 'school_notification');
                                 }
-                                 $notificationobj=new Notification;
-                         $notificationobj->user_id=$usersData->id;
-                         $notificationobj->notification_message=$message;
-                         $notificationobj->notification_type='Assignment';
-                          $notificationobj->type='school_notification';
-                            $notificationobj->class_id=$request->class_id;
-                         $notificationobj->from_user_id=$getData->Student->id;
-                         $notificationobj->save();
+                                $notificationobj=new Notification;
+                                $notificationobj->user_id=$usersData->id;
+                                $notificationobj->notification_message=$message;
+                                $notificationobj->notification_type='Assignment';
+                                $notificationobj->type='school_notification';
+                                $notificationobj->class_id=$request->class_id;
+                                $notificationobj->from_user_id=$getData->Student->id;
+                                $notificationobj->save();
                                    /* Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); */
                                 
                             }
@@ -302,7 +302,7 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $assignment = Assignment::with('User')->where('id', $request->assignment_id)->first();
+            $assignment = Assignment::with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
     }
