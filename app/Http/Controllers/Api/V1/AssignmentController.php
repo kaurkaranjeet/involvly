@@ -298,11 +298,18 @@ class AssignmentController extends Controller {
     public function GetAssignmentDetails(Request $request) {
         $validator = Validator::make($request->all(), [
                     'assignment_id' => 'required|exists:assignments,id',
+                    'user_id' => 'required|exists:users,id',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $assignment = Assignment::with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
+            $assignment = Assignment::select((DB::raw("assignments.*,( CASE WHEN EXISTS (
+              SELECT id
+              FROM submitted_assignments
+              WHERE assignment_id = assignments.id  AND submitted_assignments.submit_status = 1
+              ) THEN TRUE
+              ELSE FALSE END)
+              AS is_submit"))->with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
     }
