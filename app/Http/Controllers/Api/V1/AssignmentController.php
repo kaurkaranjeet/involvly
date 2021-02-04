@@ -226,7 +226,7 @@ class AssignmentController extends Controller {
                         $message = 'You have been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name.' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
 
                         if (!empty($getData->Student->device_token)) {                                  
-                         
+
                 // $notify_type = 'Assignment';
                          SendAllNotification($getData->Student->device_token, $message, 'school_notification',$request->assignment_id,'add_assign');
                        }
@@ -250,7 +250,7 @@ class AssignmentController extends Controller {
                     //send notification
                 $message =  $getData->Student->name .' has been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name .' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
                 if (!empty($usersData->device_token)) { 
-                  
+
                   SendAllNotification($usersData->device_token, $message, 'school_notification');
                 }
 
@@ -412,7 +412,7 @@ class AssignmentController extends Controller {
 
                      
             if ($updateData) {
-                $getData = SubmittedAssignments::with('subjects')->with('Assignments','Student')->where('assignment_id', $request->assignment_id)
+                $getData = SubmittedAssignments::with('subjects:id,subject_name')->with('Assignments','Student:id,name,profile_image')->where('assignment_id', $request->assignment_id)
                         ->where('student_id', $request->student_id)
                         ->where('subject_id', $request->subject_id)
                         ->where('class_id', $request->class_id)
