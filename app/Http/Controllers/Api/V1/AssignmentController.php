@@ -207,9 +207,9 @@ class AssignmentController extends Controller {
                 $task->assignment_assign_to = $data;
             } else {
                 //get students by class_id
-                $students = UserClassCode::join('users','users.id','=','user_class_code.user_id')->where('class_id', $request->class_id)->where('users.role_id', '2')->get();
-                if (!empty($students)) {
-                    foreach ($students as $users) {
+              $students = UserClassCode::join('users','users.id','=','user_class_code.user_id')->where('class_id', $request->class_id)->where('users.role_id', '2')->get();
+              if (!empty($students)) {
+                foreach ($students as $users) {
                         //add data in submitted assignments table
                         $submitted = new SubmittedAssignments; //then create new object
                         $submitted->assignment_id = $request->assignment_id;
@@ -221,45 +221,47 @@ class AssignmentController extends Controller {
                         $submitted->save();
 
                         // $child_name=User::where('id', $users->user_id)->first();
-                $getData = SubmittedAssignments::with('subjects')->with('Student','Assignments')->where('student_id', $users->user_id)->where('assignment_id', $request->assignment_id)->first();
-                 $teacher_name=User::where('id', $getData->Assignments->teacher_id)->first();
-                $message = 'You have been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name.' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
+                        $getData = SubmittedAssignments::with('subjects')->with('Student','Assignments')->where('student_id', $users->user_id)->where('assignment_id', $request->assignment_id)->first();
+                        $teacher_name=User::where('id', $getData->Assignments->teacher_id)->first();
+                        $message = 'You have been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name.' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
 
-                if (!empty($getData->Student->device_token)) {                                  
-                 
+                        if (!empty($getData->Student->device_token)) {                                  
+                         
                 // $notify_type = 'Assignment';
-                 SendAllNotification($getData->Student->device_token, $message, 'school_notification');
-             }
-              $notificationobj=new Notification;
-                         $notificationobj->user_id=$getData->Student->id;
-                         $notificationobj->notification_message=$message;
-                         $notificationobj->notification_type='Assignment';
-                          $notificationobj->type='school_notification';
-                           $notificationobj->class_id = $request->class_id;
-                         $notificationobj->from_user_id=$getData->Assignments->teacher_id;
-                         $notificationobj->save();
+                         SendAllNotification($getData->Student->device_token, $message, 'school_notification',$request->assignment_id,'add_assign');
+                       }
+             $notificationobj=new Notification;
+             $notificationobj->user_id=$getData->Student->id;
+             $notificationobj->notification_message=$message;
+             $notificationobj->notification_type='Assignment';
+             $notificationobj->type='school_notification';
+             $notificationobj->class_id = $request->class_id;
+             $notificationobj->push_type='add_assign';
+             $notificationobj->assignment_id=$request->assignment_id;
+             $notificationobj->from_user_id=$getData->Assignments->teacher_id;
+             $notificationobj->save();
                  //Notification::create(['user_id'=>$getData->Student->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
 
-                        $results = ParentChildrens::with('ChildDetails')->where('children_id', $users->user_id)->groupBy('parent_id')->get();
-                        if (!empty($results)) {
-                            foreach ($results as $users) {
-                                $usersData = User::where('id', $users->parent_id)->first();
+             $results = ParentChildrens::with('ChildDetails')->where('children_id', $users->user_id)->groupBy('parent_id')->get();
+             if (!empty($results)) {
+              foreach ($results as $users) {
+                $usersData = User::where('id', $users->parent_id)->first();
 
                     //send notification
-                                 $message =  $getData->Student->name .' has been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name .' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
-                                if (!empty($usersData->device_token)) { 
-                                
-                                    SendAllNotification($usersData->device_token, $message, 'school_notification');
-                                }
+                $message =  $getData->Student->name .' has been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name .' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
+                if (!empty($usersData->device_token)) { 
+                  
+                  SendAllNotification($usersData->device_token, $message, 'school_notification');
+                }
 
-                                $notificationobj=new Notification;
-                         $notificationobj->user_id=$usersData->id;
-                         $notificationobj->notification_message=$message;
-                         $notificationobj->notification_type='Assignment';
-                          $notificationobj->type='school_notification';
-                              $notificationobj->class_id = $request->class_id;
-                         $notificationobj->from_user_id=$getData->Student->id;
-                         $notificationobj->save();
+                $notificationobj=new Notification;
+                $notificationobj->user_id=$usersData->id;
+                $notificationobj->notification_message=$message;
+                $notificationobj->notification_type='Assignment';
+                $notificationobj->type='school_notification';
+                $notificationobj->class_id = $request->class_id;
+                $notificationobj->from_user_id=$getData->Student->id;
+                $notificationobj->save();
                                   //  Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
                                 
                             }
