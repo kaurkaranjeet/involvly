@@ -96,7 +96,16 @@ class ParentController extends Controller {
               $student_obj->state_id=$request->state_id;
               $student_obj->city=$request->city_id;
               $student_obj->school_id=$request->school_id;
-               $student_obj->family_code=$request->family_code;
+            $student_obj->status=2;
+            if($student_obj->role_id !='4'){
+              if(empty($student_obj->family_code)){
+               $family_code= md5(trim($student_obj->first_name.$request->user_id));
+             }
+             else{
+              $student_obj->family_code=$request->family_code;
+            }
+          }
+             
                if($request->has('school_name')){
                 $school_obj=new School;
                 $school_obj->city_id=$request->city_id;
