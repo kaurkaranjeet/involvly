@@ -84,7 +84,7 @@ class ParentController extends Controller {
               'type_of_schooling' => 'required',
               'state_id' => 'required|exists:states,id',
               'city_id' => 'required|exists:cities,id',
-              'school_id' => 'required_if:type_of_schooling, =,school'
+              //'school_id' => 'required_if:type_of_schooling, =,school'
 
             ]);
 
@@ -96,6 +96,7 @@ class ParentController extends Controller {
               $student_obj->state_id=$request->state_id;
               $student_obj->city_id=$request->city_id;
               $student_obj->school_id=$request->school_id;
+               $student_obj->family_code=$request->family_code;
               $student_obj->save();  
              return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$student_obj), 200);
               
