@@ -86,12 +86,13 @@ class User extends Authenticatable implements JWTSubject {
        if(isset($request->school_id)){
          $this->school_id =$request->school_id;
      }
-       $this->country =$request->country;
+     $this->country='United States';
+      /* $this->country =$request->country;
        $this->city =$request->city_id;
        if(isset($request->join_community)){
           $this->join_community= $request->join_community;
        }
-       $this->type_of_schooling =$request->type_of_schooling;
+       $this->type_of_schooling =$request->type_of_schooling;*/
        $this->save();
        if ($this->id > 0) {
         return $this;
