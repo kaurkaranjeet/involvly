@@ -118,8 +118,9 @@ class ParentController extends Controller {
                   ['class_name'=>'11th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
                   ['class_name'=>'12th Class', 'approved'=> 1, 'school_id'=> $school_obj->id]
                 ];
+                 ClassCode::insert($data);
                 $student_obj->school_id=$school_obj->id;
-                ClassCode::insert($data);
+               
                 if (!empty($request->class_id)) {
                       $class=$request->class_id-1;
                       $search_class_name= $data[$class]['class_name'];
