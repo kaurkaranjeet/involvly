@@ -116,13 +116,39 @@ class ParentController extends Controller {
                   ['class_name'=>'9th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
                   ['class_name'=>'10th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
                   ['class_name'=>'11th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'12th Class', 'approved'=> 1, 'school_id'=> $school_obj->id];
+                  ['class_name'=>'12th Class', 'approved'=> 1, 'school_id'=> $school_obj->id]
                 ];
                 $student_obj->school_id=$school_obj->school_id;
                 ClassCode::insert($data);
+                if (!empty($request->class_id)) {
+                      $class=$request->class_id-1;
+                      $search_class_name= $data[$class]['class_name'];
+                      $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->school_id)->first();
+                      if (!empty($class_code)) {
+                        $classobj=  ClassUser::create(
+                          ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
+                      } else {
+                        return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
+                      }
+                    }
 
               }
-                $student_obj->save();             
+
+
+                $student_obj->save();  
+
+                if (!empty($request->class_code)) {
+                        $class_code = ClassCode::where('class_code', $request->class_code)->first();
+                        if (!empty($class_code)) {
+                          $classobj=  ClassUser::create(
+                                    ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
+                        } else {
+                            return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
+                        }
+                    }  
+
+
+
              return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$student_obj), 200);
               
             }
