@@ -100,9 +100,16 @@ class ParentController extends Controller {
             $student_obj->status=2;
             if($student_obj->role_id !='4'){
               if(empty($student_obj->family_code)){
-               $family_code= md5(trim($student_obj->first_name.$request->user_id));
-               $family_code= substr($family_code, 6);
+                $digits = 4;
+               $family_code=rand(pow(10, $digits-1), pow(10, $digits)-1);           
                $student_obj->family_code=$family_code;
+             }
+             else{
+             $code= User::where('family_code',$request->family_code)->count();
+             if( $code==0){
+
+                   throw new Exception('Invalid family code');
+             }
              }
              
           }
