@@ -64,9 +64,9 @@ class ParentController extends Controller {
             } else {
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
-                /*$token = JWTAuth::fromUser($addUser);
-                $addUser->jwt_token = $token;*/
-           return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$addUser), 200);
+                $token = JWTAuth::fromUser($addUser);
+                $addUser->jwt_token = $token;
+           return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
               
             }
         } catch (\Exception $e) {
