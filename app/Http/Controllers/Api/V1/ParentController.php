@@ -142,7 +142,7 @@ class ParentController extends Controller {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
                           $classobj=  ClassUser::create(
-                                    ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
+                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id]);
                         } else {
                             return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
                         }
