@@ -51,7 +51,7 @@ class ParentController extends Controller {
                         'last_name' => 'required',
                         'email' => 'required|unique:users',
                         'password' => 'required',
-                        'type_of_schooling' => 'required',
+                       // 'type_of_schooling' => 'required',
                        // 'country' => 'required',
                        // 'state_id' => 'required|exists:states,id',
                        // 'city_id' => 'required|exists:cities,id',
@@ -80,6 +80,7 @@ class ParentController extends Controller {
             $validator = Validator::make($input, [
               'user_id' => 'required',                      
               'country' => 'required',
+              'type_of_schooling' => 'required',
               'state_id' => 'required|exists:states,id',
               'city_id' => 'required|exists:cities,id',
               'school_id' => 'required_if:type_of_schooling, =,school'
