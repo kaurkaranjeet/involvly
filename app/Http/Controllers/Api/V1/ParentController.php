@@ -101,13 +101,13 @@ class ParentController extends Controller {
             if($student_obj->role_id !='4'){
               if(empty($student_obj->family_code)){
                $family_code= md5(trim($student_obj->first_name.$request->user_id));
+               $family_code= substr($family_code,6);
+               $student_obj->family_code=$family_code;
              }
-             else{
-              $family_code=$request->family_code;
-            }
+             
           }
 
-          $student_obj->family_code=$family_code;
+         
              
                if($request->has('school_name')){
                 $school_obj=new School;
