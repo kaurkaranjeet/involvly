@@ -152,7 +152,7 @@ WHERE class_id= class_code_subject .class_code_id AND
             if ($validator->fails()) {
                 return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
             } else {
-                $states = School::where('city_id', $request->city_id)->get();
+                $states = School::where('city_id', $request->city_id)->where('approved', 1)->get();
                 if (!empty($states)) {
                     return response()->json(array('error' => false, 'data' => $states), 200);
                 } else {
