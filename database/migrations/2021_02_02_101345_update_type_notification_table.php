@@ -19,6 +19,9 @@ class UpdateTypeNotificationTable extends Migration
             //
           
             $table->string('push_type')->nullable();
+             $table->index('assignment_id');
+            $table->unsignedBigInteger('assignment_id')->references('id')->on('assignments')->nullable()->onDelete('cascade');
+         //   $table->string('assignment_id')->nullable();
         });
     }
 
