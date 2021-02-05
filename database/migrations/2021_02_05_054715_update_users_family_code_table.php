@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateAssignmentTable extends Migration
+class UpdateUsersFamilyCodeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,8 @@ class UpdateAssignmentTable extends Migration
     public function up()
     {
         //
-        Schema::table('notification', function (Blueprint $table) {
-
-            //
-          
-            $table->string('assignment_id')->nullable();
+         Schema::table('users', function (Blueprint $table) {
+          $table->string('family_code')->nullable();
         });
     }
 

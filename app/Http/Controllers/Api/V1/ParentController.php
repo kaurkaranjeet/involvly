@@ -52,9 +52,9 @@ class ParentController extends Controller {
                         'email' => 'required|unique:users',
                         'password' => 'required',
                         'type_of_schooling' => 'required',
-                        'country' => 'required',
-                        'state_id' => 'required|exists:states,id',
-                        'city_id' => 'required|exists:cities,id',
+                       // 'country' => 'required',
+                       // 'state_id' => 'required|exists:states,id',
+                       // 'city_id' => 'required|exists:cities,id',
                       //  'school_id' => 'required_if:type_of_schooling, =,school'
             ]);
 
@@ -71,6 +71,37 @@ class ParentController extends Controller {
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
+    }
+
+    public function updateotherDetails(Request $request){
+      try {
+
+            $input = $request->all();
+            $validator = Validator::make($input, [
+              'user_id' => 'required',                      
+              'country' => 'required',
+              'state_id' => 'required|exists:states,id',
+              'city_id' => 'required|exists:cities,id',
+              'school_id' => 'required_if:type_of_schooling, =,school'
+
+            ]);
+
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+              $student_obj =User::find($request->user_id);
+              $student_obj->country=$request->country;
+              $student_obj->state_id=$request->state_id;
+              $student_obj->city_id=$request->city_id;
+              $student_obj->school_id=$request->school_id;
+              $student_obj->save();  
+             return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$student_obj), 200);
+              
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+
     }
 
 
