@@ -17,7 +17,7 @@ use App\Models\ParentTaskAssigned;
 use App\Models\ParentChildrens;
 use App\Models\Schedule;
 use App\Models\AssignedTeacher;
-
+use App\Models\School;
 use App\Notification;
 use Pusher\Pusher;
 use Tymon\JWTAuth\Exceptions\JWTException;
