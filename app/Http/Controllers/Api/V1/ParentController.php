@@ -99,7 +99,7 @@ class ParentController extends Controller {
               $student_obj->school_id=$request->school_id;
             $student_obj->status=2;
             if($student_obj->role_id !='4'){
-              if(empty($student_obj->family_code)){
+              if(empty($request->family_code)){
                 $digits = 4;
                $family_code=rand(pow(10, $digits-1), pow(10, $digits)-1);           
                $student_obj->family_code=$family_code;
