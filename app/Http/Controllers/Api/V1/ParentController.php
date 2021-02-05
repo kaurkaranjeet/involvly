@@ -99,7 +99,7 @@ class ParentController extends Controller {
                $student_obj->family_code=$request->family_code;
                if($request->has('school_name')){
                 $school_obj=new School;
-                $school_obj->city_id=$request->city_id;
+                $school_obj->city=$request->city_id;
                 $school_obj->state_id=$request->state_id;
                 $school_obj->school_name=$request->school_name;
                 $school_obj->approved=0;
