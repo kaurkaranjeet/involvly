@@ -63,9 +63,9 @@ class ParentController extends Controller {
                 throw new Exception($validator->errors()->first());
             } else {
                 $student_obj = new User;
-                $addUser = $student_obj->store($input);
-                $token = JWTAuth::fromUser($addUser);
-                $addUser->jwt_token = $token;
+                $addUser = $student_obj->store($request);
+                /*$token = JWTAuth::fromUser($addUser);
+                $addUser->jwt_token = $token;*/
            return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$addUser), 200);
               
             }
