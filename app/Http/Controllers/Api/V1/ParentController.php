@@ -97,7 +97,32 @@ class ParentController extends Controller {
               $student_obj->city_id=$request->city_id;
               $student_obj->school_id=$request->school_id;
                $student_obj->family_code=$request->family_code;
-              $student_obj->save();  
+               if($request->has('school_name')){
+                $school_obj=new School;
+                $school_obj->city_id=$request->city_id;
+                $school_obj->state_id=$request->state_id;
+                $school_obj->school_name=$request->school_name;
+                $school_obj->approved=0;
+                $school_obj->save();
+                $data = [
+                  ['class_name'=>'1st Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'2nd Class', 'approved'=> 1, 'school_id'=> $school_obj->id], 
+                  ['class_name'=>'3rd Class', 'approved'=> 1, 'school_id'=> $school_obj->id], 
+                  ['class_name'=>'4th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'5th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'6th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'7th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'8th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'9th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'10th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'11th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'12th Class', 'approved'=> 1, 'school_id'=> $school_obj->id];
+                ];
+                $student_obj->school_id=$school_obj->school_id;
+                ClassCode::insert($data);
+
+              }
+                $student_obj->save();             
              return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$student_obj), 200);
               
             }
