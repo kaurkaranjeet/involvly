@@ -91,6 +91,7 @@ class ParentController extends Controller {
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
+              $family_code='';
               $student_obj =User::find($request->user_id);
               $student_obj->country=$request->country;
               $student_obj->state_id=$request->state_id;
@@ -102,9 +103,11 @@ class ParentController extends Controller {
                $family_code= md5(trim($student_obj->first_name.$request->user_id));
              }
              else{
-              $student_obj->family_code=$request->family_code;
+              $family_code=$request->family_code;
             }
           }
+
+          $student_obj->family_code=$family_code;
              
                if($request->has('school_name')){
                 $school_obj=new School;
