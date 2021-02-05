@@ -150,7 +150,7 @@ class ParentController extends Controller {
 
 
 
-             return response()->json(array('error' => false, 'message' => $e->getMessage(),'data' =>$student_obj), 200);
+             return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$student_obj), 200);
               
             }
         } catch (\Exception $e) {
