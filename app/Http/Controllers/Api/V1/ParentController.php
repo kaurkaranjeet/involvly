@@ -127,7 +127,7 @@ class ParentController extends Controller {
                       $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->id)->first();
                       if (!empty($class_code)) {
                         $classobj=  ClassUser::create(
-                          ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
+                          ['user_id' => $request->user_id, 'class_id' => $class_code->id]);
                       } else {
                        // return response()->json(array('error' => true, 'message' => $search_class_name), 200);
                       }
