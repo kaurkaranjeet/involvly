@@ -124,12 +124,12 @@ class ParentController extends Controller {
                 if (!empty($request->class_id)) {
                       $class=$request->class_id-1;
                       $search_class_name= $data[$class]['class_name'];
-                      $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->school_id)->first();
+                      $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->id)->first();
                       if (!empty($class_code)) {
                         $classobj=  ClassUser::create(
                           ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
                       } else {
-                        return response()->json(array('error' => true, 'message' => $search_class_name), 200);
+                       // return response()->json(array('error' => true, 'message' => $search_class_name), 200);
                       }
                     }
 
