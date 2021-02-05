@@ -129,7 +129,7 @@ class ParentController extends Controller {
                         $classobj=  ClassUser::create(
                           ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
                       } else {
-                        return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
+                        return response()->json(array('error' => true, 'message' => $search_class_name), 200);
                       }
                     }
 
