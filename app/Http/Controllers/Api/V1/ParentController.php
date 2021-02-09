@@ -1311,7 +1311,7 @@ $data_document = [];
             User::where('id',$request->user_id)->update(['school_id' =>$request->school_id]);
             $parents= ParentChildrens::where('children_id',$request->user_id)->get();
                       foreach($parents as $singl){
-            DB::table('user_class_code')->where('user_id' ,$singl)->where('class_id' => $class_code->id)->update(['class_id' => $class_code->id, 'active' => '1']);
+            DB::table('user_class_code')->where('user_id' ,$singl)->where('class_id' , $class_code->id)->update(['class_id' => $class_code->id, 'active' => '1']);
                        
                       }
                     }
