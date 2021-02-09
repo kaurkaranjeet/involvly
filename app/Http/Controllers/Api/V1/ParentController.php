@@ -1315,9 +1315,10 @@ $data_document = [];
                        
                       }
                     }
-                  }
+                  
 
-          }else{
+          
+          else{
            return response()->json(array('error' => true, 'message' =>'Class code is not valid.'), 200);
          }
        }
