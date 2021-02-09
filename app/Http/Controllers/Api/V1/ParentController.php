@@ -1303,6 +1303,8 @@ $data_document = [];
           if(!empty($class_code)){
             DB::table('user_class_code')->insert(
               ['user_id' =>$request->user_id, 'class_id' => $class_code->id, 'active' => '1']);
+
+            User::where('id',$request->user_id)->update(['school_id' =>$request->school_id])
           }else{
            return response()->json(array('error' => true, 'message' =>'Class code is not valid.'), 200);
          }
