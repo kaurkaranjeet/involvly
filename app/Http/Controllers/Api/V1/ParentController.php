@@ -1059,7 +1059,7 @@ $data_document = [];
         if(!empty($childrens)){
 
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
-         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
+         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->orWhere('family_code',$request->family_code)get();
         $children= User::leftJoin('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$request->parent_id)->orWhere('family_code',$request->family_code)->get();
          if(!empty($results)){
           
