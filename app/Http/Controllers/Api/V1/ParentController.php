@@ -1072,8 +1072,8 @@ $data_document = [];
                 throw new Exception($validator->errors()->first());
        }  
        else{ 
-        $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
-        $childrens= $resultsa->children;
+        //$resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
+        //$childrens= $resultsa->children;
 
       //  if(!empty($childrens)){
 
