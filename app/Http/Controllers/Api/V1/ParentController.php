@@ -171,14 +171,17 @@ class ParentController extends Controller {
                         }
                     }  
 
-                   /*if($request->has('student_id')){
-                      $classobj=  ClassUser::create( ['user_id' => $request->student_id, 'class_id' => $class_code->id]);
-                      DB::table('parent_childrens')->insert(
+                  /*if($request->role_id=='2'){
+                      $parents= User::where('family_code',$request->family_code)->where('role_id',3)->get();
+                      foreach($parents as $singl){
+                         DB::table('parent_childrens')->insert(
                        [
-                        'parent_id' =>$request->user_id,
-                        'children_id' =>$request->student_id,
+                        'parent_id' =>$singl,
+                        'children_id' =>$request->user_id,
                         'relationship' => $request->relationship
-                      ]);*/
+                      ]);
+                      }
+                    }*/
                       if(!empty($request->family_code)){
                        User::where('id',$request->user_id)->update(['family_code' => $request->family_code]);
                      }
