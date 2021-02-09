@@ -1078,10 +1078,10 @@ $data_document = [];
         if(!empty($childrens)){
 
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
-         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')  OR parent_id IN (select id from users where family_code ='.$request->family_code.' AND role_id = 3)')->where('parent_id','!=',$request->parent_id)->get();
-         if(empty($results)){
-         $results= User::whereRaw(' family_code ='.$request->family_code.' AND role_id = 3)')->get();
-         }
+         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
+         
+         $results1= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 3)')->select('id','name','last_name','role_id')->get();
+     
         $children= User::leftJoin('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$request->parent_id)->get();
          if(!empty($results)){
           
