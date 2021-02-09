@@ -67,6 +67,7 @@ class ParentController extends Controller {
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
                 $addUser->jwt_token = $token;
+                 $addUser->school_status = '0';
            return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
               
             }
@@ -192,9 +193,11 @@ class ParentController extends Controller {
                    if(isset($classobj)){
                     $addUser->class_id=$class_code->id;
                     $addUser->class_name=$class_code->class_name;
+                    $addUser->school_status=$classobj->active;
                   }else{
                    $addUser->class_id='';
                    $addUser->class_name=='';
+                     $addUser->school_status='0';
                  }
 
              return response()->json(array('error' => false, 'message' => 'Successfully Updated','data' =>$addUser), 200);
