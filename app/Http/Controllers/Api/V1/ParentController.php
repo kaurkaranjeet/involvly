@@ -125,18 +125,20 @@ class ParentController extends Controller {
                 $school_obj->approved=0;
                 $school_obj->save();
                 $data = [
-                  ['class_name'=>'1st Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'2nd Class', 'approved'=> 1, 'school_id'=> $school_obj->id], 
-                  ['class_name'=>'3rd Class', 'approved'=> 1, 'school_id'=> $school_obj->id], 
-                  ['class_name'=>'4th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'5th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'6th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'7th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'8th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'9th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'10th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'11th Class', 'approved'=> 1, 'school_id'=> $school_obj->id],
-                  ['class_name'=>'12th Class', 'approved'=> 1, 'school_id'=> $school_obj->id]
+                   ['class_name'=>'Preschool', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Kindergarten', 'approved'=> 1, 'school_id'=> $school_obj->id], 
+                  ['class_name'=>'Grade 1', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 2', 'approved'=> 1, 'school_id'=> $school_obj->id], 
+                  ['class_name'=>'Grade 3', 'approved'=> 1, 'school_id'=> $school_obj->id], 
+                  ['class_name'=>'Grade 4', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 5', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 6', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 7', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 8', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 9', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 10', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 11', 'approved'=> 1, 'school_id'=> $school_obj->id],
+                  ['class_name'=>'Grade 12', 'approved'=> 1, 'school_id'=> $school_obj->id]
                 ];
                  ClassCode::insert($data);
                 $student_obj->school_id=$school_obj->id;
