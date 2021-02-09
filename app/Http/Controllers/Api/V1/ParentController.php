@@ -432,11 +432,13 @@ foreach($parents as $single){
               'children_id' =>$student_id,
               'relationship' => $request->relationship
             ]);
+
+            if($request->has('family_code')){
+         User::where('id',$student_id)->update(['family_code' => $request->family_code]);
+       }
           }
         }
-        if($request->has('family_code')){
-         User::where('id',$request->student_id)->update(['family_code' => $request->family_code]);
-       }
+        
     $addUser= DB::table('parent_childrens')->where('parent_id',$request->parent_id)->whereIn('children_id', array($request->student_id))->get();
    
         User::where('id',$request->parent_id)->update(['type_of_schooling' => $request->type_of_schooling]);
