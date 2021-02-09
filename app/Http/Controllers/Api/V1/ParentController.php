@@ -179,7 +179,7 @@ class ParentController extends Controller {
                         'children_id' =>$request->student_id,
                         'relationship' => $request->relationship
                       ]);*/
-                      if($request->has('family_code')){
+                      if(!empty($request->family_code)){
                        User::where('id',$request->user_id)->update(['family_code' => $request->family_code]);
                      }
 
