@@ -168,9 +168,16 @@ class ParentController extends Controller {
                         }
                     }  
 
+ $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$request->user_id)->first();
+                   if(isset($classobj)){
+                    $addUser->class_id=$class_code->id;
+                    $addUser->class_name=$class_code->class_name;
+                  }else{
+                   $addUser->class_id='';
+                   $addUser->class_name=='';
+                 }
 
-
-             return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$student_obj), 200);
+             return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
               
             }
         } catch (\Exception $e) {
