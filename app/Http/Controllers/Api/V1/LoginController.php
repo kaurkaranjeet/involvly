@@ -54,12 +54,17 @@ class LoginController extends Controller {
                      $class_code = ClassCode::where('id', $classCode->class_id)->first();
                     $user_details->class_id = $classCode->class_id;
                     $user_details->class_name = $class_code->class_name;
+                    $user_details->school_status= $class_code->active;
                 }
                 else{
                   $user_details->class_id = '';
                   $user_details->class_name = '';  
+                   $user_details->school_status = '0';
               }
+
+
             //}
+
 
             if ($user_details->role_id == $request->role_id) {
                 $user_details->token = $token;
