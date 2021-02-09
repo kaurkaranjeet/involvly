@@ -50,7 +50,8 @@ class ParentController extends Controller {
                         'device_token' => 'required',
                         'last_name' => 'required',
                         'email' => 'required|unique:users',
-                        'password' => 'required'
+                        'password' => 'required',
+                         'role_id' => 'required'
 
                        // 'type_of_schooling' => 'required',
                        // 'country' => 'required',
