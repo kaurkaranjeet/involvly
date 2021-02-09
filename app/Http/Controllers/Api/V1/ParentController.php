@@ -150,7 +150,7 @@ class ParentController extends Controller {
                       $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->id)->first();
                       if (!empty($class_code)) {
                         $classobj=  ClassUser::create(
-                          ['user_id' => $request->user_id, 'class_id' => $class_code->id]);
+                          ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => '0']);
                       } else {
                        // return response()->json(array('error' => true, 'message' => $search_class_name), 200);
                       }
@@ -165,7 +165,7 @@ class ParentController extends Controller {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
                           $classobj=  ClassUser::create(
-                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id]);
+                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => '0']);
                         } else {
                             return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
                         }
@@ -349,7 +349,7 @@ $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_
  $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
 $childrens= $resultsa->children;
 if(!empty($childrens)){
-$users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_code.class_name,user_class_code.user_id as student_id from class_code INNER JOIN user_class_code ON class_code .id =user_class_code .class_id WHERE user_id IN(".$childrens.")  GROUP BY class_code.id "));
+$users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_code.class_name,user_class_code.user_id as student_id from class_code INNER JOIN user_class_code ON class_code .id =user_class_code .class_id WHERE user_id IN(".$childrens.") AND active=1 GROUP BY class_code.id "));
 
             return response()->json(array('error' => false, 'message' => 'Classes fetched successfully', 'data' => $users), 200);
         }
@@ -1299,7 +1299,7 @@ $data_document = [];
           $class_code=  ClassCode::where('class_code',$request->class_code)->first();
           if(!empty($class_code)){
             DB::table('user_class_code')->insert(
-              ['user_id' =>$request->user_id, 'class_id' => $class_code->id]);
+              ['user_id' =>$request->user_id, 'class_id' => $class_code->id, 'active' => '1']);
           }else{
            return response()->json(array('error' => true, 'message' =>'Class code is not valid.'), 200);
          }
