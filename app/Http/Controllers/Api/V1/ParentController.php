@@ -150,7 +150,7 @@ class ParentController extends Controller {
                       $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->id)->first();
                       if (!empty($class_code)) {
                         $classobj=  ClassUser::create(
-                          ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => '0']);
+                          ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => 0]);
                       } else {
                        // return response()->json(array('error' => true, 'message' => $search_class_name), 200);
                       }
@@ -165,7 +165,7 @@ class ParentController extends Controller {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
                           $classobj=  ClassUser::create(
-                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => '0']);
+                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => 0]);
                         } else {
                             return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
                         }
