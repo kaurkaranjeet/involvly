@@ -1075,7 +1075,7 @@ $data_document = [];
         $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
         $childrens= $resultsa->children;
 
-        if(!empty($childrens)){
+      //  if(!empty($childrens)){
 
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
         // $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
@@ -1083,17 +1083,15 @@ $data_document = [];
          $results= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->get();
          
         $children= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 2')->select('id','name','last_name','role_id')->get();
-         if(!empty($results)){
+         
           
            return response()->json(array('error' => false, 'data' =>$results,'childrens' =>$children,'message' => 'Parents fetched successfully.' ), 200);
         
-         }else{
-          throw new Exception('No another parents');
-        }
-      }
-      else{
+        
+     // }
+     /* else{
         throw new Exception('No children');
-      }
+      }*/
     }
   }
   catch (\Exception $e) {
