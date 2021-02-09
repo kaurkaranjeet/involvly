@@ -1080,7 +1080,7 @@ $data_document = [];
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
          $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
          
-         $results1= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 3)')->select('id','name','last_name','role_id')->get();
+         $results1= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->get();
          if(!empty($results1)){
            $merged = $results1->merge($results);
 
