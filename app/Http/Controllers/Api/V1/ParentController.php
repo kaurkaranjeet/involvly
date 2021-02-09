@@ -171,7 +171,7 @@ class ParentController extends Controller {
                         }
                     }  
 
-                    if(!empty($request->student_id)){
+                   if($request->has('student_id')){
                       $classobj=  ClassUser::create( ['user_id' => $request->student_id, 'class_id' => $class_code->id]);
                       DB::table('parent_childrens')->insert(
                        [
@@ -194,7 +194,7 @@ class ParentController extends Controller {
                    $addUser->class_name=='';
                  }
 
-             return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
+             return response()->json(array('error' => false, 'message' => $search_class_name,'data' =>$addUser), 200);
               
             }
         } catch (\Exception $e) {
