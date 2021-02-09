@@ -67,6 +67,7 @@ class ParentController extends Controller {
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
                 $addUser->jwt_token = $token;
+                 $addUser->school_status = '0';
            return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
               
             }
@@ -150,7 +151,7 @@ class ParentController extends Controller {
                       $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->id)->first();
                       if (!empty($class_code)) {
                         $classobj=  ClassUser::create(
-                          ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => '0']);
+                          ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => 0]);
                       } else {
                        // return response()->json(array('error' => true, 'message' => $search_class_name), 200);
                       }
@@ -165,7 +166,7 @@ class ParentController extends Controller {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
                           $classobj=  ClassUser::create(
-                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => '0']);
+                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => 0]);
                         } else {
                             return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
                         }
@@ -192,9 +193,11 @@ class ParentController extends Controller {
                    if(isset($classobj)){
                     $addUser->class_id=$class_code->id;
                     $addUser->class_name=$class_code->class_name;
+                    $addUser->school_status=$classobj->active;
                   }else{
                    $addUser->class_id='';
                    $addUser->class_name=='';
+                     $addUser->school_status='0';
                  }
 
              return response()->json(array('error' => false, 'message' => 'Successfully Updated','data' =>$addUser), 200);
