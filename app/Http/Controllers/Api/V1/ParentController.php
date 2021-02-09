@@ -194,7 +194,7 @@ class ParentController extends Controller {
                    $addUser->class_name=='';
                  }
 
-             return response()->json(array('error' => false, 'message' => $search_class_name,'data' =>$addUser), 200);
+             return response()->json(array('error' => false, 'message' => 'Successfully Updated','data' =>$addUser), 200);
               
             }
         } catch (\Exception $e) {
