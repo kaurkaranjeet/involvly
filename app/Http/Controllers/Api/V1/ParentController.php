@@ -1082,7 +1082,7 @@ $data_document = [];
          
          $results= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->get();
          
-        $children= User::leftJoin('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$request->parent_id)->get();
+        $children= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 2')->select('id','name','last_name','role_id')->get();
          if(!empty($results)){
           
            return response()->json(array('error' => false, 'data' =>$results,'childrens' =>$children,'message' => 'Parents fetched successfully.' ), 200);
