@@ -175,7 +175,7 @@ class ParentController extends Controller {
                       $classobj=  ClassUser::create( ['user_id' => $request->student_id, 'class_id' => $class_code->id]);
                       DB::table('parent_childrens')->insert(
                        [
-                        'parent_id' =>$request->user_d,
+                        'parent_id' =>$request->user_id,
                         'children_id' =>$request->student_id,
                         'relationship' => $request->relationship
                       ]);
