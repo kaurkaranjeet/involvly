@@ -168,9 +168,16 @@ class ParentController extends Controller {
                         }
                     }  
 
+ $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$request->user_id)->first();
+                   if(isset($classobj)){
+                    $addUser->class_id=$class_code->id;
+                    $addUser->class_name=$class_code->class_name;
+                  }else{
+                   $addUser->class_id='';
+                   $addUser->class_name=='';
+                 }
 
-
-             return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$student_obj), 200);
+             return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
               
             }
         } catch (\Exception $e) {
@@ -1053,13 +1060,8 @@ $data_document = [];
 
 //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
          $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
-        $children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$request->parent_id)->get();
+        $children= User::leftJoin('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name','users.role_id')->where('parent_id',$request->parent_id)->orWhere('family_code',$request->family_code)->get();
          if(!empty($results)){
-
-         // foreach($results as $single){
-            //$single->children= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id','users.name')->where('parent_id',$single->parent_id)->get();
-
-        //  }
           
            return response()->json(array('error' => false, 'data' =>$results,'childrens' =>$children,'message' => 'Parents fetched successfully.' ), 200);
         
