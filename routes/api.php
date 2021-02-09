@@ -199,6 +199,7 @@ Route::prefix('v1')->group(function () {
     Route::post('get_associated_classes', 'Api\V1\ParentController@GetAssociatedClasses');
  Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
  Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
+  Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
 
 });
 

@@ -1267,4 +1267,31 @@ $data_document = [];
         }
     }
 
+      public function ConnectWithSchool(Request $request) {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'user_id' => 'required',
+                        'school_id' => 'required',
+                        'class_code' => 'required',
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                if(!empty($request->class_code)) {
+          $class_code=  ClassCode::where('class_code',$request->class_code)->first();
+          if(!empty($class_code)){
+            DB::table('user_class_code')->insert(
+              ['user_id' =>$request->user_id, 'class_id' => $class_code->id]);
+          }else{
+           return response()->json(array('error' => true, 'message' =>'Class code is not valid.'), 200);
+         }
+       }
+       return response()->json(array('error' => false, 'data' =>$class_code, 'message' => 'Updated Successfully'), 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
+    }
+
 }
