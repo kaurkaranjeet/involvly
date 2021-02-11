@@ -165,12 +165,12 @@ class ParentController extends Controller {
                 $student_obj->save();  
 
                 if (!empty($request->class_code)) {
-                        $class_code = ClassCode::where('class_code', $request->class_code)->first();
+                        $class_code = ClassCode::where('class_code', $request->class_code)->where('school_id', $request->school_id)->first();
                         if (!empty($class_code)) {
                           $classobj=  ClassUser::create(
                                     ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => 0]);
                         } else {
-                            return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
+                            return response()->json(array('error' => true, 'message' => 'Class code does not belong to this school'), 200);
                         }
                     }  
 
