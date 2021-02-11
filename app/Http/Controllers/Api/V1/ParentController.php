@@ -71,10 +71,10 @@ class ParentController extends Controller {
 
                  if($request->role_id=='3'){
 
-                  $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
+                 /* $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
                       foreach($parents as $singl){
                         ParentChildrens::where('id',$singl->id)->update(['relationship' => $request->relationship]);
-                      }
+                      }*/
                       $students= User::where('family_code',$request->family_code)->where('role_id',2)->get();
                       foreach($students as $single){
                          DB::table('parent_childrens')->insert(
