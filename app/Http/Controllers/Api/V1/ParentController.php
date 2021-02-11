@@ -179,7 +179,7 @@ class ParentController extends Controller {
                       foreach($parents as $singl){
                          DB::table('parent_childrens')->insert(
                        [
-                        'parent_id' =>$singl->parent_id,
+                        'parent_id' =>$singl->id,
                         'children_id' =>$request->user_id
                         //'relationship' => $request->relationship
                       ]);
