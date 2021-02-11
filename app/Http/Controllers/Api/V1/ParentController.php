@@ -178,7 +178,7 @@ class ParentController extends Controller {
                       foreach($parents as $singl){
                          DB::table('parent_childrens')->insert(
                        [
-                        'parent_id' =>$singl,
+                        'parent_id' =>$singl->parent_id,
                         'children_id' =>$request->user_id
                         //'relationship' => $request->relationship
                       ]);
@@ -188,7 +188,7 @@ class ParentController extends Controller {
                     if($request->role_id=='3'){
                       $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
                       foreach($parents as $singl){
-                        ParentChildrens::where('children_id',$singl)->update(['relationship' => $request->relationship]);
+                        ParentChildrens::where('id',$singl->id)->update(['relationship' => $request->relationship]);
                       }
                     }
                       if(!empty($request->family_code)){
