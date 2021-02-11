@@ -173,17 +173,17 @@ class ParentController extends Controller {
                         }
                     }  
 
-                  /*if($request->role_id=='2'){
+                  if($request->role_id=='2'){
                       $parents= User::where('family_code',$request->family_code)->where('role_id',3)->get();
                       foreach($parents as $singl){
                          DB::table('parent_childrens')->insert(
                        [
                         'parent_id' =>$singl,
                         'children_id' =>$request->user_id,
-                        'relationship' => $request->relationship
+                        //'relationship' => $request->relationship
                       ]);
                       }
-                    }*/
+                    }
                       if(!empty($request->family_code)){
                        User::where('id',$request->user_id)->update(['family_code' => $request->family_code]);
                      }
