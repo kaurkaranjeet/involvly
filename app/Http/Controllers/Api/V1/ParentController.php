@@ -189,7 +189,7 @@ class ParentController extends Controller {
                   }
 
                     if($student_obj->role_id=='3'){
-                      $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
+                      $parents= ParentChildrens::where('parent_id',$request->user_id)->get();
                       foreach($parents as $singl){
                         ParentChildrens::where('id',$singl->id)->update(['relationship' => $request->relationship]);
                       }
