@@ -1317,8 +1317,7 @@ $data_document = [];
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-   $school_admins=  School::where('school_id' ,$request->school_id)->where('approved' ,1)->first();
-          if(!empty($school_admins)){
+
 
                 if(!empty($request->class_code)) {
           $class_code=  ClassCode::where('class_code',$request->class_code)->where('school_id',$request->school_id)->first();
@@ -1348,13 +1347,8 @@ if($count>=1){
          }
        
        return response()->json(array('error' => false, 'data' =>$class_code, 'message' => 'Updated Successfully'), 200);
-     }
-   }
-   else{
- return response()->json(array('error' => true, 'message' =>'Your selected school is no active.'), 200);
-
-   }
             }
+        }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
