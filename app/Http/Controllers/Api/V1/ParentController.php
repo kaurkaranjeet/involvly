@@ -1103,7 +1103,7 @@ $data_document = [];
 
         // $results= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->orderBy(DB::raw("FIELD(id, $id)"))->orderBy('id', 'DESC')->get();
          
-        $children= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 2')->select('id','name','last_name','role_id')->get();
+        $children= User::whereRaw('family_code ="'.$request->family_code.'" AND role_id = 2')->select('id','name','last_name','role_id')->get();
          
           
            return response()->json(array('error' => false, 'data' =>$results,'childrens' =>$children,'message' =>"select * FROM users where family_code='".$request->family_code."'  ORDER BY FIELD(id, ".$id.") DESC"  ), 200);
