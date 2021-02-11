@@ -1056,7 +1056,7 @@ $data_document = [];
 
          //$results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
        $family_code= User::find($request->parent_id);
-         $results= User::whereRaw('family_code ='.$family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->get();
+         $results= User::whereRaw('family_code ='.$family_code->family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->get();
          if(!empty($results)){
           foreach($results as $single){
 
