@@ -1106,7 +1106,7 @@ $data_document = [];
         $children= User::whereRaw('family_code ="'.$request->family_code.'" AND role_id = 2')->select('id','name','last_name','role_id')->get();
          
           
-           return response()->json(array('error' => false, 'data' =>$results,'childrens' =>$children,'message' =>'Family listed successfully', 200);
+           return response()->json(array('error' => false, 'data' =>$results,'childrens' =>$children,'message' =>'Family listed successfully'), 200);
         
         
      // }
