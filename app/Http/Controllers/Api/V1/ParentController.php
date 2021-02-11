@@ -1048,9 +1048,9 @@ $data_document = [];
                 throw new Exception($validator->errors()->first());
        }  
        else{ 
-        $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children,(SELECT group_concat(u.name)  from parent_childrens
+        $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children,(SELECT group_concat( DISTINCT  u.name)  from parent_childrens
             INNER join users as u On u.id= parent_childrens.children_id  where  parent_id='.$request->parent_id.')  as childrens'))->where('parent_id',$request->parent_id)->first();
-        $childrens= $resultsa->children;
+        $childrens= $resultsa->childrens;
 
        // if(!empty($childrens)){
 
