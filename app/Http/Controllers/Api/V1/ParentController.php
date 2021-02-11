@@ -106,7 +106,7 @@ class ParentController extends Controller {
             if($student_obj->role_id !='4'){
               if(empty($request->family_code)){
                 $digits = 5;
-               $family_code=rand(pow(10, $digits-1), pow(10, $digits)-1);           
+               $family_code=$this->random_strings(5);;           
                $student_obj->family_code=$family_code;
              }
              else{
@@ -1342,5 +1342,17 @@ $data_document = [];
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
+
+    function random_strings($length_of_string) 
+{ 
+  
+    // String of all alphanumeric character 
+    $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; 
+  
+    // Shufle the $str_result and returns substring 
+    // of specified length 
+    return substr(str_shuffle($str_result),  
+                       0, $length_of_string); 
+} 
 
 }
