@@ -184,6 +184,13 @@ class ParentController extends Controller {
                       ]);
                       }
                     }
+
+                    if($request->role_id=='3'){
+                      $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
+                      foreach($parents as $singl){
+                        ParentChildrens::where('children_id',$singl)->update(['relationship' => $request->relationship]);
+                      }
+                    }
                       if(!empty($request->family_code)){
                        User::where('id',$request->user_id)->update(['family_code' => $request->family_code]);
                      }
