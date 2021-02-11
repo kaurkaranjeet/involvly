@@ -69,6 +69,35 @@ class ParentController extends Controller {
                 $addUser->jwt_token = $token;
                  $addUser->school_status = '0';
 
+                 if($request->role_id=='3'){
+
+                  $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
+                      foreach($parents as $singl){
+                        ParentChildrens::where('id',$singl->id)->update(['relationship' => $request->relationship]);
+                      }
+                      $students= User::where('family_code',$request->family_code)->where('role_id',2)->get();
+                      foreach($students as $single){
+                         DB::table('parent_childrens')->insert(
+                       [
+                        'parent_id' =>$addUser->id,
+                        'children_id' =>$single->id,
+                      'relationship' => $request->relationship
+                      ]);
+                      }
+                    }
+
+                    if($request->role_id=='2'){
+                      $parents= User::where('family_code',$request->family_code)->where('role_id',3)->get();
+                      foreach($parents as $singl){
+                         DB::table('parent_childrens')->insert(
+                       [
+                        'parent_id' =>$singl->id,
+                        'children_id' =>$addUser->id,
+                    //  'relationship' => $request->relationship
+                      ]);
+                      }
+                    }
+
            return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
               
             }
@@ -173,24 +202,14 @@ class ParentController extends Controller {
                         }
                     }  
 
-                  if($request->role_id=='2'){
-                      $parents= User::where('family_code',$request->family_code)->where('role_id',3)->get();
-                      foreach($parents as $singl){
-                         DB::table('parent_childrens')->insert(
-                       [
-                        'parent_id' =>$singl->id,
-                        'children_id' =>$request->user_id
-                        //'relationship' => $request->relationship
-                      ]);
-                      }
-                    }
+                  
 
-                    if($request->role_id=='3'){
+                    /*if($request->role_id=='3'){
                       $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
                       foreach($parents as $singl){
                         ParentChildrens::where('id',$singl->id)->update(['relationship' => $request->relationship]);
                       }
-                    }
+                    }*/
                       if(!empty($request->family_code)){
                        User::where('id',$request->user_id)->update(['family_code' => $request->family_code]);
                      }
