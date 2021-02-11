@@ -204,7 +204,7 @@ class ParentController extends Controller {
                    if(isset($classobj)){
                     $addUser->class_id=$class_code->id;
                     $addUser->class_name=$class_code->class_name;
-                    $addUser->school_status=$classobj->active;
+                    $addUser->school_status='0';
                   }else{
                    $addUser->class_id='';
                    $addUser->class_name=='';
