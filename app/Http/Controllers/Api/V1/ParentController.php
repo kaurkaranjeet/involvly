@@ -175,6 +175,7 @@ class ParentController extends Controller {
                     }  
 
                   if($request->role_id=='2'){
+                    if(!empty($request->family_code)){
                       $parents= User::where('family_code',$request->family_code)->where('role_id',3)->get();
                       foreach($parents as $singl){
                          DB::table('parent_childrens')->insert(
@@ -185,6 +186,7 @@ class ParentController extends Controller {
                       ]);
                       }
                     }
+                  }
 
                     if($request->role_id=='3'){
                       $parents= ParentChildrens::where('parent_id',$request->parent_id)->get();
@@ -1050,23 +1052,25 @@ $data_document = [];
             INNER join users as u On u.id= parent_childrens.children_id  where  parent_id='.$request->parent_id.')  as childrens'))->where('parent_id',$request->parent_id)->first();
         $childrens= $resultsa->children;
 
-        if(!empty($childrens)){
-//         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
-         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
+       // if(!empty($childrens)){
+
+         //$results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
+       $family_code= User::find($request->parent_id);
+         $results= User::whereRaw('family_code ='.$family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->get();
          if(!empty($results)){
           foreach($results as $single){
 
-            $single->childrens=$resultsa->childrens;
+            $single->childrens=$childrens;
             }
            return response()->json(array('error' => false, 'data' =>$results,'message' => 'Parents fetched successfully.' ), 200);
         
          }else{
           throw new Exception('No another parents');
         }
-      }
-      else{
+     // }
+      /*else{
         throw new Exception('No children');
-      }
+      }*/
     }
   }
   catch (\Exception $e) {
