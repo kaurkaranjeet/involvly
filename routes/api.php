@@ -200,7 +200,7 @@ Route::prefix('v1')->group(function () {
  Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
  Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
   Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
-    Route::post('get_parent_schools', 'Api\V1\ParentController@GetParentSchools');
+    Route::post('get_parent_schools', 'Api\V1\CommonController@GetParentSchools');
 
 });
 
