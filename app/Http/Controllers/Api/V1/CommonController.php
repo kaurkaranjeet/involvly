@@ -176,7 +176,7 @@ WHERE class_id= class_code_subject .class_code_id AND
           $Schools= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('parent_id',$request->parent_id)->distinct()->get();
                
                 if (!empty($Schools)) {
-                    return response()->json(array('error' => false, 'data' => $states), 200);
+                    return response()->json(array('error' => false, 'data' => $Schools), 200);
                 } else {
                     throw new Exception('No Schools in this city.');
                 }
