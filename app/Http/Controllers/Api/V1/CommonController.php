@@ -164,6 +164,29 @@ WHERE class_id= class_code_subject .class_code_id AND
         }
     }
 
+      public function GetParentSchools(Request $request) {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'parent_id' => 'required|exists:users,id'
+            ]);
+            if ($validator->fails()) {
+                return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+            } else {         
+          $Schools= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('parent_id',$request->parent_id)->distinct()->get();
+               
+                if (!empty($Schools)) {
+                    return response()->json(array('error' => false, 'data' => $states), 200);
+                } else {
+                    throw new Exception('No Schools in this city.');
+                }
+            }
+        
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
+    }
+
     public function GetSubjects(Request $request) {
         try {
 
