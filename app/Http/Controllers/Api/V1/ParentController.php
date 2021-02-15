@@ -1103,7 +1103,7 @@ $data_document = [];
 
         // $results= User::whereRaw('family_code ='.$request->family_code.' AND role_id = 3')->select('id','name','last_name','role_id')->orderBy(DB::raw("FIELD(id, $id)"))->orderBy('id', 'DESC')->get();
          
-        $children= User::with('SchoolDetail:id,school_name')->whereRaw('family_code ="'.$request->family_code.'" AND role_id = 2')->select('id','name','last_name','role_id','school_id',DB::raw('select active as school_status from user_class_code where user_id=users.id limit 1'))->get();
+        $children= User::with('SchoolDetail:id,school_name')->whereRaw('family_code ="'.$request->family_code.'" AND role_id = 2')->select('id','name','last_name','role_id','school_id',DB::raw('(select active as school_status from user_class_code where user_id=users.id limit 1) as school_status'))->get();
          
           
            return response()->json(array('error' => false, 'data' =>$results,'childrens' =>$children,'message' =>'Family listed successfully'), 200);
