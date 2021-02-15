@@ -165,7 +165,7 @@ class ParentController extends Controller {
                 $student_obj->save();  
 
                 if (!empty($request->class_code)) {
-                        $class_code = ClassCode::where('class_code', $request->class_code)->where('school_id', $request->school_id)->first();
+                        $class_code = ClassCode::where('id', $request->class_code)->where('school_id', $request->school_id)->first();
                         if (!empty($class_code)) {
                           $classobj=  ClassUser::create(
                                     ['user_id' => $request->user_id, 'class_id' => $class_code->id,'active' => 0]);
