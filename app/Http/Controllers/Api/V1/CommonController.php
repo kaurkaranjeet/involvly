@@ -91,7 +91,8 @@ WHERE class_id= class_code_subject .class_code_id AND
  from class_code_subject LEFT JOIN assigned_teachers ON assigned_teachers.subject_id=class_code_subject.subject_id
  where class_code_id=12 AND assigned_teachers.subject_id= class_code_subject.subject_id GROUP BY class_code_subject.id
 */
-
+$count_classcode= UserClassCode::where('class_id', $request->class_id)->where('active', '1')->where('user_id', $request->student_id)->count();
+           if($count_classcode>0){
                 $states = ClassSubjects::select((DB::raw("( CASE WHEN EXISTS (
         SELECT *
         FROM joined_student_classes
@@ -106,7 +107,11 @@ WHERE class_id= class_code_subject .class_code_id AND
  class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name, class_code_subject.*")))->with('subjects')
                                 ->where('class_code_id', $request->class_id)->groupBy('subject_id')->get();
 
-            
+            }
+            else{
+
+                  return response()->json(array('error' => false, 'message' => 'You are not connected to this school', 'data' => []), 200); 
+            }
 
 
 //         
