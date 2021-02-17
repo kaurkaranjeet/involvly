@@ -174,7 +174,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
             } else {         
           $Schoolsa= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('parent_id',$request->parent_id)->distinct()->get();
-           $user_school= User::Join('schools', 'users.schools.id', '=', 'users.school_id')->select('school_id','schools.school_name')->where('users.id',$request->parent_id)->get();
+           $user_school= User::Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('users.id',$request->parent_id)->get();
            $merged = $Schoolsa->merge($user_school);
           $Schools = $merged->all();
                
