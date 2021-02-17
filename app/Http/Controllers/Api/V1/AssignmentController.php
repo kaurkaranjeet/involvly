@@ -113,7 +113,7 @@ class AssignmentController extends Controller {
             $class = User::with('SchoolDetail:id,school_name')
                             ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
                             ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
-                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('user_class_code.class_id', $request->class_id)->get();
+                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('user_class_code.class_id', $request->class_id)->where('user_class_code.active', '1')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $class), 200);
         }
     }
