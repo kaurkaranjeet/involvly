@@ -175,8 +175,8 @@ WHERE class_id= class_code_subject .class_code_id AND
             } else {         
           $Schoolsa= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('parent_id',$request->parent_id)->distinct()->get();
            $user_school= User::Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('users.id',$request->parent_id)->get();
-         $merged = $user_school->merge($Schoolsa);
-  $Schools = $merged->all();
+         $Schools = $user_school->merge($Schoolsa);
+  //$Schools = $merged->all();
 
           
                
