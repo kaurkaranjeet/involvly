@@ -11,6 +11,7 @@ use App\Models\ClassSubjects;
 use App\Models\Subject;
 use App\Models\State;
 use App\Models\Cities;
+use App\Models\UserClassCode;
 use App\Models\School;
 use App\Models\JoinedStudentClass;
 use Illuminate\Support\Facades\Validator;
