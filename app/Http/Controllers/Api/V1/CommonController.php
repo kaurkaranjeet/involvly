@@ -179,17 +179,17 @@ WHERE class_id= class_code_subject .class_code_id AND
             if ($validator->fails()) {
                 return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
             } else {         
-          $Schoolsa= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('parent_id',$request->parent_id)->distinct()->get();
+          $Schoolsa= User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->Join('schools', 'schools.id', '=', 'users.school_id')->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')->select('users.school_id','schools.school_name')->where('parent_id',$request->parent_id)->where('user_class_code.active','1')->distinct()->get();
            $user_school= User::Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('users.id',$request->parent_id)->get();
 
-            $collection = collect($Schoolsa);
-    $mergedCollection     = $collection->merge($user_school);
-  $mergedCollection = $mergedCollection->unique(function ($item) {
+           $collection = collect($Schoolsa);
+           $mergedCollection     = $collection->merge($user_school);
+           $mergedCollection = $mergedCollection->unique(function ($item) {
 
-                        return $item;
+            return $item;
 
-                    });
-    $result  = $mergedCollection->all();
+        });
+           $result  = $mergedCollection->all();
    // return $result;
        //  $Schools = $Schoolsa->merge($user_school);
   //$Schools = $merged->all();
