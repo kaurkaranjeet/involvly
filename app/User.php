@@ -90,6 +90,9 @@ class User extends Authenticatable implements JWTSubject {
       if($request->has('relationship')){
          $this->relationship =$request->relationship;
       }
+      if($request->has('type_of_schooling')){
+         $this->type_of_schooling =$request->type_of_schooling;
+      }
      $this->country='United States';
       /* $this->country =$request->country;
        $this->city =$request->city_id;
