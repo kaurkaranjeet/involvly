@@ -122,7 +122,14 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+           $count_classcode= UserClassCode::where('class_id', $request->class_id)->where('active', '1')->count();
+           if($count_classcode>0){
             $teachers = AssignedTeacher::with('User')->with('Subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
+        }
+        else{
+            return response()->json(array('error' => false, 'message' => 'You are connected to this school', 'data' => []), 200);
+        }
+
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $teachers), 200);
         }
     }
