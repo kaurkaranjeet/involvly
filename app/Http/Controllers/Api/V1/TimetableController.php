@@ -122,7 +122,7 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-           $count_classcode= UserClassCode::where('class_id', $request->class_id)->where('active', '1')->count();
+           $count_classcode= UserClassCode::where('class_id', $request->class_id)->where('active', '1')->where('user_id', $request->student_id)->count();
            if($count_classcode>0){
             $teachers = AssignedTeacher::with('User')->with('Subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
         }
