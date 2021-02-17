@@ -178,7 +178,7 @@ WHERE class_id= class_code_subject .class_code_id AND
 
             $collection = collect($Schoolsa);
     $merged     = $collection->merge($user_school);
-    $result[]   = $merged->all();
+    $result  = $merged->all();
    // return $result;
        //  $Schools = $Schoolsa->merge($user_school);
   //$Schools = $merged->all();
