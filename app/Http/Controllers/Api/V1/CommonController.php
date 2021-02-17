@@ -177,8 +177,13 @@ WHERE class_id= class_code_subject .class_code_id AND
            $user_school= User::Join('schools', 'schools.id', '=', 'users.school_id')->select('users.school_id','schools.school_name')->where('users.id',$request->parent_id)->get();
 
             $collection = collect($Schoolsa);
-    $merged     = $collection->merge($user_school);
-    $result  = $merged->all();
+    $mergedCollection     = $collection->merge($user_school);
+  $mergedCollection = $mergedCollection->unique(function ($item) {
+
+                        return $item;
+
+                    });
+    $result  = $mergedCollection->all();
    // return $result;
        //  $Schools = $Schoolsa->merge($user_school);
   //$Schools = $merged->all();
