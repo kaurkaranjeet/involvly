@@ -68,6 +68,7 @@ class ParentController extends Controller {
                 $token = JWTAuth::fromUser($addUser);
                 $addUser->jwt_token = $token;
                  $addUser->school_status = '0';
+                  $addUser->update_detail = '0';
                 //  $addUser->relationship = $request->relationship;
 
            return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
