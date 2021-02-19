@@ -9,8 +9,6 @@ use Exception;
 use App\User;
 use App\Models\ClassCode;
 use App\Models\ClassUser;
-use App\Models\AssignedTeacher;
-
 use App\Models\Subject;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
@@ -84,14 +82,9 @@ class TeacherController extends Controller {
          if(!empty($request->class_code)) {
           $class_code=  ClassCode::where('class_code',$request->class_code)->first();
           if(!empty($class_code)){
-             $class = AssignedTeacher::where('teacher_id', $addUser->id)->where('class_id', $class_code->id)->first();
-             if(!empty( $class)) {
        $classobj=  ClassUser::create(
               ['user_id' =>$addUser->id, 'class_id' => $class_code->id]);
-}
-else{
-     return response()->json(array('error' => true, 'message' =>'This class is not assigned to you by school admin'), 200);
-}
+
           }else{
            return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
          }
