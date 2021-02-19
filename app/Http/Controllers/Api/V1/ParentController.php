@@ -104,7 +104,7 @@ class ParentController extends Controller {
               $student_obj->school_id=$request->school_id;
               $student_obj->update_detail='1';
                 $student_obj->type_of_schooling=$request->type_of_schooling;
-           // $student_obj->status=2;
+          // $student_obj->status=2;
             if($student_obj->role_id !='4'){
               if(empty($request->family_code)){
                 $digits = 5;
@@ -961,7 +961,7 @@ $data_document = [];
           else{ 
 
             $users=DB::select( DB::raw("SELECt id,name,(SELECT group_concat(u.name) as childrens from parent_childrens
-            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens from users where role_id=3 AND status=1  and school_id=".$request->school_id));
+            INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens from users where role_id=3  and school_id=".$request->school_id));
            if(!empty($users)){
 
              return response()->json(array('error' => false, 'message' => 'record found','data' => $users ), 200);
