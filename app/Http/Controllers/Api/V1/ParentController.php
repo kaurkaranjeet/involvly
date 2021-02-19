@@ -367,7 +367,7 @@ $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_
 
  $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
 
- $result= ClassUser::select('class_id')->where('user_id',$request->parent_id)->get();
+ $result= DB::select( DB::raw("Select class_code.id,class_code.class_code,class_code.class_name,user_class_code.user_id as student_id from class_code INNER JOIN user_class_code ON class_code .id =user_class_code .class_id WHERE user_id =".$request->parent_id." GROUP BY class_code.id "))->get();
 
 $childrens= $resultsa->children;
 if(!empty($childrens)){
@@ -382,7 +382,7 @@ $users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_cod
         });
            $result  = $mergedCollection->all();
 		}
-		
+
 						return response()->json(array('error' => false, 'message' => 'Classes fetched successfully', 'data' => $result), 200);
 		
 			
