@@ -367,7 +367,7 @@ $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_
 
  $resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
 
- $class_id= ClassUser::select('class_id')->where('user_id',$request->parent_id)->get();
+ $result= ClassUser::select('class_id')->where('user_id',$request->parent_id)->get();
 
 $childrens= $resultsa->children;
 if(!empty($childrens)){
@@ -381,12 +381,11 @@ $users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_cod
 
         });
            $result  = $mergedCollection->all();
-
+		}
+		
 						return response()->json(array('error' => false, 'message' => 'Classes fetched successfully', 'data' => $result), 200);
-				}
-				else{
-						throw new Exception('No classes');
-				}
+		
+			
 
 		}
 		 }
