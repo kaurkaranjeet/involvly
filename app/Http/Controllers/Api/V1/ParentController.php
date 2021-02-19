@@ -383,7 +383,7 @@ if(!empty($result)  &&!empty($users)){
            $result  = $mergedCollection->all();
 		}
 		else{
-			    $result  =$users;
+			  //  $result  =$users;
 		}
 		
 	}
