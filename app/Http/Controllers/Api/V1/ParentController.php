@@ -370,7 +370,7 @@ $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_
  $class_id= ClassUser::select('class_id')->where('user_id',$request->parent_id)->get();
 
 $childrens= $resultsa->children;
-if(!empty($childrens)){
+if(!empty($childrens)  ||  !empty($class_id)){
 $users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_code.class_name,user_class_code.user_id as student_id from class_code INNER JOIN user_class_code ON class_code .id =user_class_code .class_id WHERE user_id IN(".$childrens.") AND active=1 GROUP BY class_code.id "));
 
  $collection = collect($class_id);
