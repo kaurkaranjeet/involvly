@@ -373,7 +373,7 @@ $childrens= $resultsa->children;
 if(!empty($childrens)){
 $users=DB::select( DB::raw("Select class_code.id,class_code.class_code,class_code.class_name,user_class_code.user_id as student_id from class_code INNER JOIN user_class_code ON class_code .id =user_class_code .class_id WHERE user_id IN(".$childrens.") AND active=1 GROUP BY class_code.id "));
 if(!empty($result)  &&!empty($users)){
- $collection = collect($class_id);
+ $collection = collect($result);
            $mergedCollection     = $collection->merge($users);
            $mergedCollection = $mergedCollection->unique(function ($item) {
 
