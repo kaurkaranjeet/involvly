@@ -9,6 +9,8 @@ use Exception;
 use App\User;
 use App\Models\ClassCode;
 use App\Models\ClassUser;
+use App\Models\AssignedTeacher;
+
 use App\Models\Subject;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
