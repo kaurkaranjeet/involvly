@@ -90,7 +90,7 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $timetable = Timetable::with('User')->orderBy('id', 'DESC')->get();
+            $timetable = Timetable::with('User')->where('teacher_id', '=', $request->teacher_id)->where('school_id', '=', $request->school_id)->orderBy('id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $timetable), 200);
         }
     }
