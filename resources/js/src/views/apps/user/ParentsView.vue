@@ -127,7 +127,7 @@
        
       </div>
 
-      <div class="vx-row">
+      <!--<div class="vx-row">
         <div class="vx-col lg w-full">
           <vx-card title="Students" class="mb-base bottom-padding" >
            <table  v-for="item in user_data.relationshipParent" :key="item.id">
@@ -137,7 +137,7 @@
             </table>
           </vx-card>
         </div>
-        </div>
+        </div>-->
 
       <!-- Permissions -->
      <!--  <vx-card>
