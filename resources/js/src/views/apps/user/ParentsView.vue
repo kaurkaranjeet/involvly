@@ -127,6 +127,18 @@
        
       </div>
 
+      <div class="vx-row">
+        <div class="vx-col lg w-full">
+          <vx-card title="Students" class="mb-base">
+           <table  v-for="item in user_data.relationshipParent" :key="item.id">
+              <tr>
+                <td class="">Name : {{ item.child_details.email }}<div>Relationship : {{ item.relationship }}</div></td>
+              </tr>
+            </table>
+          </vx-card>
+        </div>
+        </div>
+
       <!-- Permissions -->
      <!--  <vx-card>
 
@@ -281,7 +293,9 @@ export default {
     this.$store.dispatch('userManagement/fetchUser', userId)
       .then(res => 
 
-        { this.user_data = res.data.data }
+        { this.user_data = res.data.data 
+        console.log("12333",this.user_data.relationshipParent)
+        }
 
         )
       .catch(err => {

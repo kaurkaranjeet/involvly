@@ -14,6 +14,7 @@ use App\Models\Group;
 use App\Models\School;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Pusher\Pusher;
+use App\Models\ParentChildrens;
 
 class UserController extends Controller {
 
@@ -271,17 +272,25 @@ class UserController extends Controller {
     }
 
     public function fetchUser($id) {
- $data = User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->with('Timetables')->where('id', $id)->first();
+    $data = User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->with('Timetables')->where('id', $id)->first();
     // print_r($data->StateDetail);die;
         $UnapproveStudent=[];
+        $relationshipStudent=[];
+        $relationshipParent=[];
        $data->state_name= $data->StateDetail->state_name;
         $data->city= $data->CityDetail->city;
         if(count($data->documents)){
              $data->is_document= 1;
         }
         if($data->role_id==3){
-      $UnapproveStudent=   UnapproveStudent::where('parent_id',$id)->get();
-              }
+          $UnapproveStudent=   UnapproveStudent::where('parent_id',$id)->get();
+          $relationshipParent = ParentChildrens::with('ChildDetails')->where('parent_id',$id)->get();
+          $data['relationshipParent'] = $relationshipParent;
+        }
+        if($data->role_id==2){
+          $relationshipStudent = ParentChildrens::with('ParentDetails')->where('children_id',$id)->get();
+          $data['relationshipStudent'] = $relationshipStudent;
+        }
         if (isset($data)) {
          $data['unapproveStudent']=$UnapproveStudent;
             return response()->json(compact('data'), 200);
