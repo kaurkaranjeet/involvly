@@ -127,17 +127,17 @@
        
       </div>
 
-      <!--<div class="vx-row">
+      <div class="vx-row">
         <div class="vx-col lg w-full">
           <vx-card title="Students" class="mb-base bottom-padding" >
            <table  v-for="item in user_data.relationshipParent" :key="item.id">
               <tr>
-                <td class="">Name : {{ item.child_details.email }}<div>Relationship : {{ item.relationship }}</div></td>
+                <td class="">Name : {{ item.child_details.email }}<div>Relationship : Child</div></td>
               </tr>
             </table>
           </vx-card>
         </div>
-        </div>-->
+        </div>
 
       <!-- Permissions -->
      <!--  <vx-card>
