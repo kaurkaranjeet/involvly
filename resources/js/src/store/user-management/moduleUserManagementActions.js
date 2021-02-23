@@ -32,7 +32,7 @@ export default {
         return new Promise((resolve, reject) => {
             axios.post('/api/auth/manage-users/' + school_id, requestOptions)
                 .then((response) => {
-                  //  console.log(response.data.users);
+                    //  console.log(response.data.users);
                     commit('SET_USERS', response.data.users)
                     resolve(response)
                 })
@@ -40,7 +40,7 @@ export default {
         })
     },
 
-     fetchClassCode({ commit }) {
+    fetchClassCode({ commit }) {
         var x = localStorage.getItem('accessToken');
         var user_id = localStorage.getItem('user_id');
         //  User Reward Card
@@ -52,7 +52,7 @@ export default {
         return new Promise((resolve, reject) => {
             axios.post('/api/auth/manage-classes/' + user_id, requestOptions)
                 .then((response) => {
-                   // console.log(response.data.classes);
+                    // console.log(response.data.classes);
                     commit('SET_CLASSES', response.data.classes)
                     resolve(response)
                 })
@@ -111,7 +111,7 @@ export default {
     UpdateUser({ commit }, data) {
         console.log(data);
         return new Promise((resolve, reject) => {
-            axios.post(`/api/auth/update-profile/`, data)
+            axios.post(`/api/auth/update-profile`, data)
                 .then((response) => {
 
 
@@ -121,7 +121,7 @@ export default {
         })
     },
 
-      SaveStudent({ commit }, data) {
+    SaveStudent({ commit }, data) {
         console.log(data);
         return new Promise((resolve, reject) => {
             axios.post(`/api/v1/signup_student`, data)
@@ -135,7 +135,7 @@ export default {
     },
 
 
-      SaveTeacher({ commit }, data) {
+    SaveTeacher({ commit }, data) {
         console.log(data);
         return new Promise((resolve, reject) => {
             axios.post(`/api/auth/signup_teacher`, data)
@@ -190,7 +190,7 @@ export default {
         })
     },
 
-     fetchSchoolAdmins({ commit }) {
+    fetchSchoolAdmins({ commit }) {
         var x = localStorage.getItem('accessToken');
         //  User Reward Card
         const requestOptions = {
