@@ -129,7 +129,7 @@
 
       <div class="vx-row">
         <div class="vx-col lg w-full">
-          <vx-card title="Students" class="mb-base">
+          <vx-card title="Students" class="mb-base bottom-padding" >
            <table  v-for="item in user_data.relationshipParent" :key="item.id">
               <tr>
                 <td class="">Name : {{ item.child_details.email }}<div>Relationship : {{ item.relationship }}</div></td>
@@ -362,5 +362,7 @@ only screen and (min-width:636px) and (max-width:991px) {
   // }
 
 }
-
+.bottom-padding {
+  padding-bottom: 1.5rem !important;
+}
 </style>

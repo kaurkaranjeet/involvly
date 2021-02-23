@@ -101,7 +101,7 @@
 
       <div class="vx-row">
         <div class="vx-col lg w-full">
-          <vx-card title="Timetables" class="mb-base">
+          <vx-card title="Timetables" class="mb-base bottom-padding">
            <table  v-for="item in user_data.timetables" :key="item.id">
               <tr>
                 <td class="">{{ item.date }}<div>Repeats {{ item.selected_days }}</div></td>
@@ -379,5 +379,7 @@ only screen and (min-width:636px) and (max-width:991px) {
   // }
 
 }
-
+.bottom-padding {
+  padding-bottom: 1.5rem !important;
+}
 </style>
