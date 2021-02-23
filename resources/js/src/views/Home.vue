@@ -333,8 +333,8 @@
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
-                <vs-th>Approve</vs-th>  
-                <vs-th>Reject</vs-th>  
+                <!--<vs-th>Approve</vs-th>  
+                <vs-th>Reject</vs-th>  -->
                  <vs-th>View Details</vs-th>
               </template>
 
@@ -344,7 +344,7 @@
                     <span>#{{data[indextr].id}}</span>
                   </vs-td>
 
-                    <vs-td :data="data[indextr].name">
+                  <vs-td :data="data[indextr].name">
                     <span>{{data[indextr].name}}</span>
                   </vs-td>
 
@@ -352,7 +352,7 @@
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
                  
-                  <vs-td :data="data[indextr].status">
+                  <!--<vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
                       
@@ -378,7 +378,7 @@
                      
                      
                     </span>
-                  </vs-td>
+                  </vs-td>-->
                    <vs-td :data="data[indextr].date">
                       <router-link :to="'apps/user/student-view/'+data[indextr].id">View Details</router-link>
                   </vs-td>
@@ -396,8 +396,8 @@
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
               
-                <vs-th>Approve</vs-th>  
-                <vs-th>Reject</vs-th>  
+                <!--<vs-th>Approve</vs-th>  
+                <vs-th>Reject</vs-th>-->  
                   <vs-th>View Details</vs-th>
               </template>
 
@@ -415,7 +415,7 @@
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
                 
-                  <vs-td :data="data[indextr].status">
+                  <!--<vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
                       
@@ -441,7 +441,7 @@
                      
                      
                     </span>
-                  </vs-td>
+                  </vs-td>-->
                    <vs-td :data="data[indextr].date">
                       <router-link :to="'apps/user/parent-view/'+data[indextr].id">View Details</router-link>
                   </vs-td>
