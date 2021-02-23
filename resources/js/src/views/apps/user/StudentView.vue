@@ -98,7 +98,7 @@
         </div>
 
       </vx-card>
-      <div class="vx-row">
+      <!--<div class="vx-row">
         <div class="vx-col lg w-full">
           <vx-card title="Parents" class="mb-base bottom-padding">
            <table  v-for="item in user_data.relationshipStudent" :key="item.id">
@@ -107,7 +107,7 @@
               </tr>
             </table>
           </vx-card>
-        </div>
+        </div>-->
 
      <!--  <div class="vx-row">
         <div class="vx-col lg:w-1/2 w-full">
