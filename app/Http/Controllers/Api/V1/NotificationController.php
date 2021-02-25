@@ -135,5 +135,25 @@ if(count($notifications)>0){
 	      
 }
 }
+    public function UnreadNotifications(Request $request){
+	$validator = Validator::make($request->all(), [
+		'user_id' => 'required|exists:users,id'
+	]);
+	if($validator->fails()){
+		return response()->json(array('errors' => $validator->errors(),'error' => true));
+	}
+	else{
+		if($request->type=='school_notification'){
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->where('is_read' , '0')->count();
+		}else{
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->where('is_read' , '0')->count();
+		}
+                return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
+	       
+	
+
+	}
+
+    }
 }
 ?> 
