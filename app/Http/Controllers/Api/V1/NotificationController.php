@@ -155,5 +155,24 @@ if(count($notifications)>0){
 	}
 
     }
+    public function MarkNotificationsRead(Request $request){
+	$validator = Validator::make($request->all(), [
+		'user_id' => 'required|exists:users,id',
+                'notification_id' => 'required|exists:notification,id',
+            
+	]);
+	if($validator->fails()){
+		return response()->json(array('errors' => $validator->errors(),'error' => true));
+	}
+	else{
+		$notifications=	Notification::where('user_id' , $request->user_id)->where('id' , $request->notification_id)->update(['is_read' => '1']);
+
+                return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
+	       
+	
+
+	}
+
+    }
 }
 ?> 
