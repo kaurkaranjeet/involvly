@@ -1338,6 +1338,8 @@ $data_document = [];
 												'user_id' => 'required',
 												'school_id' => 'required',
 												'class_code' => 'required',
+                                                    
+'role_id' => 'required'
 						]);
 						if ($validator->fails()) {
 								throw new Exception($validator->errors()->first());
@@ -1353,11 +1355,13 @@ if($count>=1){
 			
 
 						User::where('id',$request->user_id)->update(['school_id' =>$request->school_id]);
+                                                if($request->role_id == '2'){
 						$parents= ParentChildrens::where('children_id',$request->user_id)->get();
 											foreach($parents as $singl){
 						DB::table('user_class_code')->where('user_id' ,$singl->parent_id)->where('class_id' , $class_code->id)->update(['class_id' => $class_code->id, 'active' => '1']);
 											 
-											}
+											} 
+                                                }
 										}
 										else{
 											 return response()->json(array('error' => true, 'message' =>'This class code is not according to your selected class.'), 200);
