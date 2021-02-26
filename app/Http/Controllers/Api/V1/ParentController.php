@@ -69,7 +69,6 @@ class ParentController extends Controller {
 								$addUser->jwt_token = $token;
 								 $addUser->school_status = '0';
 									$addUser->update_detail = '0';
-                                                                        $addUser->school_live = '0';
 								//  $addUser->relationship = $request->relationship;
 
 					 return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
@@ -125,7 +124,9 @@ class ParentController extends Controller {
 				 
 						 
 							 if($request->has('school_name')){
-								$school_obj=new School;
+                                                             $school_details = School::where('school_name',$request->school_name)->first();
+                    if(empty($school_details)){
+                        $school_obj=new School;
 								$school_obj->city_id=$request->city_id;
 								$school_obj->state_id=$request->state_id;
 								$school_obj->school_name=$request->school_name;
@@ -161,6 +162,10 @@ class ParentController extends Controller {
 											 // return response()->json(array('error' => true, 'message' => $search_class_name), 200);
 											}
 										}
+                    }else{
+                      return response()->json(array('error' => true, 'message' => 'School name already exist'), 200);  
+                    }
+								
 
 							}
 
@@ -204,15 +209,6 @@ class ParentController extends Controller {
 									// }
 
  $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$request->user_id)->first();
-                if(!empty($addUser->SchoolDetail)){
-                if($addUser->SchoolDetail->approved == 1){
-                    $addUser->school_live = '1';
-                }else{
-                    $addUser->school_live = '0';
-                }  
-                }else{
-                    $addUser->school_live = '0';
-                }
 									 if(isset($classobj)){
 										$addUser->class_id=$class_code->id;
 										$addUser->class_name=$class_code->class_name;
