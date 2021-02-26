@@ -69,6 +69,7 @@ class ParentController extends Controller {
 								$addUser->jwt_token = $token;
 								 $addUser->school_status = '0';
 									$addUser->update_detail = '0';
+                                                                        $addUser->school_live = '0';
 								//  $addUser->relationship = $request->relationship;
 
 					 return response()->json(array('error' => false, 'message' => 'Registered Successfully','data' =>$addUser), 200);
@@ -203,6 +204,15 @@ class ParentController extends Controller {
 									// }
 
  $addUser= User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id',$request->user_id)->first();
+                if(!empty($addUser->SchoolDetail)){
+                if($addUser->SchoolDetail->approved == 1){
+                    $addUser->school_live = '1';
+                }else{
+                    $addUser->school_live = '0';
+                }  
+                }else{
+                    $addUser->school_live = '0';
+                }
 									 if(isset($classobj)){
 										$addUser->class_id=$class_code->id;
 										$addUser->class_name=$class_code->class_name;
