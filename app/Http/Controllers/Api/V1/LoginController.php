@@ -13,6 +13,7 @@ use Mail;
 use Exception;
 use App\Models\UserClassCode;
 use App\Models\ClassCode;
+use App\Models\School;
 
 class LoginController extends Controller {
 
@@ -60,6 +61,17 @@ class LoginController extends Controller {
                   $user_details->class_id = '';
                   $user_details->class_name = '';  
                    $user_details->school_status = '0';
+              }
+              //check school approval status 
+              $school_details = School::where('id', $user_details->school_id)->first();
+              if(!empty($school_details)){
+                  if($school_details->approved == 1){
+                     $user_details->school_live = '1'; 
+                  }else{
+                     $user_details->school_live = '0'; 
+                  }
+              }else{
+                    $user_details->school_live = '0';
               }
 
 
