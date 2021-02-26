@@ -168,6 +168,40 @@ if(count($notifications)>0){
 	}
 
     }
+    public function MarkAllNotificationsRead(Request $request){
+	$validator = Validator::make($request->all(), [
+	    'user_id' => 'required|exists:users,id',
+            'role_type' => 'required|in:all,child,class',
+            'type' => 'required_if:role_type, =,all',
+//            'children_id' => 'required_if:role_type, =,child',
+//            'class_id' => 'required_if:role_type, =,class',
+            
+	]);
+	if($validator->fails()){
+		return response()->json(array('errors' => $validator->errors(),'error' => true));
+	}
+	else{
+            if($request->role_type == 'child'){
+//                $notifications= Notification::where('from_user_id' , $request->children_id)->where('user_id' , $request->user_id)->where('is_read' , '0')->count(); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_read' => '1']);
+            }else if($request->role_type == 'class'){
+//                $notifications=	Notification::where('user_id' , $request->user_id)->where('class_id' , $request->class_id)->where('is_read' , '0')->count(); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_read' => '1']); 
+            } else{
+               if($request->type=='school_notification'){
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_read' => '1']);
+		}else{
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->update(['is_read' => '1']);
+		} 
+            }
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
+	       
+	
+
+	}
+
+    }
+    
     public function MarkNotificationsRead(Request $request){
 	$validator = Validator::make($request->all(), [
 		'user_id' => 'required|exists:users,id',

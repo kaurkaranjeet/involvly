@@ -106,6 +106,7 @@ Route::prefix('v1')->group(function () {
     Route::post('all_notifications', 'Api\V1\NotificationController@AllNotifications');
     Route::post('unread_notifications_count', 'Api\V1\NotificationController@UnreadNotifications');
     Route::post('mark_notifications_read', 'Api\V1\NotificationController@MarkNotificationsRead');
+    Route::post('mark_all_notifications_read', 'Api\V1\NotificationController@MarkAllNotificationsRead');
     Route::post('add_reply_comment', 'Api\V1\PostController@AddReplyComments');
     Route::post('get_reply_comment', 'Api\V1\PostController@GetReplyComments');
     Route::post('accept_reject_task', 'Api\V1\ParentController@AcceptRejectTask');
