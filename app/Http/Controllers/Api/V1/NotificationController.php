@@ -150,15 +150,15 @@ if(count($notifications)>0){
 	else{
             if($request->role_type == 'child'){
 //                $notifications= Notification::where('from_user_id' , $request->children_id)->where('user_id' , $request->user_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->where('is_read' , '0')->count(); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->where('is_all_read' , '0')->count(); 
             }else if($request->role_type == 'class'){
 //                $notifications=	Notification::where('user_id' , $request->user_id)->where('class_id' , $request->class_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->where('is_read' , '0')->count(); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->where('is_all_read' , '0')->count(); 
             } else{
                if($request->type=='school_notification'){
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->where('is_read' , '0')->count();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->where('is_all_read' , '0')->count();
 		}else{
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->where('is_read' , '0')->count();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->where('is_all_read' , '0')->count();
 		} 
             }
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
@@ -183,15 +183,15 @@ if(count($notifications)>0){
 	else{
             if($request->role_type == 'child'){
 //                $notifications= Notification::where('from_user_id' , $request->children_id)->where('user_id' , $request->user_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_read' => '1']);
+                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_all_read' => '1']);
             }else if($request->role_type == 'class'){
 //                $notifications=	Notification::where('user_id' , $request->user_id)->where('class_id' , $request->class_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_read' => '1']); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_all_read' => '1']); 
             } else{
                if($request->type=='school_notification'){
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_read' => '1']);
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_all_read' => '1']);
 		}else{
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->update(['is_read' => '1']);
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->update(['is_all_read' => '1']);
 		} 
             }
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
