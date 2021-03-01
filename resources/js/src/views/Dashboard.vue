@@ -334,7 +334,7 @@
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
-               
+                <vs-th>School Name</vs-th> 
                 <vs-th>Approve</vs-th>  
                 <vs-th>Reject</vs-th>  
                  <vs-th>View Details</vs-th>
@@ -352,6 +352,10 @@
 
                   <vs-td :data="data[indextr].email">
                     <span>{{data[indextr].email}}</span>
+                  </vs-td>
+
+                  <vs-td :data="data[indextr].email">
+                    <span>{{data[indextr].school_detail.school_name}}</span>
                   </vs-td>
               
                   <vs-td :data="data[indextr].status">
