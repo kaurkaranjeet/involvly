@@ -66,8 +66,6 @@ class NotificationController extends Controller {
                                 }else{
 				$scheduke->assigned_to=null;   
                                 }
-				$user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token')->get();
-				$scheduke->assigned_to=$user;
 
 				$single_notification->schedule=$scheduke;
 			}
