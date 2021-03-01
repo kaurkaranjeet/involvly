@@ -13,10 +13,27 @@ use App\Models\AssignedAssignments;
 
 use App\Models\ParentTask;;
 use DB;
+use App\Events\NotificationEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller {
+    
+    public function __construct()
+    {
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'encrypted' => true
+        );
+        $this->pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'), 
+            $options
+        );
+
+       
+    }
 // Provide the Host Information.
 
 	public function SendNotification($token,$message,$notify_type){
@@ -183,17 +200,22 @@ if(count($notifications)>0){
 	else{
             if($request->role_type == 'child'){
 //                $notifications= Notification::where('from_user_id' , $request->children_id)->where('user_id' , $request->user_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_all_read' => '1']);
+                Notification::where('user_id' , $request->user_id)->update(['is_all_read' => '1']);
+                $notifications=	Notification::where('user_id' , $request->user_id)->get();
             }else if($request->role_type == 'class'){
 //                $notifications=	Notification::where('user_id' , $request->user_id)->where('class_id' , $request->class_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_all_read' => '1']); 
+                Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_all_read' => '1']); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->get();
             } else{
                if($request->type=='school_notification'){
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_all_read' => '1']);
+			Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_all_read' => '1']);
+                        $notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->get();
 		}else{
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->update(['is_all_read' => '1']);
+			Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->update(['is_all_read' => '1']);
+                        $notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->get();
 		} 
             }
+            $this->pusher->trigger('notification-channel', 'notification_all_read', $notifications);
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 	       
 	
@@ -212,7 +234,9 @@ if(count($notifications)>0){
 		return response()->json(array('errors' => $validator->errors(),'error' => true));
 	}
 	else{
-		$notifications=	Notification::where('user_id' , $request->user_id)->where('id' , $request->notification_id)->update(['is_read' => '1']);
+		Notification::where('user_id' , $request->user_id)->where('id' , $request->notification_id)->update(['is_read' => '1']);
+                $notifications = Notification::where('user_id' , $request->user_id)->where('id' , $request->notification_id)->first();
+                $this->pusher->trigger('notification-channel', 'notification_read', $notifications);
 
                 return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 	       
