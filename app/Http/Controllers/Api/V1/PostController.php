@@ -107,10 +107,11 @@ public function GetPostHomefeed(Request $request){
      $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM likes
-              WHERE likes.user_id = ".$request->user_id."  AND likes.like = 1 AND likes.post_id = ".$request->post_id."
+              WHERE posts.id = likes.post_id
+              AND likes.user_id = ".$request->user_id."  AND likes.like = 1 AND likes.post_id = ".$request->post_id."
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+              AS is_like")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
     } 
     return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
 
