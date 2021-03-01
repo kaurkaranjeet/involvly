@@ -612,7 +612,9 @@ class ParentController extends Controller {
                 $notificationobj->push_type = 'add_task';
                 $notificationobj->from_user_id = $user_data_by->id;
                 $notificationobj->save();
-
+                
+                $notificationobj->role_type = 'all';
+                $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                 $data = array(
                     'name' => $user_data_to->name,
                     'email' => $user_data_to->email,
@@ -713,8 +715,9 @@ class ParentController extends Controller {
                 $notificationobj->from_user_id = $user_data_by->id;
                 $notificationobj->schedule_id = $task->id;
                 $notificationobj->save();
-
-
+                
+                $notificationobj->role_type = 'all';
+                $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                 $data = array(
                     'name' => $user_data_to->name,
                     'email' => $user_data_to->email,
