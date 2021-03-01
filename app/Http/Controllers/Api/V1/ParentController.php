@@ -1134,6 +1134,8 @@ class ParentController extends Controller {
                 $notificationobj->task_id = $accept_reject_data->task_id;
                 $notificationobj->schedule_id = $task_schedule->schedule_id;
                 $notificationobj->save();
+                $notificationobj->role_type = 'all';
+                $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
             } else {
                 $accept_reject_data = new ParentController();
             }
@@ -1262,6 +1264,9 @@ class ParentController extends Controller {
                 $notificationobj->schedule_id = $schedule->id;
                 $notificationobj->push_type = $type;
                 $notificationobj->save();
+                
+                $notificationobj->role_type = 'all';
+                $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
 
 
 
