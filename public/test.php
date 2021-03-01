@@ -4,6 +4,7 @@
  
 <script>
     $(document).ready(function () {
+        alert("like_post");
      
         var pusher = new Pusher("89e6c9370799fbae957c", {
         cluster: "ap2",
@@ -12,10 +13,11 @@
        
     });
 
-            var channel = pusher.subscribe('comment-channel');
+            var channel = pusher.subscribe('notification-channel');
 
-             channel.bind('add_comment', function(data) {
-        console.log(data)
+             channel.bind('notification_all_read', function(data) {
+                 alert("done")
+            console.log(data)
       //  displayMessage(data.data);
     });
     });
