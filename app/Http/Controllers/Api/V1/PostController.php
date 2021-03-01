@@ -94,7 +94,7 @@ public function GetPostHomefeed(Request $request){
  
 
     }
-    public function get_home_feed_description(Request $request){
+    public function GetPostHomefeedDescription(Request $request){
        $input = $request->all();
        $validator = Validator::make($input, [
         'post_id' => 'required|exists:posts,id',
