@@ -19,6 +19,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use URL;
+use App\Events\NotificationEvent;
 
 class AssignmentController extends Controller {
 
@@ -172,6 +173,8 @@ class AssignmentController extends Controller {
              $notificationobj->assignment_id=$request->assignment_id;
              $notificationobj->from_user_id=$getData->Assignments->teacher_id;
              $notificationobj->save();
+             $notificationobj->role_type = 'child';
+             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                 // Notification::create(['user_id'=>$assignment_assign_to,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
                         $results = ParentChildrens::with('ChildDetails')->where('children_id', $assignment_assign_to)->groupBy('parent_id')->get();
                         if (!empty($results)) {
@@ -191,6 +194,8 @@ class AssignmentController extends Controller {
                                 $notificationobj->class_id=$request->class_id;
                                 $notificationobj->from_user_id=$getData->Student->id;
                                 $notificationobj->save();
+                                $notificationobj->role_type = 'all';
+             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                                    /* Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); */
                                 
                             }
@@ -240,6 +245,8 @@ class AssignmentController extends Controller {
              $notificationobj->assignment_id=$request->assignment_id;
              $notificationobj->from_user_id=$getData->Assignments->teacher_id;
              $notificationobj->save();
+             $notificationobj->role_type = 'child';
+             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                  //Notification::create(['user_id'=>$getData->Student->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
 
              $results = ParentChildrens::with('ChildDetails')->where('children_id', $users->user_id)->groupBy('parent_id')->get();
@@ -262,6 +269,8 @@ class AssignmentController extends Controller {
                 $notificationobj->class_id = $request->class_id;
                 $notificationobj->from_user_id=$getData->Student->id;
                 $notificationobj->save();
+                $notificationobj->role_type = 'all';
+             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                                   //  Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); 
                                 
                             }
