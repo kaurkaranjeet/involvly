@@ -216,7 +216,7 @@ if(count($notifications)>0){
                         $notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->get();
 		} 
             }
-            $this->pusher->trigger('notification-channel', 'notification_all_read', $notifications);
+//            $this->pusher->trigger('notification-channel', 'notification_all_read', $notifications);
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 	       
 	
@@ -237,7 +237,7 @@ if(count($notifications)>0){
 	else{
 		Notification::where('user_id' , $request->user_id)->where('id' , $request->notification_id)->update(['is_read' => '1']);
                 $notifications = Notification::where('user_id' , $request->user_id)->where('id' , $request->notification_id)->first();
-                $this->pusher->trigger('notification-channel', 'notification_all_read', $notifications);
+//                $this->pusher->trigger('notification-channel', 'notification_all_read', $notifications);
 
                 return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
 	       
