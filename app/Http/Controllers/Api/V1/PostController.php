@@ -159,7 +159,7 @@ public function GetPostHomefeed(Request $request){
 
       if($post_user->user->id!=$request->user_id){
        if(!empty($post_user->user->device_token)){
-        SendAllNotification($post_user->user->device_token,$message,'social_notification',null,'add_comment');          
+        SendAllNotification($post_user->user->device_token,$message,'social_notification',null,'add_comment',$request->post_id);          
       }
        $notifications = Notification::create(['user_id'=>$post_user->user->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment','push_type'=>'add_comment']);
        $notifications->role_type = 'all';
@@ -256,7 +256,7 @@ public function GetComments(Request $request){
 
          $message= $flight->User->name .' has '.$like.' your post.';
          if(!empty($post_user->user->device_token)){
-          SendAllNotification($post_user->user->device_token,$message,'social_notification',null,'like_post');        
+          SendAllNotification($post_user->user->device_token,$message,'social_notification',null,'like_post',$request->post_id);        
         }
 
       $notifications = Notification::create(['user_id'=>$post_user->user->id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'like','from_user_id'=>$request->user_id,'push_type'=>'like_post','post_id'=>$request->post_id]); 

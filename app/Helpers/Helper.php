@@ -85,7 +85,7 @@ else
 fclose ($tSocket);
 }
 
-function SendAllNotification($token,$message,$notify_type,$schedule=null,$type=null){
+function SendAllNotification($token,$message,$notify_type,$schedule=null,$type=null,$post_id=null){
 $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0DRK4BLTUAGpz6FbDKF9a4UmrIm8Sb6tajxHfCJBzKnDnf7jgg9dgu3oLDNFD0bonhRNUOf9-Cl8jQhbs3mPoaqKxge';
  $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 // $token='235zgagasd634sdgds46436';
@@ -102,10 +102,10 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
     }else{
         if($type=='add_assign'||$type=='submitted'){
            $subject= SubmittedAssignments::where("assignment_id",$schedule)->select("subject_id","class_id")->first();
-                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"assignment_id"=>$schedule,"subject_id"=>$subject->subject_id,"class_id"=>$subject->class_id];
+                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"assignment_id"=>$schedule,"subject_id"=>$subject->subject_id,"class_id"=>$subject->class_id,"post_id"=>$post_id];
             }
                 else{
-                        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"task_id"=>$schedule];
+                        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"task_id"=>$schedule,"post_id"=>$post_id];
 
                 }  
         }
