@@ -153,7 +153,7 @@ if(count($notifications)>0){
                 $notifications=	Notification::where('user_id' , $request->user_id)->where('is_all_read' , '0')->count(); 
             }else if($request->role_type == 'class'){
 //                $notifications=	Notification::where('user_id' , $request->user_id)->where('class_id' , $request->class_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->where('is_all_read' , '0')->count(); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->where('is_all_read' , '0')->count(); 
             } else{
                if($request->type=='school_notification'){
 			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->where('is_all_read' , '0')->count();
