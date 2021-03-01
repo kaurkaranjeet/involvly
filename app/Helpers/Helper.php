@@ -98,7 +98,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             'badge' => '1'
         ];
         if(is_object($schedule)){
-        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"schedule"=>$schedule];
+        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,"schedule"=>$schedule,"post_id"=>$post_id];
     }else{
         if($type=='add_assign'||$type=='submitted'){
            $subject= SubmittedAssignments::where("assignment_id",$schedule)->select("subject_id","class_id")->first();
