@@ -20,6 +20,7 @@ use App\Models\AssignedTeacher;
 use App\Models\School;
 use App\Notification;
 use Pusher\Pusher;
+use App\Events\NotificationEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
