@@ -446,6 +446,8 @@ class AssignmentController extends Controller {
                               $notificationobj->assignment_id =$request->assignment_id;
                          $notificationobj->from_user_id=$request->student_id;
                          $notificationobj->save();
+                         $notificationobj->role_type = 'class';
+             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
 
                      //Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$request->student_id]);
                  }
@@ -466,6 +468,8 @@ class AssignmentController extends Controller {
                               $notificationobj->class_id = $request->class_id;
                          $notificationobj->from_user_id=$request->student_id;
                          $notificationobj->save();
+                         $notificationobj->role_type = 'child';
+             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                        // Notification::create(['user_id'=>$users->parent_id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$request->student_id]); 
 
                     }
