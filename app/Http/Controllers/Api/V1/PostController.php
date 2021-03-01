@@ -107,7 +107,7 @@ public function GetPostHomefeed(Request $request){
      $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM likes
-              WHERE posts.id = likes.post_id
+              WHERE 
               AND likes.user_id = ".$request->user_id."  AND likes.like = 1 AND likes.post_id = ".$request->post_id."
               ) THEN TRUE
               ELSE FALSE END)
