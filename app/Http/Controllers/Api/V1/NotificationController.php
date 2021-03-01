@@ -11,7 +11,8 @@ use App\Models\Notification;
 use App\Models\Schedule;
 use App\Models\AssignedAssignments;
 
-use App\Models\ParentTask;;
+use App\Models\ParentTask;
+use Pusher\Pusher;
 use DB;
 use App\Events\NotificationEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
