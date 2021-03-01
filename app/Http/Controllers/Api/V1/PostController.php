@@ -94,6 +94,30 @@ public function GetPostHomefeed(Request $request){
  
 
     }
+    public function get_home_feed_description(Request $request){
+       $input = $request->all();
+       $validator = Validator::make($input, [
+        'post_id' => 'required|exists:posts,id',
+
+    ]);    
+       if ($validator->fails()) {
+        return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+    }
+    else{
+     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
+              SELECT *
+              FROM likes
+              WHERE posts.id = likes.post_id
+              AND likes.user_id = ".$request->user_id."  AND likes.like = 1 AND likes.post_id = ".$request->post_id."
+              ) THEN TRUE
+              ELSE FALSE END)
+              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+    } 
+    return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
+
+ 
+
+    }
 
 	  public function AddComments(Request $request){
        $input = $request->all();
