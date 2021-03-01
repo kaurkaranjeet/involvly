@@ -186,7 +186,7 @@ if(count($notifications)>0){
                 $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_all_read' => '1']);
             }else if($request->role_type == 'class'){
 //                $notifications=	Notification::where('user_id' , $request->user_id)->where('class_id' , $request->class_id)->where('is_read' , '0')->count(); 
-                $notifications=	Notification::where('user_id' , $request->user_id)->update(['is_all_read' => '1']); 
+                $notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_all_read' => '1']); 
             } else{
                if($request->type=='school_notification'){
 			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->update(['is_all_read' => '1']);
