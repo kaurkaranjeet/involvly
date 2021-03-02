@@ -24,7 +24,17 @@ use App\Events\NotificationEvent;
 class AssignmentController extends Controller {
 
     public function __construct() {
-        
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'encrypted' => true
+        );
+        $this->pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'), 
+            $options
+        );
+
     }
 
     // Add assignment
@@ -447,7 +457,7 @@ class AssignmentController extends Controller {
                          $notificationobj->from_user_id=$request->student_id;
                          $notificationobj->save();
                          $notificationobj->role_type = 'class';
-             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
+                         $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
 
                      //Notification::create(['user_id'=>$teacher_detials->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=> 'Assignment','from_user_id'=>$request->student_id]);
                  }
