@@ -161,7 +161,7 @@ public function GetPostHomefeed(Request $request){
        if(!empty($post_user->user->device_token)){
         SendAllNotification($post_user->user->device_token,$message,'social_notification',null,'add_comment',$request->post_id);          
       }
-       $notifications = Notification::create(['user_id'=>$post_user->user->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment','push_type'=>'add_comment']);
+       $notifications = Notification::create(['user_id'=>$post_user->user->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment','push_type'=>'add_comment','post_id'=>$request->post_id]);
        $notifications->role_type = 'all';
       $this->pusher->trigger('notification-channel', 'notification_all_read', $notifications);
      }
