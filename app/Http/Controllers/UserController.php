@@ -66,7 +66,7 @@ class UserController extends Controller {
         }else{
            $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
            if(empty($user)){
-              return response()->json(['message' => 'Your account approval is pending'], 400);            }   
+              return response()->json(['message' => 'Your account approval is pending'], 200);            }   
         }
         return response()->json(compact('accessToken', 'user'));
     }

@@ -170,7 +170,7 @@ export default{
           this.$vs.loading.close()
           this.$vs.notify({
             title: 'Error',
-            text: 'Invalid Credentials ',
+            text: error.message,
             iconPack: 'feather',
             icon: 'icon-alert-circle',
             color: 'danger'

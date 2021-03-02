@@ -316,7 +316,7 @@ export default {
                         localStorage.setItem('school_id', response.data.user.school_id);
                         localStorage.setItem('role_id', response.data.user.role_id);
 
-                        
+
                         // Update user details
                         commit('UPDATE_USER_INFO', response.data.user, { root: true })
 
@@ -325,11 +325,14 @@ export default {
 
                         resolve(response)
                     } else {
-                        reject({ message: 'Wrong Email or Password' })
+                        reject({ message: response.data.message })
                     }
 
                 })
-                .catch(error => { reject(error) })
+                .catch(error => {
+                    console.log("errrrrr", error)
+                    reject(error)
+                })
         })
     },
     registerUserJWT({ commit }, payload) {
@@ -369,7 +372,7 @@ export default {
         return new Promise((resolve, reject) => {
             jwt.adminlogin(payload.userDetails.email, payload.userDetails.password)
                 .then(response => {
-                        // If there's user data in response
+                    // If there's user data in response
 
                     if (response.data.user) {
                         // Navigate User to homepage
