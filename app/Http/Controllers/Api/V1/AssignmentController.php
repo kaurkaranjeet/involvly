@@ -19,6 +19,8 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use URL;
+
+use Pusher\Pusher;
 use App\Events\NotificationEvent;
 
 class AssignmentController extends Controller {
