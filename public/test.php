@@ -13,10 +13,10 @@
        
     });
 
-            var channel = pusher.subscribe('notification-channel');
+            var channel = pusher.subscribe('schoolapproval-channel');
 
-             channel.bind('notification_all_read', function(data) {
-                 alert("done")
+             channel.bind('school-approved', function(data) {
+                 alert("donee")
             console.log(data)
       //  displayMessage(data.data);
     });
