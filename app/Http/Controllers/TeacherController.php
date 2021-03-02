@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Exception;
 use App\Events\AssignEvent;
+use App\Events\SchoolApprovalEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class TeacherController extends Controller {
@@ -45,6 +46,7 @@ class TeacherController extends Controller {
       if($user_first->role_id==5){
      Group::where('school_id',$user_first->school_id)->where('user_id',$user_first->id)->where('type','school_admin')->update(['status' => '1']);
      School::where('id',$user_first->school_id)->update(['approved' => '1']);
+     $this->pusher->trigger('schoolapproval-channel', 'school-approved', $user);
       }
       $data = $user->update(['status' => '1']);
 

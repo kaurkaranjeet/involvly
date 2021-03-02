@@ -60,7 +60,14 @@ class UserController extends Controller {
             return response()->json(['message' => 'could_not_create_token'], 500);
         }
 
-        $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
+        $users = User::where('email', '=', $request->input('email'))->where('role_id', 5)->first();
+        if(empty($users)){
+            return response()->json(['message' => 'invalid_credentials'], 400); 
+        }else{
+           $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
+           if(empty($user)){
+              return response()->json(['message' => 'Your account approval is pending'], 400);            }   
+        }
         return response()->json(compact('accessToken', 'user'));
     }
 
