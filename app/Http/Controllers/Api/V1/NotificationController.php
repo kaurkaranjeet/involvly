@@ -76,7 +76,11 @@ class NotificationController extends Controller {
 
 			if(!empty($single_notification->assignment_id)){
 			$subject= AssignedAssignments::where("assignment_id",$single_notification->assignment_id)->select("subject_id","class_id")->first();
-			$single_notification->subject_id=$subject->subject_id;
+                        if(!empty($subject)){
+                            $single_notification->subject_id=$subject->subject_id;
+                        }else{
+			   $single_notification->subject_id=null;
+                        }
 			$single_notification->class_id=$subject->class_id;
 			}
 		}
