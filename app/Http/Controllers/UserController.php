@@ -60,7 +60,7 @@ class UserController extends Controller {
             return response()->json(['message' => 'could_not_create_token'], 500);
         }
 
-        $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->first();
+        $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
         return response()->json(compact('accessToken', 'user'));
     }
 
