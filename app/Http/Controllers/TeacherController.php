@@ -44,6 +44,7 @@ class TeacherController extends Controller {
        $user_first=$user->first();
       if($user_first->role_id==5){
      Group::where('school_id',$user_first->school_id)->where('user_id',$user_first->id)->where('type','school_admin')->update(['status' => '1']);
+     School::where('id',$user_first->school_id)->update(['approved' => '1']);
       }
       $data = $user->update(['status' => '1']);
 
