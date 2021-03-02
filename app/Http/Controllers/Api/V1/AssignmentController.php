@@ -196,7 +196,7 @@ class AssignmentController extends Controller {
                     //send notification
                                 if (!empty($usersData->device_token)) { 
                                    //  $notify_type = 'Assignment';
-                                    SendAllNotification($usersData->device_token, $message, 'school_notification');
+                                    SendAllNotification($usersData->device_token, $message, 'school_notification',null,null,null,$getData->Student->id);
                                 }
                                 $notificationobj=new Notification;
                                 $notificationobj->user_id=$usersData->id;
@@ -270,7 +270,7 @@ class AssignmentController extends Controller {
                 $message =  $getData->Student->name .' has been given an assignment for ' .$getData->subjects->subject_name. ' by ' .$teacher_name->name .' on '.date('d-m-Y',strtotime($getData->Assignments->created_at)).'. Last Date of Submission '.date('d-m-Y',strtotime($getData->Assignments->assignments_date));
                 if (!empty($usersData->device_token)) { 
 
-                  SendAllNotification($usersData->device_token, $message, 'school_notification');
+                  SendAllNotification($usersData->device_token, $message, 'school_notification',null,null,null,$getData->Student->id);
                 }
 
                 $notificationobj=new Notification;
@@ -446,7 +446,7 @@ class AssignmentController extends Controller {
                           //send notification to teacher
                         $message = $getData->Student->name.' has submitted an assignment '.$getData->Assignments->assignments_name;
                         if (!empty($teacher_detials->device_token)) { 
-                         SendAllNotification($teacher_detials->device_token, $message, 'school_notification',$request->assignment_id,'submitted');
+                         SendAllNotification($teacher_detials->device_token, $message, 'school_notification',$request->assignment_id,'submitted',null,null,$request->class_id);
                      }
                       $notificationobj=new Notification;
                          $notificationobj->user_id=$teacher_detials->id;
