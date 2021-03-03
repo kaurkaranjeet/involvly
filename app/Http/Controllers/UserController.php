@@ -68,8 +68,13 @@ class UserController extends Controller {
             return response()->json(['message' => 'Invalid Credentials'], 200); 
         }else{
            $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
-           if(empty($user)){
-              return response()->json(['message' => 'Your account approval is pending'], 200);            }   
+           if($user->status == '0'){
+              return response()->json(['message' => 'Your account approval is pending'], 200);
+            }else if($user->status == '2'){
+              return response()->json(['message' => 'Your account is rejected by admin'], 200);
+            }else{
+
+            }  
         }
         return response()->json(compact('accessToken', 'user'));
     }
