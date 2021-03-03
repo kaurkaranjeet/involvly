@@ -133,20 +133,20 @@ class ParentController extends Controller {
                         $school_obj->approved = 0;
                         $school_obj->save();
                         $data = [
-                            ['class_name' => 'Preschool', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Kindergarten', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 1', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 2', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 3', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 4', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 5', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 6', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 7', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 8', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 9', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 10', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 11', 'approved' => 1, 'school_id' => $school_obj->id],
-                            ['class_name' => 'Grade 12', 'approved' => 1, 'school_id' => $school_obj->id]
+                            ['class_name' => 'Preschool', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Kindergarten', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 1', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 2', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 3', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 4', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 5', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 6', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 7', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 8', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 9', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 10', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 11', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id],
+                            ['class_name' => 'Grade 12', 'class_code' => rand(1000, 9999), 'approved' => 1, 'school_id' => $school_obj->id]
                         ];
                         ClassCode::insert($data);
                         $student_obj->school_id = $school_obj->id;
