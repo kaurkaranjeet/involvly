@@ -330,7 +330,6 @@ export default {
 
                 })
                 .catch(error => {
-                    console.log("errrrrr", error)
                     reject(error)
                 })
         })
@@ -391,7 +390,7 @@ export default {
                         commit('SET_BEARER', response.data.accessToken)
                         resolve(response)
                     } else {
-                        reject({ message: 'Wrong Email or Password' })
+                        reject({ message: response.data.message })
                     }
 
                 })
