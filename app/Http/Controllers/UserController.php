@@ -46,6 +46,9 @@ class UserController extends Controller {
         }
 
         $user = User::where('email', '=', $request->input('email'))->where('role_id', 1)->first();
+        if(empty($users)){
+            return response()->json(['message' => 'Invalid Credentials'], 200); 
+        }
         return response()->json(compact('accessToken', 'user'));
     }
 
