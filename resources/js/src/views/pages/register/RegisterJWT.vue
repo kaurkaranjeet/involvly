@@ -17,7 +17,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       name="name"
       placeholder="Name*"
       v-model="name"
-      class="w-full"
+      class="w-full mt-8"
       :maxlength="50"
 
  v-on:keypress="isLetter($event)"
@@ -32,7 +32,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       name="Position"
       placeholder="Position*"
       v-model="Position"
-      class="w-full" />
+      class="w-full mt-8" />
     <span class="text-danger text-sm">{{ errors.first('Position') }}</span>
     <vs-input
       v-validate="'required|email'"
@@ -42,7 +42,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       label-placeholder="Email*"
       placeholder="Email*"
       v-model="email"
-      class="w-full mt-6" />
+      class="w-full mt-8" />
     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
 
     <vs-input
@@ -54,7 +54,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       label-placeholder="Password*"
       placeholder="Password*"
       v-model="password"
-      class="w-full mt-6" />
+      class="w-full mt-8" />
     <span class="text-danger text-sm">{{ errors.first('password') }}</span>
 
     <vs-input
@@ -66,7 +66,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       label-placeholder="Confirm Password*"
       placeholder="Confirm Password*"
       v-model="confirm_password"
-      class="w-full mt-6" />
+      class="w-full mt-8" />
     <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
 
        <vs-input
@@ -77,7 +77,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
       label-placeholder="Country"
       placeholder="Country"
       v-model="country"
-      class="w-full mt-6"
+      class="w-full mt-8"
       readonly="true"
        />
     <span class="text-danger text-sm">{{ errors.first('country') }}</span>
@@ -292,6 +292,7 @@ for (let i = 0; i < this.pdf.length; i++) {
         }
         ).then((response) => {
          if(response.data.error==false){
+           this.$router.push('/').catch(() => {})
         this.$vs.notify({
           title: 'Successfully registered',
           text: 'Your request is under Process',
