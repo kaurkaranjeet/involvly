@@ -39,7 +39,7 @@ class UserController extends Controller {
 
         try {
             if (!$accessToken = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
+                return response()->json(['message' => 'Invalid Credentials'], 200);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
@@ -54,7 +54,7 @@ class UserController extends Controller {
 
         try {
             if (!$accessToken = JWTAuth::attempt($credentials)) {
-                return response()->json(['message' => 'invalid_credentials'], 400);
+                return response()->json(['message' => 'Invalid Credentials'], 200);
             }
         } catch (JWTException $e) {
             return response()->json(['message' => 'could_not_create_token'], 500);
@@ -62,7 +62,7 @@ class UserController extends Controller {
 
         $users = User::where('email', '=', $request->input('email'))->where('role_id', 5)->first();
         if(empty($users)){
-            return response()->json(['message' => 'invalid_credentials'], 400); 
+            return response()->json(['message' => 'Invalid Credentials'], 200); 
         }else{
            $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
            if(empty($user)){
