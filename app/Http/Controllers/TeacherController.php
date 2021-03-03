@@ -54,7 +54,7 @@ class TeacherController extends Controller {
     }
 
     public function DisApproveteacher($id) {
-        $data = User::where('id', $id)->update(['status' => '2']);
+        $data = User::where('id', $id)->delete();
         return response()->json(compact('data'), 200);
     }
 
