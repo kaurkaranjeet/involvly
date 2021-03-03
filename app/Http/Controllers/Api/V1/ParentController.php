@@ -106,6 +106,7 @@ class ParentController extends Controller {
                 $student_obj->type_of_schooling = $request->type_of_schooling;
                 // $student_obj->status=2;
                 if ($student_obj->role_id != '4') {
+                    $student_obj->status = '1';
                     if (empty($request->family_code)) {
                         $digits = 5;
                         $family_code = $this->random_strings(5);
