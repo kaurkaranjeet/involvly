@@ -38,7 +38,8 @@
         icon-pack="feather"
         label-placeholder="Email"
         v-model="email"
-        class="w-full"/>
+        class="w-full"
+        v-on:keyup.enter="loginJWT"/>
                        <span class="text-danger text-sm">{{ errors.first('email') }}</span>
 
                  <vs-input
@@ -51,7 +52,8 @@
         icon-pack="feather"
         label-placeholder="Password"
         v-model="password"
-        class="w-full mt-6" />
+        class="w-full mt-6"
+        v-on:keyup.enter="loginJWT" />
   <span class="text-danger text-sm">{{ errors.first('password') }}</span>
 
                   <div class="flex flex-wrap justify-between my-5">
