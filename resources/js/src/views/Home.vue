@@ -270,8 +270,8 @@
                 <vs-th>Name</vs-th>
                 <vs-th>Email</vs-th>                            
                
-                <vs-th>Approve</vs-th>  
-                <vs-th>Reject</vs-th>  
+                <!--<vs-th>Approve</vs-th>  
+                <vs-th>Reject</vs-th>-->
                  <vs-th>View Details</vs-th>
               </template>
 
@@ -289,13 +289,13 @@
                     <span>{{data[indextr].email}}</span>
                   </vs-td>
                  
-                  <vs-td :data="data[indextr].status">
+                  <!--<vs-td :data="data[indextr].status">
                     <span class="flex items-center px-2 py-1 rounded">
                     
                       
                      <div class="">
                       
-             <vs-button @click="Approveteacher(data[indextr].id,$event)"> Approve</vs-button>
+                   <vs-button @click="Approveteacher(data[indextr].id,$event)"> Approve</vs-button>
                      </div>
                    
                      
@@ -315,7 +315,7 @@
                      
                      
                     </span>
-                  </vs-td>
+                  </vs-td>-->
                    <vs-td :data="data[indextr].date">
                   <router-link :to="'apps/user/user-view/'+data[indextr].id">View Details</router-link>
                   </vs-td>
