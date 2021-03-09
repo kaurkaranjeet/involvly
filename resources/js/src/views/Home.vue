@@ -257,7 +257,7 @@
     <div class="vx-row">
       <!-- CARD 9: DISPATCHED ORDERS -->
       <div class="vx-col w-full">
-        <vx-card title="Requests">
+        <vx-card title="Users">
           <div slot="no-body" class="mt-4">
             <vs-tabs  class="tab-action-btn-fill-conatiner">
 
