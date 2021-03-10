@@ -8,22 +8,28 @@
 
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
-      <div class="con-img ml-3">
-        <img v-if="activeUserInfo.photoURL" key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+      <div class="con-img ml-3" v-if="activeUserInfo.photoURL == null">
+        <img key="onlineImg" :src="require('@assets/logo/placeholder.jpg')" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+      </div>
+
+      <div class="con-img ml-3" v-if="activeUserInfo.photoURL != null">
+        <img key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
       </div>
 
       <vs-dropdown-menu class="vx-navbar-dropdown">
         <ul style="min-width: 9rem">
 
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
+          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="profile">
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4" />
             <span class="ml-2">Profile</span>
           </li>
+          
+          <vs-divider class="m-1" />
 
-          <!-- <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="MailIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2">Inbox</span>
-          </li> -->
+          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="changepassword">
+            <feather-icon icon="KeyIcon" svgClasses="w-4 h-4" />
+            <span class="ml-2">Change Password</span>
+          </li>
 
         <!--   <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4" />
@@ -67,6 +73,7 @@ export default {
        localStorage.removeItem('accessToken');
   localStorage.removeItem('school_id');
    localStorage.removeItem('user_id');
+   localStorage.removeItem('profile_image');
   
    if(localStorage.getItem('role_id')==5){
      localStorage.removeItem('role_id')
@@ -78,6 +85,12 @@ export default {
       }
       // This is just for demo Purpose. If user clicks on logout -> redirect
      // this.$router.push('/pages/login').catch(() => {})
+    },
+    changepassword () {
+    this.$router.push('/apps/profile/changepassword')
+    },
+    profile () {
+     this.$router.push('/apps/profile/editprofile');
     }
   }
 }

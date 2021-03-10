@@ -26,9 +26,11 @@ Route::prefix('auth')->group(function () {
     Route::post('register', 'UserController@register');
     // Login User
     Route::post('login', 'UserController@login');
+    Route::post('change-password', 'UserController@changePassword');
     Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
     Route::any('/fetch-user/{id}', ['as' => 'fetch.user', 'uses' => 'UserController@fetchUser']);
     Route::post('update-profile', 'UserController@UpdateProfile');
+    Route::post('update-school-profile', 'UserController@UpdateSchoolProfile');
     Route::get('delete-user/{id}', 'UserController@RemoveUser');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');
