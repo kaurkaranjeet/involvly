@@ -61,18 +61,48 @@
     />
     <span class="text-danger text-xs">{{ errors.first("Country") }}</span>
 
-    <v-select  :options="stateOptions"  name="state"  :clearable="false"  v-model="state" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
-      data-vv-validate-on="change">
+    <vs-input
+      data-vv-validate-on="blur"
+      label-placeholder="State"
+      name="State"
+      v-model="state"
+      class="w-full mt-8"
+      readonly
+    />
+    <span class="text-danger text-xs">{{ errors.first("State") }}</span>
+
+    <vs-input
+      data-vv-validate-on="blur"
+      label-placeholder="City"
+      name="City"
+      v-model="city"
+      class="w-full mt-8"
+      readonly
+    />
+    <span class="text-danger text-xs">{{ errors.first("City") }}</span>
+
+    <vs-input
+      data-vv-validate-on="blur"
+      label-placeholder="School"
+      name="School"
+      v-model="school"
+      class="w-full mt-8"
+      readonly
+    />
+    <span class="text-danger text-xs">{{ errors.first("School") }}</span>
+
+    <!--<v-select  :options="stateOptions"  name="state"  :clearable="false"  v-model="state" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
+      data-vv-validate-on="change" readonly>
       <span class="text-danger text-sm">{{ errors.first('state') }}</span>
-    </v-select>
+    </v-select readonly>
  <v-select :options="cityOptions" :clearable="false" v-model="city" class="w-full mt-6"  @input="getSchools"  name="city"  v-validate="'required'"
-      data-vv-validate-on="change"/>
+      data-vv-validate-on="change" readonly/>
     <span class="text-danger text-sm">{{ errors.first('city') }}</span>
 <v-select  :options="schoolOptions"   :clearable="false"  v-model="school" class="w-full mt-6"  >
     
 </v-select>
   
-    <!--<vue-select
+    <vue-select
       v-model="state"
       :clearable="false"
       :options="stateOptions"
