@@ -389,6 +389,8 @@ class UserController extends Controller {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
                     $userpassword = User::where("id", $request->user_id)->first();
+                    //check current password is matched
+                    if(Hash::check($request->current_password , $userpassword->password)){ 
                     if(Hash::check($request->new_password , $userpassword->password)){
                         return response()->json(['error' => 'true', 'message' => 'You can not set old password again'], 200); 
                     }else{
@@ -398,10 +400,11 @@ class UserController extends Controller {
                     }else{
                         return response()->json(['error' => 'true', 'message' => 'Confirm password do not match'], 200);
                         
+                    }   
                     }
-
-                        
-                    }
+                }else{
+                    return response()->json(['error' => 'true', 'message' => 'Your current password is invalid'], 200);
+                }
             
         }
     }
