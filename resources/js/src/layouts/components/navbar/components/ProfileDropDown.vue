@@ -1,19 +1,15 @@
 <template>
-  <div class="the-navbar__user-meta flex items-center" v-if="activeUserInfo.name">
+  <div class="the-navbar__user-meta flex items-center" v-if="checkpointReward.name">
 
     <div class="text-right leading-tight hidden sm:block">
-      <p class="font-semibold">{{ activeUserInfo.name }}</p>
+      <p class="font-semibold">{{ checkpointReward.name }}</p>
       <small>Available</small>
     </div>
 
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
-      <div class="con-img ml-3" v-if="activeUserInfo.photoURL == null">
-        <img key="onlineImg" :src="require('@assets/logo/placeholder.jpg')" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
-      </div>
-
-      <div class="con-img ml-3" v-if="activeUserInfo.photoURL != null">
-        <img key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+      <div class="con-img ml-3">
+        <img key="onlineImg" v-if="activeUserImage" :src="activeUserImage"  alt="user-img1" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
       </div>
 
       <vs-dropdown-menu class="vx-navbar-dropdown">
@@ -62,10 +58,50 @@
 
 <script>
 export default {
+  data () {
+    return {
+     checkpointReward: "", 
+    }
+  },
   computed: {
     activeUserInfo () {
       return this.$store.state.AppActiveUser
+    },
+    activeUserImage () {
+      if(localStorage.getItem('profile_image') === null){
+      return require('@assets/logo/placeholder.jpg');
+      }else{
+      return localStorage.getItem('profile_image');
+      } 
     }
+  },
+  created() {
+    var x = localStorage.getItem('accessToken');
+    //  User Reward Card
+    const requestOptions = {
+        
+        headers: { 'Authorization': 'Bearer '+x }
+    };
+    this.$http
+      .get(`api/auth/user`, requestOptions).then(response => {
+
+      //console.log('Authorization'+response.status)
+   this.checkpointReward = response.data.user;
+     console.log('user_id',response.data.user.id);
+
+     // localStorage.setItem('user_id',response.data.user.id);
+    //   localStorage.setItem('school_id',response.data.user.school_id);
+      })
+      .catch(error => {
+     //   console.log(error);
+
+         // localStorage.removeItem('userInfo')
+                // auto logout if 401 response returned from api
+                this.$store.state.auth.logout();
+               // location.reload(true);
+            
+      });
+
   },
   methods: {
     logout () {
