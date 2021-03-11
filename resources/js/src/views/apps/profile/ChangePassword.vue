@@ -18,7 +18,7 @@
       label-placeholder="Current Password"
       name="Current Password"
       v-model="current_password"
-      class="w-full"
+      class="w-full mt-8"
     />
     <span class="text-danger text-xs">{{ errors.first("Current Password") }}</span>
     <vs-input
@@ -28,7 +28,7 @@
       label-placeholder="New Password"
       name="New Password"
       v-model="new_password"
-      class="w-full"
+      class="w-full mt-8"
     />
     <span class="text-danger text-xs">{{ errors.first("New Password") }}</span>
 
@@ -39,7 +39,7 @@
       label-placeholder="Confirm Password"
       name="Confirm Password"
       v-model="confirm_password"
-      class="w-full"
+      class="w-full mt-8"
     />
     <span class="text-danger text-xs">{{ errors.first("Confirm Password") }}</span>
   
@@ -131,9 +131,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss">
-.w-full{
-  margin-top: 26px !important;
-}
-</style>
