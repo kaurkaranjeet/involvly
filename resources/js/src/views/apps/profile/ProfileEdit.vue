@@ -48,6 +48,7 @@
       name="Position"
       v-model="position"
       class="w-full mt-8"
+      v-if = "this.role_id == '5'"
     />
     <span class="text-danger text-xs">{{ errors.first("Position") }}</span>
 
@@ -57,6 +58,7 @@
       name="Country"
       v-model="country"
       class="w-full mt-8"
+       v-if = "this.role_id == '5'"
       readonly
     />
     <span class="text-danger text-xs">{{ errors.first("Country") }}</span>
@@ -67,6 +69,7 @@
       name="State"
       v-model="state"
       class="w-full mt-8"
+       v-if = "this.role_id == '5'"
       readonly
     />
     <span class="text-danger text-xs">{{ errors.first("State") }}</span>
@@ -77,6 +80,7 @@
       name="City"
       v-model="city"
       class="w-full mt-8"
+       v-if = "this.role_id == '5'"
       readonly
     />
     <span class="text-danger text-xs">{{ errors.first("City") }}</span>
@@ -87,6 +91,7 @@
       name="School"
       v-model="school"
       class="w-full mt-8"
+       v-if = "this.role_id == '5'"
       readonly
     />
     <span class="text-danger text-xs">{{ errors.first("School") }}</span>
@@ -140,7 +145,7 @@
   </div>
   <div class="vx-row">
     <div class="vx-col w-full">
-      <vs-button class="mr-3 mb-2" @click="editUser" :disabled="!validateForm" >Update</vs-button>
+      <vs-button class="mr-3 mb-2" @click="editUser" :disabled="!validateForm">Update</vs-button>
       <vs-button color="warning" type="border" class="mb-2" @click="reset_data">Reset</vs-button>
     </div>
   </div>
@@ -191,6 +196,7 @@ export default {
       state_id:"",
       city_id:"",
       school_id: "",
+      role_id: ""
     }
   },
   watch: {
@@ -266,6 +272,7 @@ export default {
           this.city_id = this.profile_data.city_detail.id;
           this.school = this.profile_data.school_detail.school_name;
           this.school_id = this.profile_data.school_detail.id;
+          this.role_id = localStorage.getItem('role_id');
           
          //reset values
           this.first_name_reset = this.profile_data.first_name;
