@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <div class="search-full-container w-full h-full absolute left-0 top-0" :class="{'flex': showFullSearch}" v-show="showFullSearch">
+    <!--<div class="search-full-container w-full h-full absolute left-0 top-0" :class="{'flex': showFullSearch}" v-show="showFullSearch">
       <vx-auto-suggest
         ref="navbarSearch"
         :autoFocus="showFullSearch"
@@ -19,7 +19,7 @@
           <p class="font-semibold text-primary">{{ group_name | title }}</p>
         </template>
 
-        <!-- Pages Suggestion -->
+        <!-- Pages Suggestion
         <template v-slot:pages="{ suggestion }">
           <div class="flex items-end leading-none py-1">
             <feather-icon :icon="suggestion.icon" svgClasses="h-5 w-5" class="mr-4" />
@@ -27,7 +27,7 @@
           </div>
         </template>
 
-        <!-- No Items Slot -->
+        <!-- No Items Slot 
         <template v-slot:noResult="{ group_name }">
           <div class="flex items-center">
             <feather-icon icon="InfoIcon" svgClasses="h-5 w-5" class="mr-4" />
@@ -44,7 +44,7 @@
           @click="showFullSearch = false" />
       </div>
     </div>
-    <feather-icon icon="SearchIcon" @click="showFullSearch = true" class="cursor-pointer navbar-fuzzy-search ml-4" />
+    <feather-icon icon="SearchIcon" @click="showFullSearch = true" class="cursor-pointer navbar-fuzzy-search ml-4" />-->
   </div>
 </template>
 

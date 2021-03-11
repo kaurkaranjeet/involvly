@@ -320,6 +320,17 @@ class UserController extends Controller {
         }
     }
 
+    public function UpdateSchoolProfile(Request $request) {
+        $name = $request->first_name . ' ' . $request->last_name;
+        User::where('id', $request->user_id)->update(['first_name' => $request->first_name,'state_id' => $request->state,'city' => $request->city, 'last_name' => $request->last_name, 'name' => $name, 'position' => $request->position, 'school_id' => $request->school]);
+        $data = User::find($request->id);
+        if (!empty($data)) {
+            return response()->json(compact('data'), 200);
+        } else {
+            return response()->json(['message' => 'No record found'], 200);
+        }
+    }
+
     public function RemoveUser($id) {
         $userobj=User::where('id', $request->user_id)->first();
         $data = User::where('id', $id)->delete();
@@ -365,6 +376,34 @@ class UserController extends Controller {
                 $user = JWTAuth::setToken($accessToken)->toUser();*/
 
          //  return response()->json(compact('accessToken'), 200);
+    }
+
+    public function changePassword(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'current_password' => 'required',
+                    'new_password' => 'required',
+                    'confirm_password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+                    $userpassword = User::where("id", $request->user_id)->first();
+                    if(Hash::check($request->new_password , $userpassword->password)){
+                        return response()->json(['error' => 'true', 'message' => 'You can not set old password again'], 200); 
+                    }else{
+                    if ($request->confirm_password == $request->new_password) {
+                        $datauser = User::where("id", $request->user_id)->update(["password" => Hash::make($request->input('new_password'))]);
+                        return response()->json(compact('datauser'), 200);
+                    }else{
+                        return response()->json(['error' => 'true', 'message' => 'Confirm password do not match'], 200);
+                        
+                    }
+
+                        
+                    }
+            
+        }
     }
 
 }

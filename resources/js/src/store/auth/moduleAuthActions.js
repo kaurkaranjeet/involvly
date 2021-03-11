@@ -9,6 +9,7 @@
 
 import jwt from '../../http/requests/auth/jwt/index.js'
 
+import axios from '@/axios.js'
 
 import firebase from 'firebase/app'
 import 'firebase/auth'
@@ -315,6 +316,7 @@ export default {
                         localStorage.setItem('user_id', response.data.user.id);
                         localStorage.setItem('school_id', response.data.user.school_id);
                         localStorage.setItem('role_id', response.data.user.role_id);
+                        localStorage.setItem('profile_image', response.data.user.profile_image);
 
 
                         // Update user details
@@ -397,6 +399,42 @@ export default {
                 .catch(error => {
                     reject(error)
                 })
+        })
+    },
+    //change password
+    changepassword({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/change-password`, data)
+                .then((response) => {
+                    console.log(response);
+                    if (response.data.datauser) {
+                        resolve(response)
+                    } else {
+                        reject(response.data.message)
+                    }
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+
+    fetchSchoolUser(context, userId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/auth/fetch-user/${userId}`)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+
+    UpdateUser({ commit }, data) {
+        console.log(data);
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/update-school-profile`, data)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
         })
     },
 }
