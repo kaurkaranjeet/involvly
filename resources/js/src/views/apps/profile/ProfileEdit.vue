@@ -17,7 +17,7 @@
       label-placeholder="First Name"
       name="First Name"
       v-model="first_name"
-      class="w-full"
+      class="w-full mt-8"
     />
     <span class="text-danger text-xs">{{ errors.first("First Name") }}</span>
 
@@ -27,7 +27,7 @@
       label-placeholder="Last Name"
       name="Last Name"
       v-model="last_name"
-      class="w-full"
+      class="w-full mt-8"
     />
     <span class="text-danger text-xs">{{ errors.first("Last Name") }}</span>
 
@@ -37,7 +37,7 @@
       label-placeholder="Email"
       name="Email"
       v-model="email"
-      class="w-full"
+      class="w-full mt-8"
       readonly
     />
     <span class="text-danger text-xs">{{ errors.first("Email") }}</span>
@@ -47,7 +47,7 @@
       label-placeholder="Position"
       name="Position"
       v-model="position"
-      class="w-full"
+      class="w-full mt-8"
     />
     <span class="text-danger text-xs">{{ errors.first("Position") }}</span>
 
@@ -56,7 +56,7 @@
       label-placeholder="Country"
       name="Country"
       v-model="country"
-      class="w-full"
+      class="w-full mt-8"
       readonly
     />
     <span class="text-danger text-xs">{{ errors.first("Country") }}</span>
@@ -353,9 +353,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss">
-.w-full{
-  margin-top: 26px !important;
-}
-</style>
