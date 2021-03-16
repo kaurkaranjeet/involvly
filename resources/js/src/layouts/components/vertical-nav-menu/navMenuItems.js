@@ -30,7 +30,7 @@ export default [{
 
             {
                 url: '/apps/user/listofstudents',
-                name: 'Student List',
+                name: 'Students List',
                 slug: 'list-students',
                 i18n: 'List'
             },
