@@ -176,7 +176,9 @@ class UserController extends Controller {
         if (!empty($series_sql)) {
 
             foreach ($series_sql as $rr) {
-                $data[] = $rr->views;
+                $rva= ['x'=>$rr->date,'y'=>$rr->views];
+                $data[] = $rva;
+                // $data[] = $rr->views;
             }
         }
         $Studentseries[]['data'] = $data;
@@ -186,7 +188,9 @@ class UserController extends Controller {
         if (!empty($tseries_sql)) {
 
             foreach ($tseries_sql as $rr) {
-                $tdata[] = $rr->views;
+                $rva= ['x'=>$rr->date,'y'=>$rr->views];
+                $tdata[] = $rva;
+                // $tdata[] = $rr->views;
             }
         }
         $Teacherseries[]['data'] = $tdata;
