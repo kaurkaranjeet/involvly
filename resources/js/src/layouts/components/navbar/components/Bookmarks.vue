@@ -1,6 +1,6 @@
 <template>
-  <div class="navbar-bookmarks flex items-center">
-    <!-- STARRED PAGES - FIRST 10 -->
+   <!--<div class="navbar-bookmarks flex items-center">
+    STARRED PAGES - FIRST 10 
     <ul class="vx-navbar__starred-pages">
       <draggable v-model="starredPagesLimited" :group="{name: 'pinList'}" class="flex cursor-move">
         <li class="starred-page" v-for="page in starredPagesLimited" :key="page.url">
@@ -11,7 +11,7 @@
       </draggable>
     </ul>
 
-    <!-- STARRED PAGES MORE -->
+    <!-- STARRED PAGES MORE 
     <div class="vx-navbar__starred-pages--more-dropdown" v-if="starredPagesMore.length">
       <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
         <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" class="cursor-pointer p-2"></feather-icon>
@@ -46,7 +46,7 @@
           @input="hnd_search_query_update"
           @selected="selected">
 
-          <!-- Pages Suggestion -->
+          <!-- Pages Suggestion 
           <template v-slot:pages="{ suggestion }">
             <div class="flex items-center justify-between">
               <div class="flex items-end leading-none py-1">
@@ -63,7 +63,7 @@
         </vx-auto-suggest>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
