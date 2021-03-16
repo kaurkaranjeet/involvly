@@ -39,23 +39,23 @@
       </div>
 
       <!-- CARD 2: SUBSCRIBERS GAINED -->
-      <!-- :chartData="subscribersGained.Studentseries"-->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
         <statistics-card-line
           icon="UsersIcon"
           :statistic="subscribersGained.students"
           statisticTitle="School Admins"
+          :chartData="subscribersGained.Studentseries"
           type="area"
         ></statistics-card-line>
       </div>
 
       <!-- CARD 3: ORDER RECIEVED -->
-      <!-- :chartData="subscribersGained.Teacherseries"-->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
         <statistics-card-line
           icon="UsersIcon"
          :statistic="subscribersGained.teachers"
           statisticTitle="Independent Teachers"
+          :chartData="subscribersGained.Teacherseries"
           color="warning"
           type="area"
         ></statistics-card-line>
