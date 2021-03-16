@@ -341,8 +341,9 @@ export default {
           this.$vs.notify({
             color: "success",
             title: "Success",
-            text: "User updated successfully!",
+            text: "Admin details updated successfully!",
           });
+          location.reload();
         })
         .catch((error) => {
           this.$vs.loading.close();
