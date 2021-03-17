@@ -152,7 +152,7 @@ export default {
       stateFilter: { label: 'Select State*', value: '0' },
      schoolFilter: { label: 'Select School*', value: '0' },
       cityFilter: { label: 'Select city*', value: '0' },      
-      isTermsConditionAccepted: true
+      isTermsConditionAccepted: false
     }
   },
   computed: {
@@ -179,7 +179,7 @@ reset_data () {
       this.stateFilter= { label: 'Select State', value: '0' }
      this.schoolFilter={ label: 'Select School', value: '0' }
       this.cityFilter={ label: 'Select city', value: '0' }     
-      this.isTermsConditionAccepted= true
+      this.isTermsConditionAccepted= false
     },
 isLetter(e) {
   let char = String.fromCharCode(e.keyCode); // Get the character
