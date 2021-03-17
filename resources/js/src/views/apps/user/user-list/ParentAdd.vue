@@ -158,10 +158,11 @@ export default {
       this.password= ''
       this.confirm_password= ''
       this.cityoptions=[]
-      this.relationshipOptions=[]
+      // this.relationshipOptions=[]
       this.schooloptions=[]
       this.stateFilter= { label: 'Select State', value: '0' }
       this.cityFilter={ label: 'Select city', value: '0' }   
+      this.relationFilter={ label: 'Select Relationship', value: '0' }   
       this.ChildFilter=[]   
     },
     SaveParent() {

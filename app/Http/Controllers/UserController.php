@@ -323,10 +323,10 @@ class UserController extends Controller {
 
     public function UpdateProfile(Request $request) {
         $name = $request->first_name . ' ' . $request->last_name;
-        if($request->role_id == '5'){
-            User::where('id', $request->id)->update(['first_name' => $request->first_name,'state_id' => $request->state_id,'city' => $request->city, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
-        }else{
+        if($request->role_id == '1'){
             User::where('id', $request->id)->update(['first_name' => $request->first_name, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
+        }else{
+            User::where('id', $request->id)->update(['first_name' => $request->first_name,'state_id' => $request->state_id,'city' => $request->city, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
         }
         $data = User::find($request->id);
         if (!empty($data)) {
@@ -348,7 +348,7 @@ class UserController extends Controller {
     }
 
     public function RemoveUser($id) {
-        $userobj=User::where('id', $request->user_id)->first();
+        $userobj=User::where('id', $id)->first();
         $data = User::where('id', $id)->delete();
 
         $this->pusher->trigger('remove-channel', 'delete_user', $userobj);
