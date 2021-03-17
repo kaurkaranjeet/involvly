@@ -69,7 +69,7 @@
           <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." />
           <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
-          <!-- ACTION - DROPDOWN -->
+          <!-- ACTION - DROPDOWN 
           <vs-dropdown vs-trigger-click class="cursor-pointer">
 
             <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-medium w-32">
@@ -108,7 +108,7 @@
               </vs-dropdown-item>
 
             </vs-dropdown-menu>
-          </vs-dropdown>
+          </vs-dropdown>-->
       </div>
 
 

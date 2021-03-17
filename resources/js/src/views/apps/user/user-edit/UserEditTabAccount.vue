@@ -272,9 +272,13 @@ this.$vs.notify({
           icon: 'icon-alert-circle',
           color: 'success'
         })
+
 //alert(res.data.data.role_id)
 if(res.data.data.role_id=='4'){
      this.$router.push('/apps/user/user-list').catch(() => {})
+}
+if(res.data.data.role_id=='3'){
+     this.$router.push('/apps/user/listofparents').catch(() => {})
 }
          })
         .catch(err => {

@@ -186,7 +186,7 @@ class TeacherController extends Controller {
         'password' => 'required',
         'country' => 'required',
         'state_id' => 'required|exists:states,id',
-        'city_id' => 'required|exists:cities,id',
+        'city' => 'required|exists:cities,id',
        'school_id' => 'required'
       ]);
        

@@ -210,7 +210,7 @@ this.$http
       type_of_schooling: 'school',
       country:'United States',
       school_id: localStorage.getItem('school_id'),
-      city_id:this.cityFilter.value,
+      city:this.cityFilter.value,
       state_id:this.stateFilter.value,
       class_id:this.classFilter.value,
       role_id:4,
