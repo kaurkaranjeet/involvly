@@ -183,7 +183,7 @@ export default {
         country:'United States',
         relationship:this.relationFilter.value,
         school_id: localStorage.getItem('school_id'),
-        city_id:this.cityFilter.value,
+        city:this.cityFilter.value,
         state_id:this.stateFilter.value,
         student_id:student.join(),
         role_id:3
