@@ -300,7 +300,7 @@ const router = new Router({
                             { title: 'Teachers', url: '/apps/user/allteachers' },
                             { title: 'Teacher', active: true }
                         ],
-                        pageTitle: 'Teacher View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
@@ -335,7 +335,7 @@ const router = new Router({
                             { title: 'Students', url: '/apps/user/allstudents' },
                             { title: 'Student', active: true }
                         ],
-                        pageTitle: 'Student View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
@@ -370,7 +370,7 @@ const router = new Router({
                             { title: 'Parents', url: '/apps/user/allparents' },
                             { title: 'Parent', active: true }
                         ],
-                        pageTitle: 'Parent View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
@@ -388,7 +388,7 @@ const router = new Router({
                             { title: 'School Admins', url: '/apps/user/listofschooladmins' },
                             { title: 'School Admin', active: true }
                         ],
-                        pageTitle: 'School Admin View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
