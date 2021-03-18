@@ -35,8 +35,8 @@
       <div class="vx-col md:w-1/2 w-full">
        
 
-        <vs-input class="w-full mt-4" label="First name" v-model="data_local.first_name" v-validate="'required'" name="first_name" />
-        <span class="text-danger text-sm"  v-show="errors.has('first_name')">{{ errors.first('first_name') }}</span>
+        <vs-input class="w-full mt-4" label="First name" v-model="data_local.first_name" v-validate="'required'" name="first_name" :maxlength="50" />
+        <span class="text-danger text-sm"    v-show="errors.has('first_name')"  >{{ errors.first('first_name') }}</span>
          <vs-input class="w-full mt-4" label="Email" v-model="data_local.email" type="email" v-validate="'required|email'" name="email" readonly />
         <span class="text-danger text-sm"  disabled v-show="errors.has('email')">{{ errors.first('email') }}</span>
  <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"

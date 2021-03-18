@@ -31,6 +31,7 @@
       placeholder="Last Name*"
       v-model="lastname"
       class="w-full"
+        :maxlength="50"
        />
     <span class="text-danger text-xs">{{ errors.first("lastname") }}</span>
   

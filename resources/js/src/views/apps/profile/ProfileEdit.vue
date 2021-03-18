@@ -18,6 +18,7 @@
       name="Name"
       v-model="first_name"
       class="w-full mt-8"
+        :maxlength="50"
 
     />
     <span class="text-danger text-xs">{{ errors.first("Name") }}</span>
