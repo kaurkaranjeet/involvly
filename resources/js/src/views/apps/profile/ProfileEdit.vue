@@ -14,22 +14,14 @@
     <vs-input
       v-validate="'required'"
       data-vv-validate-on="blur"
-      label-placeholder="First Name"
-      name="First Name"
+      label-placeholder="Name"
+      name="Name"
       v-model="first_name"
       class="w-full mt-8"
     />
-    <span class="text-danger text-xs">{{ errors.first("First Name") }}</span>
+    <span class="text-danger text-xs">{{ errors.first("Name") }}</span>
 
-    <vs-input
-      v-validate="'required'"
-      data-vv-validate-on="blur"
-      label-placeholder="Last Name"
-      name="Last Name"
-      v-model="last_name"
-      class="w-full mt-8"
-    />
-    <span class="text-danger text-xs">{{ errors.first("Last Name") }}</span>
+   
 
     <vs-input
       v-validate="'required'"
@@ -170,7 +162,7 @@ export default {
   data () {
     return {
       first_name: "",
-      last_name: "",
+
       email: "",
       position: "",
       country: "",
@@ -183,7 +175,7 @@ export default {
       activeTab: 0,
       profile_data: '',
       first_name_reset: "",
-      last_name_reset: "",
+     // last_name_reset: "",
       email_reset: "",
       position_reset: "",
       country_reset: "",
@@ -211,8 +203,7 @@ export default {
       return (
         !this.errors.any() &&
         this.first_name !== "" &&
-        this.last_name !== "" &&
-        this.email !== "" &&
+              this.email !== "" &&
         this.position !== "" &&
         this.country !== "" &&
         this.state !== "" &&
@@ -262,7 +253,7 @@ export default {
           this.profile_data = res.data.data;
           console.log(this.profile_data);
           this.first_name = this.profile_data.first_name;
-          this.last_name = this.profile_data.last_name;
+         
           this.email = this.profile_data.email;
           this.position  = this.profile_data.position;
           this.country = this.profile_data.country;
@@ -276,7 +267,7 @@ export default {
           
          //reset values
           this.first_name_reset = this.profile_data.first_name;
-          this.last_name_reset = this.profile_data.last_name;
+          
           this.email_reset = this.profile_data.email;
           this.position_reset  = this.profile_data.position;
           this.country_reset = this.profile_data.country;
@@ -321,7 +312,7 @@ export default {
        const formData = new FormData();
        formData.append("user_id", localStorage.getItem('user_id'));
        formData.append("first_name", this.first_name);
-       formData.append("last_name", this.last_name);
+     //  formData.append("last_name", this.last_name);
        formData.append("position", this.position);
        formData.append("country", this.country);
        formData.append("state", this.state_val);
