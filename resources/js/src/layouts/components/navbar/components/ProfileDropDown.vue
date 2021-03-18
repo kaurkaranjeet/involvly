@@ -1,7 +1,7 @@
 <template>
-  <div class="the-navbar__user-meta flex items-center" v-if="checkpointReward.name">
+  <div class="the-navbar__user-meta flex items-center">
 
-    <div class="text-right leading-tight hidden sm:block">
+    <div class="text-right leading-tight hidden sm:block" v-if="checkpointReward.name">
       <p class="font-semibold">{{ checkpointReward.name }}</p>
       <small>Available</small>
     </div>
@@ -83,7 +83,7 @@ export default {
         headers: { 'Authorization': 'Bearer '+x }
     };
     this.$http
-      .get(`api/auth/user`, requestOptions).then(response => {
+      .get(`/api/auth/user`, requestOptions).then(response => {
 
       //console.log('Authorization'+response.status)
    this.checkpointReward = response.data.user;
