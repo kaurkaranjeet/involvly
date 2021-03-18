@@ -323,10 +323,18 @@ class UserController extends Controller {
 
     public function UpdateProfile(Request $request) {
         $name = $request->first_name . ' ' . $request->last_name;
+
+        $name = explode(',', $request->first_name);
+        $first_name = $name[0];
+        if (isset($name[1])) {
+            $last_name = $name[1];
+        } else {
+            $last_name = '';
+        }
         if($request->role_id == '1'){
-            User::where('id', $request->id)->update(['first_name' => $request->first_name, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
+            User::where('id', $request->id)->update(['first_name' => $first_name, 'last_name' => $last_name, 'name' => $name, 'status' => $request->status]);
         }else{
-            User::where('id', $request->id)->update(['first_name' => $request->first_name,'state_id' => $request->state_id,'city' => $request->city, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
+            User::where('id', $request->id)->update(['first_name' => $first_name,'state_id' => $request->state_id,'city' => $request->city, 'last_name' => $last_name, 'name' => $name, 'status' => $request->status]);
         }
         $data = User::find($request->id);
         if (!empty($data)) {
