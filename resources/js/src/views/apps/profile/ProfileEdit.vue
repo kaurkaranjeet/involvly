@@ -18,6 +18,7 @@
       name="Name"
       v-model="first_name"
       class="w-full mt-8"
+
     />
     <span class="text-danger text-xs">{{ errors.first("Name") }}</span>
 
@@ -41,6 +42,7 @@
       v-model="position"
       class="w-full mt-8"
       v-if = "this.role_id == '5'"
+      v-validate="'required'"
     />
     <span class="text-danger text-xs">{{ errors.first("Position") }}</span>
 
@@ -56,6 +58,7 @@
     <span class="text-danger text-xs">{{ errors.first("Country") }}</span>
 
     <vs-input
+    v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="State"
       name="State"
@@ -67,6 +70,7 @@
     <span class="text-danger text-xs">{{ errors.first("State") }}</span>
 
     <vs-input
+    v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="City"
       name="City"
@@ -78,6 +82,7 @@
     <span class="text-danger text-xs">{{ errors.first("City") }}</span>
 
     <vs-input
+    v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="School"
       name="School"

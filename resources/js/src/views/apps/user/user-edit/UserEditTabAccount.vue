@@ -157,25 +157,44 @@ export default {
       }
     },
 
-     cityFilter: {
+    cityFilter: {
 
       get () {
-let obj=this.cityoptions;
-let city=this.data_local.city_detail.id;
- let lebeltext='';
-      Object.keys(obj).forEach(function(key) {
-    
-        if (obj[key].value == city) {
+        let obj=this.cityoptions;
+        let lebeltext='';
+        if(this.data_local.city_detail!=null) {
+        let city=this.data_local.city_detail.id;
 
-  lebeltext=obj[key].label;
- }
-});
 
-   return    { label: lebeltext,  value:city}
-       
+        let city_obj=this.data_local.city;
+        if(city_obj==city){
+
+          Object.keys(obj).forEach(function(key) {
+
+            if (obj[key].value == city) {
+
+              lebeltext=obj[key].label;
+            }
+          });
+        }
+        else{
+          Object.keys(obj).forEach(function(key) {
+
+            if (obj[key].value == city_obj) {
+
+              lebeltext=obj[key].label;
+            }
+          });
+
+        }
+
+        return    { label: lebeltext,  value:city_obj}
+
+}
+
       },
       set (obj) {
-      
+
         this.data_local.city = obj.value
       }
     },
@@ -315,6 +334,7 @@ this.$http
     },
     reset_data () {
       this.data_local = JSON.parse(JSON.stringify(this.data))
+this.data_local.city=this.data_local.city_detail.id;
     },
     update_avatar () {
       // You can update avatar Here
