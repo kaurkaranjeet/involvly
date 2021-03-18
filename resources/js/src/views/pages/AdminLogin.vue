@@ -96,7 +96,36 @@ export default{
       return !this.errors.any() && this.email !== '' && this.password !== ''
     }
   },
+  created() {
+
+    this.checkRemmember();
+
+  },
   methods: {
+    checkRemmember(){
+      // alert(localStorage.getItem('checkbox_remember_me'))
+       if (localStorage.getItem('checkbox_remember_me')) {
+            // alert("if")
+            if(localStorage.getItem('checkbox_remember_me') == 'true'){
+            // alert("ifif")
+            this.checkbox_remember_me=true;
+            this.email=localStorage.getItem('email_check');
+            this.password=localStorage.getItem('password_chk');
+            }else{
+            // alert("ifelse")
+            this.checkbox_remember_me=false;
+            this.email='';
+            this.password='';
+            }
+          }
+          else{
+            // alert("else")
+            this.checkbox_remember_me=false;
+            this.email='';
+            this.password='';
+          }
+        
+        },
     checkLogin () {
 
     //  If user is already logged in notify
@@ -131,7 +160,19 @@ export default{
           password: this.password
         }
       }
-
+      if(this.checkbox_remember_me == true){
+      // alert("if")
+      localStorage.setItem('checkbox_remember_me', this.checkbox_remember_me);
+      localStorage.setItem('email_check', this.email);
+      localStorage.setItem('password_chk', this.password);  
+      // alert(localStorage.getItem('email_check'));
+      }else{
+      // alert("else")
+      localStorage.setItem('checkbox_remember_me', this.checkbox_remember_me);
+      localStorage.setItem('email_check', '');
+      localStorage.setItem('password_chk', '');
+      // alert(localStorage.getItem('email_check'));   
+      }
       this.$store.dispatch('auth/adminloginJWT', payload)
         .then(() => {
           this.$vs.loading.close() 
