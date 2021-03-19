@@ -483,6 +483,41 @@ class UserController extends Controller {
             
         }
     }
+    public function resetchangePassword(Request $request) {
+        $token = $request->token;
+        $user_id = DB::table('users')->where('remember_token', $token)->first();
+        if (isset($user_id)) {
+            $user = User::where('email', $user_id->email)->first();
+            if ($user) {
+                if (Hash::check($request->password, $user->password)) {
+                    return response()->json(['message' => 'New Password should not match the old one!'], 200);
+                } else {
+                    $new_data['password'] = Hash::make($request->password);
+                    $new_data['remember_token'] = Str::random(50);
+                    $resp = User::where('id', $user->id)->update($new_data);
+                    if ($resp) {
+                        return response()->json(compact('user'), 200);
+                    } else {
+                        return response()->json(['message' => 'Something went wrong!'], 200);
+                    }
+                }
+            } else {
+                return response()->json(['message' => 'User Does Not Exist!'], 200);
+            }
+        } else {
+            return response()->json(['message' => 'Invalid token!'], 200);
+        }
+    }
+    // token checking
+    public function TokenChecking(Request $request) {
+        $token = $request->token;
+        $user = DB::table('users')->where('remember_token', $token)->first();
+        if (isset($user)) {
+            return response()->json(compact('user'), 200);
+        } else {
+            return response()->json(['message' => 'Token Expired! Please create new link to reset the password'], 200);
+        }
+    }
 
 }
 

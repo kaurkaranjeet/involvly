@@ -28,6 +28,8 @@ Route::prefix('auth')->group(function () {
     Route::post('login', 'UserController@login');
     Route::any('/forgot-password-admin', 'UserController@adminForgotPasswordEmail');
     Route::any('/forgot-password', 'UserController@ForgotPasswordEmail');
+    Route::any('/token-checking', 'UserController@TokenChecking');\
+    Route::post('reset-change-password', 'UserController@resetchangePassword');
     Route::post('change-password', 'UserController@changePassword');
     Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
     Route::any('/fetch-user/{id}', ['as' => 'fetch.user', 'uses' => 'UserController@fetchUser']);
