@@ -40,25 +40,31 @@
         <span class="text-danger text-sm"    v-show="errors.has('First Name')"  >{{ errors.first('First Name') }}</span>
          <vs-input class="w-full mt-4" label="Email" v-model="data_local.email" type="email" v-validate="'required|email'" name="email" readonly  />
         <span class="text-danger text-sm"  disabled v-show="errors.has('email')">{{ errors.first('email') }}</span>
- <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
-      data-vv-validate-on="change">
-      <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
-</v-select>
-       
+         <div class="vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary">
+<label for="" class="vs-input--label">City</label>
+<v-select :options="cityoptions" :clearable="false" v-model="cityFilter"    name="city"  v-validate="'required'"
+      data-vv-validate-on="change"/>
+    <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
+       </div>
       </div>
 
       <div class="vx-col md:w-1/2 w-full">
 
  <vs-input class="w-full mt-4" label="last name" v-model="data_local.last_name" v-validate="'required'" name="last_name"  v-on:keypress="isLetter($event)" />
         <span class="text-danger text-sm"  v-show="errors.has('last_name')">{{ errors.first('last_name') }}</span>
-        <div class="mt-4">
+         <!--div class="w-full mt-4">
           <label class="vs-input--label">Status</label>
           <v-select v-model="status_local" :clearable="false" :options="statusOptions" v-validate="'required'" name="status" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
           <span class="text-danger text-sm"  v-show="errors.has('status')">{{ errors.first('status') }}</span>
-        </div>
-<v-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"    name="city"  v-validate="'required'"
-      data-vv-validate-on="change"/>
-    <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
+        </div -->
+        <div class="vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary">
+<label for="" class="vs-input--label">State</label>
+         <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter"    @input="getCities"   v-validate="'required'"
+      data-vv-validate-on="change">
+      <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
+</v-select>
+</div>
+
 <!-- <v-select  :options="schooloptions"   :clearable="false"  v-model="schoolFilter" class="w-full mt-6"  >
     
 </v-select> -->

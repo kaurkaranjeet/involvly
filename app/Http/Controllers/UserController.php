@@ -224,12 +224,12 @@ class UserController extends Controller {
         if ($request->type == 'teacher') {
         
 
-            $users = User::where('role_id', 4)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } else if ($request->type == 'student') {
-            $users = User::where('role_id', 2)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::where('role_id', 2)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } else {
 
-            $users = User::where('role_id', 3)->where('status', 1)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::where('role_id', 3)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
         }
         //  print_r(DB::getQueryLog());die;
         foreach($users as $user){
@@ -326,9 +326,9 @@ class UserController extends Controller {
 
         
         if($request->role_id == '1'){
-            User::where('id', $request->id)->update(['first_name' => $request->first_name, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
+            User::where('id', $request->id)->update(['first_name' => $request->first_name, 'last_name' => $request->last_name, 'name' => $name, 'status' => 1]);
         }else{
-            User::where('id', $request->id)->update(['first_name' => $request->first_name,'state_id' => $request->state_id,'city' => $request->city, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
+            User::where('id', $request->id)->update(['first_name' => $request->first_name,'state_id' => $request->state_id,'city' => $request->city, 'last_name' => $request->last_name, 'name' => $name, 'status' => 1]);
         }
         $data = User::find($request->id);
         if (!empty($data)) {
@@ -358,15 +358,15 @@ class UserController extends Controller {
     }
 
     public function getRequest($school_id) {
-        $data = User::where('role_id', 4)->where('school_id', $school_id)->where('status', 1)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-        $count = User::where('role_id', 4)->where('school_id', $school_id)->where('status', 1)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        $data = User::where('role_id', 4)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
+        $count = User::where('role_id', 4)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
     
         return response()->json(compact('data','count'), 200);
     }
 
       public function getteacherRequest() {
-        $data = User::where('role_id', 4)->where('status', 0)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-        $count = User::where('role_id', 4)->where('status', 0)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        $data = User::where('role_id', 4)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
+        $count = User::where('role_id', 4)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
             return response()->json(compact('data','count'), 200);
     }
 
@@ -376,14 +376,14 @@ class UserController extends Controller {
         return response()->json(compact('data','count'), 200);
     }
     public function getStudentRequest($school_id) {
-        $data = User::where('role_id', 2)->where('school_id', $school_id)->where('status', 1)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-          $count = User::where('role_id', 2)->where('school_id', $school_id)->where('status', 1)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        $data = User::where('role_id', 2)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
+          $count = User::where('role_id', 2)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
         return response()->json(compact('data','count'), 200);
     }
 
     public function getParentRequest($school_id) {
-        $data = User::where('role_id', 3)->where('school_id', $school_id)->where('status', 1)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-         $count = User::where('role_id', 3)->where('school_id', $school_id)->where('status', 1)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        $data = User::where('role_id', 3)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
+         $count = User::where('role_id', 3)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
         return response()->json(compact('data','count'), 200);
     }
 
