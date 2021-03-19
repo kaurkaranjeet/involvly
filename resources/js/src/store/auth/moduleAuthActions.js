@@ -440,13 +440,27 @@ export default {
     //change password
     changepassword({ commit }, data) {
         return new Promise((resolve, reject) => {
-            axios.post(`/api/auth/change-password`, data)
+            axios.post(`/api/auth/reset-change-password`, data)
                 .then((response) => {
                     console.log(response);
                     if (response.data.datauser) {
                         resolve(response)
                     } else {
                         reject(response.data.message)
+                    }
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    //token checkinf
+    TokenChecking({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/token-checking`, data)
+                .then((res) => {
+                    if (res) {
+                        resolve(res)
+                    } else {
+                        reject({ message: res.data.message })
                     }
                 })
                 .catch((error) => { reject(error) })
