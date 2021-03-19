@@ -467,6 +467,20 @@ export default {
         })
     },
 
+    CreatePassword({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/change-password`, data)
+                .then((res) => {
+                    if (res.data.datauser) {
+                        resolve(res)
+                    } else {
+                        reject(res.data.message)
+                    }
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+
     fetchSchoolUser(context, userId) {
         return new Promise((resolve, reject) => {
             axios.get(`/api/auth/fetch-user/${userId}`)
