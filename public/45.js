@@ -397,7 +397,7 @@ var render = function() {
         attrs: {
           "data-vv-validate-on": "blur",
           "label-placeholder": "First Name*",
-          name: "firstname",
+          name: "First Name",
           placeholder: " First Name*",
           maxlength: 50
         },
@@ -416,7 +416,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "text-danger text-xs" }, [
-        _vm._v(_vm._s(_vm.errors.first("firstname")))
+        _vm._v(_vm._s(_vm.errors.first("First Name")))
       ]),
       _vm._v(" "),
       _c("vs-input", {
@@ -432,7 +432,7 @@ var render = function() {
         attrs: {
           "data-vv-validate-on": "blur",
           "label-placeholder": "Last Name*",
-          name: "lastname",
+          name: "Last Name",
           placeholder: "Last Name*",
           maxlength: 50
         },
@@ -451,7 +451,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "text-danger text-xs" }, [
-        _vm._v(_vm._s(_vm.errors.first("lastname")))
+        _vm._v(_vm._s(_vm.errors.first("Last Name")))
       ]),
       _vm._v(" "),
       _c("vs-input", {

@@ -73111,7 +73111,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Add',
           active: true
         }],
-        pageTitle: 'Add ClassCode',
+        pageTitle: 'Add Class Code',
         rule: 'editor',
         authRequired: true
       }
@@ -73132,7 +73132,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'View',
           active: true
         }],
-        pageTitle: 'View ClassCode',
+        pageTitle: 'View Class Code',
         rule: 'editor',
         authRequired: true
       }

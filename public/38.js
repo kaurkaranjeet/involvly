@@ -58,6 +58,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 // Store Module
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -71,7 +72,8 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     validateForm: function validateForm() {
       this.$vs.loading.close();
-      return !this.errors.any() && this.class_name !== "" && this.class_code !== "";
+      var n = this.class_code.length;
+      return !this.errors.any() && this.class_name !== "" && this.class_code !== "" && n == 4;
     }
   },
   methods: {
@@ -197,7 +199,8 @@ var render = function() {
               "data-vv-validate-on": "blur",
               "label-placeholder": "Class Code",
               name: "Class Code",
-              placeholder: "Class Code"
+              placeholder: "Class Code(4 Digits)",
+              maxlength: 4
             },
             model: {
               value: _vm.class_code,

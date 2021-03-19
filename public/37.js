@@ -204,6 +204,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -615,22 +617,20 @@ var render = function() {
                           item.timetable_doc != ""
                             ? _c("tr", [
                                 _c("td", [
-                                  _c(
-                                    "ul",
-                                    { attrs: { id: "example-1" } },
-                                    _vm._l(item.timetable_doc, function(x) {
-                                      return _c("li", { key: x }, [
-                                        _c(
-                                          "a",
-                                          {
-                                            attrs: { href: x, target: "_blank" }
-                                          },
-                                          [_vm._v(_vm._s(x))]
-                                        )
-                                      ])
-                                    }),
-                                    0
-                                  )
+                                  _c("ul", { attrs: { id: "example-1" } }, [
+                                    _c("li", [
+                                      _c(
+                                        "a",
+                                        {
+                                          attrs: {
+                                            href: item.timetable_doc,
+                                            target: "_blank"
+                                          }
+                                        },
+                                        [_vm._v(_vm._s(item.timetable_doc))]
+                                      )
+                                    ])
+                                  ])
                                 ])
                               ])
                             : _vm._e(),

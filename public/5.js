@@ -241,6 +241,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1069,37 +1075,47 @@ var render = function() {
           ),
           _vm._v(" "),
           _c(
-            "v-select",
+            "div",
             {
-              directives: [
-                {
-                  name: "validate",
-                  rawName: "v-validate",
-                  value: "required",
-                  expression: "'required'"
-                }
-              ],
-              staticClass: "w-full mt-6",
-              attrs: {
-                options: _vm.stateFilteroption,
-                name: "state_id",
-                clearable: false,
-                "data-vv-validate-on": "change"
-              },
-              on: { input: _vm.getCities },
-              model: {
-                value: _vm.stateFilter,
-                callback: function($$v) {
-                  _vm.stateFilter = $$v
-                },
-                expression: "stateFilter"
-              }
+              staticClass:
+                "vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary"
             },
             [
+              _c(
+                "label",
+                { staticClass: "vs-input--label", attrs: { for: "" } },
+                [_vm._v("City")]
+              ),
+              _vm._v(" "),
+              _c("v-select", {
+                directives: [
+                  {
+                    name: "validate",
+                    rawName: "v-validate",
+                    value: "required",
+                    expression: "'required'"
+                  }
+                ],
+                attrs: {
+                  options: _vm.cityoptions,
+                  clearable: false,
+                  name: "city",
+                  "data-vv-validate-on": "change"
+                },
+                model: {
+                  value: _vm.cityFilter,
+                  callback: function($$v) {
+                    _vm.cityFilter = $$v
+                  },
+                  expression: "cityFilter"
+                }
+              }),
+              _vm._v(" "),
               _c("span", { staticClass: "text-danger text-sm" }, [
-                _vm._v(_vm._s(_vm.errors.first("stateFilter")))
+                _vm._v(_vm._s(_vm.errors.first("cityFilter")))
               ])
-            ]
+            ],
+            1
           )
         ],
         1
@@ -1152,83 +1168,52 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "mt-4" },
+            {
+              staticClass:
+                "vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary"
+            },
             [
-              _c("label", { staticClass: "vs-input--label" }, [
-                _vm._v("Status")
-              ]),
-              _vm._v(" "),
-              _c("v-select", {
-                directives: [
-                  {
-                    name: "validate",
-                    rawName: "v-validate",
-                    value: "required",
-                    expression: "'required'"
-                  }
-                ],
-                attrs: {
-                  clearable: false,
-                  options: _vm.statusOptions,
-                  name: "status",
-                  dir: _vm.$vs.rtl ? "rtl" : "ltr"
-                },
-                model: {
-                  value: _vm.status_local,
-                  callback: function($$v) {
-                    _vm.status_local = $$v
-                  },
-                  expression: "status_local"
-                }
-              }),
+              _c(
+                "label",
+                { staticClass: "vs-input--label", attrs: { for: "" } },
+                [_vm._v("State")]
+              ),
               _vm._v(" "),
               _c(
-                "span",
+                "v-select",
                 {
                   directives: [
                     {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.errors.has("status"),
-                      expression: "errors.has('status')"
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
                     }
                   ],
-                  staticClass: "text-danger text-sm"
+                  attrs: {
+                    options: _vm.stateFilteroption,
+                    name: "state_id",
+                    clearable: false,
+                    "data-vv-validate-on": "change"
+                  },
+                  on: { input: _vm.getCities },
+                  model: {
+                    value: _vm.stateFilter,
+                    callback: function($$v) {
+                      _vm.stateFilter = $$v
+                    },
+                    expression: "stateFilter"
+                  }
                 },
-                [_vm._v(_vm._s(_vm.errors.first("status")))]
+                [
+                  _c("span", { staticClass: "text-danger text-sm" }, [
+                    _vm._v(_vm._s(_vm.errors.first("stateFilter")))
+                  ])
+                ]
               )
             ],
             1
-          ),
-          _vm._v(" "),
-          _c("v-select", {
-            directives: [
-              {
-                name: "validate",
-                rawName: "v-validate",
-                value: "required",
-                expression: "'required'"
-              }
-            ],
-            staticClass: "w-full mt-6",
-            attrs: {
-              options: _vm.cityoptions,
-              clearable: false,
-              name: "city",
-              "data-vv-validate-on": "change"
-            },
-            model: {
-              value: _vm.cityFilter,
-              callback: function($$v) {
-                _vm.cityFilter = $$v
-              },
-              expression: "cityFilter"
-            }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-danger text-sm" }, [
-            _vm._v(_vm._s(_vm.errors.first("cityFilter")))
-          ])
+          )
         ],
         1
       )
