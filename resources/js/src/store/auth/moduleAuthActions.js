@@ -438,7 +438,7 @@ export default {
         })
     },
     //change password
-    changepassword({ commit }, data) {
+    ChangePassword({ commit }, data) {
         return new Promise((resolve, reject) => {
             axios.post(`/api/auth/reset-change-password`, data)
                 .then((response) => {
