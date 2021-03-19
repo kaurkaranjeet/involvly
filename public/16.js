@@ -227,7 +227,7 @@ __webpack_require__.r(__webpack_exports__);
         label: 'Select city*',
         value: '0'
       },
-      isTermsConditionAccepted: true
+      isTermsConditionAccepted: false
     };
   },
   computed: {
@@ -262,7 +262,7 @@ __webpack_require__.r(__webpack_exports__);
         label: 'Select city',
         value: '0'
       };
-      this.isTermsConditionAccepted = true;
+      this.isTermsConditionAccepted = false;
     },
     isLetter: function isLetter(e) {
       var _char = String.fromCharCode(e.keyCode); // Get the character
@@ -381,6 +381,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         if (response.data.error == false) {
+          _this2.$router.push('/')["catch"](function () {});
+
           _this2.$vs.notify({
             title: 'Successfully registered',
             text: 'Your request is under Process',
@@ -664,7 +666,7 @@ var render = function() {
             expression: "'required|min:6'"
           }
         ],
-        staticClass: "w-full",
+        staticClass: "w-full mt-8",
         attrs: {
           "data-vv-validate-on": "blur",
           "label-placeholder": "Name*",
@@ -699,7 +701,7 @@ var render = function() {
             expression: "'required'"
           }
         ],
-        staticClass: "w-full",
+        staticClass: "w-full mt-8",
         attrs: {
           "data-vv-validate-on": "blur",
           "label-placeholder": "Position*",
@@ -728,7 +730,7 @@ var render = function() {
             expression: "'required|email'"
           }
         ],
-        staticClass: "w-full mt-6",
+        staticClass: "w-full mt-8",
         attrs: {
           "data-vv-validate-on": "blur",
           name: "email",
@@ -759,7 +761,7 @@ var render = function() {
           }
         ],
         ref: "password",
-        staticClass: "w-full mt-6",
+        staticClass: "w-full mt-8",
         attrs: {
           type: "password",
           "data-vv-validate-on": "blur",
@@ -789,7 +791,7 @@ var render = function() {
             expression: "'min:6|max:10|confirmed:password'"
           }
         ],
-        staticClass: "w-full mt-6",
+        staticClass: "w-full mt-8",
         attrs: {
           type: "password",
           "data-vv-validate-on": "blur",
@@ -820,7 +822,7 @@ var render = function() {
             expression: "'required'"
           }
         ],
-        staticClass: "w-full mt-6",
+        staticClass: "w-full mt-8",
         attrs: {
           "data-vv-validate-on": "change",
           name: "country",

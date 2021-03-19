@@ -71639,17 +71639,6 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./resources/assets/images/portrait/small/avatar-s-11.jpg":
-/*!****************************************************************!*\
-  !*** ./resources/assets/images/portrait/small/avatar-s-11.jpg ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/avatar-s-11.jpg?1a620230b75dd161d37ad2d21948e9cb";
-
-/***/ }),
-
 /***/ "./resources/assets/utils/color.js":
 /*!*****************************************!*\
   !*** ./resources/assets/utils/color.js ***!
@@ -73081,7 +73070,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/page2',
       name: 'page-2',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 48).then(__webpack_require__.bind(null, /*! ./views/Page2.vue */ "./resources/js/src/views/Page2.vue"));
+        return __webpack_require__.e(/*! import() */ 50).then(__webpack_require__.bind(null, /*! ./views/Page2.vue */ "./resources/js/src/views/Page2.vue"));
       }
     }, //classes side menu path
     {
@@ -73291,7 +73280,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Add',
           active: true
         }],
-        pageTitle: 'Subject Add',
+        pageTitle: 'Add Subject ',
         rule: 'editor',
         authRequired: true
       }
@@ -73320,7 +73309,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/subject/subject-edit/:subjectId',
       name: 'app-subject-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(42)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(44)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73594,7 +73583,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/addstudent',
       name: 'add-student',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(44)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentAdd.vue */ "./resources/js/src/views/apps/user/user-list/StudentAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(46)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentAdd.vue */ "./resources/js/src/views/apps/user/user-list/StudentAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73615,7 +73604,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/addnewteacher',
       name: 'add-teacher',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(45)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/TeacherAdd.vue */ "./resources/js/src/views/apps/user/user-list/TeacherAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/TeacherAdd.vue */ "./resources/js/src/views/apps/user/user-list/TeacherAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73636,7 +73625,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/add_new_parent',
       name: 'add-parent',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(43)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentAdd.vue */ "./resources/js/src/views/apps/user/user-list/ParentAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(45)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentAdd.vue */ "./resources/js/src/views/apps/user/user-list/ParentAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73760,6 +73749,45 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
         rule: 'admin',
         authRequired: true
       }
+    }, //change password
+    {
+      path: '/apps/profile/changepassword',
+      name: 'profile-edit',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 42).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ChangePassword.vue */ "./resources/js/src/views/apps/profile/ChangePassword.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/dashboard'
+        }, // { title: 'Parents', url: '/apps/user/allparents' },
+        {
+          title: 'Change Password',
+          active: true
+        }],
+        pageTitle: 'Change Password',
+        rule: 'admin',
+        authRequired: true
+      }
+    }, {
+      path: '/apps/profile/editprofile',
+      name: 'profile-edit',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(43)]).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ProfileEdit.vue */ "./resources/js/src/views/apps/profile/ProfileEdit.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/dashboard'
+        }, // { title: 'Parents', url: '/apps/user/allparents' },
+        {
+          title: 'Profile',
+          active: true
+        }],
+        pageTitle: 'Profile Edit',
+        rule: 'admin',
+        authRequired: true
+      }
     }]
   }, // =============================================================================
   // FULL PAGE LAYOUTS
@@ -73767,7 +73795,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   {
     path: '',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 47).then(__webpack_require__.bind(null, /*! @/layouts/full-page/FullPage.vue */ "./resources/js/src/layouts/full-page/FullPage.vue"));
+      return __webpack_require__.e(/*! import() */ 49).then(__webpack_require__.bind(null, /*! @/layouts/full-page/FullPage.vue */ "./resources/js/src/layouts/full-page/FullPage.vue"));
     },
     children: [// =============================================================================
     // PAGES
@@ -73797,7 +73825,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/pages/error-404',
       name: 'page-error-404',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 46).then(__webpack_require__.bind(null, /*! @/views/pages/Error404.vue */ "./resources/js/src/views/pages/Error404.vue"));
+        return __webpack_require__.e(/*! import() */ 48).then(__webpack_require__.bind(null, /*! @/views/pages/Error404.vue */ "./resources/js/src/views/pages/Error404.vue"));
       }
     }]
   }, // Redirect to 404 page, if no match found
@@ -73970,10 +73998,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _http_requests_auth_jwt_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../http/requests/auth/jwt/index.js */ "./resources/js/src/http/requests/auth/jwt/index.js");
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/index.cjs.js");
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var firebase_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! firebase/auth */ "./node_modules/firebase/auth/dist/index.esm.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/router */ "./resources/js/src/router.js");
+/* harmony import */ var _axios_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/axios.js */ "./resources/js/src/axios.js");
+/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/index.cjs.js");
+/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var firebase_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! firebase/auth */ "./node_modules/firebase/auth/dist/index.esm.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/router */ "./resources/js/src/router.js");
 /*=========================================================================================
   File Name: moduleAuthActions.js
   Description: Auth Module Actions
@@ -73982,6 +74011,7 @@ __webpack_require__.r(__webpack_exports__);
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
+
 
 
 
@@ -73998,7 +74028,7 @@ __webpack_require__.r(__webpack_exports__);
 
     if (!payload.checkbox_remember_me) {
       // Change firebase Persistence
-      firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth().setPersistence(firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth.Auth.Persistence.SESSION) // If success try to login
+      firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth().setPersistence(firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth.Auth.Persistence.SESSION) // If success try to login
       .then(function () {
         dispatch('login', newPayload);
       }) // If error notify
@@ -74039,7 +74069,7 @@ __webpack_require__.r(__webpack_exports__);
     } // Try to sigin
 
 
-    firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth().signInWithEmailAndPassword(payload.userDetails.email, payload.userDetails.password).then(function (result) {
+    firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth().signInWithEmailAndPassword(payload.userDetails.email, payload.userDetails.password).then(function (result) {
       // Set FLAG username update required for updating username
       var isUsernameUpdateRequired = false; // if username is provided and updateUsername FLAG is true
       // set local username update FLAG to true
@@ -74061,7 +74091,7 @@ __webpack_require__.r(__webpack_exports__);
       // set new user data in localstorage
 
       if (!isUsernameUpdateRequired) {
-        _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/');
+        _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/');
         commit('UPDATE_USER_INFO', result.user.providerData[0], {
           root: true
         });
@@ -74095,9 +74125,9 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     }
 
-    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth.GoogleAuthProvider();
-    firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth().signInWithPopup(provider).then(function (result) {
-      _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/');
+    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth.GoogleAuthProvider();
+    firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth().signInWithPopup(provider).then(function (result) {
+      _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/');
       commit('UPDATE_USER_INFO', result.user.providerData[0], {
         root: true
       });
@@ -74128,9 +74158,9 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     }
 
-    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth.FacebookAuthProvider();
-    firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth().signInWithPopup(provider).then(function (result) {
-      _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/');
+    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth.FacebookAuthProvider();
+    firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth().signInWithPopup(provider).then(function (result) {
+      _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/');
       commit('UPDATE_USER_INFO', result.user.providerData[0], {
         root: true
       });
@@ -74161,9 +74191,9 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     }
 
-    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth.TwitterAuthProvider();
-    firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth().signInWithPopup(provider).then(function (result) {
-      _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/');
+    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth.TwitterAuthProvider();
+    firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth().signInWithPopup(provider).then(function (result) {
+      _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/');
       commit('UPDATE_USER_INFO', result.user.providerData[0], {
         root: true
       });
@@ -74194,9 +74224,9 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     }
 
-    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth.GithubAuthProvider();
-    firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth().signInWithPopup(provider).then(function (result) {
-      _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/');
+    var provider = new firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth.GithubAuthProvider();
+    firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth().signInWithPopup(provider).then(function (result) {
+      _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/');
       commit('UPDATE_USER_INFO', result.user.providerData[0], {
         root: true
       });
@@ -74214,7 +74244,7 @@ __webpack_require__.r(__webpack_exports__);
   registerUser: function registerUser(_ref7, payload) {
     var dispatch = _ref7.dispatch;
     // create user using firebase
-    firebase_app__WEBPACK_IMPORTED_MODULE_1___default.a.auth().createUserWithEmailAndPassword(payload.userDetails.email, payload.userDetails.password).then(function () {
+    firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.auth().createUserWithEmailAndPassword(payload.userDetails.email, payload.userDetails.password).then(function () {
       payload.notify({
         title: 'Account Created',
         text: 'You are successfully registered!',
@@ -74253,7 +74283,7 @@ __webpack_require__.r(__webpack_exports__);
       // Reload current page
 
       if (payload.isReloadRequired) {
-        _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/');
+        _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/');
       }
     })["catch"](function (err) {
       payload.notify({
@@ -74274,12 +74304,13 @@ __webpack_require__.r(__webpack_exports__);
         // If there's user data in response
         if (response.data.user) {
           // Navigate User to homepage
-          _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/'); // Set accessToken
+          _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/'); // Set accessToken
 
           localStorage.setItem('accessToken', response.data.accessToken);
           localStorage.setItem('user_id', response.data.user.id);
           localStorage.setItem('school_id', response.data.user.school_id);
-          localStorage.setItem('role_id', response.data.user.role_id); // Update user details
+          localStorage.setItem('role_id', response.data.user.role_id);
+          localStorage.setItem('profile_image', response.data.user.profile_image); // Update user details
 
           commit('UPDATE_USER_INFO', response.data.user, {
             root: true
@@ -74289,7 +74320,7 @@ __webpack_require__.r(__webpack_exports__);
           resolve(response);
         } else {
           reject({
-            message: 'Wrong Email or Password'
+            message: response.data.message
           });
         }
       })["catch"](function (error) {
@@ -74314,7 +74345,7 @@ __webpack_require__.r(__webpack_exports__);
 
       _http_requests_auth_jwt_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].registerUser(displayName, email, password).then(function (response) {
         // Redirect User
-        _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/'); // Update data in localStorage
+        _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/'); // Update data in localStorage
 
         localStorage.setItem('accessToken', response.data.accessToken);
         commit('UPDATE_USER_INFO', response.data.userData, {
@@ -74341,7 +74372,7 @@ __webpack_require__.r(__webpack_exports__);
         // If there's user data in response
         if (response.data.user) {
           // Navigate User to homepage
-          _router__WEBPACK_IMPORTED_MODULE_3__["default"].push(_router__WEBPACK_IMPORTED_MODULE_3__["default"].currentRoute.query.to || '/'); // Set accessToken
+          _router__WEBPACK_IMPORTED_MODULE_4__["default"].push(_router__WEBPACK_IMPORTED_MODULE_4__["default"].currentRoute.query.to || '/'); // Set accessToken
 
           localStorage.setItem('accessToken', response.data.accessToken);
           localStorage.setItem('user_id', response.data.user.id);
@@ -74356,9 +74387,46 @@ __webpack_require__.r(__webpack_exports__);
           resolve(response);
         } else {
           reject({
-            message: 'Wrong Email or Password'
+            message: response.data.message
           });
         }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  //change password
+  changepassword: function changepassword(_ref12, data) {
+    var commit = _ref12.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/change-password", data).then(function (response) {
+        console.log(response);
+
+        if (response.data.datauser) {
+          resolve(response);
+        } else {
+          reject(response.data.message);
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  fetchSchoolUser: function fetchSchoolUser(context, userId) {
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].get("/api/auth/fetch-user/".concat(userId)).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  UpdateUser: function UpdateUser(_ref13, data) {
+    var commit = _ref13.commit;
+    console.log(data);
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/update-school-profile", data).then(function (response) {
+        resolve(response);
       })["catch"](function (error) {
         reject(error);
       });
@@ -74650,7 +74718,7 @@ var userDefaults = {
   displayName: "",
   // From Auth
   about: "",
-  photoURL: __webpack_require__(/*! @assets/images/portrait/small/avatar-s-11.jpg */ "./resources/assets/images/portrait/small/avatar-s-11.jpg"),
+  photoURL: localStorage.getItem('profile_image'),
   status: "",
   userRole: ""
 }; //console.log(localStorage.getItem('userInfo'));
@@ -74668,7 +74736,7 @@ var getUserInfo = function getUserInfo() {
     userInfo[key] = userInfoLocalStorage[key] ? userInfoLocalStorage[key] : userDefaults[key]
   }*/
 
-  userInfoLocalStorage['photoURL'] = __webpack_require__(/*! @assets/images/portrait/small/avatar-s-11.jpg */ "./resources/assets/images/portrait/small/avatar-s-11.jpg"); // Include properties from localStorage
+  userInfoLocalStorage['photoURL'] = localStorage.getItem('profile_image'); // Include properties from localStorage
 
   Object.keys(userInfoLocalStorage).forEach(function (key) {//console.log( userInfoLocalStorage[key]);
   });
@@ -74676,7 +74744,7 @@ var getUserInfo = function getUserInfo() {
   return userInfoLocalStorage;
 };
 
-userInfoLocalStorage['photoURL'] = __webpack_require__(/*! @assets/images/portrait/small/avatar-s-11.jpg */ "./resources/assets/images/portrait/small/avatar-s-11.jpg"); // Check if device is touch device
+userInfoLocalStorage['photoURL'] = localStorage.getItem('profile_image'); // Check if device is touch device
 // This is used to remove perfect scrollbar from touch devices
 // Using Dynamic components
 

@@ -1568,11 +1568,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      checkpointReward: ""
+    };
+  },
   computed: {
     activeUserInfo: function activeUserInfo() {
       return this.$store.state.AppActiveUser;
+    },
+    activeUserImage: function activeUserImage() {
+      if (localStorage.getItem('profile_image') === null) {
+        return __webpack_require__(/*! @assets/logo/placeholder.jpg */ "./resources/assets/logo/placeholder.jpg");
+      } else {
+        return localStorage.getItem('profile_image');
+      }
     }
+  },
+  created: function created() {
+    var _this = this;
+
+    var x = localStorage.getItem('accessToken'); //  User Reward Card
+
+    var requestOptions = {
+      headers: {
+        'Authorization': 'Bearer ' + x
+      }
+    };
+    this.$http.get("/api/auth/user", requestOptions).then(function (response) {
+      //console.log('Authorization'+response.status)
+      _this.checkpointReward = response.data.user;
+      console.log('user_id', response.data.user.id); // localStorage.setItem('user_id',response.data.user.id);
+      //   localStorage.setItem('school_id',response.data.user.school_id);
+    })["catch"](function (error) {
+      //   console.log(error);
+      // localStorage.removeItem('userInfo')
+      // auto logout if 401 response returned from api
+      _this.$store.state.auth.logout(); // location.reload(true);
+
+    });
   },
   methods: {
     logout: function logout() {
@@ -1580,6 +1617,7 @@ __webpack_require__.r(__webpack_exports__);
       localStorage.removeItem('accessToken');
       localStorage.removeItem('school_id');
       localStorage.removeItem('user_id');
+      localStorage.removeItem('profile_image');
 
       if (localStorage.getItem('role_id') == 5) {
         localStorage.removeItem('role_id');
@@ -1590,6 +1628,12 @@ __webpack_require__.r(__webpack_exports__);
       } // This is just for demo Purpose. If user clicks on logout -> redirect
       // this.$router.push('/pages/login').catch(() => {})
 
+    },
+    changepassword: function changepassword() {
+      this.$router.push('/apps/profile/changepassword');
+    },
+    profile: function profile() {
+      this.$router.push('/apps/profile/editprofile');
     }
   }
 });
@@ -4142,8 +4186,6 @@ var render = function() {
             _vm._v(" "),
             _c("search-bar", { staticClass: "mr-4" }),
             _vm._v(" "),
-            _c("notification-drop-down"),
-            _vm._v(" "),
             _c("profile-drop-down")
           ],
           1
@@ -4175,274 +4217,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "navbar-bookmarks flex items-center" }, [
-    _c(
-      "ul",
-      { staticClass: "vx-navbar__starred-pages" },
-      [
-        _c(
-          "draggable",
-          {
-            staticClass: "flex cursor-move",
-            attrs: { group: { name: "pinList" } },
-            model: {
-              value: _vm.starredPagesLimited,
-              callback: function($$v) {
-                _vm.starredPagesLimited = $$v
-              },
-              expression: "starredPagesLimited"
-            }
-          },
-          _vm._l(_vm.starredPagesLimited, function(page) {
-            return _c(
-              "li",
-              { key: page.url, staticClass: "starred-page" },
-              [
-                _c(
-                  "vx-tooltip",
-                  {
-                    attrs: {
-                      text: page.title,
-                      position: "bottom",
-                      delay: ".3s"
-                    }
-                  },
-                  [
-                    _c("feather-icon", {
-                      staticClass: "p-2 cursor-pointer",
-                      attrs: {
-                        svgClasses: ["h-6 w-6 stroke-current", _vm.textColor],
-                        icon: page.icon
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.$router.push(page.url).catch(function() {})
-                        }
-                      }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          }),
-          0
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _vm.starredPagesMore.length
-      ? _c(
-          "div",
-          { staticClass: "vx-navbar__starred-pages--more-dropdown" },
-          [
-            _c(
-              "vs-dropdown",
-              {
-                staticClass: "cursor-pointer",
-                attrs: { "vs-custom-content": "", "vs-trigger-click": "" }
-              },
-              [
-                _c("feather-icon", {
-                  staticClass: "cursor-pointer p-2",
-                  attrs: { icon: "ChevronDownIcon", svgClasses: "h-4 w-4" }
-                }),
-                _vm._v(" "),
-                _c("vs-dropdown-menu", [
-                  _c(
-                    "ul",
-                    { staticClass: "vx-navbar__starred-pages-more--list" },
-                    [
-                      _c(
-                        "draggable",
-                        {
-                          staticClass: "cursor-move",
-                          attrs: { group: { name: "pinList" } },
-                          model: {
-                            value: _vm.starredPagesMore,
-                            callback: function($$v) {
-                              _vm.starredPagesMore = $$v
-                            },
-                            expression: "starredPagesMore"
-                          }
-                        },
-                        _vm._l(_vm.starredPagesMore, function(page) {
-                          return _c(
-                            "li",
-                            {
-                              key: page.url,
-                              staticClass:
-                                "starred-page--more flex items-center cursor-pointer",
-                              on: {
-                                click: function($event) {
-                                  _vm.$router
-                                    .push(page.url)
-                                    .catch(function() {})
-                                }
-                              }
-                            },
-                            [
-                              _c("feather-icon", {
-                                staticClass: "ml-2 mr-1",
-                                attrs: {
-                                  icon: page.icon,
-                                  svgClasses: [
-                                    "h-5 w-5 stroke-current",
-                                    _vm.textColor
-                                  ]
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("span", { staticClass: "px-2 pt-2 pb-1" }, [
-                                _vm._v(_vm._s(page.title))
-                              ])
-                            ],
-                            1
-                          )
-                        }),
-                        0
-                      )
-                    ],
-                    1
-                  )
-                ])
-              ],
-              1
-            )
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "bookmark-container" },
-      [
-        _c("feather-icon", {
-          staticClass: "cursor-pointer p-2",
-          attrs: {
-            icon: "StarIcon",
-            svgClasses: ["stoke-current text-warning", _vm.textColor]
-          },
-          on: {
-            click: function($event) {
-              $event.stopPropagation()
-              _vm.showBookmarkPagesDropdown = !_vm.showBookmarkPagesDropdown
-            }
-          }
-        }),
-        _vm._v(" "),
-        _vm.showBookmarkPagesDropdown
-          ? _c(
-              "div",
-              {
-                directives: [
-                  {
-                    name: "click-outside",
-                    rawName: "v-click-outside",
-                    value: _vm.outside,
-                    expression: "outside"
-                  }
-                ],
-                staticClass: "absolute bookmark-list w-1/3 xl:w-1/4 mt-4"
-              },
-              [
-                _c("vx-auto-suggest", {
-                  ref: "bookmarkAutoSuggest",
-                  attrs: {
-                    autoFocus: true,
-                    data: _vm.navbarSearchAndPinList,
-                    initalData: {
-                      pages: _vm.starredPagesLimited.concat(
-                        _vm.starredPagesMore
-                      )
-                    },
-                    searchLimit: 5,
-                    placeholder: "Explore Vuexy...",
-                    inputClassses: "w-full",
-                    "show-action": "",
-                    "show-pinned": "",
-                    hideGroupTitle: "",
-                    "background-overlay": ""
-                  },
-                  on: {
-                    input: _vm.hnd_search_query_update,
-                    selected: _vm.selected
-                  },
-                  scopedSlots: _vm._u(
-                    [
-                      {
-                        key: "pages",
-                        fn: function(ref) {
-                          var suggestion = ref.suggestion
-                          return [
-                            _c(
-                              "div",
-                              {
-                                staticClass: "flex items-center justify-between"
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "flex items-end leading-none py-1"
-                                  },
-                                  [
-                                    _c("feather-icon", {
-                                      staticClass: "mr-4",
-                                      attrs: {
-                                        icon: suggestion.icon,
-                                        svgClasses: "h-5 w-5"
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("span", { staticClass: "mt-1" }, [
-                                      _vm._v(_vm._s(suggestion.title))
-                                    ])
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c("feather-icon", {
-                                  attrs: {
-                                    icon: "StarIcon",
-                                    svgClasses: [
-                                      {
-                                        "text-warning": suggestion.is_bookmarked
-                                      },
-                                      "h-5 w-5 stroke-current mt-1"
-                                    ]
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      $event.stopPropagation()
-                                      return _vm.actionClicked(suggestion)
-                                    }
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ]
-                        }
-                      }
-                    ],
-                    null,
-                    false,
-                    648118384
-                  )
-                })
-              ],
-              1
-            )
-          : _vm._e()
-      ],
-      1
-    )
-  ])
+  return _c("div")
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -4603,96 +4378,117 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.activeUserInfo.name
-    ? _c(
-        "div",
-        { staticClass: "the-navbar__user-meta flex items-center" },
-        [
-          _c(
+  return _c(
+    "div",
+    { staticClass: "the-navbar__user-meta flex items-center" },
+    [
+      _vm.checkpointReward.name
+        ? _c(
             "div",
             { staticClass: "text-right leading-tight hidden sm:block" },
             [
               _c("p", { staticClass: "font-semibold" }, [
-                _vm._v(_vm._s(_vm.activeUserInfo.name))
+                _vm._v(_vm._s(_vm.checkpointReward.name))
               ]),
               _vm._v(" "),
               _c("small", [_vm._v("Available")])
             ]
-          ),
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "vs-dropdown",
+        {
+          staticClass: "cursor-pointer",
+          attrs: { "vs-custom-content": "", "vs-trigger-click": "" }
+        },
+        [
+          _c("div", { staticClass: "con-img ml-3" }, [
+            _vm.activeUserImage
+              ? _c("img", {
+                  key: "onlineImg",
+                  staticClass: "rounded-full shadow-md cursor-pointer block",
+                  attrs: {
+                    src: _vm.activeUserImage,
+                    alt: "user-img1",
+                    width: "40",
+                    height: "40"
+                  }
+                })
+              : _vm._e()
+          ]),
           _vm._v(" "),
-          _c(
-            "vs-dropdown",
-            {
-              staticClass: "cursor-pointer",
-              attrs: { "vs-custom-content": "", "vs-trigger-click": "" }
-            },
-            [
-              _c("div", { staticClass: "con-img ml-3" }, [
-                _vm.activeUserInfo.photoURL
-                  ? _c("img", {
-                      key: "onlineImg",
-                      staticClass:
-                        "rounded-full shadow-md cursor-pointer block",
-                      attrs: {
-                        src: _vm.activeUserInfo.photoURL,
-                        alt: "user-img",
-                        width: "40",
-                        height: "40"
-                      }
-                    })
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("vs-dropdown-menu", { staticClass: "vx-navbar-dropdown" }, [
+          _c("vs-dropdown-menu", { staticClass: "vx-navbar-dropdown" }, [
+            _c(
+              "ul",
+              { staticStyle: { "min-width": "9rem" } },
+              [
                 _c(
-                  "ul",
-                  { staticStyle: { "min-width": "9rem" } },
+                  "li",
+                  {
+                    staticClass:
+                      "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white",
+                    on: { click: _vm.profile }
+                  },
                   [
-                    _c(
-                      "li",
-                      {
-                        staticClass:
-                          "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-                      },
-                      [
-                        _c("feather-icon", {
-                          attrs: { icon: "UserIcon", svgClasses: "w-4 h-4" }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-2" }, [_vm._v("Profile")])
-                      ],
-                      1
-                    ),
+                    _c("feather-icon", {
+                      attrs: { icon: "UserIcon", svgClasses: "w-4 h-4" }
+                    }),
                     _vm._v(" "),
-                    _c("vs-divider", { staticClass: "m-1" }),
+                    _c("span", { staticClass: "ml-2" }, [_vm._v("Profile")])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("vs-divider", { staticClass: "m-1" }),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    staticClass:
+                      "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white",
+                    on: { click: _vm.changepassword }
+                  },
+                  [
+                    _c("feather-icon", {
+                      attrs: { icon: "KeyIcon", svgClasses: "w-4 h-4" }
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        staticClass:
-                          "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white",
-                        on: { click: _vm.logout }
-                      },
-                      [
-                        _c("feather-icon", {
-                          attrs: { icon: "LogOutIcon", svgClasses: "w-4 h-4" }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "ml-2" }, [_vm._v("Logout")])
-                      ],
-                      1
-                    )
+                    _c("span", { staticClass: "ml-2" }, [
+                      _vm._v("Change Password")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("vs-divider", { staticClass: "m-1" }),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    staticClass:
+                      "flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white",
+                    on: { click: _vm.logout }
+                  },
+                  [
+                    _c("feather-icon", {
+                      attrs: { icon: "LogOutIcon", svgClasses: "w-4 h-4" }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "ml-2" }, [_vm._v("Logout")])
                   ],
                   1
                 )
-              ])
-            ],
-            1
-          )
+              ],
+              1
+            )
+          ])
         ],
         1
       )
-    : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -4716,140 +4512,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "flex" },
-    [
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.showFullSearch,
-              expression: "showFullSearch"
-            }
-          ],
-          staticClass:
-            "search-full-container w-full h-full absolute left-0 top-0",
-          class: { flex: _vm.showFullSearch }
-        },
-        [
-          _c("vx-auto-suggest", {
-            ref: "navbarSearch",
-            staticClass: "w-full",
-            attrs: {
-              autoFocus: _vm.showFullSearch,
-              data: _vm.navbarSearchAndPinList,
-              search_key: "title",
-              "background-overlay": "",
-              inputClassses:
-                "w-full vs-input-no-border vs-input-no-shdow-focus",
-              icon: "SearchIcon",
-              placeholder: "Explore Vuexy..."
-            },
-            on: {
-              input: _vm.hnd_search_query_update,
-              selected: _vm.selected,
-              closeSearchbar: function($event) {
-                _vm.showFullSearch = false
-              }
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "group",
-                fn: function(ref) {
-                  var group_name = ref.group_name
-                  return [
-                    _c("p", { staticClass: "font-semibold text-primary" }, [
-                      _vm._v(_vm._s(_vm._f("title")(group_name)))
-                    ])
-                  ]
-                }
-              },
-              {
-                key: "pages",
-                fn: function(ref) {
-                  var suggestion = ref.suggestion
-                  return [
-                    _c(
-                      "div",
-                      { staticClass: "flex items-end leading-none py-1" },
-                      [
-                        _c("feather-icon", {
-                          staticClass: "mr-4",
-                          attrs: {
-                            icon: suggestion.icon,
-                            svgClasses: "h-5 w-5"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "mt-1" }, [
-                          _vm._v(_vm._s(suggestion.title))
-                        ])
-                      ],
-                      1
-                    )
-                  ]
-                }
-              },
-              {
-                key: "noResult",
-                fn: function(ref) {
-                  var group_name = ref.group_name
-                  return [
-                    _c(
-                      "div",
-                      { staticClass: "flex items-center" },
-                      [
-                        _c("feather-icon", {
-                          staticClass: "mr-4",
-                          attrs: { icon: "InfoIcon", svgClasses: "h-5 w-5" }
-                        }),
-                        _vm._v(" "),
-                        _c("span", [_vm._v("No results found.")])
-                      ],
-                      1
-                    )
-                  ]
-                }
-              }
-            ])
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "absolute right-0 h-full z-50" },
-            [
-              _c("feather-icon", {
-                staticClass: "px-4 cursor-pointer h-full close-search-icon",
-                attrs: { icon: "XIcon" },
-                on: {
-                  click: function($event) {
-                    _vm.showFullSearch = false
-                  }
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("feather-icon", {
-        staticClass: "cursor-pointer navbar-fuzzy-search ml-4",
-        attrs: { icon: "SearchIcon" },
-        on: {
-          click: function($event) {
-            _vm.showFullSearch = true
-          }
-        }
-      })
-    ],
-    1
-  )
+  return _c("div", { staticClass: "flex" })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -5526,61 +5189,7 @@ var render = function() {
                                     isRTL: _vm.$vs.rtl
                                   }
                                 })
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c(
-                              "vs-dropdown",
-                              {
-                                staticClass:
-                                  "ml-auto md:block hidden cursor-pointer",
-                                attrs: { "vs-trigger-click": "" }
-                              },
-                              [
-                                _c("vs-button", {
-                                  attrs: {
-                                    radius: "",
-                                    icon: "icon-settings",
-                                    "icon-pack": "feather"
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "vs-dropdown-menu",
-                                  { staticClass: "w-32" },
-                                  [
-                                    _c("vs-dropdown-item", [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass: "flex items-center",
-                                          on: {
-                                            click: function($event) {
-                                              _vm.$router
-                                                .push("/pages/profile")
-                                                .catch(function() {})
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("feather-icon", {
-                                            staticClass: "inline-block mr-2",
-                                            attrs: {
-                                              icon: "UserIcon",
-                                              svgClasses: "w-4 h-4"
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("span", [_vm._v("Profile")])
-                                        ],
-                                        1
-                                      )
-                                    ])
-                                  ],
-                                  1
-                                )
-                              ],
-                              1
-                            )
+                              : _vm._e()
                           ],
                           1
                         )
@@ -5654,6 +5263,17 @@ var staticRenderFns = []
 render._withStripped = true
 
 
+
+/***/ }),
+
+/***/ "./resources/assets/logo/placeholder.jpg":
+/*!***********************************************!*\
+  !*** ./resources/assets/logo/placeholder.jpg ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/placeholder.jpg?1eb7fff2a469da3cc6c3311572d7696d";
 
 /***/ }),
 
@@ -6905,7 +6525,7 @@ __webpack_require__.r(__webpack_exports__);
     i18n: 'List'
   }, {
     url: '/apps/user/allstudents',
-    name: 'Student List',
+    name: 'Students List',
     slug: 'all-students',
     i18n: 'List'
   }, {
@@ -6957,7 +6577,7 @@ __webpack_require__.r(__webpack_exports__);
     i18n: 'List'
   }, {
     url: '/apps/user/listofstudents',
-    name: 'Student List',
+    name: 'Students List',
     slug: 'list-students',
     i18n: 'List'
   }, {

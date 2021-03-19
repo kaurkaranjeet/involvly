@@ -788,7 +788,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("h1", { staticClass: "mb-6 text-white" }, [
-                _vm._v("Welcome " + _vm._s(_vm.checkpointReward.name) + ",")
+                _vm._v("Welcome " + _vm._s(_vm.checkpointReward.name))
               ]),
               _vm._v(" "),
               _c(
@@ -1234,7 +1234,7 @@ var render = function() {
         "div",
         { staticClass: "vx-col w-full" },
         [
-          _c("vx-card", { attrs: { title: "Requests" } }, [
+          _c("vx-card", { attrs: { title: "Users" } }, [
             _c(
               "div",
               {
@@ -1332,98 +1332,6 @@ var render = function() {
                                               "vs-td",
                                               {
                                                 attrs: {
-                                                  data: data[indextr].status
-                                                }
-                                              },
-                                              [
-                                                _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "flex items-center px-2 py-1 rounded"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "div",
-                                                      {},
-                                                      [
-                                                        _c(
-                                                          "vs-button",
-                                                          {
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                return _vm.Approveteacher(
-                                                                  data[indextr]
-                                                                    .id,
-                                                                  $event
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v(" Approve")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "vs-td",
-                                              {
-                                                attrs: {
-                                                  data: data[indextr].status
-                                                }
-                                              },
-                                              [
-                                                _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "flex items-center px-2 py-1 rounded"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        staticClass: "bg-danger"
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "vs-button",
-                                                          {
-                                                            staticClass:
-                                                              "bg-danger",
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                return _vm.Rejectteacher(
-                                                                  data[indextr]
-                                                                    .id,
-                                                                  $event
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v(" Reject")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "vs-td",
-                                              {
-                                                attrs: {
                                                   data: data[indextr].date
                                                 }
                                               },
@@ -1460,10 +1368,6 @@ var render = function() {
                                     _c("vs-th", [_vm._v("Name")]),
                                     _vm._v(" "),
                                     _c("vs-th", [_vm._v("Email")]),
-                                    _vm._v(" "),
-                                    _c("vs-th", [_vm._v("Approve")]),
-                                    _vm._v(" "),
-                                    _c("vs-th", [_vm._v("Reject")]),
                                     _vm._v(" "),
                                     _c("vs-th", [_vm._v("View Details")])
                                   ],
@@ -1564,98 +1468,6 @@ var render = function() {
                                               "vs-td",
                                               {
                                                 attrs: {
-                                                  data: data[indextr].status
-                                                }
-                                              },
-                                              [
-                                                _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "flex items-center px-2 py-1 rounded"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "div",
-                                                      {},
-                                                      [
-                                                        _c(
-                                                          "vs-button",
-                                                          {
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                return _vm.Approveteacher(
-                                                                  data[indextr]
-                                                                    .id,
-                                                                  $event
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v(" Approve")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "vs-td",
-                                              {
-                                                attrs: {
-                                                  data: data[indextr].status
-                                                }
-                                              },
-                                              [
-                                                _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "flex items-center px-2 py-1 rounded"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        staticClass: "bg-danger"
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "vs-button",
-                                                          {
-                                                            staticClass:
-                                                              "bg-danger",
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                return _vm.Rejectteacher(
-                                                                  data[indextr]
-                                                                    .id,
-                                                                  $event
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v(" Reject")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "vs-td",
-                                              {
-                                                attrs: {
                                                   data: data[indextr].date
                                                 }
                                               },
@@ -1692,10 +1504,6 @@ var render = function() {
                                     _c("vs-th", [_vm._v("Name")]),
                                     _vm._v(" "),
                                     _c("vs-th", [_vm._v("Email")]),
-                                    _vm._v(" "),
-                                    _c("vs-th", [_vm._v("Approve")]),
-                                    _vm._v(" "),
-                                    _c("vs-th", [_vm._v("Reject")]),
                                     _vm._v(" "),
                                     _c("vs-th", [_vm._v("View Details")])
                                   ],
@@ -1793,98 +1601,6 @@ var render = function() {
                                               "vs-td",
                                               {
                                                 attrs: {
-                                                  data: data[indextr].status
-                                                }
-                                              },
-                                              [
-                                                _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "flex items-center px-2 py-1 rounded"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "div",
-                                                      {},
-                                                      [
-                                                        _c(
-                                                          "vs-button",
-                                                          {
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                return _vm.Approveteacher(
-                                                                  data[indextr]
-                                                                    .id,
-                                                                  $event
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v(" Approve")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "vs-td",
-                                              {
-                                                attrs: {
-                                                  data: data[indextr].status
-                                                }
-                                              },
-                                              [
-                                                _c(
-                                                  "span",
-                                                  {
-                                                    staticClass:
-                                                      "flex items-center px-2 py-1 rounded"
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "div",
-                                                      {
-                                                        staticClass: "bg-danger"
-                                                      },
-                                                      [
-                                                        _c(
-                                                          "vs-button",
-                                                          {
-                                                            staticClass:
-                                                              "bg-danger",
-                                                            on: {
-                                                              click: function(
-                                                                $event
-                                                              ) {
-                                                                return _vm.Rejectteacher(
-                                                                  data[indextr]
-                                                                    .id,
-                                                                  $event
-                                                                )
-                                                              }
-                                                            }
-                                                          },
-                                                          [_vm._v(" Reject")]
-                                                        )
-                                                      ],
-                                                      1
-                                                    )
-                                                  ]
-                                                )
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "vs-td",
-                                              {
-                                                attrs: {
                                                   data: data[indextr].date
                                                 }
                                               },
@@ -1921,10 +1637,6 @@ var render = function() {
                                     _c("vs-th", [_vm._v("Name")]),
                                     _vm._v(" "),
                                     _c("vs-th", [_vm._v("Email")]),
-                                    _vm._v(" "),
-                                    _c("vs-th", [_vm._v("Approve")]),
-                                    _vm._v(" "),
-                                    _c("vs-th", [_vm._v("Reject")]),
                                     _vm._v(" "),
                                     _c("vs-th", [_vm._v("View Details")])
                                   ],

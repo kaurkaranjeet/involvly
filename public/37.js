@@ -347,7 +347,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "#avatar-col {\n  width: 10rem;\n}\n#page-user-view table td {\n  vertical-align: top;\n  min-width: 140px;\n  word-break: break-all;\n}\n[dir] #page-user-view table td {\n  padding-bottom: 0.8rem;\n}\n@media screen and (max-width: 370px) {\n#page-user-view table:not(.permissions-table) td {\n    display: block;\n}\n}\n@media screen and (min-width: 1201px) and (max-width: 1211px), only screen and (min-width: 636px) and (max-width: 991px) {\n#account-info-col-1 {\n    width: calc(100% - 12rem) !important;\n}\n}", ""]);
+exports.push([module.i, "#avatar-col {\n  width: 10rem;\n}\n#page-user-view table td {\n  vertical-align: top;\n  min-width: 140px;\n  word-break: break-all;\n}\n[dir] #page-user-view table td {\n  padding-bottom: 0.8rem;\n}\n@media screen and (max-width: 370px) {\n#page-user-view table:not(.permissions-table) td {\n    display: block;\n}\n}\n@media screen and (min-width: 1201px) and (max-width: 1211px), only screen and (min-width: 636px) and (max-width: 991px) {\n#account-info-col-1 {\n    width: calc(100% - 12rem) !important;\n}\n}\n[dir] .bottom-padding {\n  padding-bottom: 1.5rem !important;\n}", ""]);
 
 // exports
 
@@ -578,66 +578,7 @@ var render = function() {
                             : _vm._e()
                         ])
                       ]
-                    ),
-                    _vm._v(" "),
-                    _vm.user_data.status == 0
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "vx-col w-full flex",
-                            attrs: { id: "account-manage-buttons" }
-                          },
-                          [
-                            _c(
-                              "vs-button",
-                              {
-                                staticClass: " mr-4",
-                                attrs: {
-                                  type: "border",
-                                  color: "danger",
-                                  "icon-pack": "feather",
-                                  icon: "icon-trash"
-                                },
-                                on: { click: _vm.confirmDeleteRecord }
-                              },
-                              [_vm._v("Delete")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "vs-button",
-                              {
-                                staticClass: "bg-primary mr-4 flex",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.Approveteacher(
-                                      _vm.user_data.id,
-                                      $event
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(" Approve")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "vs-button",
-                              {
-                                staticClass: "bg-danger mr-4 flex",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.Rejectteacher(
-                                      _vm.user_data.id,
-                                      $event
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(" Reject")]
-                            )
-                          ],
-                          1
-                        )
-                      : _vm._e()
+                    )
                   ])
                 ]
               ),
@@ -650,7 +591,7 @@ var render = function() {
                     _c(
                       "vx-card",
                       {
-                        staticClass: "mb-base",
+                        staticClass: "mb-base bottom-padding",
                         attrs: { title: "Timetables" }
                       },
                       _vm._l(_vm.user_data.timetables, function(item) {

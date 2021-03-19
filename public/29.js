@@ -418,7 +418,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -729,7 +728,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("h1", { staticClass: "mb-6 text-white" }, [
-                _vm._v("Welcome " + _vm._s(_vm.checkpointReward.name) + ",")
+                _vm._v("Welcome " + _vm._s(_vm.checkpointReward.name))
               ]),
               _vm._v(" "),
               _c(
