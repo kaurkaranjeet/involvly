@@ -99,7 +99,7 @@ export default {
       // Loading
       this.$vs.loading();
       this.$store
-        .dispatch("auth/changepassword", formData)
+        .dispatch("auth/CreatePassword", formData)
         .then((res) => {
           this.$vs.loading.close();
           this.$router
