@@ -262,7 +262,7 @@
             <vs-tabs  class="tab-action-btn-fill-conatiner">
     <vs-tab  :label="'Independent Teachers ('+ teacherCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
+            <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" id="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -276,7 +276,7 @@
               </template>
 
               <template slot-scope="{data}">
-                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                <vs-tr :key="indextr" v-for="(tr, indextr) in data" :id="'independent-'+indextr">
                   <vs-td :data="data[indextr].id">
                     <span>#{{data[indextr].id}}</span>
                   </vs-td>
@@ -532,7 +532,7 @@ export default {
         headers: { 'Authorization': 'Bearer '+x }
     };
        this.$http
-      .get("api/auth/teacher_requests/",requestOptions)
+      .get("api/auth/teacher_requests",requestOptions)
       .then(response => {
         this.teacherRequests = response.data.data;
         this.teacherCount = response.data.count;
@@ -551,10 +551,10 @@ export default {
         headers: { 'Authorization': 'Bearer '+x }
     };
        this.$http
-      .get("api/auth/web_school_admins/",requestOptions)
+      .get("api/auth/web_school_admins",requestOptions)
       .then(response => {
         this.studentRequests = response.data.data;
-this.inteacherCount = response.data.count;
+        this.inteacherCount = response.data.count;
 
       })
       .catch(error => {
@@ -595,15 +595,17 @@ this.inteacherCount = response.data.count;
           icon: 'icon-alert-circle',
           color: 'success'
         })
-        // location.reload();
-         this.GetStuRequests();
 
-        // el.target.getElementsByClassName('tr-values').style.display='none';
-// el.parentNode.style.display='none';
+         const userIndex =this.teacherRequests.findIndex((u) => u.id === id)
+         this.teacherRequests.splice(userIndex, 1);
+       
       })
       .catch(error => {
         console.log(error);
       });
+
+
+  
 
     },
 
