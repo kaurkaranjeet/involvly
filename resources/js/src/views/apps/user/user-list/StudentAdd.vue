@@ -133,7 +133,7 @@ export default {
       cityoptions:[],
       classoptions:[],
       stateFilter: { label: 'Select State*', value: '0' },
-       classFilter: { label: 'Select Class', value: '0' },
+       classFilter: { label: 'Select Class*', value: '0' },
       cityFilter: { label: 'Select city*', value: '0' }, 
     }
   },
