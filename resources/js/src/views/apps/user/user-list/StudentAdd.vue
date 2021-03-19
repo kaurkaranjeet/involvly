@@ -161,7 +161,7 @@ isLetter(e) {
 
 
       
-    
+    this.classFilter={ label: 'Select Class', value: '0' }
       this.cityoptions=[]
       this.schooloptions=[]
       this.stateFilter= { label: 'Select State', value: '0' }
