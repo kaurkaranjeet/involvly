@@ -19,6 +19,7 @@
       v-model="firstname"
       class="w-full"
       :maxlength="50"
+      v-on:keypress="isLetter($event)"
        />
     <span class="text-danger text-xs">{{ errors.first('firstname') }}</span>
    
@@ -32,6 +33,7 @@
       v-model="lastname"
       class="w-full"
         :maxlength="50"
+        v-on:keypress="isLetter($event)"
        />
     <span class="text-danger text-xs">{{ errors.first("lastname") }}</span>
   
@@ -44,7 +46,9 @@
       label-placeholder="Email*"
       placeholder="Email*"
       v-model="email"
-      class="w-full mt-6" />
+      class="w-full mt-6" 
+
+      />
     <span class="text-danger text-xs">{{ errors.first("email") }}</span>
    
  
@@ -151,6 +155,11 @@ export default {
     },
   },
   methods: {
+    isLetter(e) {
+  let char = String.fromCharCode(e.keyCode); // Get the character
+  if(/^[a-zA-Z\s]*$/.test(char)) return true; // Match with regex 
+  else e.preventDefault(); // If not match, don't add to input text
+},
 
     reset_data () {
       this.firstname= ''

@@ -596,21 +596,6 @@ var render = function() {
                             _c(
                               "vs-button",
                               {
-                                staticClass: " mr-4",
-                                attrs: {
-                                  type: "border",
-                                  color: "danger",
-                                  "icon-pack": "feather",
-                                  icon: "icon-trash"
-                                },
-                                on: { click: _vm.confirmDeleteRecord }
-                              },
-                              [_vm._v("Delete")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "vs-button",
-                              {
                                 staticClass: "bg-primary mr-4 flex",
                                 on: {
                                   click: function($event) {

@@ -78,7 +78,7 @@ __webpack_require__.r(__webpack_exports__);
 
       /*
         This property is created for fetching latest data from API when tab is changed
-         Please check it's watcher
+          Please check it's watcher
       */
       activeTab: 0
     };
@@ -128,6 +128,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
+//
 //
 //
 //
@@ -295,17 +296,31 @@ __webpack_require__.r(__webpack_exports__);
     cityFilter: {
       get: function get() {
         var obj = this.cityoptions;
-        var city = this.data_local.city_detail.id;
         var lebeltext = '';
-        Object.keys(obj).forEach(function (key) {
-          if (obj[key].value == city) {
-            lebeltext = obj[key].label;
+
+        if (this.data_local.city_detail != null) {
+          var city = this.data_local.city_detail.id;
+          var city_obj = this.data_local.city;
+
+          if (city_obj == city) {
+            Object.keys(obj).forEach(function (key) {
+              if (obj[key].value == city) {
+                lebeltext = obj[key].label;
+              }
+            });
+          } else {
+            Object.keys(obj).forEach(function (key) {
+              if (obj[key].value == city_obj) {
+                lebeltext = obj[key].label;
+              }
+            });
           }
-        });
-        return {
-          label: lebeltext,
-          value: city
-        };
+
+          return {
+            label: lebeltext,
+            value: city_obj
+          };
+        }
       },
       set: function set(obj) {
         this.data_local.city = obj.value;
@@ -399,6 +414,10 @@ __webpack_require__.r(__webpack_exports__);
         if (res.data.data.role_id == '4') {
           _this2.$router.push('/apps/user/user-list')["catch"](function () {});
         }
+
+        if (res.data.data.role_id == '3') {
+          _this2.$router.push('/apps/user/listofparents')["catch"](function () {});
+        }
       })["catch"](function (err) {
         if (err.response.status === 404) {
           _this2.user_not_found = true;
@@ -437,10 +456,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     reset_data: function reset_data() {
       this.data_local = JSON.parse(JSON.stringify(this.data));
+      this.data_local.city = this.data_local.city_detail.id;
     },
     update_avatar: function update_avatar() {// You can update avatar Here
       // For reference you can check dataList example
       // We haven't integrated it here, because data isn't saved in DB
+    },
+    isLetter: function isLetter(e) {
+      var _char = String.fromCharCode(e.keyCode); // Get the character
+
+
+      if (/^[a-zA-Z\s]*$/.test(_char)) return true; // Match with regex 
+      else e.preventDefault(); // If not match, don't add to input text
     }
   }
 });
@@ -968,7 +995,12 @@ var render = function() {
               }
             ],
             staticClass: "w-full mt-4",
-            attrs: { label: "First name", name: "first_name" },
+            attrs: { label: "First name", name: "First Name", maxlength: 50 },
+            on: {
+              keypress: function($event) {
+                return _vm.isLetter($event)
+              }
+            },
             model: {
               value: _vm.data_local.first_name,
               callback: function($$v) {
@@ -985,13 +1017,13 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.errors.has("first_name"),
-                  expression: "errors.has('first_name')"
+                  value: _vm.errors.has("First Name"),
+                  expression: "errors.has('First Name')"
                 }
               ],
               staticClass: "text-danger text-sm"
             },
-            [_vm._v(_vm._s(_vm.errors.first("first_name")))]
+            [_vm._v(_vm._s(_vm.errors.first("First Name")))]
           ),
           _vm._v(" "),
           _c("vs-input", {
@@ -1088,6 +1120,11 @@ var render = function() {
             ],
             staticClass: "w-full mt-4",
             attrs: { label: "last name", name: "last_name" },
+            on: {
+              keypress: function($event) {
+                return _vm.isLetter($event)
+              }
+            },
             model: {
               value: _vm.data_local.last_name,
               callback: function($$v) {

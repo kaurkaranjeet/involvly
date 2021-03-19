@@ -87,6 +87,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -168,7 +170,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "[dir] #page-login .social-login-buttons .bg-facebook {\n  background-color: #1551b1;\n}\n[dir] #page-login .social-login-buttons .bg-twitter {\n  background-color: #00aaff;\n}\n[dir] #page-login .social-login-buttons .bg-google {\n  background-color: #4285F4;\n}\n[dir] #page-login .social-login-buttons .bg-github {\n  background-color: #333;\n}", ""]);
+exports.push([module.i, "[dir] #page-login .social-login-buttons .bg-facebook {\n  background-color: #1551b1;\n}\n[dir] #page-login .social-login-buttons .bg-twitter {\n  background-color: #00aaff;\n}\n[dir] #page-login .social-login-buttons .bg-google {\n  background-color: #4285F4;\n}\n[dir] #page-login .social-login-buttons .bg-github {\n  background-color: #333;\n}\n[dir=ltr] .remember-margin {\n  margin-left: 0px !important;\n}\n[dir=rtl] .remember-margin {\n  margin-right: 0px !important;\n}", ""]);
 
 // exports
 
@@ -304,6 +306,23 @@ var render = function() {
                                   "icon-pack": "feather",
                                   "label-placeholder": "Email"
                                 },
+                                on: {
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.loginJWT($event)
+                                  }
+                                },
                                 model: {
                                   value: _vm.email,
                                   callback: function($$v) {
@@ -338,6 +357,23 @@ var render = function() {
                                   "icon-pack": "feather",
                                   "label-placeholder": "Password"
                                 },
+                                on: {
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.loginJWT($event)
+                                  }
+                                },
                                 model: {
                                   value: _vm.password,
                                   callback: function($$v) {
@@ -363,7 +399,7 @@ var render = function() {
                                   _c(
                                     "vs-checkbox",
                                     {
-                                      staticClass: "mb-3",
+                                      staticClass: "mb-3 remember-margin",
                                       model: {
                                         value: _vm.checkbox_remember_me,
                                         callback: function($$v) {

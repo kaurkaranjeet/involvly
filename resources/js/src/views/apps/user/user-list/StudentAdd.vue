@@ -14,26 +14,28 @@
       v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="First Name*"
-      name="firstname"
+      name="First Name"
       placeholder=" First Name*"
       v-model="firstname"
       class="w-full"
       :maxlength="50"
+      v-on:keypress="isLetter($event)"
        />
-    <span class="text-danger text-xs">{{ errors.first('firstname') }}</span>
+    <span class="text-danger text-xs">{{ errors.first('First Name') }}</span>
    
   
     <vs-input
       v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="Last Name*"
-      name="lastname"
+      name="Last Name"
       placeholder="Last Name*"
       v-model="lastname"
       class="w-full"
          :maxlength="50"
+         v-on:keypress="isLetter($event)"
        />
-    <span class="text-danger text-xs">{{ errors.first("lastname") }}</span>
+    <span class="text-danger text-xs">{{ errors.first("Last Name") }}</span>
   
 
    <vs-input
@@ -144,7 +146,11 @@ export default {
     },
   },
   methods: {
-
+isLetter(e) {
+  let char = String.fromCharCode(e.keyCode); // Get the character
+  if(/^[a-zA-Z\s]*$/.test(char)) return true; // Match with regex 
+  else e.preventDefault(); // If not match, don't add to input text
+},
     reset_data () {
       this.firstname= ''
       this.lastname=''
