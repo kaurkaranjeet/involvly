@@ -367,8 +367,8 @@ class UserController extends Controller {
     }
 
       public function getteacherRequest() {
-        $data = User::where('role_id', 4)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-        $count = User::where('role_id', 4)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        $data = User::where('role_id', 4)->where('status', 0)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
+        $count = User::where('role_id', 4)->where('status', 0)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
             return response()->json(compact('data','count'), 200);
     }
 
