@@ -99,8 +99,8 @@ export default {
       this.$store
         .dispatch("auth/TokenChecking", code)
         .then((res) => {
-          if (!res.data.user) {
             this.$vs.loading.close();
+          if (!res.data.user) {
             this.$vs.notify({
               title: "Error",
               text: res.data.message,
@@ -137,26 +137,33 @@ export default {
       this.$store
         .dispatch("auth/ChangePassword", user)
         .then((res) => {
-          if (!res.data.user) {
-            this.$vs.loading.close();
-            this.$vs.notify({
-              title: "Error",
-              text: res.data.message,
-              iconPack: "feather",
-              icon: "icon-alert-circle",
-              color: "danger",
-            });
-          } else {
+          if (res.data.user) {
             this.$vs.notify({
               color: "success",
               title: "Password Updated",
               text: "Password Reset successfully!",
             });
-            this.$router.push({ name: "page-login" });
+          } else {
+            this.$vs.loading.close();
+            this.$vs.notify({
+              title: 'Error',
+              text: error.message,
+              iconPack: 'feather',
+              icon: 'icon-alert-circle',
+              color: 'danger'
+            });
           }
+          this.$router.push({ name: "page-login" });
         })
         .catch((err) => {
           console.error(err);
+          this.$vs.notify({
+              title: 'Error',
+              text: err.message,
+              iconPack: 'feather',
+              icon: 'icon-alert-circle',
+              color: 'danger'
+            });
         });
     },
   },
