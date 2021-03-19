@@ -16,6 +16,11 @@ export default {
         const userIndex = state.users.findIndex((u) => u.id === itemId)
         state.users.splice(userIndex, 1)
     },
+  REMOVE_RECORD_ADMIN(state, itemId) {
+        const userIndex = state.adminusers.findIndex((u) => u.id === itemId)
+        state.adminusers.splice(userIndex, 1)
+    },
+    
     SET_ADMIN_USERS(state, adminusers) {
         state.adminusers = adminusers
     },
