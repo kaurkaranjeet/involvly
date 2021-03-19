@@ -276,7 +276,7 @@
               </template>
 
               <template slot-scope="{data}">
-                <vs-tr :key="indextr" v-for="(tr, indextr) in data" :id="'independent-'+indextr">
+                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                   <vs-td :data="data[indextr].id">
                     <span>#{{data[indextr].id}}</span>
                   </vs-td>
@@ -598,7 +598,8 @@ export default {
 
          const userIndex =this.teacherRequests.findIndex((u) => u.id === id)
          this.teacherRequests.splice(userIndex, 1);
-       
+       const userIndex2 =this.studentRequests.findIndex((u) => u.id === id)
+         this.studentRequests.splice(userIndex2, 1);
       })
       .catch(error => {
         console.log(error);
@@ -630,7 +631,8 @@ export default {
         })
      const userIndex =this.teacherRequests.findIndex((u) => u.id === id)
          this.teacherRequests.splice(userIndex, 1);
-
+ const userIndex2 =this.studentRequests.findIndex((u) => u.id === id)
+         this.studentRequests.splice(userIndex2, 1);
         // el.target.getElementsByClassName('tr-values').style.display='none';
 // el.parentNode.style.display='none';
       })
