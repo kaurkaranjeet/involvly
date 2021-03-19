@@ -42,7 +42,7 @@
         <span class="text-danger text-sm"  disabled v-show="errors.has('email')">{{ errors.first('email') }}</span>
          <div class="vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary">
 <label for="" class="vs-input--label">City</label>
-<v-select :options="cityoptions" :clearable="false" v-model="cityFilter"    name="city"  v-validate="'required'"
+<v-select :options="cityoptions" :clearable="false" v-model="cityFilter"  id="cityFilter"  name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
        </div>
@@ -60,7 +60,7 @@
         <div class="vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary">
 <label for="" class="vs-input--label">State</label>
          <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter"    @input="getCities"   v-validate="'required'"
-      data-vv-validate-on="change">
+      data-vv-validate-on="change" id="stateFilter">
       <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
 </v-select>
 </div>
@@ -171,8 +171,6 @@ export default {
         let lebeltext='';
         if(this.data_local.city_detail!=null) {
         let city=this.data_local.city_detail.id;
-
-
         let city_obj=this.data_local.city;
         if(city_obj==city){
 
@@ -192,11 +190,8 @@ export default {
               lebeltext=obj[key].label;
             }
           });
-
         }
-
         return    { label: lebeltext,  value:city_obj}
-
 }
 
       },
@@ -341,8 +336,28 @@ this.$http
     },
     reset_data () {
       this.data_local = JSON.parse(JSON.stringify(this.data))
-this.data_local.city=this.data_local.city_detail.id;
-    },
+      let elem=document.getElementById("stateFilter");
+      let obj=this.stateFilteroption;
+
+      let state_id=this.data_local.state_id;
+      let lebeltext='';
+      Object.keys(this.stateFilteroption).forEach(function(key) {
+      if (obj[key].value == state_id) {
+      lebeltext=obj[key].label;
+      }
+      });
+      elem.value = this.data_local.state_id;
+      elem.label=lebeltext;
+       this.getCities(elem);
+      let element=document.getElementById("cityFilter");
+    
+     this.data_local.city = this.data_local.city_detail.id;
+      element.value= this.data_local.city ;
+        //alert(  this.data_local.city_detail.id)
+
+
+
+          },
     update_avatar () {
       // You can update avatar Here
       // For reference you can check dataList example
