@@ -75,7 +75,7 @@ export default {
           this.$vs.notify({
             color: "success",
             title: "Success",
-            text: "Data add successfully!",
+            text: "Subject added successfully!",
           });
         })
         .catch((error) => {
