@@ -180,7 +180,7 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-admin-users/', requestOptions)
+            axios.post('/api/auth/manage-admin-users', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
                     commit('SET_ADMIN_USERS', response.data.users)
@@ -217,7 +217,7 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-admin-users/', requestOptions)
+            axios.post('/api/auth/manage-admin-users', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
                     commit('SET_ADMIN_USERS', response.data.users)
@@ -235,7 +235,7 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-admin-users/', requestOptions)
+            axios.post('/api/auth/manage-admin-users', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
                     commit('SET_ADMIN_USERS', response.data.users)
