@@ -275,8 +275,8 @@ export default {
   computed: {
 
     usersData () {
-      console.log(this.$store.state.userManagement.school_admins);
-      return this.$store.state.userManagement.school_admins
+      console.log(this.$store.state.userManagement.adminusers);
+      return this.$store.state.userManagement.adminusers
     },
     paginationPageSize () {
       if (this.gridApi) return this.gridApi.paginationGetPageSize()

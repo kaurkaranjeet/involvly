@@ -170,6 +170,17 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+    removeRecordAdmin({ commit }, userId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/auth/delete-user/${userId}`)
+                .then((response) => {
+                    commit('REMOVE_RECORD_ADMIN', userId)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    
     //admin functions 
     fetchAdminUsers({ commit }) {
         var x = localStorage.getItem('accessToken');
@@ -202,7 +213,7 @@ export default {
             axios.post('/api/auth/manage-admin-users', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
-                    commit('SET_SCHOOL_ADMINS', response.data.users)
+                    commit('SET_ADMIN_USERS', response.data.users)
                     resolve(response)
                 })
                 .catch((error) => { reject(error) })
