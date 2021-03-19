@@ -69,7 +69,7 @@ export default {
     },
     activeUserImage () {
       if(localStorage.getItem('profile_image') === null){
-      return require('@assets/logo/placeholder.jpg');
+      return require('@assets/logo/demouser.png');
       }else{
       return localStorage.getItem('profile_image');
       } 
