@@ -260,7 +260,7 @@
         <vx-card title="Requests">
           <div slot="no-body" class="mt-4">
             <vs-tabs  class="tab-action-btn-fill-conatiner">
-    <vs-tab  :label="'Independent Teachers ('+ teacherCount+')'">>
+    <vs-tab  :label="'Independent Teachers ('+ teacherCount+')'">
          <div class="tab-text">
             <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
