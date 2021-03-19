@@ -14,28 +14,28 @@
       v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="First Name*"
-      name="firstname"
+      name="First Name"
       placeholder=" First Name*"
       v-model="firstname"
       class="w-full"
       :maxlength="50"
       v-on:keypress="isLetter($event)"
        />
-    <span class="text-danger text-xs">{{ errors.first('firstname') }}</span>
+    <span class="text-danger text-xs">{{ errors.first('First Name') }}</span>
    
   
     <vs-input
       v-validate="'required'"
       data-vv-validate-on="blur"
       label-placeholder="Last Name*"
-      name="lastname"
+      name="Last Name"
       placeholder="Last Name*"
       v-model="lastname"
       class="w-full"
         :maxlength="50"
         v-on:keypress="isLetter($event)"
        />
-    <span class="text-danger text-xs">{{ errors.first("lastname") }}</span>
+    <span class="text-danger text-xs">{{ errors.first("Last Name") }}</span>
   
 
    <vs-input
@@ -90,7 +90,7 @@
   <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"   name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
-    <vue-select  :options="ChildFilteroption"  name="student_id[]"  :clearable="true"  v-model="ChildFilter" class="w-full mt-6"    v-validate="'required'"   placeholder=" Select Associated Child"
+    <vue-select  :options="ChildFilteroption"  name="student_id[]"  :clearable="true"   v-model="ChildFilter" class="w-full mt-6"    v-validate="'required'"   placeholder=" Select Associated Child"
     data-vv-validate-on="change" multiple></vue-select>
     <span class="text-danger text-sm">{{ errors.first('ChildFilter') }}</span>
     <vue-select :options="relationshipOptions" :clearable="false" v-model="relationFilter" class="w-full mt-6"  v-validate="'required'"
