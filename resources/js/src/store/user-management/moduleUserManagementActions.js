@@ -170,17 +170,6 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
-    removeRecordAdmin({ commit }, userId) {
-        return new Promise((resolve, reject) => {
-            axios.get(`/api/auth/delete-user/${userId}`)
-                .then((response) => {
-                    commit('REMOVE_RECORD_ADMIN', userId)
-                    resolve(response)
-                })
-                .catch((error) => { reject(error) })
-        })
-    },
-    
     //admin functions 
     fetchAdminUsers({ commit }) {
         var x = localStorage.getItem('accessToken');
@@ -191,7 +180,7 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-admin-users', requestOptions)
+            axios.post('/api/auth/manage-admin-users/', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
                     commit('SET_ADMIN_USERS', response.data.users)
@@ -210,10 +199,10 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-admin-users', requestOptions)
+            axios.post('/api/auth/manage-admin-users/', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
-                    commit('SET_ADMIN_USERS', response.data.users)
+                    commit('SET_SCHOOL_ADMINS', response.data.users)
                     resolve(response)
                 })
                 .catch((error) => { reject(error) })
@@ -228,7 +217,7 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-admin-users', requestOptions)
+            axios.post('/api/auth/manage-admin-users/', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
                     commit('SET_ADMIN_USERS', response.data.users)
@@ -246,7 +235,7 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-admin-users', requestOptions)
+            axios.post('/api/auth/manage-admin-users/', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
                     commit('SET_ADMIN_USERS', response.data.users)
