@@ -493,7 +493,7 @@ class UserController extends Controller {
                     return response()->json(['message' => 'New Password should not match the old one!'], 200);
                 } else {
                     $new_data['password'] = Hash::make($request->password);
-                    $new_data['remember_token'] = Str::random(50);
+                    // $new_data['remember_token'] = Str::random(50);
                     $resp = User::where('id', $user->id)->update($new_data);
                     if ($resp) {
                         return response()->json(compact('user'), 200);
