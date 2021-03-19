@@ -88,7 +88,7 @@ const router = new Router({
                             { title: 'Classes', url: '/apps/class/class-list' },
                             { title: 'Add', active: true }
                         ],
-                        pageTitle: 'Add ClassCode',
+                        pageTitle: 'Add Class Code',
                         rule: 'editor',
                         authRequired: true
                     }
@@ -104,7 +104,7 @@ const router = new Router({
                             { title: 'Classes', url: '/apps/class/class-list' },
                             { title: 'View', active: true }
                         ],
-                        pageTitle: 'View ClassCode',
+                        pageTitle: 'View Class Code',
                         rule: 'editor',
                         authRequired: true
                     }
