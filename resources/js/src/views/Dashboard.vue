@@ -628,7 +628,8 @@ export default {
           icon: 'icon-alert-circle',
           color: 'success'
         })
-         location.reload();
+     const userIndex =this.teacherRequests.findIndex((u) => u.id === id)
+         this.teacherRequests.splice(userIndex, 1);
 
         // el.target.getElementsByClassName('tr-values').style.display='none';
 // el.parentNode.style.display='none';
