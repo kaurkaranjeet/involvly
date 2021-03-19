@@ -597,9 +597,15 @@ export default {
         })
 
          const userIndex =this.teacherRequests.findIndex((u) => u.id === id)
+         if(userIndex != "-1"){
          this.teacherRequests.splice(userIndex, 1);
+         this.teacherCount=(this.teacherCount)-1;
+       }
        const userIndex2 =this.studentRequests.findIndex((u) => u.id === id)
+           if(userIndex2 != "-1"){
          this.studentRequests.splice(userIndex2, 1);
+         this.inteacherCount=(this.inteacherCount)-1;
+       }
       })
       .catch(error => {
         console.log(error);
