@@ -99,7 +99,7 @@ export default {
           this.$vs.notify({
             color: "success",
             title: "Success",
-            text: "Data updated successfully!",
+            text: "Subject updated successfully!",
           });
         })
         .catch((error) => {

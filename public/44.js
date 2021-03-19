@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$vs.notify({
           color: "success",
           title: "Success",
-          text: "Data updated successfully!"
+          text: "Subject updated successfully!"
         });
       })["catch"](function (error) {
         _this2.$vs.loading.close();
