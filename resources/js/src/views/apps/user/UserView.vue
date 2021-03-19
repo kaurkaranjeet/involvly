@@ -109,12 +109,14 @@
               </tr>
                  <tr>
                 <td class="font-semibold">Links</td>
+
+
                <tr v-if="item.timetable_doc!=''">
                
                 <td><ul id="example-1">
-                  <li v-for="x in item.timetable_doc" :key="x">
+                  <li>
 
-                   <a :href="x" target="_blank">{{x}}</a>
+                   <a :href="item.timetable_doc" target="_blank">{{item.timetable_doc}}</a>
 
                  </li>
                </ul>
