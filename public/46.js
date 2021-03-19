@@ -149,7 +149,7 @@ __webpack_require__.r(__webpack_exports__);
         value: '0'
       },
       classFilter: {
-        label: 'Select Class',
+        label: 'Select Class*',
         value: '0'
       },
       cityFilter: {

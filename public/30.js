@@ -476,6 +476,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -577,6 +578,12 @@ __webpack_require__.r(__webpack_exports__);
     this.GetparentRequests(school_id);
   },
   methods: {
+    redirect: function redirect() {
+      this.$router.push("/apps/user/listofstudents")["catch"](function () {});
+    },
+    redirecteacchers: function redirecteacchers() {
+      this.$router.push("/apps/user/user-list")["catch"](function () {});
+    },
     GetRequests: function GetRequests(school_id) {
       var _this2 = this;
 
@@ -810,7 +817,9 @@ var render = function() {
         "div",
         {
           staticClass:
-            "vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"
+            "vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base",
+          staticStyle: { cursor: "pointer" },
+          on: { click: _vm.redirect }
         },
         [
           _c("statistics-card-line", {
@@ -830,7 +839,9 @@ var render = function() {
         "div",
         {
           staticClass:
-            "vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"
+            "vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base",
+          staticStyle: { cursor: "pointer" },
+          on: { click: _vm.redirecteacchers }
         },
         [
           _c("statistics-card-line", {
