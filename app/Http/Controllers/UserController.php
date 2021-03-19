@@ -15,6 +15,8 @@ use App\Models\School;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Pusher\Pusher;
 use App\Models\ParentChildrens;
+use Mail;
+use Illuminate\Support\Str;
 
 class UserController extends Controller {
 
@@ -395,7 +397,62 @@ class UserController extends Controller {
 
          //  return response()->json(compact('accessToken'), 200);
     }
-
+    // send mail for forgot password
+    public function ForgotPasswordEmail(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'email' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => true, 'message' => $validator->errors()->first()], 200);
+        } else {
+            $uersObj = new User;
+            //chech entered email is exist or not
+            $user = User::where("email", $request->email)->where('role_id', '=', '5')->first();
+            if (!empty($user)) {
+                $token = Str::random(60);
+                User::where("email", $request->email)->update(["remember_token" => $token]);
+                $data = array("name" => $user->name, "url" => url('reset/password?token=' . $token));
+                Mail::send("email.forgot-password-admin", $data, function ($m) use ($user) {
+                    $m->from('involvvely@gmail.com', 'Involvvely');
+                    $m->to($user->email);
+                    $m->subject('Forgot Password Link');
+                });
+                $arr = array("error" => false, "message" => 'Forgot Password email has been sent', "data" => $data);
+                return response()->json(compact('user'), 200);
+            } else {
+                return response()->json(['message' => 'Invalid Email'], 200);
+            }
+        }
+    }
+    // send mail for forgot password
+    public function adminForgotPasswordEmail(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'email' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => true, 'message' => $validator->errors()->first()], 200);
+        } else {
+            $uersObj = new User;
+            //chech entered email is exist or not
+            $user = User::where("email", $request->email)->where('role_id', '=', '1')->first();
+            if (!empty($user)) {
+                $token = Str::random(60);
+                User::where("email", $request->email)->update(["remember_token" => $token]);
+                $data = array("name" => $user->name, "url" => url('reset/password?token=' . $token));
+                Mail::send("email.forgot-password-admin", $data, function ($m) use ($user) {
+                    $m->from('involvvely@gmail.com', 'Involvvely');
+                    $m->to($user->email);
+                    $m->subject('Forgot Password Link');
+                });
+                $arr = array("error" => false, "message" => 'Forgot Password email has been sent', "data" => $data);
+                return response()->json(compact('user'), 200);
+            } else {
+                return response()->json(['message' => 'Invalid Email'], 200);
+            }
+        }
+    }
     public function changePassword(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [

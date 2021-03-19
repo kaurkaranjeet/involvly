@@ -300,7 +300,7 @@ const router = new Router({
                             { title: 'Teachers', url: '/apps/user/allteachers' },
                             { title: 'Teacher', active: true }
                         ],
-                        pageTitle: 'Teacher View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
@@ -335,7 +335,7 @@ const router = new Router({
                             { title: 'Students', url: '/apps/user/allstudents' },
                             { title: 'Student', active: true }
                         ],
-                        pageTitle: 'Student View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
@@ -370,7 +370,7 @@ const router = new Router({
                             { title: 'Parents', url: '/apps/user/allparents' },
                             { title: 'Parent', active: true }
                         ],
-                        pageTitle: 'Parent View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
@@ -388,7 +388,7 @@ const router = new Router({
                             { title: 'School Admins', url: '/apps/user/listofschooladmins' },
                             { title: 'School Admin', active: true }
                         ],
-                        pageTitle: 'School Admin View',
+                        pageTitle: 'View Details',
                         rule: 'admin',
                         authRequired: true
                     }
@@ -664,6 +664,36 @@ const router = new Router({
                     }
                 },
                 {
+                    path: '/pages/forgot/password',
+                    name: 'page-forgot-password',
+                    component: () =>
+                        import ('@/views/pages/ForgotPassword.vue')
+                },
+                {
+                    path: '/reset/password',
+                    name: 'page-reset-password',
+                    component: () =>
+                        import ('@/views/pages/ResetPassword.vue'),
+                    meta: {
+                        rule: 'editor'
+                    }
+                },
+                {
+                    path: '/pages/forgot/adminpassword',
+                    name: 'page-forgot-adminpassword',
+                    component: () =>
+                        import ('@/views/pages/adminForgotPassword.vue')
+                },
+                {
+                    path: '/reset/adminpassword',
+                    name: 'page-reset-adminpassword',
+                    component: () =>
+                        import ('@/views/pages/adminResetPassword.vue'),
+                    meta: {
+                        rule: 'editor'
+                    }
+                },
+                {
                     path: '/pages/error-404',
                     name: 'page-error-404',
                     component: () =>
@@ -720,9 +750,9 @@ router.beforeEach((to, from, next) => {
     // } else {
     //     return next();
     // }
-    if ((to.name !== 'page-login' && to.name !== 'page-register' && to.name !== 'page-admin-login') && !(localStorage.getItem("accessToken"))) next({ name: 'page-login' })
+    if ((to.name !== 'page-login' && to.name !== 'page-forgot-password' && to.name !== 'page-forgot-adminpassword' && to.name !== 'page-reset-password' && to.name !== 'page-reset-adminpassword' && to.name !== 'page-register' && to.name !== 'page-admin-login') && !(localStorage.getItem("accessToken"))) next({ name: 'page-login' })
 
-    else if ((to.name === 'page-admin-login') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") == '1')) next({ name: 'dashboard' })
+    else if ((to.name === 'page-admin-login' && to.name === 'page-forgot-password' && to.name === 'page-forgot-adminpassword' && to.name === 'page-reset-password' && to.name === 'page-reset-adminpassword') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") == '1')) next({ name: 'dashboard' })
 
     else if ((to.name === 'page-login' || to.name === 'page-register') && (localStorage.getItem("accessToken")) && (localStorage.getItem("role_id") != '1')) next({ name: 'home' })
 

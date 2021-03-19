@@ -58,7 +58,7 @@
 
                   <div class="flex flex-wrap justify-between my-5">
                       <vs-checkbox v-model="checkbox_remember_me" class="mb-3 remember-margin">Remember Me</vs-checkbox>
-                      <router-link to="">Forgot Password?</router-link>
+                      <router-link to="/pages/forgot/adminpassword">Forgot Password?</router-link>
                   </div>
                   <vs-button  type="hidden"></vs-button>
                   <vs-button  :disabled="!validateForm" @click="loginJWT" class="float-right">Login</vs-button>

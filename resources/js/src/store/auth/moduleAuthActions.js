@@ -401,6 +401,42 @@ export default {
                 })
         })
     },
+    //forgot password
+    ForgotPassword({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/forgot-password`, code)
+                .then((response) => {
+                    console.log(response)
+                    if (response.data.user) {
+                        resolve(response)
+                    } else {
+                        reject({ message: response.data.message })
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
+        })
+    },
+    //forgot password
+    adminForgotPassword({ commit }, code) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/auth/forgot-password-admin`, code)
+                .then((response) => {
+                    console.log(response)
+                    if (response.data.user) {
+                        resolve(response)
+                    } else {
+                        reject({ message: response.data.message })
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+
+        })
+    },
     //change password
     changepassword({ commit }, data) {
         return new Promise((resolve, reject) => {
