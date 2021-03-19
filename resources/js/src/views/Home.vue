@@ -39,18 +39,19 @@
       </div>
 
       <!-- CARD 2: SUBSCRIBERS GAINED -->
-      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"    @click="redirect"> 
         <statistics-card-line
           icon="UsersIcon"
           :statistic="subscribersGained.students"
           statisticTitle="Students Registered"
           :chartData="subscribersGained.Studentseries"
           type="area"
+    
         ></statistics-card-line>
       </div>
 
       <!-- CARD 3: ORDER RECIEVED -->
-      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirecteacchers">
         <statistics-card-line
           icon="UsersIcon"
          :statistic="subscribersGained.teachers"
@@ -584,6 +585,19 @@ export default {
   },
 
     methods: {
+
+      redirect(){
+   
+          this.$router
+            .push(`/apps/user/listofstudents`)
+            .catch(() => {});
+          },
+           redirecteacchers(){
+   
+          this.$router
+                .push(`/apps/user/user-list`)
+            .catch(() => {});
+          },
  GetRequests (school_id) {
  var x = localStorage.getItem('accessToken');
     //  User Reward Card
