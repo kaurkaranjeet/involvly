@@ -27,11 +27,13 @@
     <vs-input
       v-validate="'required'"
       data-vv-validate-on="blur"
-      label-placeholder="Class Code"
+      label-placeholder="Class Code)"
       name="Class Code"
-      placeholder="Class Code"
+      placeholder="Class Code(4 Digits)"
       v-model="class_code"
       class="w-full"
+      :minlength="4"
+       :maxlength="4"
     />
     <span class="text-danger text-xs">{{ errors.first("class_code") }}</span>
     </div>
@@ -71,10 +73,14 @@ export default {
   computed: {
     validateForm() {
       this.$vs.loading.close();
+      var n = this.class_code.length;
+      //console.log(n)
       return (
         !this.errors.any() &&
         this.class_name !== "" &&
-        this.class_code !== "" 
+        this.class_code !== ""  &&
+        n == 4
+     
       );
     },
   },
