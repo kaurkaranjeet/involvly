@@ -443,10 +443,10 @@ export default {
             axios.post(`/api/auth/reset-change-password`, data)
                 .then((response) => {
                     console.log(response);
-                    if (response.data.datauser) {
+                    if (response.data.user) {
                         resolve(response)
                     } else {
-                        reject(response.data.message)
+                        reject({ message: response.data.message })
                     }
                 })
                 .catch((error) => { reject(error) })
