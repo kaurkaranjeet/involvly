@@ -471,7 +471,7 @@ const router = new Router({
                             { title: 'Students', url: '/apps/user/listofstudents' },
                             { title: 'Add', active: true }
                         ],
-                        pageTitle: 'Student Add',
+                        pageTitle: 'Add Student',
                         rule: 'editor',
                         authRequired: true
                     }
