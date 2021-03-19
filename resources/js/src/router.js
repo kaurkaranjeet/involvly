@@ -218,7 +218,7 @@ const router = new Router({
                             { title: 'Subjects', url: '/apps/subject/subject-list' },
                             { title: 'Add', active: true }
                         ],
-                        pageTitle: 'Subject Add',
+                        pageTitle: 'Add Subject ',
                         rule: 'editor',
                         authRequired: true
                     }

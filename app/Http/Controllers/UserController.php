@@ -296,11 +296,11 @@ class UserController extends Controller {
         }else{
         $data->state_name= '';    
         }
-        if(!empty($data->CityDetail->city)){
+     /*   if(!empty($data->CityDetail->city)){
             $data->city= $data->CityDetail->city;
         }else{
             $data->city= '';
-        }   
+        }   */
         if(count($data->documents)){
              $data->is_document= 1;
         }
@@ -323,6 +323,8 @@ class UserController extends Controller {
 
     public function UpdateProfile(Request $request) {
         $name = $request->first_name . ' ' . $request->last_name;
+
+        
         if($request->role_id == '1'){
             User::where('id', $request->id)->update(['first_name' => $request->first_name, 'last_name' => $request->last_name, 'name' => $name, 'status' => $request->status]);
         }else{
