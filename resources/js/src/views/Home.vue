@@ -39,7 +39,7 @@
       </div>
 
       <!-- CARD 2: SUBSCRIBERS GAINED -->
-      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"    @click="redirect"> 
+      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"    @click="redirect" style="cursor: pointer"> 
         <statistics-card-line
           icon="UsersIcon"
           :statistic="subscribersGained.students"
@@ -51,7 +51,7 @@
       </div>
 
       <!-- CARD 3: ORDER RECIEVED -->
-      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirecteacchers">
+      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirecteacchers"  style="cursor: pointer">
         <statistics-card-line
           icon="UsersIcon"
          :statistic="subscribersGained.teachers"
