@@ -263,20 +263,18 @@ class UserController extends Controller {
         DB::enableQueryLog();
 
         if ($request->type == 'teacher') {
-            $users = User::where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->get();
+            $users = User::where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } else if ($request->type == 'student') {
-            $users = User::where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->get();
+            $users = User::where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         }
         else if ($request->type == 'school_admins') {
-            $users = User::with('SchoolDetail')->where('role_id', 5)->where('status', 1)->get();
+            $users = User::with('SchoolDetail')->where('role_id', 5)->where('status', 1)->orderBy('id', 'DESC')->get();
             foreach($users as $user){
                 $user->school_name= $user->SchoolDetail->school_name;
             }
         }
-
-
          else {
-            $users = User::where('role_id', 3)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->get();
+            $users = User::where('role_id', 3)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
         }
         //  print_r(DB::getQueryLog());die;
 

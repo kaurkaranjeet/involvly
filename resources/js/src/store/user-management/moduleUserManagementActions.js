@@ -202,7 +202,7 @@ export default {
             axios.post('/api/auth/manage-admin-users', requestOptions)
                 .then((response) => {
                     console.log(response.data.users);
-                    commit('SET_SCHOOL_ADMINS', response.data.users)
+                    commit('SET_ADMIN_USERS', response.data.users)
                     resolve(response)
                 })
                 .catch((error) => { reject(error) })
