@@ -31,7 +31,7 @@
                 </div>
                 <div class="reset-pass-content">
                     <!-- <p style="color: #62cef2; font-weight:500;">Hello, {{$name}} You can reset your password by clicking on the button below:</p> -->
-                    <p style="color: #62cef2; font-weight:500;">Hello, You can reset your password by clicking on the button below:</p>
+                    <p>Hello, You can reset your password by clicking on the button below:</p>
                     <!--<h1>ThankYou For Choosing Us</h1>-->
                     <!--<p>Your profile has been Created, <span>Welcome to the Barbaar Tv.</span></p>-->
                     <!--<p>Your Credentials are as Follows , <br>-->
