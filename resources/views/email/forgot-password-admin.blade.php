@@ -30,7 +30,7 @@
                     <!-- <img src="{{asset('resources/img/mail.png')}}" style=" width: 43px;margin-bottom: 20px;"> -->
                 </div>
                 <div class="reset-pass-content">
-                    <p style="color: #62cef2; font-weight:500;">Hello, {{$name}}</p><br>
+                    <p style="color: #62cef2; font-weight:500;">Hello, {{$name}}</p>
                     <p >You can reset your password by clicking on the button below:</p>
                     <!--<h1>ThankYou For Choosing Us</h1>-->
                     <!--<p>Your profile has been Created, <span>Welcome to the Barbaar Tv.</span></p>-->
