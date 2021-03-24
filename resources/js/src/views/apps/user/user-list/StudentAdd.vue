@@ -94,6 +94,16 @@
     
 </vue-select>
 <span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
+<vs-input
+      data-vv-validate-on="blur"
+      name="Family Code"
+      placeholder="Family Code"
+      v-model="familycode"
+      class="w-full mt-6"
+      :maxlength="5"
+      v-on:keypress="isLetter($event)"
+       />
+       <span class="text-sm">Note: We are generating family code automatically. In case, user is already having family code, you can write it above</span>
 
   <div class="vx-row">
       <div class="vx-col w-full">
@@ -122,6 +132,7 @@ export default {
   data () {
     return {
       firstname: "",
+      familycode: "",
       lastname: "",
       email: "",
       password: "",
@@ -153,6 +164,7 @@ isLetter(e) {
 },
     reset_data () {
       this.firstname= ''
+      this.familycode= ''
       this.lastname=''
       this.email= ''
       this.password= ''
@@ -171,6 +183,7 @@ isLetter(e) {
 
       var code = {
         first_name: this.firstname,
+        family_code: this.familycode,
         last_name: this.lastname,
         email: this.email,
         password: this.password,
