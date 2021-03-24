@@ -64,7 +64,9 @@ class StudentController extends Controller {
                     $digits = 5;
                     $family_code = $this->random_strings(5);
                     User::where('id',$addUser->id)->update(['family_code' => $family_code]);
-                } 
+                } else{
+                    User::where('id',$addUser->id)->update(['family_code' => $request->family_code]);
+                }
                     if (!empty($request->class_code)) {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
