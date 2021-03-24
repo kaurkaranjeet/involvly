@@ -99,6 +99,67 @@
 
       </vx-card>
 
+      <div class="vx-row">
+        <div class="vx-col lg w-full">
+          <vx-card title="Timetables" class="mb-base bottom-padding">
+           <table  v-for="item in user_data.timetables" :key="item.id">
+              <tr>
+                <td class="">{{ item.date }}<div>Repeats {{ item.selected_days }}</div></td>
+                <td></td>
+              </tr>
+                 <tr>
+                <td class="font-semibold">Links</td>
+
+
+               <tr v-if="item.timetable_doc!=''">
+               
+                <td><ul id="example-1">
+                  <li>
+
+                   <a :href="item.timetable_doc" target="_blank">{{item.timetable_doc}}</a>
+
+                 </li>
+               </ul>
+             </td> 
+             </tr>
+              </tr>
+             <tr><td type= "border">----------------------</td></tr>
+            </table>
+          </vx-card>
+        </div>
+
+       <!--  <div class="vx-col lg:w-1/2 w-full">
+          <vx-card title="Social Links" class="mb-base">
+            <table>
+              <tr>
+                <td class="font-semibold">Twitter</td>
+                <td>{{ user_data.social_links.twitter }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Facebook</td>
+                <td>{{ user_data.social_links.facebook }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Instagram</td>
+                <td>{{ user_data.social_links.instagram }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Github</td>
+                <td>{{ user_data.social_links.github }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">CodePen</td>
+                <td>{{ user_data.social_links.codepen }}</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Slack</td>
+                <td>{{ user_data.social_links.slack }}</td>
+              </tr>
+            </table>
+          </vx-card>
+        </div> -->
+      </div>
+
      <!--  <div class="vx-row">
         <div class="vx-col lg:w-1/2 w-full">
           <vx-card title="Information" class="mb-base">
@@ -384,5 +445,7 @@ only screen and (min-width:636px) and (max-width:991px) {
   // }
 
 }
-
+.bottom-padding {
+  padding-bottom: 1.5rem !important;
+}
 </style>
