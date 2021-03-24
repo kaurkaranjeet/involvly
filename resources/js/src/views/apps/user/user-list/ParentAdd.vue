@@ -96,6 +96,17 @@
     <vue-select :options="relationshipOptions" :clearable="false" v-model="relationFilter" class="w-full mt-6"  v-validate="'required'"
     data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('relationFilter') }}</span>
+
+    <vs-input
+      data-vv-validate-on="blur"
+      name="Family Code"
+      placeholder="Family Code"
+      v-model="familycode"
+      class="w-full mt-6"
+      :maxlength="5"
+      v-on:keypress="isLetter($event)"
+       />
+       <span class="text-sm">Note: We are generating family code automatically. In case, user is already having family code, you can write it above</span>
   <div class="vx-row">
       <div class="vx-col w-full">
         <div class="mt-8 flex flex-wrap items-center justify-end">
@@ -123,6 +134,7 @@ export default {
   data () {
     return {
       firstname: "",
+      familycode: "",
       lastname: "",
       email: "",
       password: "",
@@ -163,6 +175,7 @@ export default {
 
     reset_data () {
       this.firstname= ''
+      this.familycode= ''
       this.lastname=''
       this.email= ''
       this.password= ''
@@ -186,6 +199,7 @@ export default {
       };
       var code = {
         first_name: this.firstname,
+        family_code: this.familycode,
         last_name: this.lastname,
         email: this.email,
         password: this.password,

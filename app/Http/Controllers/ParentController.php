@@ -58,6 +58,12 @@ class ParentController extends Controller {
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
+                if (!empty($request->family_code)) {
+                    $code = User::where('family_code', $request->family_code)->count();
+                    if ($code == 0) {
+                        throw new Exception('Invalid family code');
+                    }
+                }
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
@@ -66,8 +72,12 @@ class ParentController extends Controller {
                 if (!empty($addUser)) {
                    //User::where('id',$addUser->id)->update(['device_token' => $request->device_token]);
                   User::where('id',$addUser->id)->update(['status' =>1]);
-                
-
+                  //familycode
+                if (empty($request->family_code)) {
+                    $digits = 5;
+                    $family_code = $this->random_strings(5);
+                    User::where('id',$addUser->id)->update(['family_code' => $family_code]);
+                } 
                     if (isset($request->student_id)) {
                         $explode = explode(',', $request->student_id);
                         foreach ($explode as $single) {
@@ -89,6 +99,17 @@ class ParentController extends Controller {
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
+    }
+
+    function random_strings($length_of_string) {
+
+        // String of all alphanumeric character 
+        $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+        // Shufle the $str_result and returns substring 
+        // of specified length 
+        return substr(str_shuffle($str_result),
+                0, $length_of_string);
     }
 
 
