@@ -264,6 +264,13 @@ class UserController extends Controller {
 
         if ($request->type == 'teacher') {
             $users = User::where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            foreach($users as $user){
+                if($user->type_of_schooling == 'home'){
+                    $user->type_of_schooling = 'Not Assigned';
+                }else{
+                    $user->type_of_schooling = 'School';
+                }
+            }
         } else if ($request->type == 'student') {
             $users = User::where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         }
