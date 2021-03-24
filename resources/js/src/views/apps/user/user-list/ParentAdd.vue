@@ -98,6 +98,7 @@
     <span class="text-danger text-sm">{{ errors.first('relationFilter') }}</span>
 
     <vs-input
+    v-validate="'required|alpha'"
       data-vv-validate-on="blur"
       name="Family Code"
       placeholder="Family Code"
