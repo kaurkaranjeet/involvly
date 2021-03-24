@@ -240,7 +240,7 @@ export default {
           this.$vs.notify({
             color: "success",
             title: "Success",
-            text: "Parents added successfully!",
+            text: "Parent added successfully!",
             iconPack: "feather",
             icon: "icon-alert-circle",
           });
