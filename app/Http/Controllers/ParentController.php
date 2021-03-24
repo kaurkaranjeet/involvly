@@ -76,9 +76,9 @@ class ParentController extends Controller {
                 if (empty($request->family_code)) {
                     $digits = 5;
                     $family_code = $this->random_strings(5);
-                    User::where('id',$addUser->id)->update(['family_code' => $family_code]);
+                    User::where('id',$addUser->id)->update(['family_code' => $family_code,'update_detail' => '1']);
                 }else{
-                    User::where('id',$addUser->id)->update(['family_code' => $request->family_code]);
+                    User::where('id',$addUser->id)->update(['family_code' => $request->family_code,'update_detail' => '1']);
                 }
                     if (isset($request->student_id)) {
                         $explode = explode(',', $request->student_id);
