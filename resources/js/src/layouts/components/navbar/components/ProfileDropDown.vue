@@ -123,10 +123,18 @@ export default {
      // this.$router.push('/pages/login').catch(() => {})
     },
     changepassword () {
-    this.$router.push('/apps/profile/changepassword')
+      if(localStorage.getItem('role_id')==5){
+      this.$router.push('/apps/profile/changepassword')
+      }else{
+      this.$router.push('/apps/admin/profile/changepassword')
+      }
     },
     profile () {
-     this.$router.push('/apps/profile/editprofile');
+      if(localStorage.getItem('role_id')==5){
+      this.$router.push('/apps/profile/editprofile');
+      }else{
+      this.$router.push('/apps/admin/profile/editprofile');
+      }
     }
   }
 }

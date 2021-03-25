@@ -607,12 +607,43 @@ const router = new Router({
                             { title: 'Change Password', active: true }
                         ],
                         pageTitle: 'Change Password',
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+                {
+                    path: '/apps/admin/profile/changepassword',
+                    name: 'profile-edit',
+                    component: () =>
+                        import ('@/views/apps/profile/ChangePassword.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            // { title: 'Parents', url: '/apps/user/allparents' },
+                            { title: 'Change Password', active: true }
+                        ],
+                        pageTitle: 'Change Password',
                         rule: 'admin',
                         authRequired: true
                     }
                 },
                 {
                     path: '/apps/profile/editprofile',
+                    name: 'profile-edit',
+                    component: () =>
+                        import ('@/views/apps/profile/ProfileEdit.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            // { title: 'Parents', url: '/apps/user/allparents' },
+                            { title: 'Profile', active: true }
+                        ],
+                        pageTitle: 'Profile Edit',
+                        rule: 'editor',
+                    }
+                },
+                {
+                    path: '/apps/admin/profile/editprofile',
                     name: 'profile-edit',
                     component: () =>
                         import ('@/views/apps/profile/ProfileEdit.vue'),
