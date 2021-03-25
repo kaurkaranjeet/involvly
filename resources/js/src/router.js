@@ -331,7 +331,7 @@ const router = new Router({
                         import ('@/views/apps/user/StudentAdminView.vue'),
                     meta: {
                         breadcrumb: [
-                            { title: 'Home', url: '/' },
+                            { title: 'Home', url: '/dashboard' },
                             { title: 'Students', url: '/apps/user/allstudents' },
                             { title: 'Student', active: true }
                         ],
@@ -518,7 +518,7 @@ const router = new Router({
                         import ('@/views/apps/admin/user-list/SchoolAdminList.vue'),
                     meta: {
                         breadcrumb: [
-                            { title: 'Home', url: '/' },
+                            { title: 'Home', url: '/dashboard' },
                             { title: 'School Admins', url: '/apps/user/listofschooladmins' },
                             { title: 'List', active: true }
                         ],
