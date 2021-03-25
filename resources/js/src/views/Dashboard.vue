@@ -30,7 +30,9 @@
             class="p-6 mb-8 bg-primary inline-flex rounded-full text-white shadow"
             svgClasses="h-8 w-8"
           ></feather-icon>
-          <h1 class="mb-6 text-white">Welcome {{ checkpointReward.name }}</h1>
+          <div class="wrapper">
+          <h1 class="mb-6 text-white demo-1">Welcome {{ checkpointReward.name }}</h1>
+          </div>
           <p class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white">
         
             <strong></strong>
@@ -679,6 +681,15 @@ export default {
       width: 140px;
     }
   }
+}
+.wrapper {
+}
+
+.demo-1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 1590px;
 }
 /*! rtl:end:ignore */
 </style>
