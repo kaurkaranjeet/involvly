@@ -19,6 +19,7 @@
       v-model="first_name"
       class="w-full mt-8"
         :maxlength="50"
+        v-on:keypress="isLetter($event)"
 
     />
     <span class="text-danger text-xs">{{ errors.first("Name") }}</span>
@@ -386,6 +387,11 @@ export default {
           this.school = this.school_reset;
       }
     },
+    isLetter(e) {
+  let char = String.fromCharCode(e.keyCode); // Get the character
+  if(/^[a-zA-Z\s]*$/.test(char)) return true; // Match with regex 
+  else e.preventDefault(); // If not match, don't add to input text
+}
   },
   created () {
     // Register Module UserManagement Module
