@@ -437,7 +437,7 @@ const router = new Router({
                             { title: 'Parents', url: '/apps/user/listofparents' },
                             { title: 'Edit', active: true }
                         ],
-                        pageTitle: 'Parents Edit',
+                        pageTitle: 'Edit Parent',
                         rule: 'editor',
                         authRequired: true
                     }

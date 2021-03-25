@@ -165,6 +165,7 @@ export default {
             axios.get(`/api/auth/delete-user/${userId}`)
                 .then((response) => {
                     commit('REMOVE_RECORD', userId)
+                    commit('REMOVE_RECORD_ADMIN', userId)
                     resolve(response)
                 })
                 .catch((error) => { reject(error) })
