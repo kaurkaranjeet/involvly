@@ -95,14 +95,14 @@
 </vue-select>
 <span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
 <vs-input
-      v-validate="'required|alpha'"
+      v-validate="'required'"
       data-vv-validate-on="blur"
       name="Family Code"
       placeholder="Family Code"
       v-model="familycode"
       class="w-full mt-6"
       :maxlength="5"
-      v-on:keypress="isLetter($event)"
+      v-on:keypress="isNumorLetter($event)"
        />
        <span class="text-sm">Note: We are generating family code automatically. In case, user is already having family code, you can write it above</span>
 
@@ -161,6 +161,11 @@ export default {
 isLetter(e) {
   let char = String.fromCharCode(e.keyCode); // Get the character
   if(/^[a-zA-Z\s]*$/.test(char)) return true; // Match with regex 
+  else e.preventDefault(); // If not match, don't add to input text
+},
+isNumorLetter(e) {
+  let char = String.fromCharCode(e.keyCode); // Get the character
+  if(/^[a-zA-Z0-9\s]*$/.test(char)) return true; // Match with regex 
   else e.preventDefault(); // If not match, don't add to input text
 },
     reset_data () {
