@@ -95,8 +95,6 @@
 </vue-select>
 <span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
 <vs-input
-      v-validate="'required'"
-      data-vv-validate-on="blur"
       name="Family Code"
       placeholder="Family Code"
       v-model="familycode"

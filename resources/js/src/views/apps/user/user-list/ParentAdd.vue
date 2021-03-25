@@ -98,8 +98,6 @@
     <span class="text-danger text-sm">{{ errors.first('relationFilter') }}</span>
 
     <vs-input
-    v-validate="'required'"
-      data-vv-validate-on="blur"
       name="Family Code"
       placeholder="Family Code"
       v-model="familycode"
@@ -107,7 +105,7 @@
       :maxlength="5"
       v-on:keypress="isNumorLetter($event)"
        />
-       <span class="text-sm">Notvxcvxe: We are generating family code automatically. In case, user is already having family code, you can write it above</span>
+       <span class="text-sm">Note: We are generating family code automatically. In case, user is already having family code, you can write it above</span>
   <div class="vx-row">
       <div class="vx-col w-full">
         <div class="mt-8 flex flex-wrap items-center justify-end">
