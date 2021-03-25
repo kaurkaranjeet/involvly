@@ -30,7 +30,11 @@
         <div class="header-sidebar flex items-end justify-between" slot="header">
 
           <!-- Logo -->
-          <router-link tag="div" class="vx-logo cursor-pointer flex items-center" to="/">
+          <router-link v-if="accessRole" tag="div" class="vx-logo cursor-pointer flex items-center" to="/dashboard">
+            <logo class="w-10 mr-4 fill-current text-primary" />
+            <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span>
+          </router-link>
+          <router-link v-if="!accessRole" tag="div" class="vx-logo cursor-pointer flex items-center" to="/">
             <logo class="w-10 mr-4 fill-current text-primary" />
             <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span>
           </router-link>
@@ -210,7 +214,14 @@ export default {
     isVerticalNavMenuReduced () { return Boolean(this.reduce && this.reduceButton) },
     verticalNavMenuItemsMin ()  { return this.$store.state.verticalNavMenuItemsMin },
     scrollbarTag ()             { return this.$store.getters.scrollbarTag          },
-    windowWidth ()              { return this.$store.state.windowWidth             }
+    windowWidth ()              { return this.$store.state.windowWidth             },
+    accessRole() {
+      if (localStorage.getItem("role_id") == '1') {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   watch: {
     '$route' () {
