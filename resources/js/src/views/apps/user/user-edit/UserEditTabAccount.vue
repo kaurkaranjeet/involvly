@@ -50,7 +50,7 @@
 
       <div class="vx-col md:w-1/2 w-full">
 
- <vs-input class="w-full mt-4" label="last name" v-model="data_local.last_name" v-validate="'required'" name="last_name"  v-on:keypress="isLetter($event)" />
+ <vs-input class="w-full mt-4" label="last name" v-model="data_local.last_name" v-validate="'required'" name="last_name"  :maxlength="50" v-on:keypress="isLetter($event)" />
         <span class="text-danger text-sm"  v-show="errors.has('last_name')">{{ errors.first('last_name') }}</span>
          <!--div class="w-full mt-4">
           <label class="vs-input--label">Status</label>

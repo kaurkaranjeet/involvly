@@ -39,7 +39,7 @@ export default {
     },
     deleteRecord () {
       /* Below two lines are just for demo purpose */
-      this.showDeleteSuccess()
+      // this.showDeleteSuccess()
 
       /* UnComment below lines for enabling true flow if deleting user */
       this.$store.dispatch("userManagement/removeRecord", this.params.data.id)

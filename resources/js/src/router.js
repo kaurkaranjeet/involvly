@@ -120,7 +120,7 @@ const router = new Router({
                             { title: 'Classes', url: '/apps/class/class-list' },
                             { title: 'Edit', active: true }
                         ],
-                        pageTitle: 'Class Code Edit',
+                        pageTitle: 'Edit Class Code',
                         rule: 'editor',
                         authRequired: true
                     }
@@ -168,7 +168,7 @@ const router = new Router({
                             { title: 'Subjects', url: '/apps/subject/subject-list' },
                             { title: 'Edit', active: true }
                         ],
-                        pageTitle: 'Subject Edit',
+                        pageTitle: 'Edit Subject',
                         rule: 'editor',
                         authRequired: true
                     }
@@ -250,7 +250,7 @@ const router = new Router({
                             { title: 'Subjects', url: '/apps/subject/subject-list' },
                             { title: 'Edit', active: true }
                         ],
-                        pageTitle: 'Subject Edit',
+                        pageTitle: 'Edit Subject',
                         rule: 'editor',
                         authRequired: true
                     }
@@ -404,7 +404,7 @@ const router = new Router({
                             { title: 'Teachers', url: '/apps/user/user-list' },
                             { title: 'Edit', active: true }
                         ],
-                        pageTitle: 'Teacher Edit',
+                        pageTitle: 'Edit Teacher',
                         rule: 'editor',
                         authRequired: true
                     }
@@ -421,7 +421,7 @@ const router = new Router({
                             { title: 'Students', url: '/apps/user/listofstudents' },
                             { title: 'Edit', active: true }
                         ],
-                        pageTitle: 'Students Edit',
+                        pageTitle: 'Edit Student',
                         rule: 'editor',
                         authRequired: true
                     }
@@ -638,7 +638,7 @@ const router = new Router({
                             // { title: 'Parents', url: '/apps/user/allparents' },
                             { title: 'Profile', active: true }
                         ],
-                        pageTitle: 'Profile Edit',
+                        pageTitle: 'Edit Profile',
                         rule: 'editor',
                     }
                 },
@@ -653,7 +653,7 @@ const router = new Router({
                             // { title: 'Parents', url: '/apps/user/allparents' },
                             { title: 'Profile', active: true }
                         ],
-                        pageTitle: 'Profile Edit',
+                        pageTitle: 'Edit Profile',
                         rule: 'admin',
                         authRequired: true
                     }
