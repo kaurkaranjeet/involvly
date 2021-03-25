@@ -206,16 +206,24 @@ export default {
   computed: {
     validateForm() {
       this.$vs.loading.close();
+      if(localStorage.getItem("role_id")== 1){
       return (
         !this.errors.any() &&
         this.first_name !== "" &&
-              this.email !== "" &&
+        this.email !== "" 
+      );
+      }else{
+      return (
+        !this.errors.any() &&
+        this.first_name !== "" &&
+        this.email !== "" &&
         this.position !== "" &&
         this.country !== "" &&
         this.state !== "" &&
         this.city !== "" &&
         this.school !== "" 
       );
+      }
     },
   },
   methods: {
@@ -258,8 +266,15 @@ export default {
         .then(res => { 
           this.profile_data = res.data.data;
           console.log(this.profile_data);
+          if(localStorage.getItem("role_id")== 1){
           this.first_name = this.profile_data.first_name;
-         
+          this.email = this.profile_data.email;
+          this.role_id = localStorage.getItem('role_id');
+         //reset values
+          this.first_name_reset = this.profile_data.name;
+          this.email_reset = this.profile_data.email;
+          }else{
+          this.first_name = this.profile_data.first_name;
           this.email = this.profile_data.email;
           this.position  = this.profile_data.position;
           this.country = this.profile_data.country;
@@ -272,14 +287,14 @@ export default {
           this.role_id = localStorage.getItem('role_id');
           
          //reset values
-          this.first_name_reset = this.profile_data.first_name;
-          
+          this.first_name_reset = this.profile_data.name;
           this.email_reset = this.profile_data.email;
           this.position_reset  = this.profile_data.position;
           this.country_reset = this.profile_data.country;
           this.state_reset = this.profile_data.state_detail.state_name;
           this.city_reset = this.profile_data.city_detail.city;
           this.school_reset = this.profile_data.school_detail.school_name;
+          }
          })
         .catch(err => {
           console.error(err) 
@@ -316,6 +331,10 @@ export default {
           this.school_val = this.school.value;
         }
        const formData = new FormData();
+       if(localStorage.getItem("role_id")== 1){
+       formData.append("user_id", localStorage.getItem('user_id'));
+       formData.append("first_name", this.first_name);
+       }else{
        formData.append("user_id", localStorage.getItem('user_id'));
        formData.append("first_name", this.first_name);
      //  formData.append("last_name", this.last_name);
@@ -324,6 +343,7 @@ export default {
        formData.append("state", this.state_val);
        formData.append("city", this.city_val);
        formData.append("school", this.school_val);
+       }
       // If form is not validated return
       if (!this.validateForm) returns;
       // Loading
@@ -354,13 +374,17 @@ export default {
         });
     },
     reset_data(){
-          this.name = this.name_reset;
+      if(localStorage.getItem("role_id")== 1){
+          this.first_name = this.first_name_reset;
+      }else{
+          this.first_name = this.first_name_reset;
           this.email = this.email_reset;
           this.position = this.position_reset;
           this.country = this.country_reset;
           this.state = this.state_reset ;
           this.city = this.city_reset ;
           this.school = this.school_reset;
+      }
     },
   },
   created () {
