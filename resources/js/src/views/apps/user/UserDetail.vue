@@ -50,10 +50,10 @@
           <!-- Information - Col 2 -->
           <div class="vx-col flex-1" id="account-info-col-2">
             <table>
-              <tr>
+             <!--<tr>
                 <td class="font-semibold">Status</td>
                 <td>{{ user_data.status }}</td>
-              </tr>
+              </tr>-->
               <tr>
                 <td class="font-semibold">Role</td>
                 <td>{{ user_data.role }}</td>
