@@ -31,6 +31,7 @@ Route::prefix('auth')->group(function () {
     Route::any('/token-checking', 'UserController@TokenChecking');\
     Route::post('reset-change-password', 'UserController@resetchangePassword');
     Route::post('change-password', 'UserController@changePassword');
+    Route::post('admin_list_schools', 'UserController@AdminGetSchools');
     Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
     Route::any('/fetch-user/{id}', ['as' => 'fetch.user', 'uses' => 'UserController@fetchUser']);
     Route::post('update-profile', 'UserController@UpdateProfile');

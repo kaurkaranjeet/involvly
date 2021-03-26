@@ -359,7 +359,7 @@ this.$http
 
     getSchools(a){
         this.$http
-      .post("/api/v1/list_schools",{city_id:a.value})
+      .post("/api/auth/admin_list_schools",{city_id:a.value})
       .then(response => {
         var data=response.data.data;
         for ( var index in data ) {
