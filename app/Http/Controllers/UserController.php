@@ -323,7 +323,7 @@ class UserController extends Controller {
         }
         if($data->role_id==3){
           $UnapproveStudent=   UnapproveStudent::where('parent_id',$id)->get();
-          $relationshipParent = ParentChildrens::with('ChildDetails')->where('parent_id',$id)->get();
+          $relationshipParent = ParentChildrens::with('ChildDetails.SchoolDetail')->where('parent_id',$id)->get();
           $data['relationshipParent'] = $relationshipParent;
         }
         if($data->role_id==2){
