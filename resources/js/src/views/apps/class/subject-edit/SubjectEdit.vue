@@ -17,7 +17,7 @@
       label-placeholder="Subject Name"
       name="Subject Name"
       v-model="subject_name"
-      class="w-full"
+      class="w-full mt-6"
     />
     <span class="text-danger text-xs">{{ errors.first("Subject Name") }}</span>
     </div>

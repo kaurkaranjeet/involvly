@@ -17,7 +17,7 @@
       name="firstname"
       placeholder=" First Name*"
       v-model="firstname"
-      class="w-full"
+      class="w-full mt-6"
       :maxlength="50"
       v-on:keypress="isLetter($event)"
        />
@@ -31,7 +31,7 @@
       name="lastname"
       placeholder="Last Name*"
       v-model="lastname"
-      class="w-full"
+      class="w-full mt-6"
        :maxlength="50"
        v-on:keypress="isLetter($event)"
        />

@@ -17,7 +17,7 @@
       label-placeholder="Class Name"
       name="Class Name"
       v-model="class_name"
-      class="w-full"
+      class="w-full mt-6"
     />
     <span class="text-danger text-xs">{{ errors.first("class_name") }}</span>
     </div>
@@ -31,7 +31,7 @@
       name="Class Code"
       placeholder="Class Code(4 Digits)"
       v-model="class_code"
-      class="w-full"
+      class="w-full mt-6"
       :maxlength="4"
     />
     <span class="text-danger text-xs">{{ errors.first("class_code") }}</span>
