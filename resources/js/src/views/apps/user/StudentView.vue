@@ -107,7 +107,9 @@
           <vx-card title="Parents" class="mb-base bottom-padding">
            <table  v-for="item in user_data.relationshipStudent" :key="item.id">
               <tr>
-                <td class="">Name : {{ item.parent_details.email }}<div>Relationship : {{ item.relationship }}</div></td>
+                <td class="">Name : {{ item.parent_details.name }}<div>Email : {{ item.parent_details.name }}</div><br>
+                <div>Relationship : {{ item.relationship }}</div>
+                </td>
               </tr>
             </table>
           </vx-card>
