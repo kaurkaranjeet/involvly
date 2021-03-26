@@ -111,10 +111,13 @@ class UserController extends Controller {
         $user->school_id = $request->school_id;
         $user->country = $request->country;
         $user->position = $request->position;
-        $user->status = 0;
+        // $user->status = 0;
+        $user->status = 1;
         $user->password = Hash::make($request->password);
         $user->role_id = 5;
         $user->save();
+        //school approved code
+        School::where('id',$request->school_id)->update(['approved' => '1']);
         if ($request->hasfile('documents')) {
             foreach ($request->file('documents') as $key => $file) {
                 $name = time() . $key . '.' . $file->getClientOriginalExtension();
@@ -528,6 +531,28 @@ class UserController extends Controller {
             return response()->json(compact('user'), 200);
         } else {
             return response()->json(['message' => 'Token Expired! Please create new link to reset the password'], 200);
+        }
+    }
+
+    //admin schools list 
+    public function AdminGetSchools(Request $request) {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'city_id' => 'required|exists:cities,id'
+            ]);
+            if ($validator->fails()) {
+                return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
+            } else {
+                $states = School::where('city_id', $request->city_id)->where('approved', '0')->get();
+                if (!empty($states)) {
+                    return response()->json(array('error' => false, 'data' => $states), 200);
+                } else {
+                    throw new Exception('No Schools in this city.');
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
 
