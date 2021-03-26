@@ -308,12 +308,12 @@ class UserController extends Controller {
         $UnapproveStudent=[];
         $relationshipStudent=[];
         $relationshipParent=[];
-        if(!empty($data->StateDetail->state_name)){
+        if(!empty($data->StateDetail)){
         $data->state_name= $data->StateDetail->state_name;
         }else{
         $data->state_name= '';    
         }
-       if(!empty($data->CityDetail->city)){
+       if(!empty($data->CityDetail)){
             $data->city= $data->CityDetail->city;
         }else{
             $data->city= '';
