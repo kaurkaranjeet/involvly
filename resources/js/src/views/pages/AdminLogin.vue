@@ -38,7 +38,7 @@
         icon-pack="feather"
         label-placeholder="Email"
         v-model="email"
-        class="w-full"
+        class="w-full mt-6"
         v-on:keyup.enter="loginJWT"/>
                        <span class="text-danger text-sm">{{ errors.first('email') }}</span>
 
