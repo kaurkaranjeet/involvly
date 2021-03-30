@@ -104,7 +104,7 @@
           <vx-card title="Timetables" class="mb-base bottom-padding">
            <table  v-for="item in user_data.timetables" :key="item.id">
               <tr>
-                <td class="">{{ item.date }}<div>Repeats {{ item.selected_days }}</div></td>
+                <td class="">{{ item.date }}<div>Repeats : {{ item.selected_days.toString() }}</div></td>
                 <td></td>
               </tr>
                  <tr>
@@ -304,6 +304,9 @@ export default {
 
   },
   created () {
+    var value = [[1234213, 1234231], [1234213, 1234231]];
+      var dato = value[0];
+      console.log("cvvc",dato.toString());
     // Register Module UserManagement Module
     if (!moduleUserManagement.isRegistered) {
       this.$store.registerModule('userManagement', moduleUserManagement)
