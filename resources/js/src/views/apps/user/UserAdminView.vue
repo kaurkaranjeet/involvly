@@ -104,7 +104,7 @@
           <vx-card title="Timetables" class="mb-base bottom-padding">
            <table  v-for="item in user_data.timetables" :key="item.id">
               <tr>
-                <td class="">{{ item.date }}<div>Repeats {{ item.selected_days }}</div></td>
+                <td class="">{{ item.date }}<div>Repeats : {{ item.selected_days.toString() }}</div></td>
                 <td></td>
               </tr>
                  <tr>
