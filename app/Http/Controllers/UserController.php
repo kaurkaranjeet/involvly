@@ -325,7 +325,7 @@ class UserController extends Controller {
           $UnapproveStudent=   UnapproveStudent::where('parent_id',$id)->get();
           $relationshipParent = ParentChildrens::with('ChildDetails.SchoolDetail')->where('parent_id',$id)->get();
           if(empty($relationshipParent->ChildDetails->SchoolDetail)){
-            $relationshipParent->ChildDetails->SchoolDetail->school_name = ''
+            $relationshipParent->ChildDetails->SchoolDetail->school_name = '';
           }
           $data['relationshipParent'] = $relationshipParent;
         }
