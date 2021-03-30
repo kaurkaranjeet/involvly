@@ -48,7 +48,7 @@
               </tr>
                <tr>
                 <td class="font-semibold">City</td>
-                <td>{{ user_data.city }}</td>
+                <td>{{ user_data.city_detail.city }}</td>
               </tr>
                <tr>
                 <td class="font-semibold"  v-if="user_data.position!=null">Position</td>
