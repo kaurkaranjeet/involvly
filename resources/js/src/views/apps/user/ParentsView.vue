@@ -136,7 +136,9 @@
           <vx-card title="Students" class="mb-base bottom-padding" >
            <table  v-for="item in user_data.relationshipParent" :key="item.id">
               <tr>
-                <td class="">Name : {{ item.child_details.name }}<div>Email : {{ item.child_details.email }}</div><div>School : {{ item.child_details.school_detail.school_name }}</div><div>Relationship : Child</div></td>
+                <td v-if="item.child_details.school_detail" class="">Name : {{ item.child_details.name }}<div>Email : {{ item.child_details.email }}</div><div>School : {{ item.child_details.school_detail.school_name }}</div><div>Relationship : Child</div></td>
+
+                <td v-if="!item.child_details.school_detail" class="">Name : {{ item.child_details.name }}<div>Email : {{ item.child_details.email }}</div><div>School : </div><div>Relationship : Child</div></td>
               </tr>
             </table>
           </vx-card>
