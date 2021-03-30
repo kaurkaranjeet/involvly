@@ -34,7 +34,16 @@ class StudentController extends Controller {
                         'first_name' => 'required',
                         'last_name' => 'required',
                         'email' => 'required|unique:users',
-                        'password' => 'required',
+                        // 'password' => 'required',
+                        'password' => [
+                            'required',
+                            'string',
+                            'min:6',             // must be at least 6 characters in length
+                            // 'regex:/[a-z]/',      // must contain at least one lowercase letter
+                            'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                            'regex:/[0-9]/',      // must contain at least one digit
+                            'regex:/[@$!%*#?&]/', // must contain a special character
+                        ],
                         'type_of_schooling' => 'required',
                         'country' => 'required',
                         'state_id' => 'required|exists:states,id',
