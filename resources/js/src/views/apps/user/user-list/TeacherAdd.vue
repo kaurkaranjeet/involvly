@@ -200,7 +200,7 @@ this.$http
       for ( var index in data ) {
        let newobj={}
        newobj.label=data[index].subject_name;
-       newobj.value=data[index].id;
+       newobj.value=data[index].subject_id;
        this.Subjectoptions.push( newobj );
      }
    })
