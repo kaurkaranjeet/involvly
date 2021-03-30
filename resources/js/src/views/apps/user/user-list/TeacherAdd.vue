@@ -241,6 +241,15 @@ this.$http
       .then((res) => {
         this.$vs.loading.close();
         if(res.data.error){
+          if(res.data.message == 'The password format is invalid.'){
+          this.$vs.notify({
+            title: "Error",
+            text: 'Please use minimum 6 characters , one special characters and must contain at least one uppercase letter.',
+            iconPack: "feather",
+            icon: "icon-alert-circle",
+            color: "danger",
+          });
+          }else{
           this.$vs.notify({
             title: "Error",
             text: res.data.message,
@@ -248,6 +257,7 @@ this.$http
             icon: "icon-alert-circle",
             color: "danger",
           });
+          }
 
         }else{
           this.$vs.notify({
