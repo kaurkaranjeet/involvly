@@ -305,12 +305,6 @@ class UserController extends Controller {
     public function fetchUser($id) {
     $data = User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->with('Timetables')->where('id', $id)->first();
     // print_r($data->StateDetail);die;
-
-       if(!empty($data->SchoolDetail)){
-        $data->SchoolDetail->school_name= $data->SchoolDetail->school_name;
-        }else{
-        $data->SchoolDetail->school_name= '';
-        }  
         $UnapproveStudent=[];
         $relationshipStudent=[];
         $relationshipParent=[];
@@ -330,6 +324,9 @@ class UserController extends Controller {
         if($data->role_id==3){
           $UnapproveStudent=   UnapproveStudent::where('parent_id',$id)->get();
           $relationshipParent = ParentChildrens::with('ChildDetails.SchoolDetail')->where('parent_id',$id)->get();
+          if(empty($relationshipParent->ChildDetails->SchoolDetail)){
+            $relationshipParent->ChildDetails->SchoolDetail->school_name = ''
+          }
           $data['relationshipParent'] = $relationshipParent;
         }
         if($data->role_id==2){
