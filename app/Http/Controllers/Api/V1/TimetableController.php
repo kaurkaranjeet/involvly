@@ -55,7 +55,8 @@ class TimetableController extends Controller {
 
             $task = new Timetable; //then create new object
             $task->teacher_id = $request->teacher_id;
-            $task->date = date("Y-m-d", strtotime($request->date));
+            $task->date = $request->date;
+            // $task->date = date("Y-m-d", strtotime($request->date));
             $task->school_id = $request->school_id;
             // $task->selected_days = $request->assignments_description;
             // $task->timetable_doc = $request->assignments_special_instruction;
