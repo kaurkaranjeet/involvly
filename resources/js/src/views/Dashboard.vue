@@ -264,7 +264,7 @@
             <vs-tabs  class="tab-action-btn-fill-conatiner">
     <vs-tab  :label="'Independent Teachers ('+ teacherCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" id="table" >
+            <vs-table max-items="5" :pagination="teacherCount" :data="teacherRequests" class="table-dark-inverted" id="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -329,9 +329,11 @@
             </vs-table>
           </div>
           </vs-tab>
+
  <vs-tab  :label="'School Admins ('+ inteacherCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" ref="table" >
+
+            <vs-table max-items="5" :pagination="inteacherCount" :data="studentRequests" class="table-dark-inverted" ref="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
