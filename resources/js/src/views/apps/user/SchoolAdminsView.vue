@@ -51,7 +51,7 @@
                 <td>{{ user_data.city_detail.city }}</td>
               </tr>
               <tr>
-                <td class="font-semibold">Family Code</td>
+                <td v-if="user_data.role_id != 5" class="font-semibold">Family Code</td>
                 <td>{{ user_data.family_code }}</td>
               </tr>
                <tr>
@@ -65,11 +65,6 @@
           <!-- Information - Col 2 -->
           <div class="vx-col flex-1" id="account-info-col-2">
             <table>
-              <tr>
-                <td class="font-semibold">Status</td>
-                <td v-if="user_data.status==1"> ACTIVE</td>
-                  <td v-if="user_data.status==0"> INACTIVE</td>
-              </tr>
               </tr>
 
                <tr  v-if="user_data.school_id>0">
