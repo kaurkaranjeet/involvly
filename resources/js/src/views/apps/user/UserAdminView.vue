@@ -104,20 +104,18 @@
           <vx-card title="Timetables" class="mb-base bottom-padding">
            <table  v-for="item in user_data.timetables" :key="item.id">
               <tr>
-                <td class="">{{ item.date }}<div>Repeats : {{ item.selected_days.toString() }}</div></td>
+                <td class="">Date : {{ item.date }}<div>Repeats : {{ item.selected_days.toString() }}</div></td>
                 <td></td>
               </tr>
                  <tr>
-                <td class="font-semibold">Links</td>
+                <td class="font-semibold">Links : </td>
 
 
                <tr v-if="item.timetable_doc!=''">
                
                 <td><ul id="example-1">
                   <li>
-
                    <a :href="item.timetable_doc" target="_blank">{{item.timetable_doc}}</a>
-
                  </li>
                </ul>
              </td> 
