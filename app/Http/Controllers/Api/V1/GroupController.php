@@ -188,7 +188,8 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
               ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
+//              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
+              $members= GroupMember::select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
               if($request->has('search')){
                 $search=$request->search;
                   $search="  AND  group_name LIKE '" .$search."%'";
@@ -1428,14 +1429,22 @@ catch (\Exception $e) {
     if ($validator->fails()) {
       throw new Exception($validator->errors()->first());
     } else {  
-   $group_discussions= GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
+//   $group_discussions= GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
+//      SELECT *
+//      FROM discussions_like
+//      WHERE group_discussions.id = discussions_like.discussion_id
+//      AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
+//      ) THEN TRUE
+//      ELSE FALSE END)
+//      AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();  
+        $group_discussions= GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
       SELECT *
       FROM discussions_like
       WHERE group_discussions.id = discussions_like.discussion_id
-      AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
+      AND discussions_like.like = 1
       ) THEN TRUE
       ELSE FALSE END)
-      AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();    
+      AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get(); 
       return response()->json(array('error' => false, 'data' => $group_discussions), 200);
     }
   }
