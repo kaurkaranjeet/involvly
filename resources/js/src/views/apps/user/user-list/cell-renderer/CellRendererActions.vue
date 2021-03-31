@@ -56,3 +56,10 @@ export default {
   }
 }
 </script>
+<style type="text/css">
+  .vs-dialog-cancel-button,.vs-dialog-cancel-button:hover{
+    background: rgba(var(--vs-dark),1) !important;
+    color:#fff !important;
+  }
+
+</style>
