@@ -267,7 +267,7 @@
          <vs-tab :label="'Teachers ('+ teacherCount+')'">
 
          <div class="tab-text">
-            <vs-table max-items="5" :pagination="teacherCount" :data="teacherRequests" class="table-dark-inverted" >
+            <vs-table max-items="5" :pagination="teacherpagination" :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -331,7 +331,7 @@
           </vs-tab>
  <vs-tab  :label="'Students ('+ studentCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" :pagination="studentCount" :data="studentRequests" class="table-dark-inverted" ref="table" >
+            <vs-table max-items="5" :pagination="studentpagination" :data="studentRequests" class="table-dark-inverted" ref="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -393,7 +393,7 @@
           </vs-tab>
            <vs-tab  :label="'Parents ('+ parentCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" :pagination="studentCount" :data="parentRequests" class="table-dark-inverted" >
+            <vs-table max-items="5" :pagination="studentpagination" :data="parentRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -530,6 +530,9 @@ export default {
        teacherCount: 0,
        studentCount: 0,
        parentCount:0,
+       teacherpagination: false,
+       studentpagination: false,
+       parentpagination:false,
       studentRequests:[],
       parentRequests:[]
     };
@@ -612,7 +615,9 @@ export default {
       .then(response => {
         this.teacherRequests = response.data.data;
          this.teacherCount = response.data.count;
-      
+      if(this.teacherCount>0){
+  this.teacherpagination=true;
+}
       })
       .catch(error => {
         console.log(error);
@@ -630,6 +635,9 @@ export default {
       .then(response => {
         this.studentRequests = response.data.data;
 this.studentCount = response.data.count;
+if(this.studentCount>0){
+  this.studentpagination=true;
+}
 
       })
       .catch(error => {
@@ -648,6 +656,9 @@ this.studentCount = response.data.count;
       .then(response => {
         this.parentRequests = response.data.data;
          this.parentCount = response.data.count;
+         if(this.parentCount>0){
+  this.parentpagination=true;
+}
       })
       .catch(error => {
         console.log(error);
