@@ -6,7 +6,7 @@
       <small>Available</small>
     </div>
 
-    <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
+    <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer" id="custom_profile">
 
       <div class="con-img ml-3">
         <img key="onlineImg" v-if="activeUserImage" :src="activeUserImage"  alt="user-img1" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
@@ -123,13 +123,16 @@ export default {
      // this.$router.push('/pages/login').catch(() => {})
     },
     changepassword () {
+           document.getElementById('custom_profile').click();
       if(localStorage.getItem('role_id')==5){
+   
       this.$router.push('/apps/profile/changepassword')
       }else{
       this.$router.push('/apps/admin/profile/changepassword')
       }
     },
     profile () {
+       document.getElementById('custom_profile').click();
       if(localStorage.getItem('role_id')==5){
       this.$router.push('/apps/profile/editprofile');
       }else{
