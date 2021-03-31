@@ -267,7 +267,7 @@
          <vs-tab :label="'Teachers ('+ teacherCount+')'">
 
          <div class="tab-text">
-            <vs-table max-items="5" pagination :data="teacherRequests" class="table-dark-inverted" >
+            <vs-table max-items="5" :pagination="teacherCount" :data="teacherRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -331,7 +331,7 @@
           </vs-tab>
  <vs-tab  :label="'Students ('+ studentCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" pagination :data="studentRequests" class="table-dark-inverted" ref="table" >
+            <vs-table max-items="5" :pagination="studentCount" :data="studentRequests" class="table-dark-inverted" ref="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -393,7 +393,7 @@
           </vs-tab>
            <vs-tab  :label="'Parents ('+ parentCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" pagination :data="parentRequests" class="table-dark-inverted" >
+            <vs-table max-items="5" :pagination="studentCount" :data="parentRequests" class="table-dark-inverted" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
