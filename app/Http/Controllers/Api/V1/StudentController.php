@@ -27,6 +27,7 @@ class StudentController extends Controller {
 
     // Register Student
     public function StudentRegister(Request $request) {
+        // dd($request->all());
         try {
 
             $input = $request->all();
