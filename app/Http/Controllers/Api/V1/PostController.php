@@ -67,7 +67,7 @@ class PostController extends Controller {
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}
 }
-public function GetPostHomefeed(Request $request){
+//public function GetPostHomefeed(Request $request){
 //  if($request->sort_by_popularity==1){
 //     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
 //              SELECT *
@@ -86,8 +86,16 @@ public function GetPostHomefeed(Request $request){
 //              ) THEN TRUE
 //              ELSE FALSE END)
 //              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
-//   }
-      if($request->sort_by_popularity==1){
+//   } 
+//       
+//       
+//    return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
+//
+// 
+//
+//    }
+public function GetPostHomefeed(Request $request){
+  if($request->sort_by_popularity==1){
      $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM likes
@@ -105,7 +113,7 @@ public function GetPostHomefeed(Request $request){
               ) THEN TRUE
               ELSE FALSE END)
               AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
-   }  
+   } 
        
        
     return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
