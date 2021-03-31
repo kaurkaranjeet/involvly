@@ -295,7 +295,8 @@ for (let i = 0; i < this.pdf.length; i++) {
            this.$router.push('/').catch(() => {})
         this.$vs.notify({
           title: 'Successfully registered',
-          text: 'Your request is under Process',
+          text: 'Your account is registered',
+          // text: 'Your request is under Process',
           iconPack: 'feather',
           icon: 'icon-alert-circle',
           color: 'success'
