@@ -264,7 +264,7 @@
             <vs-tabs  class="tab-action-btn-fill-conatiner">
     <vs-tab  :label="'Independent Teachers ('+ teacherCount+')'">
          <div class="tab-text">
-            <vs-table max-items="5" :pagination="teacherCount" :data="teacherRequests" class="table-dark-inverted" id="table" >
+            <vs-table max-items="5" :pagination="teacherinde" :data="teacherRequests" class="table-dark-inverted" id="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -310,7 +310,7 @@
                     <span class="flex items-center px-2 py-1 rounded">
                     
                       
-                     <div class="bg-danger">
+                     <div class="">
                       
              <vs-button class="bg-danger" @click="Rejectteacher(data[indextr].id,$event)"> Reject</vs-button>
                      </div>
@@ -333,7 +333,7 @@
  <vs-tab  :label="'School Admins ('+ inteacherCount+')'">
          <div class="tab-text">
 
-            <vs-table max-items="5" :pagination="inteacherCount" :data="studentRequests" class="table-dark-inverted" ref="table" >
+            <vs-table max-items="5" :pagination="paginationteacher" :data="studentRequests" class="table-dark-inverted" ref="table" >
               <template slot="thead">
                 <vs-th>Id</vs-th>
                 <vs-th>Name</vs-th>
@@ -379,7 +379,7 @@
                     <span class="flex items-center px-2 py-1 rounded">
                     
                       
-                     <div class="bg-danger">
+                     <div class="">
                       
              <vs-button class="bg-danger" @click="Rejectteacher(data[indextr].id,$event)"> Reject</vs-button>
                      </div>
@@ -474,9 +474,11 @@ export default {
 
       analyticsData,
       teacherRequests: [],
-      inteacherCount:0,
+      inteacherCount:0,  
+      paginationteacher:false,
       studentRequests:[],
       teacherCount:0,
+          teacherinde:false,
       parentRequests:[]
     };
   },
@@ -544,7 +546,9 @@ export default {
       .then(response => {
         this.teacherRequests = response.data.data;
         this.teacherCount = response.data.count;
-      
+      if(this.teacherCount>0){
+        this.teacherinde=true;
+      }
       
       })
       .catch(error => {
@@ -563,6 +567,9 @@ export default {
       .then(response => {
         this.studentRequests = response.data.data;
         this.inteacherCount = response.data.count;
+        if(this.inteacherCount>0){
+          this.paginationteacher=true;
+        }
 
       })
       .catch(error => {
@@ -645,8 +652,10 @@ export default {
         })
      const userIndex =this.teacherRequests.findIndex((u) => u.id === id)
          this.teacherRequests.splice(userIndex, 1);
+            this.teacherCount=(this.teacherCount)-1;
  const userIndex2 =this.studentRequests.findIndex((u) => u.id === id)
          this.studentRequests.splice(userIndex2, 1);
+            this.inteacherCount=(this.inteacherCount)-1;
         // el.target.getElementsByClassName('tr-values').style.display='none';
 // el.parentNode.style.display='none';
       })
