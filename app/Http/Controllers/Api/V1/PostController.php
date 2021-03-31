@@ -67,40 +67,13 @@ class PostController extends Controller {
 	return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $PostObj), 200);
 	}
 }
-//public function GetPostHomefeed(Request $request){
-//  if($request->sort_by_popularity==1){
-//     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
-//              SELECT *
-//              FROM likes
-//              WHERE posts.id = likes.post_id
-//              AND likes.user_id = ".$request->user_id."  AND likes.like = 1
-//              ) THEN TRUE
-//              ELSE FALSE END)
-//              AS is_like,posts.*")))->with('user','user.CityDetail','user.StateDetail','user.SchoolDetail')->withCount('likes','comments')->orderBy('likes_count', 'desc')->get();
-//   }else{
-//     $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
-//              SELECT *
-//              FROM likes
-//              WHERE posts.id = likes.post_id
-//              AND likes.user_id = ".$request->user_id."  AND likes.like = 1
-//              ) THEN TRUE
-//              ELSE FALSE END)
-//              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
-//   } 
-//       
-//       
-//    return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
-//
-// 
-//
-//    }
 public function GetPostHomefeed(Request $request){
   if($request->sort_by_popularity==1){
      $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
               FROM likes
               WHERE posts.id = likes.post_id
-              AND likes.like = 1
+              AND likes.user_id = ".$request->user_id."  AND likes.like = 1
               ) THEN TRUE
               ELSE FALSE END)
               AS is_like,posts.*")))->with('user','user.CityDetail','user.StateDetail','user.SchoolDetail')->withCount('likes','comments')->orderBy('likes_count', 'desc')->get();
@@ -109,12 +82,12 @@ public function GetPostHomefeed(Request $request){
               SELECT *
               FROM likes
               WHERE posts.id = likes.post_id
-              AND likes.like = 1
+              AND likes.user_id = ".$request->user_id."  AND likes.like = 1
               ) THEN TRUE
               ELSE FALSE END)
               AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
-   } 
-       
+   }
+        
        
     return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $posts), 200);
 

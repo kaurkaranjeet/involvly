@@ -170,217 +170,6 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
     }
 
      // Group List
-//    public function GroupListNew(Request $request) {
-//        try {
-//
-//            $input = $request->all();
-//            $validator = Validator::make($input, [
-//                        'user_id' => 'required|exists:users,id',
-//            ]);
-//
-//            if ($validator->fails()) {
-//                throw new Exception($validator->errors()->first());
-//            } else {
-//              $user=User::find($request->user_id);
-//              $teachers = ParentChildrens::Join('users', 'users.id', '=', 'parent_childrens.children_id')
-//              ->select(DB::raw('group_concat(DISTINCT(school_id)) as schools'))
-//              ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-//              $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
-//              ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
-//              ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-//              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
-//              if($request->has('search')){
-//                $search=$request->search;
-//                  $search="  AND  group_name LIKE '" .$search."%'";
-//
-//              }else{
-//                 $search='';
-//
-//              }
-//
-//              if(!empty($members->groups)){
-//                $msql='  ( id IN('.$members->groups.'))  OR  view_status=\'public\'';
-//              }
-//              else{
-//                $msql='  view_status=\'public\'';
-//              }
-//
-//              if(!empty($user->exit_groups)){
-//                $msql1=' AND ( id NOT IN('.$user->exit_groups.'))';
-//              }
-//              else{
-//                $msql1='';
-//              }
-//
-//
-//
-//              $clear_chat_groups= ClearChatGroup::where('user_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_number)) as group_number'))->first();
-//              if(!empty($clear_chat_groups->group_number)){
-//                $group_number_sql=' AND  ( group_number NOT IN('.$clear_chat_groups->group_number.'))';
-//              }
-//              else{
-//                $group_number_sql='';
-//              }
-//
-//               if($request->has('search')){
-//                   $sql_oo= Group::whereRaw("type='custom_group'  AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id 
-//)  AND state_id='".$user->state_id."'" . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
-//
-//               foreach($sql_oo as $single_group){
-//            
-//                $count=GroupMember::where('group_id',$single_group->id)->count();
-//                  $single_group->member_count=$count;
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                  $single_group->unread_count=$unread_count;
-//                $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
-//                $single_group->is_joined=$is_joined;
-//                
-//            if(!empty($single_group->message_date)){
-//                  $date = strtotime($single_group->message_date); 
-//
-//                  $single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
-//                }
-//                else{
-//                  $single_group->message_date=null;
-//                }
-//             }
-//
-//           return response()->json(array('error' => false, 'data' => $sql_oo), 200);
-//
-//
-//                 } else{
-//            if(!empty($teachers->schools)){
-//               $sql= Group::whereRaw(" ((type='parent_community' AND 
-//  EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-//AND join_community=1))  OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  )   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-//) ". $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ".$group_number_sql." ORDER by id DESC limit 1) as file");
-//               /*  if(!empty($classes->classes)){
-//                 $sql= Group::whereRaw(" ((type='parent_community' AND 
-//  EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
-//AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ".$group_number_sql."  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file");
-//               }*/
-//             }else{
-//              $sql= Group::whereRaw(" ((type='parent_community' AND 
-//  EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1))  )   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-//)  ". $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file");
-//           }
-//
-//$groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
-//
-//   $sql_oo= Group::whereRaw("type='custom_group' AND  group_category='community_group'   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id 
-//)  AND state_id='".$user->state_id."'" . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
-//
-// $digital_learning= Group::whereRaw("type='custom_group' AND  group_category='digital_learning'   AND ( ".$msql."  ) ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-//)  AND state_id='".$user->state_id."'"  . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
-//                 
-//               foreach($groups as $single_group){
-//                if($single_group->type=='parent_community'){
-//                  $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                   $single_group->is_joined=1;
-//                  $single_group->member_count=$count;
-//                  $single_group->unread_count=$unread_count;
-//                }
-//                if($single_group->type=='school'){
-//                  $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
-//                  $single_group->member_count=$count;
-//                   $single_group->is_joined=1;
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                  $single_group->unread_count=$unread_count;
-//                }
-//
-//                if($single_group->type=='school_admin'){
-//                  $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
-//                  $single_group->member_count=$count;
-//                   $single_group->is_joined=1;
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                  $single_group->unread_count=$unread_count;
-//                }
-//                if($single_group->type=='custom_group'){
-//                    $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
-//                  $count=GroupMember::where('group_id',$single_group->id)->count();
-//                  $single_group->member_count=$count;
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                  $single_group->unread_count=$unread_count;
-//                  $single_group->is_joined=$is_joined;
-//                }
-//                if($single_group->type=='class_group'){
-//                  $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
-//                  ->select(DB::raw('Distinct count(parent_id))'))
-//                  ->where('class_id', $single_group->class_id)->count();
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                  $single_group->member_count=$count;
-//                  $single_group->unread_count=$unread_count;
-//                   $single_group->is_joined=1;
-//
-//
-//                }
-//            if(!empty($single_group->message_date)){
-//                  $date = strtotime($single_group->message_date); 
-//
-//                  $single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
-//                }
-//                else{
-//                  $single_group->message_date=null;
-//                }
-//
-//
-//
-//               }
-//
-//               foreach($sql_oo as $single_group){
-//            
-//                $count=GroupMember::where('group_id',$single_group->id)->count();
-//                  $single_group->member_count=$count;
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                  $single_group->unread_count=$unread_count;
-//             $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
-//
-//                 $single_group->is_joined=$is_joined;
-//            if(!empty($single_group->message_date)){
-//                  $date = strtotime($single_group->message_date); 
-//
-//                  $single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
-//                }
-//                else{
-//                  $single_group->message_date=null;
-//                }
-//             }
-//
-//             foreach($digital_learning as $single_group){
-//               if($single_group->type=='parent_community'){
-//                $count=GroupMember::where('group_id',$single_group->id)->count();
-//                  $single_group->member_count=$count;
-//                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
-//                  $single_group->unread_count=$unread_count;
-//                    $single_group->is_joined=1;
-//           
-//                
-//            if(!empty($single_group->message_date)){
-//                  $date = strtotime($single_group->message_date); 
-//
-//                  $single_group->message_date =date('Y-m-d\TH:i:s.00000',$date).'Z';
-//                }
-//                else{
-//                  $single_group->message_date=null;
-//                }
-//
-//
-//
-//               }
-//             }
-//
-//           
-//
-//                 return response()->json(array('error' => false, 'data' => $groups, 'digital_learning' => $digital_learning ,'community_group' => $sql_oo), 200);
-//
-//               }
-//               
-//          }
-//        } catch (\Exception $e) {
-//            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
-//        }
-//    }
     public function GroupListNew(Request $request) {
         try {
 
@@ -399,7 +188,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
               ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-              $members= GroupMember::select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
+              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
               if($request->has('search')){
                 $search=$request->search;
                   $search="  AND  group_name LIKE '" .$search."%'";
@@ -425,7 +214,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 
 
 
-              $clear_chat_groups= ClearChatGroup::select(DB::raw('group_concat(DISTINCT(group_number)) as group_number'))->first();
+              $clear_chat_groups= ClearChatGroup::where('user_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_number)) as group_number'))->first();
               if(!empty($clear_chat_groups->group_number)){
                 $group_number_sql=' AND  ( group_number NOT IN('.$clear_chat_groups->group_number.'))';
               }
@@ -441,9 +230,9 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
             
                 $count=GroupMember::where('group_id',$single_group->id)->count();
                   $single_group->member_count=$count;
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
-                $is_joined=GroupMember::where('group_id',$single_group->id)->count();
+                $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
                 $single_group->is_joined=$is_joined;
                 
             if(!empty($single_group->message_date)){
@@ -479,15 +268,15 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
 
    $sql_oo= Group::whereRaw("type='custom_group' AND  group_category='community_group'   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id 
-)  AND state_id='".$user->state_id."'" . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
+)" . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
 
  $digital_learning= Group::whereRaw("type='custom_group' AND  group_category='digital_learning'   AND ( ".$msql."  ) ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-)  AND state_id='".$user->state_id."'"  . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
+) "  . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
                  
                foreach($groups as $single_group){
                 if($single_group->type=='parent_community'){
                   $count= User::where('role_id',3)->where('join_community',1)->where('status',1)->count();
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                    $single_group->is_joined=1;
                   $single_group->member_count=$count;
                   $single_group->unread_count=$unread_count;
@@ -496,7 +285,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                   $count= User::where('city',$user->city)->where('join_community',1)->where('status',1)->count();
                   $single_group->member_count=$count;
                    $single_group->is_joined=1;
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
                 }
 
@@ -504,14 +293,14 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                   $count=User::where('role_id',3)->where('school_id',$user->school_id)->where('status',1)->count();
                   $single_group->member_count=$count;
                    $single_group->is_joined=1;
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
                 }
                 if($single_group->type=='custom_group'){
-                    $is_joined=GroupMember::where('group_id',$single_group->id)->count();
+                    $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
                   $count=GroupMember::where('group_id',$single_group->id)->count();
                   $single_group->member_count=$count;
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
                   $single_group->is_joined=$is_joined;
                 }
@@ -519,7 +308,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                   $count = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')->Join('users', 'users.id', '=', 'parent_childrens.parent_id')
                   ->select(DB::raw('Distinct count(parent_id))'))
                   ->where('class_id', $single_group->class_id)->count();
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->member_count=$count;
                   $single_group->unread_count=$unread_count;
                    $single_group->is_joined=1;
@@ -543,9 +332,9 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
             
                 $count=GroupMember::where('group_id',$single_group->id)->count();
                   $single_group->member_count=$count;
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
-             $is_joined=GroupMember::where('group_id',$single_group->id)->count();
+             $is_joined=GroupMember::where('group_id',$single_group->id)->where('member_id',$request->user_id)->count();
 
                  $single_group->is_joined=$is_joined;
             if(!empty($single_group->message_date)){
@@ -562,7 +351,7 @@ $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "
                if($single_group->type=='parent_community'){
                 $count=GroupMember::where('group_id',$single_group->id)->count();
                   $single_group->member_count=$count;
-                  $unread_count=GroupMessage::where('is_read',0)->where('group_id', $single_group->id)->count();
+                  $unread_count=GroupMessage::where('to_user_id',$request->user_id)->where('is_read',0)->where('group_id', $single_group->id)->count();
                   $single_group->unread_count=$unread_count;
                     $single_group->is_joined=1;
            
@@ -1628,32 +1417,6 @@ catch (\Exception $e) {
     }
 
 
-//    public function GetGroupDiscussions(Request $request) {
-//     try {
-//    $input = $request->all();
-//    $validator = Validator::make($input, [
-//      'group_id' => 'required|exists:groups,id',
-//       'user_id' => 'required|exists:users,id'
-//    ]);
-//
-//    if ($validator->fails()) {
-//      throw new Exception($validator->errors()->first());
-//    } else {  
-//   $group_discussions= GroupDiscussion::select((DB::raw("( CASE WHEN EXISTS (
-//      SELECT *
-//      FROM discussions_like
-//      WHERE group_discussions.id = discussions_like.discussion_id
-//      AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
-//      ) THEN TRUE
-//      ELSE FALSE END)
-//      AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();
-//      return response()->json(array('error' => false, 'data' => $group_discussions), 200);
-//    }
-//  }
-//  catch (\Exception $e) {
-//            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
-//        }
-//    }
     public function GetGroupDiscussions(Request $request) {
      try {
     $input = $request->all();
@@ -1669,10 +1432,10 @@ catch (\Exception $e) {
       SELECT *
       FROM discussions_like
       WHERE group_discussions.id = discussions_like.discussion_id
-      AND discussions_like.like = 1
+      AND discussions_like.user_id = ".$request->user_id."  AND discussions_like.like = 1
       ) THEN TRUE
       ELSE FALSE END)
-      AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();
+      AS is_like,group_discussions.*")))->with('User','User.CityDetail','User.SchoolDetail','User.StateDetail')->withCount('likes','comments')->where('group_id',$request->group_id)->orderBy('id', 'DESC')->get();  
       return response()->json(array('error' => false, 'data' => $group_discussions), 200);
     }
   }
