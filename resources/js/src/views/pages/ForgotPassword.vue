@@ -24,6 +24,7 @@
                 <div class="vx-card__title mb-4">
                   <h4 class="mb-4">Forgot Password</h4>
                   <p>Please enter your email</p>
+                          <div style="visibility: hidden;">Please enter your email</div>
                 </div>
 
                 <div>
