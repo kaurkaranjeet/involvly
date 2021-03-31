@@ -116,7 +116,7 @@ Author URL: http://www.themeforest.net/user/pixinvent
   
     <vs-button class="w-full mt-6" @click="registerUserJWt" :disabled="!validateForm">Submit</vs-button>
 
-      <vs-button class="w-full mt-6" type="border" to="/pages/login" >Login</vs-button>
+      <vs-button class="w-full mt-6" type="border" to="/pages/login"  style="margin-bottom: 15px;">Login</vs-button>
   </div>
 
 
