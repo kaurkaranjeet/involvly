@@ -26,6 +26,7 @@
                 <div class="vx-card__title mb-4">
                   <h4 class="mb-4">Login</h4>
                   <p>Welcome back, please login to your account.</p>
+                  <div style="visibility: hidden;">Welcome back, please login to your account.</div>
                 </div>
 
                 <div>
