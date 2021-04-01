@@ -50,10 +50,10 @@
                 <td class="font-semibold">City</td>
                 <td>{{ user_data.city_detail.city }}</td>
               </tr>
-              <tr>
+              <!--<tr>
                 <td v-if="user_data.role_id != 5" class="font-semibold">Family Code</td>
                 <td>{{ user_data.family_code }}</td>
-              </tr>
+              </tr>-->
                <tr>
                 <td class="font-semibold"  v-if="user_data.position!=null">Position</td>
                 <td>{{ user_data.position }}</td>
