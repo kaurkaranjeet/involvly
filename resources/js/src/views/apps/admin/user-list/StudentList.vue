@@ -247,6 +247,13 @@ export default {
           filter: true,
           width: 225
         },
+        {
+          headerName: 'School Name',
+          field: 'school_detail.school_name',
+          filter: true,
+          width: 225,
+          //cellRendererFramework: 'CellRendererStatus'
+        },
 
        
       
