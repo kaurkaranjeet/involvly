@@ -266,21 +266,25 @@ class UserController extends Controller {
         DB::enableQueryLog();
 
         if ($request->type == 'teacher') {
-            $users = User::where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
             foreach($users as $user){
                 if($user->type_of_schooling == 'home'){
                     $user->type_of_schooling = 'Not Assigned';
+                    $user->school_name= '-';
                 }else{
                     $user->type_of_schooling = 'School';
+                    $user->school_name= $user->SchoolDetail->school_name;
                 }
             }
         } else if ($request->type == 'student') {
-            $users = User::where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::with('SchoolDetail')->where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
             foreach($users as $user){
                 if($user->type_of_schooling == 'home'){
                     $user->type_of_schooling = 'Home Schooling';
+                    $user->school_name= '-';
                 }else{
                     $user->type_of_schooling = 'School';
+                    $user->school_name= $user->SchoolDetail->school_name;
                 }
             }
         }
@@ -291,7 +295,14 @@ class UserController extends Controller {
             }
         }
          else {
-            $users = User::where('role_id', 3)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::with('SchoolDetail')->where('role_id', 3)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
+            foreach($users as $user){
+                if($user->type_of_schooling == 'home'){
+                    $user->school_name= '-';
+                }else{
+                    $user->school_name= $user->SchoolDetail->school_name;
+                }
+            }
         }
         //  print_r(DB::getQueryLog());die;
 
