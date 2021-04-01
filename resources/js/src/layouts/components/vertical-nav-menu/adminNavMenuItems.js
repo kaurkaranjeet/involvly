@@ -24,6 +24,7 @@ export default [{
         submenu: [{
                 url: '/apps/user/allteachers',
                 name: 'Teachers List',
+                icon: "UsersIcon",
                 slug: 'all-teachers',
                 i18n: 'List'
             },
@@ -31,18 +32,21 @@ export default [{
             {
                 url: '/apps/user/allstudents',
                 name: 'Students List',
+                icon: "UsersIcon",
                 slug: 'all-students',
                 i18n: 'List'
             },
             {
                 url: '/apps/user/allparents',
                 name: 'Parents List',
+                icon: "UsersIcon",
                 slug: 'all-parents',
                 i18n: 'List'
             },
             {
                 url: '/apps/user/listofschooladmins',
                 name: 'School Admin List',
+                icon: "UsersIcon",
                 slug: 'list-admins-school',
                 i18n: 'List'
             }
