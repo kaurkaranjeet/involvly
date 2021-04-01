@@ -37,7 +37,7 @@
         icon-pack="feather"
         label-placeholder="Email"
         v-model="email"
-        class="w-full"/>
+        class="w-full mt-8"/>
         <span class="text-danger text-sm">{{ errors.first('email') }}</span>
 
                   <div class="flex flex-wrap justify-between my-5">
@@ -116,5 +116,9 @@ export default{
     .bg-google { background-color: #4285F4 }
     .bg-github { background-color: #333 }
   }
+}
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
 }
 </style>

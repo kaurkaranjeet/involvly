@@ -53,7 +53,7 @@
         icon-pack="feather"
         label-placeholder="Password"
         v-model="password"
-        class="w-full mt-6" 
+        class="w-full mt-8" 
         v-on:keyup.enter="loginJWT"/>
   <span class="text-danger text-sm">{{ errors.first('password') }}</span>
 
@@ -231,5 +231,9 @@ export default{
 }
 .remember-margin {
   margin-left : 0px !important;
+}
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
 }
 </style>

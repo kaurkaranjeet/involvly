@@ -37,7 +37,7 @@
                     label-placeholder="New Password"
                     placeholder="New Password"
                     v-model="password"
-                    class="w-full mt-6"
+                    class="w-full mt-8"
                   />
                   <span class="text-danger text-sm">{{
                     errors.first("password")
@@ -51,7 +51,7 @@
                     label-placeholder="Retype New Password"
                     placeholder="Retype Password"
                     v-model="confirm_password"
-                    class="w-full mt-6"
+                    class="w-full mt-8"
                   />
                   <span class="text-danger text-sm">{{
                     errors.first("confirm_password")
@@ -190,5 +190,9 @@ export default {
   .brand-logo {
     max-width: 150px;
   }
+}
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
 }
 </style>

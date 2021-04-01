@@ -17,7 +17,7 @@
       label-placeholder="Subject Name"
       name="Subject Name"
       v-model="subject_name"
-      class="w-full mt-6"
+      class="w-full mt-8"
       readonly
     />
     <span class="text-danger text-xs">{{ errors.first("Subject Name") }}</span>
@@ -67,3 +67,9 @@ export default {
 }
 
 </script>
+<style lang="scss">
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
+}
+</style>
