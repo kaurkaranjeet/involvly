@@ -24,6 +24,7 @@ export default [{
         submenu: [{
                 url: '/apps/user/user-list',
                 name: 'Teachers List',
+                icon: "UsersIcon",
                 slug: 'app-user-list',
                 i18n: 'List'
             },
@@ -31,12 +32,14 @@ export default [{
             {
                 url: '/apps/user/listofstudents',
                 name: 'Students List',
+                 icon: "UsersIcon",
                 slug: 'list-students',
                 i18n: 'List'
             },
             {
                 url: '/apps/user/listofparents',
                 name: 'Parents List',
+                icon: "UsersIcon",
                 slug: 'list-parents',
                 i18n: 'List'
             }
@@ -51,12 +54,14 @@ export default [{
         submenu: [{
                 url: '/apps/class/class-list',
                 name: 'List of Classes',
+                    icon: "CircleIcon",
                 slug: 'app-class-list',
                 i18n: 'List'
             },
             {
                 url: '/apps/subject/subject-list',
                 name: 'List of Subjects',
+                 icon: "CircleIcon",
                 slug: 'app-subject-list',
                 i18n: 'List'
             },
