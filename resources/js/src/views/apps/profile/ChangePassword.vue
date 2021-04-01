@@ -131,3 +131,9 @@ export default {
 }
 
 </script>
+<style lang="scss">
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
+}
+</style>

@@ -17,7 +17,7 @@
       name="firstname"
       placeholder=" First Name*"
       v-model="firstname"
-      class="w-full mt-6"
+      class="w-full mt-8"
       :maxlength="50"
       v-on:keypress="isLetter($event)"
        />
@@ -31,7 +31,7 @@
       name="lastname"
       placeholder="Last Name*"
       v-model="lastname"
-      class="w-full mt-6"
+      class="w-full mt-8"
        :maxlength="50"
        v-on:keypress="isLetter($event)"
        />
@@ -46,7 +46,7 @@
       label-placeholder="Email*"
       placeholder="Email*"
       v-model="email"
-      class="w-full mt-6" />
+      class="w-full mt-8" />
     <span class="text-danger text-xs">{{ errors.first("email") }}</span>
    
  
@@ -59,7 +59,7 @@
       label-placeholder="Password*"
       placeholder="Password*"
       v-model="password"
-      class="w-full mt-6" />
+      class="w-full mt-8" />
     <span class="text-danger text-xs">{{ errors.first("password") }}</span>
     
  
@@ -72,25 +72,25 @@
       label-placeholder="Confirm Password*"
       placeholder="Confirm Password*"
       v-model="confirm_password"
-      class="w-full mt-6" />
+      class="w-full mt-8" />
     <span class="text-danger text-xs">{{ errors.first("confirm_password") }}</span>
    
   
 
-    <vue-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
+    <vue-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-8"   @input="getCities"   v-validate="'required'"
     data-vv-validate-on="change"></vue-select>
     <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span> 
 
-      <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"   name="city"  v-validate="'required'"
+      <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-8"   name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
       <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
 
 
-      <vue-select  :options="classoptions"   :clearable="false"  v-model="classFilter" class="w-full mt-6" @input="getSubjects" >
+      <vue-select  :options="classoptions"   :clearable="false"  v-model="classFilter" class="w-full mt-8" @input="getSubjects" >
 
       </vue-select>
 <span class="text-danger text-sm">{{ errors.first('classFilter') }}</span>
-<vue-select  :options="Subjectoptions"   :clearable="false"  v-model="subjectFilter" class="w-full mt-6"   >
+<vue-select  :options="Subjectoptions"   :clearable="false"  v-model="subjectFilter" class="w-full mt-8"   >
     
 </vue-select>
 <span class="text-danger text-sm">{{ errors.first('subjectFilter') }}</span>
@@ -334,3 +334,9 @@ this.$http
 }
 
 </script>
+<style lang="scss">
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
+}
+</style>

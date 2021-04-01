@@ -17,7 +17,7 @@
       label-placeholder="Class Name"
       name="Class Name"
       v-model="class_name"
-      class="w-full mt-6"
+      class="w-full mt-8"
     />
     <span class="text-danger text-xs">{{ errors.first("class_name") }}</span>
     </div>
@@ -31,7 +31,7 @@
       name="Class Code"
       placeholder="Class Code(4 Digits)"
       v-model="class_code"
-      class="w-full mt-6"
+      class="w-full mt-8"
       :minlength="4"
        :maxlength="4"
     />
@@ -154,3 +154,9 @@ export default {
 }
 
 </script>
+<style lang="scss">
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
+}
+</style>

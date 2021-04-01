@@ -83,14 +83,14 @@ Author URL: http://www.themeforest.net/user/pixinvent
     <span class="text-danger text-sm">{{ errors.first('country') }}</span>
      
    
- <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-6"   @input="getCities"   v-validate="'required'"
+ <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter" class="w-full mt-8"   @input="getCities"   v-validate="'required'"
       data-vv-validate-on="change">
       <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
 </v-select>
- <v-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-6"  @input="getSchools"  name="city"  v-validate="'required'"
+ <v-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-8"  @input="getSchools"  name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
-<v-select  :options="schooloptions"   :clearable="false"  v-model="schoolFilter" class="w-full mt-6"  >
+<v-select  :options="schooloptions"   :clearable="false"  v-model="schoolFilter" class="w-full mt-8"  >
     
 </v-select>
 <span class="text-danger text-sm">{{ errors.first('schoolFilter') }}</span>
@@ -110,13 +110,13 @@ Author URL: http://www.themeforest.net/user/pixinvent
 
 
             <!-- Toggle comment of below buttons as one for actual flow & currently shown is only for demo -->
-            <vs-button type="border" class="w-full mt-6" @click="$refs.update_avatar_input.click()">Upload Documents</vs-button> 
+            <vs-button type="border" class="w-full mt-8" @click="$refs.update_avatar_input.click()">Upload Documents</vs-button> 
 </div>
-    <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>
+    <vs-checkbox v-model="isTermsConditionAccepted" class="mt-8">I accept the terms & conditions.</vs-checkbox>
   
-    <vs-button class="w-full mt-6" @click="registerUserJWt" :disabled="!validateForm">Submit</vs-button>
+    <vs-button class="w-full mt-8" @click="registerUserJWt" :disabled="!validateForm">Submit</vs-button>
 
-      <vs-button class="w-full mt-6" type="border" to="/pages/login"  style="margin-bottom: 15px;">Login</vs-button>
+      <vs-button class="w-full mt-8" type="border" to="/pages/login"  style="margin-bottom: 15px;">Login</vs-button>
   </div>
 
 
@@ -401,3 +401,9 @@ this.$http
 
 }
 </script>
+<style lang="scss">
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
+}
+</style>

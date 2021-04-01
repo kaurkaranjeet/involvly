@@ -342,4 +342,8 @@ export default {
 .pd-bt{
   padding-bottom: 10px;
 }
+.vs-input--placeholder {
+    font-size: .90rem !important;
+    color: #626262 !important;
+}
 </style>
