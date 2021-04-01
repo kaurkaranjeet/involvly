@@ -101,7 +101,7 @@
 
       <div class="vx-row">
         <div class="vx-col lg w-full">
-          <vx-card title="Timetables" class="mb-base bottom-padding">
+          <vx-card v-if="user_data.timetables.length" title="Timetables" class="mb-base bottom-padding">
            <table  v-for="item in user_data.timetables" :key="item.id">
               <tr>
                 <td class="">Date : {{ item.date }}<div>Repeats : {{ item.selected_days.toString() }}</div></td>
@@ -126,6 +126,7 @@
              <tr><td type= "border">----------------------</td></tr>
             </table>
           </vx-card>
+           </vx-card>
         </div>
 
        <!--  <div class="vx-col lg:w-1/2 w-full">
