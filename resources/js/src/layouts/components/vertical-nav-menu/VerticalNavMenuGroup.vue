@@ -68,7 +68,7 @@
             :index  = "groupIndex + '.' + index"
             :to="groupItem.slug !== 'external' ? groupItem.url : null"
             :href="groupItem.slug === 'external' ? groupItem.url : null"
-            :icon   = "itemIcon(groupIndex + '.' + index)"
+            :icon   = "groupItem.icon"
             :slug   = "groupItem.slug"
             :target = "groupItem.target">
               <span class="truncate">{{ groupItem.name }}</span>
