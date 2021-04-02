@@ -68,10 +68,12 @@ export default {
       return this.$store.state.AppActiveUser
     },
     activeUserImage () {
+       alert(localStorage.getItem('profile_image'))
     let image=localStorage.getItem('profile_image');
-      if(image=='null' || image=='' ){
+      if(image=='null' || image=='' || image==null){
       return require('@assets/logo/demouser.png');
       }else{
+        alert(localStorage.getItem('profile_image'))
       return localStorage.getItem('profile_image');
       } 
     }
