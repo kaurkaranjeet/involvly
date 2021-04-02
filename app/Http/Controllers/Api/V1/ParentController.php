@@ -193,6 +193,8 @@ class ParentController extends Controller {
                     if (!empty($request->family_code)) {
                         $parents = User::where('family_code', $request->family_code)->where('role_id', 3)->get();
                         foreach ($parents as $singl) {
+                    $count=  ParentChildrens::where('parent_id', $singl->id)->where('children_id', $request->user_id)->count();
+               if($count==0){
                             DB::table('parent_childrens')->insert(
                                     [
                                         'parent_id' => $singl->id,
@@ -201,12 +203,16 @@ class ParentController extends Controller {
                             ]);
                         }
                     }
+                    }
                 }
 
                 if ($student_obj->role_id == '3') {
                     if (!empty($request->family_code)) {
                         $parents = User::where('family_code', $request->family_code)->where('role_id',2)->get();
                         foreach ($students as $singl) {
+                  $count=  ParentChildrens::where('parent_id', $student_obj->id)->where('children_id',$singl->id)->count();
+               if($count==0){
+
                             DB::table('parent_childrens')->insert(
                                 [
                                     'parent_id' => $student_obj->id,
@@ -215,7 +221,8 @@ class ParentController extends Controller {
                                 ]);
                         }
                     }
-                    
+                }
+
                     $parents = ParentChildrens::where('parent_id', $request->user_id)->get();
                     foreach ($parents as $singl) {
                         ParentChildrens::where('id', $singl->id)->update(['relationship' => $request->relationship]);
