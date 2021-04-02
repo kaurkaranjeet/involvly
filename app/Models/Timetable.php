@@ -12,7 +12,7 @@ class Timetable extends Model {
     protected $fillable = ['teacher_id', 'date', 'selected_days', 'timetable_doc', 'school_id'];
     protected $casts = [
         'selected_days' => 'array',
-        'date' => 'datetime:Y-m-d',
+        'date' => 'datetime:Y/m/d',
     ];
 
     public function User() {
