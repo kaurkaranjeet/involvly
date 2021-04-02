@@ -72,7 +72,6 @@ export default {
       if(image=='null' || image=='' || image==null){
       return require('@assets/logo/demouser.png');
       }else{
-        alert(localStorage.getItem('profile_image'))
       return localStorage.getItem('profile_image');
       } 
     }
