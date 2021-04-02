@@ -188,7 +188,9 @@ class ParentController extends Controller {
                         return response()->json(array('error' => true, 'message' => 'Class code does not belong to this school'), 200);
                     }
                 }
-
+if (!empty($request->family_code)) {
+                    User::where('id', $request->user_id)->update(['family_code' => $request->family_code]);
+                }
                 if ($student_obj->role_id == '2') {
                     if (!empty($request->family_code)) {
                         $parents = User::where('family_code', $request->family_code)->where('role_id', 3)->get();
@@ -209,9 +211,7 @@ class ParentController extends Controller {
                         ParentChildrens::where('id', $singl->id)->update(['relationship' => $request->relationship]);
                     }
                 }
-                if (!empty($request->family_code)) {
-                    User::where('id', $request->user_id)->update(['family_code' => $request->family_code]);
-                }
+                
 
                 // }
 
