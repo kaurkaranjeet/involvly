@@ -375,4 +375,7 @@ export default {
     }
   }
 }
+.pd-bt{
+  padding-bottom: 10px;
+}
 </style>

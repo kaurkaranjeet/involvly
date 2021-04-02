@@ -10,7 +10,7 @@
 <template>
 
   <div id="page-user-list">
-    <div class="col-md-12 bg-light text-right pd-bt mb-5">
+    <div class="col-md-12 bg-light text-right mb-5">
             <vs-button color="primary" type="filled" @click="addStudentdata">Add New Teacher</vs-button>
         </div>
 
