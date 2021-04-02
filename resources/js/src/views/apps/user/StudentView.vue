@@ -104,7 +104,7 @@
       </vx-card>
       <div class="vx-row">
         <div class="vx-col lg w-full">
-          <vx-card title="Parents" class="mb-base bottom-padding">
+          <vx-card v-if="user_data.relationshipStudent.length" title="Parents" class="mb-base bottom-padding">
            <table  v-for="item in user_data.relationshipStudent" :key="item.id">
               <tr>
                 <td class="">Name : {{ item.parent_details.name }}<div>Email : {{ item.parent_details.email }}</div>
