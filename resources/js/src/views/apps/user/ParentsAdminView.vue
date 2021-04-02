@@ -167,19 +167,7 @@
         </div> -->
       </div>
 
- <div class="vx-row">
-        <div class="vx-col lg w-full">
-          <vx-card title="Students" class="mb-base bottom-padding" >
-           <table  v-for="item in user_data.relationshipParent" :key="item.id">
-              <tr>
-                <td v-if="item.child_details.school_detail" class="">Name : {{ item.child_details.name }}<div>Email : {{ item.child_details.email }}</div><div>School : {{ item.child_details.school_detail.school_name }}</div><div>Relationship : Child</div></td>
-
-                <td v-if="!item.child_details.school_detail" class="">Name : {{ item.child_details.name }}<div>Email : {{ item.child_details.email }}</div><div>School : </div><div>Relationship : Child</div></td>
-              </tr>
-            </table>
-          </vx-card>
-        </div>
-        </div>
+ 
       <!-- Permissions -->
      <!--  <vx-card>
 
@@ -334,7 +322,8 @@ export default {
     this.$store.dispatch('userManagement/fetchUser', userId)
       .then(res => 
 
-        { this.user_data = res.data.data }
+        { this.user_data = res.data.data
+        console.log("1233zxcz3",this.user_data.relationshipParent) }
 
         )
       .catch(err => {
