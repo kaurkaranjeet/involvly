@@ -232,7 +232,7 @@ export default {
           headerName: 'Name',
           field: 'name',
           filter: true,
-          width: 210,
+          width: 400,
           cellRendererFramework: 'CellRendererLink'
         },
         {
