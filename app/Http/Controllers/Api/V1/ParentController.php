@@ -208,7 +208,7 @@ class ParentController extends Controller {
 
                 if ($student_obj->role_id == '3') {
                     if (!empty($request->family_code)) {
-                        $parents = User::where('family_code', $request->family_code)->where('role_id',2)->get();
+                        $students = User::where('family_code', $request->family_code)->where('role_id',2)->get();
                         foreach ($students as $singl) {
                   $count=  ParentChildrens::where('parent_id', $student_obj->id)->where('children_id',$singl->id)->count();
                if($count==0){
