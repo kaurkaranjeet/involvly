@@ -11,28 +11,28 @@
   <div class="clearfix">
  
      <vs-input
-      v-validate="'required'"
+      v-validate="'required|min:3'"
       data-vv-validate-on="blur"
       label-placeholder="First Name*"
       name="First Name"
       placeholder=" First Name*"
       v-model="firstname"
       class="w-full mt-8"
-      :maxlength="50"
+      :maxlength="20"
       v-on:keypress="isLetter($event)"
        />
     <span class="text-danger text-xs">{{ errors.first('First Name') }}</span>
    
   
     <vs-input
-      v-validate="'required'"
+      v-validate="'required|min:3'"
       data-vv-validate-on="blur"
       label-placeholder="Last Name*"
       name="Last Name"
       placeholder="Last Name*"
       v-model="lastname"
       class="w-full mt-8"
-        :maxlength="50"
+        :maxlength="20"
         v-on:keypress="isLetter($event)"
        />
     <span class="text-danger text-xs">{{ errors.first("Last Name") }}</span>

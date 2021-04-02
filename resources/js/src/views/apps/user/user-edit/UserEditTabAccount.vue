@@ -35,7 +35,7 @@
       <div class="vx-col md:w-1/2 w-full">
        
 
-        <vs-input class="w-full mt-4" label="First name" v-model="data_local.first_name" v-validate="'required'" name="First Name" :maxlength="50"  v-on:keypress="isLetter($event)" />
+        <vs-input class="w-full mt-4" label="First name" v-model="data_local.first_name" v-validate="'required|min:3'" name="First Name" :maxlength="20"  v-on:keypress="isLetter($event)" />
 
         <span class="text-danger text-sm"    v-show="errors.has('First Name')"  >{{ errors.first('First Name') }}</span>
          <vs-input class="w-full mt-4" label="Email" v-model="data_local.email" type="email" v-validate="'required|email'" name="email" readonly  />
@@ -50,7 +50,7 @@
 
       <div class="vx-col md:w-1/2 w-full">
 
- <vs-input class="w-full mt-4" label="last name" v-model="data_local.last_name" v-validate="'required'" name="last_name"  :maxlength="50" v-on:keypress="isLetter($event)" />
+ <vs-input class="w-full mt-4" label="last name" v-model="data_local.last_name" v-validate="'required|min:3'" name="last_name"  :maxlength="20" v-on:keypress="isLetter($event)" />
         <span class="text-danger text-sm"  v-show="errors.has('last_name')">{{ errors.first('last_name') }}</span>
          <!--div class="w-full mt-4">
           <label class="vs-input--label">Status</label>

@@ -11,14 +11,14 @@ Author URL: http://www.themeforest.net/user/pixinvent
 <template>
   <div class="clearfix">
     <vs-input
-      v-validate="'required|min:6'"
+      v-validate="'required|min:3'"
       data-vv-validate-on="blur"
       label-placeholder="Name*"
       name="name"
       placeholder="Name*"
       v-model="name"
       class="w-full mt-8"
-      :maxlength="50"
+      :maxlength="20"
 
  v-on:keypress="isLetter($event)"
        />
