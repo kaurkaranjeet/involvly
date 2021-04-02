@@ -1,7 +1,7 @@
 <template>
     <div>
-     <vs-button v-if="params.value==0" @click="AddClass(params.value)"> Add</vs-button>
-     <vs-button v-if="params.value==1" @click="RemoveClass(params.value)"> Remove</vs-button>
+     <vs-button :class = "(params.data.is_added==0)?'':'hidden'" @click="AddClass()" > Add</vs-button>
+     <vs-button :class = "(params.data.is_added==1)?'':'hidden'" @click="RemoveClass()" > Remove</vs-button>
                      </div>
     </div>
 </template>
@@ -10,6 +10,7 @@
 import axios from "@/axios.js";
 export default {
   name: 'CellRendererActions',
+
   methods: {
     
    
@@ -19,7 +20,11 @@ export default {
       class_id:this.$route.params.classId,
     }
       this.$store.dispatch("classManagement/AddClassSubjects", payload)
-        .then(()   => { this.showAddSuccess(); location.reload(true) })
+        .then((response)   => {     this.params.data.is_added=1; this.showAddSuccess(); 
+    
+
+         
+    })
         .catch(err => { console.error(err)       })
     },
      RemoveClass () {
@@ -28,7 +33,10 @@ export default {
       class_id:this.$route.params.classId,
     }
       this.$store.dispatch("classManagement/RemoveClassSubjects", payload)
-        .then(()   => { this.showRemoveSuccess() ; location.reload(true)})
+        .then(()   => { this.showRemoveSuccess() ; 
+              this.params.data.is_added=0
+        
+       })
         .catch(err => { console.error(err)       })
     },
     showDeleteSuccess () {

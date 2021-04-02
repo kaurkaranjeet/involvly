@@ -30,5 +30,5 @@ export default new Vuex.Store({
     // email: moduleEmail,
     auth: moduleAuth
   },
-    strict: process.env.NODE_ENV !== 'production'
+    strict: false
 })
