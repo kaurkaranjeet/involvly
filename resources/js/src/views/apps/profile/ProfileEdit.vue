@@ -12,13 +12,13 @@
   <div class="vx-row mb-2">
     <div class="vx-col w-full">
     <vs-input
-      v-validate="'required'"
+      v-validate="'required|min:3'"
       data-vv-validate-on="blur"
       label-placeholder="Name"
       name="Name"
       v-model="first_name"
       class="w-full mt-8"
-        :maxlength="50"
+        :maxlength="20"
         v-on:keypress="isLetter($event)"
 
     />
