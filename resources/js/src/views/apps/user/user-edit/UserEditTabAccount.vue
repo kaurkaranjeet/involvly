@@ -43,7 +43,7 @@
          <div class="vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary">
 <label for="" class="vs-input--label">City</label>
 <v-select :options="cityoptions" :clearable="false" v-model="cityFilter"  id="cityFilter"  name="city"  v-validate="'required'"
-      data-vv-validate-on="change"/>
+      data-vv-validate-on="change" disabled/>
     <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
        </div>
       </div>
@@ -60,7 +60,7 @@
         <div class="vs-component vs-con-input-label vs-input w-full mt-4 vs-input-primary">
 <label for="" class="vs-input--label">State</label>
          <v-select  :options="stateFilteroption"  name="state_id"  :clearable="false"  v-model="stateFilter"    @input="getCities"   v-validate="'required'"
-      data-vv-validate-on="change" id="stateFilter">
+      data-vv-validate-on="change" id="stateFilter" disabled>
       <span class="text-danger text-sm">{{ errors.first('stateFilter') }}</span>
 </v-select>
 </div>
