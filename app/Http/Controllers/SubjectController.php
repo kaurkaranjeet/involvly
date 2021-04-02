@@ -65,7 +65,7 @@ class SubjectController extends Controller {
     }
    $data = ClassSubjects::where( 'class_code_id' , $request->class_id)->where('subject_id', $request->subject_id)->delete();
    $data=new SubjectController;
-   $data->is_added=1;
+   $data->is_added=0;
     return response()->json(compact('data'),200);
       
     }
@@ -109,7 +109,7 @@ class SubjectController extends Controller {
 
     $data->save();
 
-      $data->is_added=0;
+      $data->is_added=1;
     return response()->json(compact('data'),200);
       
     }
