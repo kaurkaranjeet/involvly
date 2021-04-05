@@ -221,14 +221,14 @@ export default {
           filter: true,
           checkboxSelection: false,
           headerCheckboxSelectionFilteredOnly: false,
-          headerCheckboxSelection: false
+          headerCheckboxSelection: false,
+          cellRendererFramework: 'CellRendererLink'
         },
         {
           headerName: 'Name',
           field: 'name',
           filter: true,
-          width: 400,
-          cellRendererFramework: 'CellRendererLink'
+          width: 225
         },
         {
           headerName: 'Email',

@@ -273,7 +273,11 @@ class UserController extends Controller {
                     $user->school_name= '-';
                 }else{
                     $user->type_of_schooling = 'School';
-                    $user->school_name= $user->SchoolDetail->school_name;
+                    if(!empty($user->SchoolDetail)){
+                        $user->school_name= $user->SchoolDetail->school_name;
+                    }else{
+                        $user->school_name= '-';
+                    }
                 }
             }
         } else if ($request->type == 'student') {
@@ -284,7 +288,11 @@ class UserController extends Controller {
                     $user->school_name= '-';
                 }else{
                     $user->type_of_schooling = 'School';
-                    $user->school_name= $user->SchoolDetail->school_name;
+                    if(!empty($user->SchoolDetail)){
+                        $user->school_name= $user->SchoolDetail->school_name;
+                    }else{
+                        $user->school_name= '-';
+                    }
                 }
             }
         }
@@ -300,7 +308,11 @@ class UserController extends Controller {
                 if($user->type_of_schooling == 'home'){
                     $user->school_name= '-';
                 }else{
-                    $user->school_name= $user->SchoolDetail->school_name;
+                    if(!empty($user->SchoolDetail)){
+                       $user->school_name= $user->SchoolDetail->school_name;
+                    }else{
+                       $user->school_name= '-';
+                    }
                 }
             }
         }
