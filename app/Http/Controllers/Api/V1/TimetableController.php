@@ -36,7 +36,8 @@ class TimetableController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-        	$selected_timetable=Timetable::where('teacher_id',$request->teacher_id)->where('school_id',$request->school_id)->first();
+            $selected_timetables=Timetable::where('teacher_id',$request->teacher_id)->where('school_id',$request->school_id)->get();
+            foreach($selected_timetables as $selected_timetable){
         	if(!empty($selected_timetable)){
         		if(in_array('Everyday',$selected_timetable->selected_days)){
         			return response()->json(array('error' => true, 'message' =>'You have already selected timetable for everyday' ), 200);
@@ -51,6 +52,7 @@ class TimetableController extends Controller {
         			}
         		}
         	}
+            }
 
 
             $task = new Timetable; //then create new object
@@ -63,8 +65,12 @@ class TimetableController extends Controller {
 
             $days_data = [];
             if (!empty($request->selected_days)) {
-                foreach ($request->selected_days as $key => $selected_days) {
-                    $days_data[$key] = $selected_days;
+                if(in_array('Everyday',$request->selected_days)){
+        			$days_data = ["Everyday"];
+        		}else{
+                    foreach ($request->selected_days as $key => $selected_days) {
+                        $days_data[$key] = $selected_days;
+                    }
                 }
             }
             $task->selected_days = $days_data;
