@@ -167,14 +167,14 @@ export default {
                     filter: true,
                     checkboxSelection: false,
                     headerCheckboxSelectionFilteredOnly: false,
-                    headerCheckboxSelection: false
+                    headerCheckboxSelection: false,
+                    cellRendererFramework: 'CellRendererLink'
                 },
                 {
                     headerName: 'Subject Name',
                     field: 'subject_name',
                     filter: true,
-                    width: 210,
-                    cellRendererFramework: 'CellRendererLink'
+                    width: 210
                 },
                 {
                     headerName: 'Actions',
