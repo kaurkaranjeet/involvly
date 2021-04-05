@@ -294,12 +294,14 @@ this.$vs.notify({
           color: 'success'
         })
 
-//alert(res.data.data.role_id)
 if(res.data.data.role_id=='4'){
      this.$router.push('/apps/user/user-list').catch(() => {})
 }
 if(res.data.data.role_id=='3'){
      this.$router.push('/apps/user/listofparents').catch(() => {})
+}
+if(res.data.data.role_id=='2'){
+     this.$router.push('/apps/user/listofstudents').catch(() => {})
 }
          })
         .catch(err => {
