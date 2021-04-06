@@ -188,7 +188,7 @@ export default {
     box-shadow: none;
   }
   .brand-logo {
-    max-width: 150px;
+    max-width: 80px;
   }
 }
 .vs-input--placeholder {
