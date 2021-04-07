@@ -110,9 +110,16 @@ Author URL: http://www.themeforest.net/user/pixinvent
 
 
             <!-- Toggle comment of below buttons as one for actual flow & currently shown is only for demo -->
-            <vs-button type="border" class="w-full mt-8" @click="$refs.update_avatar_input.click()">Upload Documents</vs-button> 
+            <vs-button type="border" class="w-full mt-8 mb-8" @click="$refs.update_avatar_input.click()">Upload Documents</vs-button> 
 </div>
-    <vs-checkbox v-model="isTermsConditionAccepted" class="mt-8">I accept the terms & conditions.</vs-checkbox>
+    <div class="vx-col flex-1">
+            <table>
+              <tr class="mt-8">
+                <td><vs-checkbox v-model="isTermsConditionAccepted"></vs-checkbox></td>
+                <td><a href="https://involvvelyback.dev.devserver.in/pages/terms-and-conditions.html" class="" target="_blank">I accept the terms & conditions.</a></td>
+              </tr>
+            </table>
+    </div>
   
     <vs-button class="w-full mt-8" @click="registerUserJWt" :disabled="!validateForm">Submit</vs-button>
 
