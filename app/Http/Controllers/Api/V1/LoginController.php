@@ -43,8 +43,8 @@ class LoginController extends Controller {
                 return response()->json(['message' => 'could_not_create_token', 'error' => true], 500);
             }
             $user_details = User::validateLogin($request->all());
-            //Update Device Token
-            User::where('id',$user_details->id)->update(['device_token' => $request->device_token]);
+            //Update Device Token andJWY token
+            User::where('id',$user_details->id)->update(['device_token' => $request->device_token,'ActiveJwttoken'=>$token]);
             $user_details->device_token=$request->device_token;
             // get class code 
            // if ($user_details->role_id == 2) {
@@ -76,10 +76,9 @@ class LoginController extends Controller {
 
 
             //}
-
+            $user_details->ActiveJwttoken=$token;
 
             if ($user_details->role_id == $request->role_id) {
-                $user_details->token = $token;
                 $user_details->role_id =$user_details->role_id;
                 $user_details->state_id = strval($user_details->state_id);
                 $user_details->school_id = strval($user_details->school_id);

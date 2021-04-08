@@ -346,6 +346,7 @@ return response()->json($response);
         $validator = Validator::make($input, [
           'from_user_id' => 'required',
           'to_user_id' => 'required',
+          'report_reason' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -354,7 +355,7 @@ return response()->json($response);
         $report_user= new ReportUser;
         $report_user->from_user_id=$request->from_user_id;
         $report_user->to_user_id=$request->to_user_id;
-        $report_user->text_description='';
+        $report_user->text_description=$request->report_reason;
         $report_user->save();
         $array=array('error' => false, 'data' => $report_user);
         // $this->pusher->trigger('read-message', 'single_message', $array);       
