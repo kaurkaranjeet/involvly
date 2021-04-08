@@ -21,6 +21,13 @@
         {
             try {
                 $user = JWTAuth::parseToken()->authenticate();
+                if($user){
+                $activetoken=$user->ActiveJwttoken;
+                $token=JWTAuth::getToken();
+                if($activetoken!= $token){
+                      return response()->json(['message' => 'Token is Invalid','status' => '0']);
+                }
+            }
             } catch (Exception $e) {
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                     return response()->json(['message' => 'Token is Invalid','status' => '0']);
