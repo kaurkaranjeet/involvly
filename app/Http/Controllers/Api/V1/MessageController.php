@@ -230,7 +230,7 @@ public function chatList(Request $request)
     $to_user_id=$request->to_user_id;
     //Update read status 
     DB::enableQueryLog(); 
-    $query1=Message::with('User:id,name,email,profile_image')->select('message','from_user_id','to_user_id','created_at as message_date','is_read','id','file','deleted_by_members')->where(function ($query) use ($from_user_id, $to_user_id) {
+    $query1=Message::with('User:id,name,email,profile_image')->select((DB::raw("( CASE WHEN EXISTS (SELECT id FROM report_users WHERE (from_user_id = ".$to_user_id."  AND to_user_id = ".$from_user_id.") OR (from_user_id = ".$from_user_id." AND to_user_id = ".$to_user_id.")) THEN TRUE  ELSE FALSE END) AS is_report,message,from_user_id,to_user_id,created_at as message_date,is_read,id,file,deleted_by_members")))->where(function ($query) use ($from_user_id, $to_user_id) {
       $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id)->whereRaw('  id NOT IN(select id from one_to_one_message as l 
 where FIND_IN_SET('.$from_user_id.', l.deleted_by_members))');
     })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
