@@ -12,6 +12,7 @@ use JWTAuth;
 use App\Models\UnapproveStudent;
 use App\Models\Group;
 use App\Models\School;
+use App\Models\ReportUser;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Pusher\Pusher;
 use App\Models\ParentChildrens;
@@ -577,6 +578,29 @@ class UserController extends Controller {
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
+    }
+    //fetch all admin users
+    public function manageReportUsers(Request $request) {
+        DB::enableQueryLog();
+            $users = ReportUser::with('FromDetail')->with('ToDetail')->get();
+        if (isset($users) && count($users) > 0) {
+            return response()->json(compact('users'), 200);
+        } else {
+            return response()->json(['error' => 'true', 'users' => [], 'message' => 'No record found'], 200);
+        }
+    }
+    //send mail to reported users
+    public function SendWarningMail(request $request) {
+                $user = User::where("id", $request->user_id)->first();
+                $data = array("name" => $user->name, "reason" =>$request->reason);
+                Mail::send("email.warning-report-mail", $data, function ($m) use ($user) {
+                    $m->from('involvvely@gmail.com', 'Involvvely');
+                    $m->to($user->email);
+                    $m->subject('Warning Mail');
+                });
+                $arr = array("error" => false, "message" => 'Warning email has been sent', "data" => $data);
+                return response()->json(compact('user'), 200);
+            
     }
 
 }
