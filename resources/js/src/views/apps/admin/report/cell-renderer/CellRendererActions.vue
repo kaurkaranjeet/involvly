@@ -53,6 +53,7 @@ export default {
   },
   methods: {
     acceptAlert(color){
+      this.$vs.loading();
       return new Promise((resolve, reject) => {
         var code = {
         user_id: this.params.data.to_detail.id,
@@ -60,21 +61,31 @@ export default {
         }
             axios.post(`/api/auth/send-warning-mail`, code)
                 .then((response) => {
+                  this.$vs.loading.close();
                     this.$vs.notify({
                     color: 'success',
                     title: 'User Reported',
                     text: 'The Mail sent was successfully to reported user'
                   })
                 })
-                .catch((error) => { reject(error) })
+                .catch((error) => { 
+                  this.$vs.loading.close();
+                  this.$vs.notify({
+                  title: "Error",
+                  text: 'Something went wrong',
+                  iconPack: "feather",
+                  icon: "icon-alert-circle",
+                  color: "danger",
+                  });
+                 })
         })
     },
     close(){
-      this.$vs.notify({
-        color:'danger',
-        title:'Closed',
-        text:'You close a dialog!'
-      })
+      // this.$vs.notify({
+      //   color:'danger',
+      //   title:'Closed',
+      //   text:'You close a dialog!'
+      // })
     },
     confirmDeleteRecord () {
       this.$vs.dialog({
@@ -87,10 +98,11 @@ export default {
       })
     },
     deleteRecord () {
+      this.$vs.loading();
       this.$store.dispatch("userManagement/removeRecord", this.params.data.to_detail.id)
-        .then(()   => { this.showDeleteSuccess()
+        .then(()   => { this.$vs.loading.close();this.showDeleteSuccess()
          })
-        .catch(err => { console.error(err)       })
+        .catch(err => { this.$vs.loading.close();console.error(err)       })
     },
     showDeleteSuccess () {
       this.$vs.notify({
