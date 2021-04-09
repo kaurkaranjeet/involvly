@@ -658,6 +658,22 @@ const router = new Router({
                         authRequired: true
                     }
                 },
+                {
+                    path: '/apps/report/users',
+                    name: 'app-report-users',
+                    component: () =>
+                        import ('@/views/apps/admin/report/ReportList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            { title: 'Users', url: '/apps/report/users' },
+                            { title: 'List', active: true }
+                        ],
+                        pageTitle: 'Report Users',
+                        rule: 'admin',
+                        authRequired: true
+                    }
+                },
             ],
         },
         // =============================================================================
