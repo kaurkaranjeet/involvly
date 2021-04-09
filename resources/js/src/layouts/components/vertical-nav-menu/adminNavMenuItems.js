@@ -52,5 +52,12 @@ export default [{
             }
 
         ]
-    }
+    },
+    {
+        url: "/apps/report/users",
+        name: "Report Users",
+        slug: "report-users",
+        icon: "UsersIcon"
+
+    },
 ]

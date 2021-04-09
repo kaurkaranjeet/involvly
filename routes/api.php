@@ -33,6 +33,8 @@ Route::prefix('auth')->group(function () {
     Route::post('change-password', 'UserController@changePassword');
     Route::post('admin_list_schools', 'UserController@AdminGetSchools');
     Route::any('/manage-users/{id}', ['as' => 'manage.users', 'uses' => 'UserController@manageUsers']);
+    Route::any('/manage-report-users', ['as' => 'manage.teachers', 'uses' => 'UserController@manageReportUsers']);
+    Route::post('send-warning-mail', 'UserController@SendWarningMail');
     Route::any('/fetch-user/{id}', ['as' => 'fetch.user', 'uses' => 'UserController@fetchUser']);
     Route::post('update-profile', 'UserController@UpdateProfile');
     Route::post('update-school-profile', 'UserController@UpdateSchoolProfile');

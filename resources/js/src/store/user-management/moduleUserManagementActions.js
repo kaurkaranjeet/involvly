@@ -245,4 +245,21 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+    fetchReportUsers({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        //  User Reward Card
+        const requestOptions = {
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-report-users', requestOptions)
+                .then((response) => {
+                    console.log(response.data.users);
+                    commit('SET_REPORT_USERS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
 }
