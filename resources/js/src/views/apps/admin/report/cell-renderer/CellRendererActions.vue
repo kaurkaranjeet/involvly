@@ -4,17 +4,20 @@
        <vs-prompt
       @cancel="valMultipe.value1='',valMultipe.value2=''"
       @accept="acceptAlert"
+      accept-text="Send"
       @close="close"
+      class="email-compose"
+                      title
       :is-valid="validName"
       :active.sync="activePrompt2">
        <div class="con-exemple-prompt">
-        <b>Reason</b>.
+        <b>Send Mail</b>
          <!--<vs-input placeholder="Name" v-model="valMultipe.value1"/>-->
          <div class="vx-col w-full">
               <vs-input
                 v-validate="'required|min:3'"
                 data-vv-validate-on="blur"
-                label-placeholder="Reason"
+                label-placeholder="Message"
                 name="Reason"
                 v-model="valMultipe.value1"
                 class="w-full mt-8"
@@ -115,3 +118,8 @@ export default {
   }
 }
 </script>
+<style>
+.vuesax-app-is-ltr .con-vs-dialog .vs-dialog header .vs-dialog-cancel{
+  transform : translate(0px,0px);
+}
+</style>
