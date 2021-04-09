@@ -268,14 +268,14 @@ export default {
           this.profile_data = res.data.data;
           console.log(this.profile_data);
           if(localStorage.getItem("role_id")== 1){
-          this.first_name = this.profile_data.first_name;
+          this.first_name = this.profile_data.name;
           this.email = this.profile_data.email;
           this.role_id = localStorage.getItem('role_id');
          //reset values
           this.first_name_reset = this.profile_data.name;
           this.email_reset = this.profile_data.email;
           }else{
-          this.first_name = this.profile_data.first_name;
+          this.first_name = this.profile_data.name;
           this.email = this.profile_data.email;
           this.position  = this.profile_data.position;
           this.country = this.profile_data.country;
