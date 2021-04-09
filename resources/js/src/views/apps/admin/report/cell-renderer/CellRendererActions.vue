@@ -118,8 +118,13 @@ export default {
   }
 }
 </script>
-<style>
-.vuesax-app-is-ltr .con-vs-dialog .vs-dialog header .vs-dialog-cancel{
-  transform : translate(0px,0px);
+<style lang="scss">
+.con-vs-dialog .vs-dialog header .vs-dialog-cancel{
+ transform: unset !important;
+ box-shadow: unset !important;
+ background: inherit!important;
+
+ 
+
 }
 </style>
