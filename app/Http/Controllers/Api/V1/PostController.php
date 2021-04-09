@@ -76,7 +76,9 @@ public function GetPostHomefeed(Request $request){
               AND likes.user_id = ".$request->user_id."  AND likes.like = 1
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_like,posts.*")))->with('user','user.CityDetail','user.StateDetail','user.SchoolDetail')->withCount('likes','comments')->orderBy('likes_count', 'desc')->get();
+              AS is_like,posts.*")))->with('user','user.CityDetail','user.StateDetail','user.SchoolDetail')->withCount('likes','comments')->whereRaw(" posts.user_id NOT IN( SELECT to_user_id FROM report_users
+ WHERE from_user_id=".$request->user_id.")")->whereRaw("  posts.user_id NOT IN( SELECT from_user_id FROM report_users
+ WHERE to_user_id=".$request->user_id.")")->orderBy('likes_count', 'desc')->get();
    }else{
      $posts = Post::select((DB::raw("( CASE WHEN EXISTS (
               SELECT *
@@ -85,7 +87,9 @@ public function GetPostHomefeed(Request $request){
               AND likes.user_id = ".$request->user_id."  AND likes.like = 1
               ) THEN TRUE
               ELSE FALSE END)
-              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->orderBy('id', 'DESC')->get();
+              AS is_like,posts.*")))->with('user','user.CityDetail','user.SchoolDetail','user.StateDetail')->withCount('likes','comments')->whereRaw(" posts.user_id NOT IN( SELECT to_user_id FROM report_users
+ WHERE from_user_id=".$request->user_id.")")->whereRaw("  posts.user_id NOT IN( SELECT from_user_id FROM report_users
+ WHERE to_user_id=".$request->user_id.")")->orderBy('id', 'DESC')->get();
    }
         
        
