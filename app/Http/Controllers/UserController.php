@@ -582,7 +582,7 @@ class UserController extends Controller {
     //fetch all admin users
     public function manageReportUsers(Request $request) {
         DB::enableQueryLog();
-            $users = ReportUser::with('FromDetail')->with('ToDetail')->get();
+            $users = ReportUser::with('FromDetail')->with('ToDetail')->orderBy('id', 'DESC')->get();
         if (isset($users) && count($users) > 0) {
             return response()->json(compact('users'), 200);
         } else {
