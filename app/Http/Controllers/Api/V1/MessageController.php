@@ -88,7 +88,7 @@ class MessageController extends Controller {
             $user_detailss = User::where('id', $request->to_user_id)->first();
             if($user_detailss->notification_settings == 1){
               if(!empty($user_detailss->device_token)){
-                SendAllNotification($user_detailss->device_token,$request->message,'social_notification',null,'send_message',null);          
+                SendAllNotification($user_detailss->device_token,$request->message,'social_notification',null,'send_message',null,null,null,$user_detailss);          
               }
               // dd($request->from_user_id);
               //  $notifications = Notification::create(['user_id'=>$user_detailss->id,'from_user_id'=>$from_user_id,'notification_message'=>$request->message,'type'=>'social_notification','notification_type'=>'message','push_type'=>'send_message','post_id'=>'']);
