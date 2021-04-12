@@ -14,14 +14,15 @@
         <b>Send Mail</b>
          <!--<vs-input placeholder="Name" v-model="valMultipe.value1"/>-->
          <div class="vx-col w-full">
-              <vs-input
+              <!--<vs-input
                 v-validate="'required|min:3'"
                 data-vv-validate-on="blur"
                 label-placeholder="Message"
                 name="Reason"
                 v-model="valMultipe.value1"
                 class="w-full mt-8"
-              />
+              />-->
+              <vs-textarea label="Message" v-model="valMultipe.value1" class="w-full mt-4"/>
           </div>
 
          <!--<vs-alert :active="!validName" color="danger" icon="new_releases" >
