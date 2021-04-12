@@ -23,11 +23,11 @@
     <body class="reset" style="background: #edeef2;height: 591px;">
         <div class="reset-password-section">
             <div class="header" style="padding: 30px 0px;">
-                <img src="{{asset('resources/img/logo.png')}}" style="width: 150px; margin: auto; display: flex;">
+                <img src="{{asset('images/logo/logo.png')}}" style="width: 150px; margin: auto; display: flex;">
             </div>
             <div class="reset-password-area" style="background: #fff; flex-direction: column; align-items: center; margin: auto; width: 550px; padding: 30px;text-align: center; border-top: 3px solid #62cef2; box-shadow: 0px 0px 12px rgba(224, 224, 224, 0.5);">
                 <div class="reset-pass-img">
-                    <img src="{{asset('resources/img/mail.png')}}" style=" width: 43px;margin-bottom: 20px;">
+                    <img src="{{asset('images/logo/mail.png')}}" style=" width: 43px;margin-bottom: 20px;">
                 </div>
                 <div class="reset-pass-content">
                     <p style="color: #62cef2; font-weight:500;">Hello, {{$name}}</p>

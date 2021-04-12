@@ -1,6 +1,6 @@
 <template>
     <div :style="{'direction': $vs.rtl ? 'rtl' : 'ltr'}">
-       <feather-icon icon="MailIcon" title="Send warning" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer" @click="activePrompt2 = true"/>
+       <feather-icon icon="MailIcon" title="Send Mail" svgClasses="h-5 w-5 mr-4 hover:text-primary cursor-pointer" @click="activePrompt2 = true"/>
        <vs-prompt
       @cancel="valMultipe.value1='',valMultipe.value2=''"
       @accept="acceptAlert"
@@ -29,7 +29,7 @@
          </vs-alert>-->
        </div>
      </vs-prompt>
-      <feather-icon icon="Trash2Icon" title="Delete user" svgClasses="h-5 w-5 hover:text-danger cursor-pointer" @click="confirmDeleteRecord" />
+      <feather-icon icon="Trash2Icon" title="Delete User" svgClasses="h-5 w-5 hover:text-danger cursor-pointer" @click="confirmDeleteRecord" />
     </div>
 </template>
 
