@@ -228,7 +228,7 @@ export default {
           headerCheckboxSelection: false,
         },
         {
-          headerName: 'Report to',
+          headerName: 'Reported to',
           field: 'to_detail.name',
           filter: true,
           width: 225,
