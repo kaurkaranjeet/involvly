@@ -7,7 +7,7 @@
       accept-text="Send"
       @close="close"
       class="email-compose"
-                      title
+      title
       :is-valid="validName"
       :active.sync="activePrompt2">
        <div class="con-exemple-prompt">
@@ -22,7 +22,14 @@
                 v-model="valMultipe.value1"
                 class="w-full mt-8"
               />-->
-              <vs-textarea label="Message" v-model="valMultipe.value1" class="w-full mt-4"/>
+              <vs-textarea 
+              label="Message"
+              name="Message"
+              v-model="valMultipe.value1"
+              class="w-full mt-4"
+              v-validate="'required'"
+              data-vv-validate-on="blur"/>
+              <span class="text-danger text-xs">{{ errors.first("Message") }}</span>
           </div>
 
          <!--<vs-alert :active="!validName" color="danger" icon="new_releases" >
@@ -52,7 +59,8 @@ export default {
        return "/apps/user/schooladmin-view/" + this.params.data.id
     },
     validName(){
-      return (this.valMultipe.value1.length > 0)
+      // return (this.valMultipe.value1.length > 0)
+      return !this.errors.any() && this.Message !== '' && this.valMultipe.value1.length > 0
     }
   },
   methods: {
@@ -69,7 +77,7 @@ export default {
                     this.$vs.notify({
                     color: 'success',
                     title: 'User Reported',
-                    text: 'The Mail sent was successfully to reported user'
+                    text: 'Mail sent successfully.'
                   })
                 })
                 .catch((error) => { 
