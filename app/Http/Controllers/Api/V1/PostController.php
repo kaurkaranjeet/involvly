@@ -330,16 +330,17 @@ public function GetComments(Request $request){
          $reply->user_id=(int) $request->user_id;
          $reply->post_id=(int) $request->post_id;
          $reply->comment_id=(int) $request->comment_id;
-         $post_user=Post::with('user')->where('id',$request->post_id)->first();
-         $user_name = User::where('id',$request->user_id)->first();
+         $comments = Comment::where('id',$request->comment_id)->first();
+         $user_name = User::where('id',$comments->user_id)->first();
         // send notification         
          $message= $user_name->name .' has commented on your post.';
 
       if($post_user->user->id!=$request->user_id){
-       if(!empty($post_user->user->device_token)){
-        SendAllNotification($post_user->user->device_token,$message,'social_notification',null,'add_comment',$request->post_id);          
+       if(!empty($user_name->device_token)){
+
+        SendAllNotification($user_name->device_token,$message,'social_notification',null,'add_comment',$request->post_id);          
       }
-       $notifications = Notification::create(['user_id'=>$post_user->user->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment','push_type'=>'add_comment','post_id'=>$request->post_id]);
+       $notifications = Notification::create(['user_id'=>$user_name->id,'from_user_id'=>$request->user_id,'notification_message'=>$message,'type'=>'social_notification','notification_type'=>'comment','push_type'=>'add_comment','post_id'=>$request->post_id]);
        $notifications->role_type = 'all';
       $this->pusher->trigger('notification-channel', 'notification_all_read', $notifications);
      }
