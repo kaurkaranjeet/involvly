@@ -335,7 +335,7 @@ public function GetComments(Request $request){
         // send notification         
          $message= $user_name->name .' has commented on your post.';
 
-      if($post_user->user->id!=$request->user_id){
+      if($user_name->id!=$request->user_id){
        if(!empty($user_name->device_token)){
 
         SendAllNotification($user_name->device_token,$message,'social_notification',null,'add_comment',$request->post_id);          
