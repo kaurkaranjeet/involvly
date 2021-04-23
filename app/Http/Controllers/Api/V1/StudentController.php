@@ -166,9 +166,10 @@ class StudentController extends Controller {
                             $message = $users->ChildDetails->name.' has joined the class';
                         }
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {                       
-                     
-                        SendAllNotification($usersData->device_token, $message, 'school_notification');
-                         }
+                        if($usersData->notification_settings == 1){
+                            SendAllNotification($usersData->device_token, $message, 'school_notification');
+                        }
+                    }
                          
                          $notificationobj=new Notification;
                          $notificationobj->user_id=$usersData->id;
@@ -217,8 +218,9 @@ class StudentController extends Controller {
                         }
                         
                     if (!empty($usersData->device_token) && $usersData->device_token != null) {
-                    
-                        SendAllNotification($usersData->device_token, $message,'school_notification');
+                        if($usersData->notification_settings == 1){
+                            SendAllNotification($usersData->device_token, $message,'school_notification');
+                        }
                     }
                        
                          $notificationobj=new Notification;
