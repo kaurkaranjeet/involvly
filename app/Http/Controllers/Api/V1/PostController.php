@@ -332,8 +332,9 @@ public function GetComments(Request $request){
          $reply->comment_id=(int) $request->comment_id;
          $comments = Comment::where('id',$request->comment_id)->first();
          $user_name = User::where('id',$comments->user_id)->first();
-        // send notification         
-         $message= $user_name->name .' has commented on your post.';
+        // send notification 
+        $replied_user = User::where('id',$request->user_id)->first();    
+         $message= $replied_user->name .' has replied on your comment.';
 
       if($user_name->id!=$request->user_id){
        if(!empty($user_name->device_token)){
