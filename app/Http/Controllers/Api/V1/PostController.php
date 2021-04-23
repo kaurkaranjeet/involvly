@@ -16,6 +16,7 @@ use App\Events\NotificationEvent;
 use App\Models\Notification;
 use App\Models\CommentReply;
 use Pusher\Pusher;
+use App\User;
 use Illuminate\Support\Facades\Validator;
 use URL;
 use DB;
