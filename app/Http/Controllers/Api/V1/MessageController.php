@@ -93,15 +93,15 @@ class MessageController extends Controller {
               // dd($request->from_user_id);
               //  $notifications = Notification::create(['user_id'=>$user_detailss->id,'from_user_id'=>$from_user_id,'notification_message'=>$request->message,'type'=>'social_notification','notification_type'=>'message','push_type'=>'send_message','post_id'=>'']);
               //  $notifications->role_type = 'all';
-              $notificationobj=new Notification;
-             $notificationobj->user_id=$user_detailss->id;
-             $notificationobj->notification_message=$request->message;
-             $notificationobj->notification_type='Message';
-             $notificationobj->type='social_notification';
-             $notificationobj->push_type='send_message';
-             $notificationobj->from_user_id=$from_user_id;
-             $notificationobj->save();
-             $notificationobj->role_type = 'all';
+            //   $notificationobj=new Notification;
+            //  $notificationobj->user_id=$user_detailss->id;
+            //  $notificationobj->notification_message=$request->message;
+            //  $notificationobj->notification_type='Message';
+            //  $notificationobj->type='social_notification';
+            //  $notificationobj->push_type='send_message';
+            //  $notificationobj->from_user_id=$from_user_id;
+            //  $notificationobj->save();
+            //  $notificationobj->role_type = 'all';
             }
 
             $this->pusher->trigger('chat-channel', 'chat_event', $array);
