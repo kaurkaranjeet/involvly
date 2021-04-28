@@ -94,6 +94,7 @@ class MessageController extends Controller {
             $array=array('error' => false, 'data' => $data);
             //notification 
             $user_detailss = User::where('id', $request->to_user_id)->first();
+            if(!empty($request->message)){
             if($user_detailss->notification_settings == 1){
               if(!empty($user_detailss->device_token)){
                 SendAllNotification($user_detailss->device_token,$request->message,'social_notification',null,'send_message',null,null,null,$user_detailss);          
@@ -110,6 +111,7 @@ class MessageController extends Controller {
             //  $notificationobj->from_user_id=$from_user_id;
             //  $notificationobj->save();
             //  $notificationobj->role_type = 'all';
+            }
             }
 
             $this->pusher->trigger('chat-channel', 'chat_event', $array);
