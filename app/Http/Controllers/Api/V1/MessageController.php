@@ -75,7 +75,15 @@ class MessageController extends Controller {
              
              $name = rand().'.'.$request->file('file')->getClientOriginalExtension();
              $request->file('file')->move(public_path().'/files/', $name);              
-             $data->file =URL::to('/').'/files/'.$name;;            
+             $data->file =URL::to('/').'/files/'.$name;  
+             //notification 
+            $user_detailssfile = User::where('id', $request->to_user_id)->first();
+            if($user_detailssfile->notification_settings == 1){
+              if(!empty($user_detailssfile->device_token)){
+                $messagefile = $user_detailssfile->name.'has sent a file';
+                SendAllNotification($user_detailssfile->device_token,$messagefile,'social_notification',null,'send_message',null,null,null,$user_detailssfile);          
+              }
+            }          
          }
             $data->is_read = 0; // message will be unread when sending message
             $data->save();
