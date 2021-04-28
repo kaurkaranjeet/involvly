@@ -77,12 +77,12 @@ class MessageController extends Controller {
              $request->file('file')->move(public_path().'/files/', $name);              
              $data->file =URL::to('/').'/files/'.$name;  
              //notification 
-            // $user_detailssfile = User::where('id', $request->to_user_id)->first();
-            $user_detailssfile = DB::table('users')->select('id', 'name', 'email')->where('id', $request->to_user_id)->first();
+            $user_detailssfile = User::where('id', $request->to_user_id)->first();
+            $user_pusher = DB::table('users')->select('id', 'name', 'email')->where('id', $request->to_user_id)->first();
             if($user_detailssfile->notification_settings == 1){
               if(!empty($user_detailssfile->device_token)){
                 $messagefile = $user_detailssfile->name.'has sent a file';
-                SendAllNotification($user_detailssfile->device_token,$messagefile,'social_notification',null,'send_message',null,null,null,$user_detailssfile);          
+                SendAllNotification($user_detailssfile->device_token,$messagefile,'social_notification',null,'send_message',null,null,null,$user_pusher);          
               }
             }          
          }
@@ -94,8 +94,8 @@ class MessageController extends Controller {
             $data->User;      
             $array=array('error' => false, 'data' => $data);
             //notification 
-            // $user_detailss = User::where('id', $request->to_user_id)->first();
-            $user_detailss = DB::table('users')->select('id', 'name', 'email')->where('id', $request->to_user_id)->first();
+            $user_detailss = User::where('id', $request->to_user_id)->first();
+            $user_pusher = DB::table('users')->select('id', 'name', 'email')->where('id', $request->to_user_id)->first();
             if(!empty($request->message)){
             if($user_detailss->notification_settings == 1){
               if(!empty($user_detailss->device_token)){
