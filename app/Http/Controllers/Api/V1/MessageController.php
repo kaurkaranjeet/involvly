@@ -81,7 +81,7 @@ class MessageController extends Controller {
             $user_pusher = DB::table('users')->select('id', 'name', 'email')->where('id', $request->from_user_id)->first();
             if($user_detailssfile->notification_settings == 1){
               if(!empty($user_detailssfile->device_token)){
-                $messagefile = $user_detailssfile->name.'has sent a file';
+                $messagefile = $user_pusher->name.'has sent a file';
                 SendAllNotification($user_detailssfile->device_token,$messagefile,'social_notification',null,'send_message',null,null,null,$user_pusher);          
               }
             }          
