@@ -353,14 +353,20 @@ export default {
         .dispatch("auth/UpdateUser", formData)
         .then((res) => {
           this.$vs.loading.close();
-          this.$router
-            .push(`/`)
-            .catch(() => {});
           this.$vs.notify({
             color: "success",
             title: "Success",
             text: "Admin details updated successfully!",
           });
+          if(localStorage.getItem("role_id")== 1){
+            this.$router
+            .push(`/dashboard`)
+            .catch(() => {});
+          }else{
+            this.$router
+            .push(`/`)
+            .catch(() => {});
+          }
           location.reload();
         })
         .catch((error) => {
