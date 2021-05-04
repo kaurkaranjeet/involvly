@@ -363,13 +363,11 @@ class UserController extends Controller {
     }
 
     public function UpdateProfile(Request $request) {
-        // $name = $request->first_name . ' ' . $request->last_name;
-
-        
+        $name = $request->first_name . ' ' . $request->last_name;
         if($request->role_id == '1'){
-            User::where('id', $request->id)->update(['name' => $request->first_name, 'status' => 1]);
+            User::where('id', $request->id)->update(['name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'status' => 1]);
         }else{
-            User::where('id', $request->id)->update(['state_id' => $request->state_id,'city' => $request->city, 'name' => $request->first_name, 'status' => 1]);
+            User::where('id', $request->id)->update(['state_id' => $request->state_id,'city' => $request->city, 'name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'status' => 1]);
         }
         $data = User::find($request->id);
         if (!empty($data)) {
@@ -380,8 +378,8 @@ class UserController extends Controller {
     }
 
     public function UpdateSchoolProfile(Request $request) {
-        // $name = $request->first_name . ' ' . $request->last_name;
-        User::where('id', $request->user_id)->update(['state_id' => $request->state,'city' => $request->city, 'name' => $request->first_name, 'position' => $request->position, 'school_id' => $request->school]);
+        $name = $request->first_name . ' ' . $request->last_name;
+        User::where('id', $request->user_id)->update(['state_id' => $request->state,'city' => $request->city, 'name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'position' => $request->position, 'school_id' => $request->school]);
         $data = User::find($request->id);
         if (!empty($data)) {
             return response()->json(compact('data'), 200);
