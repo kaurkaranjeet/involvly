@@ -90,9 +90,9 @@
   <vue-select :options="cityoptions" :clearable="false" v-model="cityFilter" class="w-full mt-8"   name="city"  v-validate="'required'"
       data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('cityFilter') }}</span>
-    <vue-select  :options="ChildFilteroption"  name="student_id[]"  :clearable="true"   v-model="ChildFilter" class="w-full mt-8"    v-validate="'required'"   placeholder=" Select Associated Child"
+    <!--<vue-select  :options="ChildFilteroption"  name="student_id[]"  :clearable="true"   v-model="ChildFilter" class="w-full mt-8"    v-validate="'required'"   placeholder=" Select Associated Child"
     data-vv-validate-on="change" multiple></vue-select>
-    <span class="text-danger text-sm">{{ errors.first('ChildFilter') }}</span>
+    <span class="text-danger text-sm">{{ errors.first('ChildFilter') }}</span>-->
     <vue-select :options="relationshipOptions" :clearable="false" v-model="relationFilter" class="w-full mt-8"  v-validate="'required'"
     data-vv-validate-on="change"/>
     <span class="text-danger text-sm">{{ errors.first('relationFilter') }}</span>
@@ -143,8 +143,8 @@ export default {
       classes:"",
       stateFilteroption:[],
       cityoptions:[],
-      ChildFilteroption:[],
-      ChildFilter: [],
+      // ChildFilteroption:[],
+      // ChildFilter: [],
       
     relationshipOptions: [
         { label: 'Father', value: 'Father' },
@@ -190,17 +190,17 @@ isNumorLetter(e) {
       this.stateFilter= { label: 'Select State', value: '0' }
       this.cityFilter={ label: 'Select city', value: '0' }   
       this.relationFilter={ label: 'Select Relationship', value: '0' }   
-      this.ChildFilter=[]   
+      // this.ChildFilter=[]   
     },
     SaveParent() {
-      let x=''
-      //console.log(this.ChildFilter)
-      let person=this.ChildFilter;
-      let student=[];
-      for (x in person) {
-        student.push(person[x].value);
+      // let x=''
+      // //console.log(this.ChildFilter)
+      // let person=this.ChildFilter;
+      // let student=[];
+      // for (x in person) {
+      //   student.push(person[x].value);
         
-      };
+      // };
       var code = {
         first_name: this.firstname,
         family_code: this.familycode,
@@ -213,7 +213,7 @@ isNumorLetter(e) {
         school_id: localStorage.getItem('school_id'),
         city:this.cityFilter.value,
         state_id:this.stateFilter.value,
-        student_id:student.join(),
+        // student_id:student.join(),
         role_id:3
       };
      // console.log("adddata",code);
@@ -354,20 +354,20 @@ this.$http
         console.log(error);
       });  */
 
-       this.$http
-   .post("/api/auth/list_students",requestOptions)
-   .then(response => {
-    var data=response.data.data;
-    for ( var index in data ) {
-     let newobj={}
-     newobj.label=data[index].name;
-     newobj.value=data[index].id;
-     this.ChildFilteroption.push( newobj );
-   }
- })
-   .catch(error => {
-    console.log(error);
-  });
+//        this.$http
+//    .post("/api/auth/list_students",requestOptions)
+//    .then(response => {
+//     var data=response.data.data;
+//     for ( var index in data ) {
+//      let newobj={}
+//      newobj.label=data[index].name;
+//      newobj.value=data[index].id;
+//      this.ChildFilteroption.push( newobj );
+//    }
+//  })
+//    .catch(error => {
+//     console.log(error);
+//   });
 
 
   }

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Exception;
+use App\Models\ParentChildrens;
 use App\Events\AssignEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -88,6 +89,19 @@ class ParentController extends Controller {
                     User::where('id',$addUser->id)->update(['family_code' => $family_code,'update_detail' => '1']);
                 }else{
                     User::where('id',$addUser->id)->update(['family_code' => $request->family_code,'update_detail' => '1']);
+                    //GET RELATED STUDENTS AND CREATE ENTRY IN PARENT CHILDERNS TABLE 
+                    $childrens = User::where('family_code', $request->family_code)->where('role_id', 2)->get();
+                    foreach ($childrens as $singl) {
+                        $count=  ParentChildrens::where('parent_id', $addUser->id)->where('children_id', $singl->id)->count();
+                        if($count==0){
+                                DB::table('parent_childrens')->insert(
+                                        [
+                                            'parent_id' => $addUser->id,
+                                            'children_id' => $singl->id,
+                                            'relationship' => $request->relationship
+                                ]);
+                        }
+                    }
                 }
                     if (isset($request->student_id)) {
                         $explode = explode(',', $request->student_id);
