@@ -200,8 +200,8 @@ class ParentController extends Controller {
                             DB::table('parent_childrens')->insert(
                                     [
                                         'parent_id' => $singl->id,
-                                        'children_id' => $request->user_id
-                                    //'relationship' => $request->relationship
+                                        'children_id' => $request->user_id,
+                                        'relationship' => $singl->relationship
                             ]);
                         }
                     }
