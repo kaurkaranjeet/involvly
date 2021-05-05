@@ -1252,7 +1252,6 @@ class ParentController extends Controller {
         } else {
             $schedule = Schedule::with('User')->find($request->schedule_id);
             $user = User::find($request->parent_id);
-            $schedule->assigned_to = $user;
             if (!empty($schedule)) {
                 if ($request->accept_reject == 1) {
                     $type = 'accepted';
@@ -1280,6 +1279,7 @@ class ParentController extends Controller {
                 }
 
                 $schedule->save();
+               $schedule->assigned_to = $user;
                 if ($request->accept_reject == 2) {
                     $this->pusher->trigger('decline-channel', 'decline_schedule', $schedule);
                 }
