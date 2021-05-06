@@ -155,7 +155,8 @@ class TimetableController extends Controller {
                             ->leftJoin('users', 'users.id', '=', 'user_class_code.user_id')
                             ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
                             ->select('parent_childrens.*','user_class_code.class_id','class_code.class_name')
-                            ->where('parent_id', $request->parent_id)->where('type_of_schooling','school')->get();
+                            ->where('parent_id', $request->parent_id)->where('type_of_schooling','school')
+                            ->groupBy('parent_childrens.id')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $teachers), 200);
         }
     }
