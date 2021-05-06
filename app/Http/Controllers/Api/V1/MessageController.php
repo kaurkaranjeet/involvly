@@ -55,6 +55,9 @@ class MessageController extends Controller {
          }  else{
           $from_user_id=$request->from_user_id;
            $to_user_id=$request->to_user_id;
+           if(empty($request->message) && empty($request->hasfile('file'))){
+            throw new Exception('Please enter some data');
+           }
            $query1=Message::where(function ($query) use ($from_user_id, $to_user_id) {
             $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
           })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
