@@ -52,11 +52,19 @@
                 <!-- ITEMS PER PAGE -->
                 <div class="flex-grow">
                     <vs-dropdown vs-trigger-click class="cursor-pointer">
-                        <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+                    <div v-if="usersData.length == '0'" class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+              <span class="mr-2">0 - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
+              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+            </div>
+            <div v-if="usersData.length != '0'" class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
+              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+            </div>
+                        <!--<div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
                             <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
                             <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
                         </div>
-                        <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
+                         <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
                         <vs-dropdown-menu>
     
                             <vs-dropdown-item @click="gridApi.paginationSetPageSize(10)">
@@ -79,46 +87,56 @@
                 <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." />
                 <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
     
+                <!-- ACTION - DROPDOWN 
+              <vs-dropdown vs-trigger-click class="cursor-pointer">
+    
+                <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-medium w-32">
+                  <span class="mr-2 leading-none">Actions</span>
+                  <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+                </div>
+    
+                <vs-dropdown-menu>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>Delete</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>Archive</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>Print</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                  <vs-dropdown-item>
+                    <span class="flex items-center">
+                      <feather-icon icon="SaveIcon" svgClasses="h-4 w-4" class="mr-2" />
+                      <span>CSV</span>
+                    </span>
+                  </vs-dropdown-item>
+    
+                </vs-dropdown-menu>
+              </vs-dropdown>
+              -->
             </div>
     
     
-           <div class="vx-row">
-      <!-- CARD 9: DISPATCHED ORDERS -->
-      <div class="vx-col w-full">
-        <vx-card title="Subject Lists">
-          <div slot="no-body" class="mt-4">
-            <vs-table max-items="5" pagination :data="usersData" class="table-dark-inverted" >
-              <template slot="thead">
-                <vs-th>Id</vs-th>
-                <vs-th>Name</vs-th>
-                <vs-th>Assign/Re-assign Teacher</vs-th>  
-               
-              </template>
-
-              <template slot-scope="{data}">
-                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                  <vs-td :data="data[indextr].subject_id">
-                    <span>#{{data[indextr].subject_id}}</span>
-                  </vs-td>
-
-                    <vs-td :data="data[indextr].subject_name">
-                    <span>{{data[indextr].subject_name}}</span>
-                  </vs-td>                                  
-                  <vs-td>
-                    <span class="flex items-center px-2 py-1 rounded"> 
-                     <vs-button @click="assignedTeacherToClass($route.params.classId,data[indextr].subject_id)"> Assign/Re-assign</vs-button>
-                                        </span>
-                 
-                  </vs-td>
-              
-                </vs-tr>
-              </template>
-            </vs-table>
-          </div>
-        </vx-card>
-      </div>
-    </div>
-            
+            <!-- AgGrid Table -->
+            <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions" class="ag-theme-material w-100 my-4 ag-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef" :rowData="usersData" rowSelection="multiple" colResizeDefault="shift"
+                :animateRows="true" :floatingFilter="true" :pagination="true" :paginationPageSize="paginationPageSize" :suppressPaginationPanel="true" :enableRtl="$vs.rtl">
+            </ag-grid-vue>
+    
+            <vs-pagination :total="totalPages" :max="7" v-model="currentPage" />
     
         </div>
     </div>
@@ -198,18 +216,19 @@ export default {
             },
             columnDefs: [{
                     headerName: 'ID',
-                    field: 'id',
-                    width: 125,
+                    field: 'subject_id',
+                    width: 200,
                     filter: true,
-                    checkboxSelection: true,
-                    headerCheckboxSelectionFilteredOnly: true,
-                    headerCheckboxSelection: true
+                    checkboxSelection: false,
+                    headerCheckboxSelectionFilteredOnly: false,
+                    headerCheckboxSelection: false,
+                    cellRendererFramework: 'CellRendererLink'
                 },
                 {
                     headerName: 'Subject Name',
                     field: 'subject_name',
                     filter: true,
-                    width: 210,
+                    width: 200,
                     cellRendererFramework: 'CellRendererLink'
                 },
 
@@ -217,7 +236,8 @@ export default {
                     headerName: 'Assign/Reassign',
                     field: 'assign/reassign',
                     filter: false,
-                    width: 210,
+                    width: 300,
+                    cellRendererFramework: 'CellRendererStatus',
                    // cellRendererFramework: 'CellRendererLink'
                 },
                 // {
@@ -283,7 +303,7 @@ export default {
         }
     },
     methods: {
-        fetch_Class_data(classId) {
+         fetch_Class_data(classId) {
             this.$store.dispatch('classManagement/fetchClassCodeDetail', classId)
                 .then(res => {
                     this.class_data = res.data.class
@@ -373,9 +393,5 @@ export default {
 }
 .pd-bt{
   padding-bottom: 10px;
-}
-.vs-input--placeholder {
-    font-size: .90rem !important;
-    color: #626262 !important;
 }
 </style>

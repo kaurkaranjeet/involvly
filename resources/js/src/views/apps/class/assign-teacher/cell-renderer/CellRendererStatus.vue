@@ -30,7 +30,7 @@ export default {
       school_id:localStorage.getItem('school_id'),
     }
       this.$store.dispatch("classManagement/RemoveTeacherToClassSubjects", payload)
-        .then(()   => { this.showRemoveSuccess() ; location.reload(true)})
+        .then(()   => { this.showRemoveSuccess() ; this.$router.push('/apps/class/class-view/'+this.$route.params.classId).catch(() => {}) })
         .catch(err => { console.error(err)       })
     },
     showDeleteSuccess () {

@@ -174,7 +174,7 @@ export default {
                     headerName: 'Subject Name',
                     field: 'subject_name',
                     filter: true,
-                    width: 210
+                    width: 300
                 },
                 {
                     headerName: 'Actions',
