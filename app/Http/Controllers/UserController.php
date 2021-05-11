@@ -510,7 +510,7 @@ class UserController extends Controller {
                         $datauser = User::where("id", $request->user_id)->update(["password" => Hash::make($request->input('new_password'))]);
                         return response()->json(compact('datauser'), 200);
                     }else{
-                        return response()->json(['error' => 'true', 'message' => 'Confirm password do not match'], 200);
+                        return response()->json(['error' => 'true', 'message' => 'Passwords do not match. Please try again.'], 200);
                         
                     }   
                     }
