@@ -42,7 +42,7 @@
 
       <!-- CARD 2: SUBSCRIBERS GAINED 
           :chartData="subscribersGained.Studentseries"-->
-      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirectschooladmins" style="cursor: pointer">
         <statistics-card-line
           icon="UsersIcon"
           :statistic="subscribersGained.students"
@@ -533,6 +533,12 @@ export default {
   },
 
     methods: {
+      redirect(){
+   
+          this.$router
+            .push(`/apps/user/listofschooladmins`)
+            .catch(() => {});
+          },
 
  GetRequests () {
  var x = localStorage.getItem('accessToken');
