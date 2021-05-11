@@ -533,7 +533,7 @@ export default {
   },
 
     methods: {
-      redirect(){
+      redirectschooladmins(){
    
           this.$router
             .push(`/apps/user/listofschooladmins`)
