@@ -346,7 +346,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                         throw new Exception('Old password do not match');
                     }
                 } else {
-                    throw new Exception('Confirm password do not match');
+                    throw new Exception('Passwords do not match. Please try again.');
                 }
             } catch (Exception $ex) {
                 $arr = array("error" => true, "message" => $ex->getMessage(), "data" => []);

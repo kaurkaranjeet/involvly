@@ -102,7 +102,7 @@ const router = new Router({
                         breadcrumb: [
                             { title: 'Home', url: '/' },
                             { title: 'Classes', url: '/apps/class/class-list' },
-                            { title: 'View', active: true }
+                            { title: 'View details', active: true }
                         ],
                         pageTitle: 'View Class Code',
                         rule: 'editor',

@@ -82,12 +82,20 @@ class ClassController extends Controller {
       $validator = Validator::make($request->all(), [
         'class_id' => 'required',
         'class_name' => 'required',
-        'class_code' => 'required|unique:class_code,class_code,'.$request->get('class_id'),
+        'class_code' => 'required',
+        // 'class_code' => 'required|unique:class_code,class_code,'.$request->get('class_id'),
     ]);
     if($validator->fails()){
       return response()->json([ 'error' =>true, 'message'=>$validator->errors()->first()], 200);
     }
     if(!empty($request->get('class_id'))){
+      //get school id from class_id
+      $school_id = ClassCode::where('id',$request->get('class_id'))->first();
+      //check unique class code validation
+      $unique_class_code = ClassCode::where('school_id',$school_id->school_id)->where('class_code',$request->get('class_code'))->first();
+      if(!empty($unique_class_code)){
+        return response()->json(array('error' => true, 'message' => 'Class Code already exist', 'data' => []), 200);  
+    }
     $data['class_name'] = $request->get('class_name');
     $data['class_code'] = $request->get('class_code');
     $class = ClassCode::where('id', $request->get('class_id'))->update($data);

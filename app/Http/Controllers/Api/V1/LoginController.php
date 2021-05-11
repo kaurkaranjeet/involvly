@@ -182,7 +182,7 @@ class LoginController extends Controller {
                     $datauser = User::where("email", $request->email)->update(["password" => Hash::make($request->input('new_password'))]);
                     $arr = array("error" => false, "message" => 'Your password is changed', "data" => $datauser);
                 } else {
-                    throw new Exception('Confirm password do not match');
+                    throw new Exception('Passwords do not match. Please try again.');
                 }
             } catch (Exception $ex) {
                 $arr = array("error" => true, "message" => $ex->getMessage(), "data" => []);
