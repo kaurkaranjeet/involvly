@@ -132,7 +132,7 @@
     
     
             <!-- AgGrid Table -->
-            <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions" class="ag-theme-material w-100 my-4 ag-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef" :rowData="usersData" rowSelection="multiple" colResizeDefault="shift"
+            <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions" class="ag-theme-material w-100 my-4 ag-grid-table class-width" :columnDefs="columnDefs" :defaultColDef="defaultColDef" :rowData="usersData" rowSelection="multiple" colResizeDefault="shift"
                 :animateRows="true" :floatingFilter="true" :pagination="true" :paginationPageSize="paginationPageSize" :suppressPaginationPanel="true" :enableRtl="$vs.rtl">
             </ag-grid-vue>
     
@@ -393,5 +393,8 @@ export default {
 }
 .pd-bt{
   padding-bottom: 10px;
+}
+.class-width{
+    width : 66% !important;
 }
 </style>
