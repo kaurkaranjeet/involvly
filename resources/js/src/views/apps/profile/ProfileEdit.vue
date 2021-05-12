@@ -386,7 +386,7 @@ export default {
             .push(`/`)
             .catch(() => {});
           }
-          location.reload();
+          window.setTimeout(function(){location.reload()},500)
         })
         .catch((error) => {
           this.$vs.loading.close();
