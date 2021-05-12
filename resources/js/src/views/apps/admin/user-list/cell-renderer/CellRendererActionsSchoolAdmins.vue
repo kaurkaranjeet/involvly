@@ -33,7 +33,7 @@ export default {
         type: 'confirm',
         color: 'danger',
         title: 'Confirm Delete',
-        text: `You are about to delete "${this.params.data.name}"`,
+        text: `Are you sure you want to delete this admin?`,
         accept: this.deleteRecord,
         acceptText: 'Delete'
       })
