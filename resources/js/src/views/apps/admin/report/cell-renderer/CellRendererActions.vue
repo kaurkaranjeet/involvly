@@ -104,7 +104,7 @@ export default {
         type: 'confirm',
         color: 'danger',
         title: 'Confirm Delete',
-        text: `You are about to delete "${this.params.data.to_detail.name}"`,
+        text: `Are you sure you want to delete this user?`,
         accept: this.deleteRecord,
         acceptText: 'Delete'
       })
