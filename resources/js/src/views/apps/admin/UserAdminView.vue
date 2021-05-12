@@ -242,7 +242,7 @@ export default {
       this.$vs.notify({
         color: 'success',
         title: 'User Deleted',
-        text: 'The selected user was successfully deleted'
+        text: 'The selected user is deleted successfully.'
       })
     },
      Approveteacher (id,el) {
