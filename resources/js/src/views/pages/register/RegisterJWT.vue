@@ -13,16 +13,29 @@ Author URL: http://www.themeforest.net/user/pixinvent
     <vs-input
       v-validate="'required|min:3'"
       data-vv-validate-on="blur"
-      label-placeholder="Name*"
-      name="name"
-      placeholder="Name*"
-      v-model="name"
+      label-placeholder="First Name*"
+      name="First Name"
+      placeholder="First Name*"
+      v-model="first_name"
       class="w-full mt-8"
       :maxlength="20"
 
  v-on:keypress="isLetter($event)"
        />
-    <span class="text-danger text-sm">{{ errors.first('name') }}</span>
+    <span class="text-danger text-sm">{{ errors.first('First Name') }}</span>
+    <vs-input
+      v-validate="'required|min:3'"
+      data-vv-validate-on="blur"
+      label-placeholder="Last Name*"
+      name="Last Name"
+      placeholder="Last Name*"
+      v-model="last_name"
+      class="w-full mt-8"
+      :maxlength="20"
+
+ v-on:keypress="isLetter($event)"
+       />
+    <span class="text-danger text-sm">{{ errors.first('Last Name') }}</span>
 
 
  <vs-input
@@ -142,7 +155,8 @@ export default {
   data () {
     return {
       countimages:0,
-      name: '',
+      first_name: '',
+      last_name: '',
       Position: '',
       email: '',
       password: '',
@@ -164,13 +178,14 @@ export default {
   },
   computed: {
     validateForm () {
-      return !this.errors.any() && this.name !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== ''  && this.schoolFilter.value !== '0'
+      return !this.errors.any() && this.first_name !== '' && this.last_name !== '' && this.email !== '' && this.password !== '' && this.confirm_password !== '' && this.isTermsConditionAccepted === true  && this.country !== ''  && this.stateFilter.value !== '0' && this.cityFilter.value !== '0' && this.Position !== ''  && this.schoolFilter.value !== '0'
     }
   },
   methods: {
 
 reset_data () {
-    this.name= ''
+    this.first_name= ''
+    this.last_name= ''
       this.Position=''
       this.email= ''
       this.password= ''
@@ -281,7 +296,8 @@ for (let i = 0; i < this.pdf.length; i++) {
         let formData = new FormData();
       formData.append('documents', this.documents);  
         formData.append('position', this.Position); 
-      formData.append('name', this.name);
+      formData.append('first_name', this.first_name);
+      formData.append('last_name', this.last_name);
       formData.append('email', this.email);
       formData.append('password', this.password);
       formData.append('confirmPassword', this.confirmPassword);
