@@ -57,8 +57,8 @@ export default {
     showDeleteSuccess () {
       this.$vs.notify({
         color: 'success',
-        title: 'User Deleted',
-        text: 'The selected admin is deleted.'
+        // title: 'Admin Deleted',
+        text: 'The selected admin is deleted successfully.'
       })
     }
   }

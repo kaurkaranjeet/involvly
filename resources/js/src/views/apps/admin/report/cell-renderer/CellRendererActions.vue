@@ -76,7 +76,7 @@ export default {
                   this.$vs.loading.close();
                     this.$vs.notify({
                     color: 'success',
-                    title: 'User Reported',
+                    // title: 'User Reported',
                     text: 'Mail sent successfully.'
                   })
                 })
@@ -119,8 +119,8 @@ export default {
     showDeleteSuccess () {
       this.$vs.notify({
         color: 'success',
-        title: 'User Deleted',
-        text: 'The reported user was successfully deleted'
+        // title: 'User Deleted',
+        text: 'The reported user is deleted successfully.'
       })
       location.reload();
     }
