@@ -82,7 +82,8 @@ class UserController extends Controller {
 
 
         $validator = Validator::make($request->all(), [
-                    'name' => 'required|string|max:255',
+                    'first_name' => 'required|string|max:255',
+                    'last_name' => 'required|string|max:255',
                     'email' => 'required|string|email|max:255|unique:users',
                     'password' => 'required|string|min:6',
                     'city' => 'required',
@@ -97,14 +98,17 @@ class UserController extends Controller {
 
 
         $user = new User;
-        $name = explode(',', $request->name);
-        $user->first_name = $name[0];
-        if (isset($name[1])) {
-            $user->last_name = $name[1];
-        } else {
-            $user->last_name = '';
-        }
-        $user->name = $request->name;
+        // $name = explode(',', $request->name);
+        // $user->first_name = $name[0];
+        // if (isset($name[1])) {
+        //     $user->last_name = $name[1];
+        // } else {
+        //     $user->last_name = '';
+        // }
+        $name = $request->first_name . ' ' . $request->last_name;
+        $user->name = $name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->password = $request->password;
         $user->city = $request->city;
