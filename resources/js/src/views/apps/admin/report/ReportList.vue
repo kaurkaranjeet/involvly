@@ -245,7 +245,8 @@ export default {
           headerName: 'Reason',
           field: 'text_description',
           filter: true,
-          width: 250,
+          width: 300,
+          cellRendererFramework: 'CellRendererStatus'
         },
         {
           headerName: 'Actions',
