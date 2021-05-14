@@ -96,15 +96,16 @@ Route::prefix('v1')->group(function () {
     Route::get('list_states', 'Api\V1\CommonController@GetStates');
     Route::post('list_schools', 'Api\V1\CommonController@GetSchools');
     Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
-    Route::post('list_students', 'Api\V1\ParentController@GetStudents');
     Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
     Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
-    Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
     Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
     Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
 });
 
 Route::prefix('v1')->middleware('jwt.verify')->group(function () {
+
+  Route::post('list_students', 'Api\V1\ParentController@GetStudents');
+  Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
   Route::post('add_schedule', 'Api\V1\ParentController@AddSchedule');
     Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
     Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
