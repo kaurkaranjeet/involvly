@@ -375,6 +375,24 @@ WHERE class_id= class_code_subject .class_code_id AND
         }
     }
 
+    public function GetUsers(Request $request) {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+                    'user_id' => 'required|exists:users,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+        } else {
+         $userobj=User::where('id', $request->user_id)->first();
+            if (!empty($userobj)) {
+                return response()->json(array('error' => false, 'message' => 'User get successfully', 'data' => $userobj), 200);
+            } else {
+                return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
+            }
+        }
+    }
+
     public function RunMigration() {
         Artisan::call('migrate');
     }
