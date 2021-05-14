@@ -99,6 +99,7 @@ Route::prefix('v1')->group(function () {
     Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
     Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
     Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
+    Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
     Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
 });
 
@@ -108,7 +109,6 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
   Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
   Route::post('add_schedule', 'Api\V1\ParentController@AddSchedule');
     Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
-    Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
     Route::post('add_children', 'Api\V1\ParentController@AddChildren');
     Route::post('join_community', 'Api\V1\CommonController@Joincommunity');
     Route::post('add_post', 'Api\V1\PostController@AddPost');
