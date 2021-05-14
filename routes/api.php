@@ -80,15 +80,13 @@ Route::prefix('auth')->group(function () {
 });
 // Mobile Apis
 
-
-
 Route::prefix('v1')->group(function () {
-    Route::post('forgot-password', 'Api\V1\LoginController@forgot_password');
+  Route::post('forgot-password', 'Api\V1\LoginController@forgot_password');
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('change-password', 'Auth\AuthController@change_password');
     });
-     Route::post('add_schedule', 'Api\V1\ParentController@AddSchedule');
+
     Route::post('login', 'Api\V1\LoginController@login');
     Route::post('logout', 'Api\V1\LoginController@Logout');
     Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');
@@ -100,14 +98,20 @@ Route::prefix('v1')->group(function () {
     Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
     Route::post('list_students', 'Api\V1\ParentController@GetStudents');
     Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
+    Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
+    Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
+    Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
+    Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
+});
+
+Route::prefix('v1')->middleware('jwt.verify')->group(function () {
+  Route::post('add_schedule', 'Api\V1\ParentController@AddSchedule');
     Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
     Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
     Route::post('add_children', 'Api\V1\ParentController@AddChildren');
-    Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
     Route::post('join_community', 'Api\V1\CommonController@Joincommunity');
     Route::post('add_post', 'Api\V1\PostController@AddPost');
     Route::post('add_comment', 'Api\V1\PostController@AddComments');
-    Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
     Route::get('get_home_feed', 'Api\V1\PostController@GetPostHomefeed');
     Route::post('get_home_feed_description', 'Api\V1\PostController@GetPostHomefeedDescription');
     Route::post('get_comments', 'Api\V1\PostController@GetComments');
@@ -210,10 +214,9 @@ Route::prefix('v1')->group(function () {
     Route::post('get_associated_parents', 'Api\V1\ParentController@GetAssociatedParents');
     Route::post('my_parents', 'Api\V1\ParentController@MyParents');
     Route::post('get_associated_classes', 'Api\V1\ParentController@GetAssociatedClasses');
- Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
- Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
   Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
     Route::post('get_parent_schools', 'Api\V1\CommonController@GetParentSchools');
 
 });
+
 
