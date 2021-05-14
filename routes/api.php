@@ -104,7 +104,7 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::prefix('v1')->middleware('jwt.verify')->group(function () {
-
+  Route::post('get_users', 'Api\V1\CommonController@GetUsers');
   Route::post('list_students', 'Api\V1\ParentController@GetStudents');
   Route::post('update_other_details', 'Api\V1\ParentController@updateotherDetails');
   Route::post('add_schedule', 'Api\V1\ParentController@AddSchedule');
@@ -215,7 +215,7 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
     Route::post('get_associated_parents', 'Api\V1\ParentController@GetAssociatedParents');
     Route::post('my_parents', 'Api\V1\ParentController@MyParents');
     Route::post('get_associated_classes', 'Api\V1\ParentController@GetAssociatedClasses');
-  Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
+    Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
     Route::post('get_parent_schools', 'Api\V1\CommonController@GetParentSchools');
 
 });
