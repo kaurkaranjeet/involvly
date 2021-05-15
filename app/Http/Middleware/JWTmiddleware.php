@@ -5,7 +5,7 @@
     use Closure;
     use JWTAuth;
     use Exception;
-    use User;
+    use App\User;
 
     use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
