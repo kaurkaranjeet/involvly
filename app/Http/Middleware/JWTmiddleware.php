@@ -25,16 +25,16 @@
                 $activetoken=$user->ActiveJwttoken;
                 $token=JWTAuth::getToken();
                 if($activetoken!= $token){
-                      return response()->json(['message' => 'Token is Invalid','status' => '0'], 401);
+                      return response()->json(['message' => 'Someone else is using your account details. So, you have been logged out.','status' => '0'], 401);
                 }
                 }else{
-                    return response()->json(['message' => 'Token not found','status' => '0'], 401);
+                    return response()->json(['message' => 'This account is no longer available.','status' => '0'], 401);
                 }
             } catch (Exception $e) {
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                    return response()->json(['message' => 'Token is Invalid','status' => '0'], 401);
+                    return response()->json(['message' => 'Someone else is using your account details. So, you have been logged out.','status' => '0'], 401);
                 }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                    return response()->json(['message' => 'Token is Expired','status' => '0'], 401);
+                    return response()->json(['message' => 'Your token is Expired. Please login again.','status' => '0'], 401);
                 }else{
                     return response()->json(['message' => 'Authorization Token not found','status' => '0'],401);
                 }
