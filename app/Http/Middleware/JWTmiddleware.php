@@ -5,6 +5,8 @@
     use Closure;
     use JWTAuth;
     use Exception;
+    use User;
+
     use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
     class JwtMiddleware extends BaseMiddleware
@@ -24,6 +26,14 @@
                 if($user){
                 $activetoken=$user->ActiveJwttoken;
                 $token=JWTAuth::getToken();
+
+                //check token is existing or or not
+                if(User::where('ActiveJwttoken',$activetoken)->exists()){
+                    
+                }else{
+                    return response()->json(['message' => 'Token is not exist','status' => '0'], 401);
+                }
+
                 if($activetoken!= $token){
                       return response()->json(['message' => 'Token is Invalid','status' => '0'], 401);
                 }
