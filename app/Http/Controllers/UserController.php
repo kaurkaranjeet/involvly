@@ -393,10 +393,17 @@ class UserController extends Controller {
     }
 
     public function RemoveUser($id) {
+        //  $accessToken = JWTAuth::refresh();
+        // $user = JWTAuth::setToken($accessToken)->toUser();
+
+
         $userobj=User::where('id', $id)->first();
-        //remove token 
         $token = $userobj->ActiveJwttoken;
-        JWTAuth::parseToken()->invalidate($token);
+            if(!$token){
+                throw new Exception('Token not provided');
+            }
+            $token = JWTAuth::refresh($token);
+            
         $data = User::where('id', $id)->delete();
 
         $this->pusher->trigger('remove-channel', 'delete_user', $userobj);
