@@ -27,7 +27,9 @@
                 if($activetoken!= $token){
                       return response()->json(['message' => 'Token is Invalid','status' => '0'], 401);
                 }
-            }
+                }else{
+                    return response()->json(['message' => 'Token not found','status' => '0'], 401);
+                }
             } catch (Exception $e) {
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                     return response()->json(['message' => 'Token is Invalid','status' => '0'], 401);
