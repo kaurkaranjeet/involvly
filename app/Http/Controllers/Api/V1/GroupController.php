@@ -224,7 +224,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 
                if($request->has('search')){
                    $sql_oo= Group::whereRaw("type='custom_group'  AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id 
-)  AND state_id='".$user->state_id."'" . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
+) " . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
 
                foreach($sql_oo as $single_group){
             
