@@ -207,6 +207,9 @@ class TeacherController extends Controller {
        // echo $request->school_id;die;
 
         $student_obj=new User;
+        $request->request->add([
+          'update_detail' => '1',
+      ]);
         $addUser = $student_obj->store($request);
        // DB::commit();
         $token = JWTAuth::fromUser($addUser);
