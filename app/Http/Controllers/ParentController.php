@@ -77,8 +77,8 @@ class ParentController extends Controller {
                 $student_obj = new User;
                 $request->request->add([
                     'update_detail' => 1,
-                    'join_community' => 0
                 ]);
+                // dd($request->all());
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
                 $addUser->jwt_token = $token;
@@ -119,7 +119,7 @@ class ParentController extends Controller {
                             ]);
                         }
                     }
-                  
+                    User::where('id', $addUser->id)->update(['update_detail' => '1','join_community' => '0']);
                     return response()->json(array('error' => false, 'data' => $addUser), 200);
                 } else {
                     throw new Exception('Something went wrong');
