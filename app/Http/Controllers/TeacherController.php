@@ -226,7 +226,7 @@ class TeacherController extends Controller {
            return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
          }
        }
-         User::where('id', $addUser->id)->update(['update_detail' => '1']);
+         User::where('id', $addUser->id)->update(['update_detail' => '1','join_community' => '0']);
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
           DB::commit();
        }
