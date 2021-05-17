@@ -24,6 +24,10 @@
                 if($user){
                 $activetoken=$user->ActiveJwttoken;
                 $token=JWTAuth::getToken();
+                //check token is null or blank
+                if($activetoken == null || $activetoken == ''){
+                    return response()->json(['message' => 'Token in null','status' => '0'], 401);
+                }
                 if($activetoken!= $token){
                       return response()->json(['message' => 'Someone else is using your account details. So, you have been logged out.','status' => '0'], 401);
                 }
