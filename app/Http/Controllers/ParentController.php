@@ -75,6 +75,9 @@ class ParentController extends Controller {
                     }
                 }
                 $student_obj = new User;
+                $request->request->add([
+                    'update_detail' => '1',
+                ]);
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
                 $addUser->jwt_token = $token;
