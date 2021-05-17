@@ -207,9 +207,6 @@ class TeacherController extends Controller {
        // echo $request->school_id;die;
 
         $student_obj=new User;
-        $request->request->add([
-          'update_detail' => 1,
-      ]);
         $addUser = $student_obj->store($request);
        // DB::commit();
         $token = JWTAuth::fromUser($addUser);
@@ -229,9 +226,9 @@ class TeacherController extends Controller {
            return response()->json(array('error' => true, 'message' =>'Class Code is not valid'), 200);
          }
        }
-          
+         User::where('id', $addUser->id)->update(['update_detail' => '1']);
          return response()->json(array('error' => false, 'data' =>$addUser ), 200);
-           DB::commit();
+          DB::commit();
        }
        else{
          throw new Exception('Something went wrong');
