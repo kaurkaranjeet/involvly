@@ -884,14 +884,23 @@ class ParentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-
+            //GET ASSIGNED USER_ID
+            $assigned_id = Schedule::where('id',$request->schedule_id)->first();
             $tasks = Schedule::select((DB::raw("(SELECT CASE
-						WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
-						WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
+						WHEN  FIND_IN_SET(" . $assigned_id->assigned_to . " ,schedules.accept_reject_schedule ) THEN 1
+						WHEN FIND_IN_SET(" . $assigned_id->assigned_to . ", schedules.rejected_user) THEN 2
 						ELSE 0
 						END
 						)
 						AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
+
+            // $tasks = Schedule::select((DB::raw("(SELECT CASE
+			// 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
+			// 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
+			// 			ELSE 0
+			// 			END
+			// 			)
+			// 			AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
             $user = User::whereIn('id', explode(',', $tasks->assigned_to))->select('name')->get();
             $tasks->assigned_to = $user;
 
