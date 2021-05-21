@@ -1211,7 +1211,11 @@ class ParentController extends Controller {
 
 
             $tasks = ParentTask::with('AssignedUser')->where('schedule_id', $request->schedule_id)->first();
-            ParentTaskAssigned::where('task_id', $tasks->id)->update(['handover' => '1']);
+            $task_data = ParentTask::with('AssignedUser')->where('schedule_id', $request->schedule_id)->get();
+            foreach($task_data as $task_datas){
+                ParentTaskAssigned::where('task_id', $task_datas->id)->update(['handover' => '1']);
+            }
+            // ParentTaskAssigned::where('task_id', $tasks->id)->update(['handover' => '1']);
             $user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token')->get();
 
 
