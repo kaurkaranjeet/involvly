@@ -804,6 +804,7 @@ class ParentController extends Controller {
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
+            
         } else {
             $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
 							SELECT *
