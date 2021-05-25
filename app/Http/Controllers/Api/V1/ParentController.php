@@ -1173,7 +1173,7 @@ class ParentController extends Controller {
 
                 $message = $accept_reject_data->User->name . ' has completed the task ' . $accept_reject_data->ParentTask->task_name;
                 if (!empty($accept_reject_data->ParentTask->User->device_token)) {
-                    SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'social_notification');
+                    SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'social_notification',null,'complete_task',null,null,null,null,$request->task_id);
                 }
                 $notificationobj = new Notification;
                 $notificationobj->user_id = $accept_reject_data->ParentTask->User->id;

@@ -86,7 +86,7 @@ Route::prefix('v1')->group(function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('change-password', 'Auth\AuthController@change_password');
     });
-
+    Route::get('send_assignment_notification', 'Api\V1\AssignmentController@AssignmentNotification');
     Route::post('login', 'Api\V1\LoginController@login');
     Route::post('logout', 'Api\V1\LoginController@Logout');
     Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');

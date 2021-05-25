@@ -85,7 +85,7 @@ else
 fclose ($tSocket);
 }
 
-function SendAllNotification($token,$message,$notify_type,$schedule=null,$type=null,$post_id=null,$student_id=null,$class_id=null,$userreceiver=null){
+function SendAllNotification($token,$message,$notify_type,$schedule=null,$type=null,$post_id=null,$student_id=null,$class_id=null,$userreceiver=null,$task_id=null){
 $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0DRK4BLTUAGpz6FbDKF9a4UmrIm8Sb6tajxHfCJBzKnDnf7jgg9dgu3oLDNFD0bonhRNUOf9-Cl8jQhbs3mPoaqKxge';
  $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 // $token='235zgagasd634sdgds46436';
@@ -98,7 +98,7 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             'badge' => '1',
         ];
         if(is_object($schedule)){
-        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"schedule"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id];
+        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"schedule"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id"=>$task_id];
     }else{
         if($type=='add_assign'||$type=='submitted'){
            $subject= SubmittedAssignments::where("assignment_id",$schedule)->select("subject_id","class_id")->first();
