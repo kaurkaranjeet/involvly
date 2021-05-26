@@ -102,11 +102,11 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
     }else{
         if($type=='add_assign'||$type=='submitted'){
            $subject= SubmittedAssignments::where("assignment_id",$schedule)->select("subject_id","class_id")->first();
-                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"assignment_id"=>$schedule,"subject_id"=>$subject->subject_id,"class_id"=>$subject->class_id,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id];
+                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"assignment_id"=>$schedule,"subject_id"=>$subject->subject_id,"class_id"=>$subject->class_id,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id"=>$task_id];
             }
                 else{
                         $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,
-                        'user_reciever' => $userreceiver,"task_id"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id];
+                        'user_reciever' => $userreceiver,"task_id"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id"=>$task_id];
 
                 }  
         }
