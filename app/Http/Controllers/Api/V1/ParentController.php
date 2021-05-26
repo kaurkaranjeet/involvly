@@ -593,11 +593,6 @@ class ParentController extends Controller {
             $task->save();
             //get task_assigned_to values
             $taskassignedids = Schedule::where('id', $request->schedule_id)->first();
-            if($taskassignedids->rejected_user == null){
-               $accept_reject_status = '1';
-            }else{
-               $accept_reject_status = '0';
-            }
 
             $dates_implode = implode(',', $dates);
 
@@ -637,7 +632,7 @@ class ParentController extends Controller {
 
                 $message = 'A new task has been assigned to you in this schedule \'' . $taskassignedids->schedule_name . '\'';
                 if (!empty($user_data_to->device_token)) {
-                    SendAllNotification($user_data_to->device_token, $message, 'social_notification', $task->id, 'add_task',null,null,null,null,null,$accept_reject_status);
+                    SendAllNotification($user_data_to->device_token, $message, 'social_notification', $task->id, 'add_task');
                 }
                 $notificationobj = new Notification;
                 $notificationobj->user_id = $user_data_to->id;
