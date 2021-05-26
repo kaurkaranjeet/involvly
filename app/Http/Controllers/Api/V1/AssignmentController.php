@@ -597,7 +597,7 @@ class AssignmentController extends Controller {
             $notificationobj->notification_type='Assignment';
             $notificationobj->class_id=$getData->class_id;
             $notificationobj->type='school_notification';
-            $notificationobj->push_type='reminder_assign';
+            $notificationobj->push_type='add_assign';
             $notificationobj->assignment_id=$assignment->id;
             $notificationobj->from_user_id=$getData->Assignments->teacher_id;
             $notificationobj->save();
@@ -613,7 +613,7 @@ class AssignmentController extends Controller {
                                 //send notification
                                 if (!empty($usersData->device_token)) { 
                                    //  $notify_type = 'Assignment';
-                                    SendAllNotification($usersData->device_token, $message, 'school_notification',$assignment->id,'add_assign',null,$getData->Student->id);
+                                    SendAllNotification($usersData->device_token, $message, 'school_notification',null,'add_assign',null,$getData->Student->id);
                                 }
                                 $notificationobj=new Notification;
                                 $notificationobj->user_id=$usersData->id;
