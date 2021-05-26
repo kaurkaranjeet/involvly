@@ -98,15 +98,15 @@ $API_ACCESS_KEY='AAAAwP6ydfI:APA91bHzk-W1vsuXNWWNDJI1dzt9jnnd1BbDRFnRvKU_qmOIn0D
             'badge' => '1',
         ];
         if(is_object($schedule)){
-        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"schedule"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id"=>$task_id,"accept_reject_status"=>$accept_reject_status];
+        $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"schedule"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id_complete"=>$task_id,"accept_reject_status"=>$accept_reject_status];
     }else{
         if($type=='add_assign'||$type=='submitted'){
            $subject= SubmittedAssignments::where("assignment_id",$schedule)->select("subject_id","class_id")->first();
-                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"assignment_id"=>$schedule,"subject_id"=>$subject->subject_id,"class_id"=>$subject->class_id,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id"=>$task_id,"accept_reject_status"=>$accept_reject_status];
+                $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,'user_reciever' => $userreceiver,"assignment_id"=>$schedule,"subject_id"=>$subject->subject_id,"class_id"=>$subject->class_id,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id_complete"=>$task_id,"accept_reject_status"=>$accept_reject_status];
             }
                 else{
                         $extraNotificationData = ["body" => $notification,"title" =>$message,"notification_type"=>$notify_type,"push_type"=>$type,
-                        'user_reciever' => $userreceiver,"task_id"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id"=>$task_id,"accept_reject_status"=>$accept_reject_status];
+                        'user_reciever' => $userreceiver,"task_id"=>$schedule,"post_id"=>$post_id,"student_id"=>$student_id,"class_id"=>$class_id,"task_id_complete"=>$task_id,"accept_reject_status"=>$accept_reject_status];
 
                 }  
         }
