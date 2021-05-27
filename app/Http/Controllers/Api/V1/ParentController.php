@@ -834,7 +834,7 @@ class ParentController extends Controller {
                                 //check task schedule is accepted or not 
                                 $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
                                 if($schedule_status->rejected_user != null){
-                                   $signle_user->is_complete = '2';
+                                   $signle_user->is_complete = 2;
                                 }
                             }    
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
@@ -890,7 +890,7 @@ class ParentController extends Controller {
                 //check task schedule is accepted or not 
 				$schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
 				if($schedule_status->rejected_user != null){
-				   $signle_user->is_complete = '2';
+				   $signle_user->is_complete = 2;
 				}
             }
 
