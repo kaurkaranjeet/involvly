@@ -830,6 +830,13 @@ class ParentController extends Controller {
 							AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
 							FROM parent_task_assigned
 							WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.handover = 1 AND task_assigned_to=' . $request->user_id . ')  OR  task_assigned_by=' . $request->user_id . ')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
+                            foreach ($tasks as $signle_user) {
+                                //check task schedule is accepted or not 
+                                $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
+                                if($schedule_status->rejected_user != null){
+                                   $signle_user->is_complete = '2';
+                                }
+                            }    
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
@@ -879,6 +886,12 @@ class ParentController extends Controller {
             foreach ($tasks as $signle_user) {
                 $task_user = ParentTaskAssigned::select('image', 'notes', 'task_assigned_to')->with('User:id,name')->where('task_id', $request->task_id)->first();
                 $signle_user->assigned_to = $task_user;
+                
+                //check task schedule is accepted or not 
+				$schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
+				if($schedule_status->rejected_user != null){
+				   $signle_user->is_complete = '2';
+				}
             }
 
 
