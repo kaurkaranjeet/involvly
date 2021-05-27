@@ -593,8 +593,10 @@ class ParentController extends Controller {
             $task->save();
             //get task_assigned_to values
             $taskassignedids = Schedule::where('id', $request->schedule_id)->first();
-            if($taskassignedids->rejected_user == null){
+            if($taskassignedids->accept_reject_schedule != null){
                $accept_reject_status = '1';
+            }else if($taskassignedids->rejected_user != null) {
+               $accept_reject_status = '2';
             }else{
                $accept_reject_status = '0';
             }
