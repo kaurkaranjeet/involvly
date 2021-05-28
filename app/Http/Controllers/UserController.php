@@ -15,6 +15,12 @@ use App\Models\School;
 use App\Models\ReportUser;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Pusher\Pusher;
+use App\Notification;
+use App\Models\Comment;
+use App\Models\CommentReply;
+use App\Models\DiscussionComment;
+use App\Models\DiscussionCommentReply;
+
 use App\Models\ParentChildrens;
 use Mail;
 use Illuminate\Support\Str;
@@ -397,6 +403,13 @@ class UserController extends Controller {
         $data = User::where('id', $id)->delete();
 
         $this->pusher->trigger('remove-channel', 'delete_user', $userobj);
+        //notification or comments
+        Notification::where('user_id', $id)->delete();
+        Comment::where('user_id', $id)->delete();
+        CommentReply::where('user_id', $id)->delete();
+        DiscussionComment::where('user_id', $id)->delete();
+        DiscussionCommentReply::where('user_id', $id)->delete();
+        // Group::where('user_id', $id)->delete();
         return response()->json(compact('data'), 200);
     }
 
