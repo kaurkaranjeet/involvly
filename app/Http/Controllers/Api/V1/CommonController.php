@@ -24,6 +24,7 @@ use App\Models\Comment;
 use App\Models\CommentReply;
 use App\Models\DiscussionComment;
 use App\Models\DiscussionCommentReply;
+use App\Models\Group;
 
 class CommonController extends Controller {
 
@@ -379,6 +380,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 CommentReply::where('user_id', $request->user_id)->delete();
                 DiscussionComment::where('user_id', $request->user_id)->delete();
                 DiscussionCommentReply::where('user_id', $request->user_id)->delete();
+                Group::where('user_id', $request->user_id)->delete();
                 return response()->json(array('error' => false, 'message' => 'Account deleted successfully', 'data' => []), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
