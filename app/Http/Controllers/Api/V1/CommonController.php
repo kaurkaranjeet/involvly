@@ -19,6 +19,11 @@ use Pusher\Pusher;
 use DB;
 use Hash;
 use Illuminate\Support\Facades\Artisan;
+use App\Notification;
+use App\Models\Comment;
+use App\Models\CommentReply;
+use App\Models\DiscussionComment;
+use App\Models\DiscussionCommentReply;
 
 class CommonController extends Controller {
 
@@ -368,6 +373,12 @@ WHERE class_id= class_code_subject .class_code_id AND
             $delete = User::where('id', $request->user_id)->delete();
             $this->pusher->trigger('remove-channel', 'delete_user', $userobj);
             if ($delete) {
+                //notification or comments
+                Notification::where('user_id', $request->user_id)->delete();
+                Comment::where('user_id', $request->user_id)->delete();
+                CommentReply::where('user_id', $request->user_id)->delete();
+                DiscussionComment::where('user_id', $request->user_id)->delete();
+                DiscussionCommentReply::where('user_id', $request->user_id)->delete();
                 return response()->json(array('error' => false, 'message' => 'Account deleted successfully', 'data' => []), 200);
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
