@@ -409,7 +409,7 @@ class UserController extends Controller {
         CommentReply::where('user_id', $id)->delete();
         DiscussionComment::where('user_id', $id)->delete();
         DiscussionCommentReply::where('user_id', $id)->delete();
-        // Group::where('user_id', $id)->delete();
+        Group::where('user_id', $id)->delete();
         return response()->json(compact('data'), 200);
     }
 
