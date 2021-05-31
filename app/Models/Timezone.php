@@ -8,5 +8,5 @@ use Illuminate\Support\Facades\Auth;
 
 class Timezone extends Model
 { 
-	protected $table='timezone';
+	protected $table='timezones';
 }

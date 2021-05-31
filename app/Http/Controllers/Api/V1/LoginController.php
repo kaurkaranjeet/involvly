@@ -88,7 +88,8 @@ class LoginController extends Controller {
                 /*****get timezone data*******/
                 $schooldata = School::where('id', $user_details->school_id)->first();
                 $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                $user_details->$timezone;
+                $user_details->timezone_offset = $timezone->utc_offset;
+                $user_details->timezone_name = $timezone->timezone_name;
                 if (!empty($user_details)) {
                     return response()->json(array('error' => false, 'data' => $user_details, 'message' => 'Login Successfully'), 200);
                 } else {
