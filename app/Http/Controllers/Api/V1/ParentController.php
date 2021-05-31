@@ -18,6 +18,7 @@ use App\Models\ParentChildrens;
 use App\Models\Schedule;
 use App\Models\AssignedTeacher;
 use App\Models\School;
+use App\Models\Timezone;
 use App\Notification;
 use Pusher\Pusher;
 use App\Events\NotificationEvent;
@@ -256,7 +257,10 @@ class ParentController extends Controller {
                     $addUser->class_name == '';
                     $addUser->school_status = '0';
                 }
-
+                 /*****get timezone data*******/
+                 $schooldata = School::where('id', $addUser->SchoolDetail->id)->first();
+                 $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                 $addUser->$timezone;
                 return response()->json(array('error' => false, 'message' => 'Successfully Updated', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
