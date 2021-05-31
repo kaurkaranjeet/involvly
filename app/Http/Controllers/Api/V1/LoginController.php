@@ -14,6 +14,7 @@ use Exception;
 use App\Models\UserClassCode;
 use App\Models\ClassCode;
 use App\Models\School;
+use App\Models\Timezone;
 
 class LoginController extends Controller {
 
@@ -84,6 +85,10 @@ class LoginController extends Controller {
                 $user_details->school_id = strval($user_details->school_id);
                 $user_details->status = strval($user_details->status);
                 $user_details->join_community = strval($user_details->join_community);
+                /*****get timezone data*******/
+                $schooldata = School::where('id', $user_details->school_id)->first();
+                $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                $user_details->$timezone;
                 if (!empty($user_details)) {
                     return response()->json(array('error' => false, 'data' => $user_details, 'message' => 'Login Successfully'), 200);
                 } else {
