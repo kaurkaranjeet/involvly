@@ -260,7 +260,8 @@ class ParentController extends Controller {
                  /*****get timezone data*******/
                  $schooldata = School::where('id', $addUser->SchoolDetail->id)->first();
                  $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                 $addUser->$timezone;
+                 $addUser->timezone_offset = $timezone->utc_offset;
+                 $addUser->timezone_name = $timezone->timezone_name;
                 return response()->json(array('error' => false, 'message' => 'Successfully Updated', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
