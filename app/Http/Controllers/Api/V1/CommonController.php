@@ -25,6 +25,7 @@ use App\Models\CommentReply;
 use App\Models\DiscussionComment;
 use App\Models\DiscussionCommentReply;
 use App\Models\Group;
+use App\Models\Timezone;
 
 class CommonController extends Controller {
 
@@ -403,6 +404,19 @@ WHERE class_id= class_code_subject .class_code_id AND
             } else {
                 return response()->json(array('error' => true, 'message' => 'something wrong occured', 'data' => []), 200);
             }
+        }
+    }
+
+    public function GetTimezone(Request $request) {
+        try {
+            $timezone = Timezone::get();
+                if (!empty($timezone)) {
+                    return response()->json(array('error' => false, 'data' => $timezone), 200);
+                } else {
+                    throw new Exception('No timezone in the list.');
+                }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
 
