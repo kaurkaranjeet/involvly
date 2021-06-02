@@ -726,8 +726,25 @@ class ParentController extends Controller {
 
 //            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get(); 
             $user = [];
-            $user = User::where('id', $task->assigned_to)->select('name', 'id')->get();
+            $user = User::where('id', $task->assigned_to)->select('name', 'id','timezone_id','school_id')->get();
             $task->assigned_to = $user;
+            foreach($user as $val){
+                if(empty($val->timezone_id) || $val->timezone_id == ''){
+                    //get school timezone
+                    $schooldata = School::where('id', $val->school_id)->first();
+                    $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                    // $single_notification->timezone = $timezone;
+                    $val->timezone_offset = $timezone->utc_offset;
+                    $val->timezone_name = $timezone->timezone_name;
+                    
+                }else{
+                    //get user timezone
+                    $timezone = Timezone::where('id', $val->timezone_id)->first();
+                    // $single_notification->timezone = $timezone;
+                    $val->timezone_offset = $timezone->utc_offset;
+                    $val->timezone_name = $timezone->timezone_name;
+                }
+            }
 
             $task->User;
             if ($task->handover == '1') {
