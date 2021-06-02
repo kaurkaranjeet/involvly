@@ -65,15 +65,15 @@ class NotificationController extends Controller {
 				$schooldata = School::where('id', $single_notification->user->school_id)->first();
 				$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
 				// $single_notification->timezone = $timezone;
-				$single_notification->timezone_offset = $timezone->utc_offset;
-                $single_notification->timezone_name = $timezone->timezone_name;
+				$single_notification->user['timezone_offset'] = $timezone->utc_offset;
+                $single_notification->user['timezone_name'] = $timezone->timezone_name;
 				
 			}else{
 				//get user timezone
 				$timezone = Timezone::where('id', $single_notification->user->timezone_id)->first();
 				// $single_notification->timezone = $timezone;
-				$single_notification->timezone_offset = $timezone->utc_offset;
-                $single_notification->timezone_name = $timezone->timezone_name;
+				$single_notification->user['timezone_offset'] = $timezone->utc_offset;
+                $single_notification->user['timezone_name'] = $timezone->timezone_name;
 			}
 
 			if(!empty($single_notification->schedule_id)){
