@@ -1359,6 +1359,22 @@ class ParentController extends Controller {
 
                 $schedule->save();
                $schedule->assigned_to = $users;
+               foreach($users as $user){
+				if($user->timezone_id == null || $user->timezone_id == ''){
+					//get school timezone
+					$schooldata = School::where('id', $user->school_id)->first();
+					$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+					$user->timezone_offset = $timezone->utc_offset;
+					$user->timezone_name = $timezone->timezone_name;
+                
+                }else{
+                    //get user timezone
+                    $timezone = Timezone::where('id', $user->timezone_id)->first();
+                    $user->timezone_offset = $timezone->utc_offset;
+                    $user->timezone_name = $timezone->timezone_name;
+                }
+                }
+                
                 if ($request->accept_reject == 2) {
                     $this->pusher->trigger('decline-channel', 'decline_schedule', $schedule);
                 }
