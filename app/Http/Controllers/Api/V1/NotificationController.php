@@ -17,6 +17,8 @@ use DB;
 use App\Events\NotificationEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
+use App\Models\School;
+use App\Models\Timezone;
 
 class NotificationController extends Controller {
     
@@ -50,13 +52,30 @@ class NotificationController extends Controller {
 	}
 	else{
 		if($request->type=='school_notification'){
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image')->get();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image,timezone_id','school_id')->get();
 		}else{
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image')->get();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image,timezone_id','school_id')->get();
 		}
 	
 
 		foreach($notifications as $single_notification){
+			//timezone data
+			if(empty($single_notification->user->timezone_id) || $single_notification->user->timezone_id == ''){
+				//get school timezone
+				$schooldata = School::where('id', $single_notification->user->school_id)->first();
+				$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+				// $single_notification->timezone = $timezone;
+				$single_notification->timezone_offset = $timezone->utc_offset;
+                $single_notification->timezone_name = $timezone->timezone_name;
+				
+			}else{
+				//get user timezone
+				$timezone = Timezone::where('id', $single_notification->user->timezone_id)->first();
+				// $single_notification->timezone = $timezone;
+				$single_notification->timezone_offset = $timezone->utc_offset;
+                $single_notification->timezone_name = $timezone->timezone_name;
+			}
+
 			if(!empty($single_notification->schedule_id)){
 				$scheduke=	Schedule::with('User')->where('id',$single_notification->schedule_id)->first();
 				$tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$single_notification->schedule_id)->first();
