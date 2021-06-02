@@ -325,6 +325,11 @@ WHERE class_id= class_code_subject .class_code_id AND
                     'name' => $name,
                 ]);
             }
+            if (!empty($request->timezone_id)) {
+                $updateData = User::where('id', $request->user_id)->update([
+                    'timezone_id' => $request->timezone_id,
+                ]);
+            }
             $update = User::find($request->user_id);
             return response()->json(array('error' => false, 'message' => 'Profile updated successfully', 'data' => $update), 200);
         }
