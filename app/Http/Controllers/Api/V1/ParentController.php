@@ -1272,7 +1272,7 @@ class ParentController extends Controller {
                 ParentTaskAssigned::where('task_id', $task_datas->id)->update(['handover' => '1']);
             }
             // ParentTaskAssigned::where('task_id', $tasks->id)->update(['handover' => '1']);
-            $user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token')->get();
+            $user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token','timezone_id','school_id')->get();
 
 
             $notificationobj = new Notification;
@@ -1288,6 +1288,26 @@ class ParentController extends Controller {
 
             $scheduke->User;
             $scheduke->assigned_to = $user;
+            foreach($user as $users){
+				if($users->timezone_id == null || $users->timezone_id == ''){
+					//get school timezone
+					$schooldata = School::where('id', $users->school_id)->first();
+					$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+					$users->timezone_offset = $timezone->utc_offset;
+                    $users->timezone_name = $timezone->timezone_name;
+                    $tasks->timezone_offset = $timezone->utc_offset;
+                    $tasks->timezone_name = $timezone->timezone_name;
+                    
+                
+                }else{
+                    //get user timezone
+                    $timezone = Timezone::where('id', $users->timezone_id)->first();
+                    $users->timezone_offset = $timezone->utc_offset;
+                    $users->timezone_name = $timezone->timezone_name;
+                    $tasks->timezone_offset = $timezone->utc_offset;
+                    $tasks->timezone_name = $timezone->timezone_name;
+                }
+            }
             $scheduke->is_accept = '0';
             if (!empty($user[0]->device_token)) {
 
