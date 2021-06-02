@@ -100,6 +100,7 @@ Route::prefix('v1')->group(function () {
     Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
     Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
     Route::post('change_password', 'Api\V1\LoginController@ChnagePassword');
+    Route::get('get_timezone', 'Api\V1\CommonController@GetTimezone');
     Route::get('run_migration', 'Api\V1\CommonController@RunMigration');
 });
 
