@@ -52,29 +52,13 @@ class NotificationController extends Controller {
 	}
 	else{
 		if($request->type=='school_notification'){
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image,timezone_id,school_id')->get();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'school_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image,timezone_id','school_id')->get();
 		}else{
-			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image,timezone_id,school_id')->get();
+			$notifications=	Notification::where('user_id' , $request->user_id)->where('type' , 'social_notification')->orderBy('id', 'DESC')->select(DB::raw("DATE(created_at) as notification_date"),"notification.*")->with('User:id,name,role_id,profile_image,timezone_id','school_id')->get();
 		}
 	
 
 		foreach($notifications as $single_notification){
-			//timezone data
-			if(empty($single_notification->user->timezone_id) || $single_notification->user->timezone_id == ''){
-				//get school timezone
-				$schooldata = School::where('id', $single_notification->user->school_id)->first();
-				$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-				// $single_notification->timezone = $timezone;
-				$single_notification->user['timezone_offset'] = $timezone->utc_offset;
-                $single_notification->user['timezone_name'] = $timezone->timezone_name;
-				
-			}else{
-				//get user timezone
-				$timezone = Timezone::where('id', $single_notification->user->timezone_id)->first();
-				// $single_notification->timezone = $timezone;
-				$single_notification->user['timezone_offset'] = $timezone->utc_offset;
-                $single_notification->user['timezone_name'] = $timezone->timezone_name;
-			}
 
 			if(!empty($single_notification->schedule_id)){
 				$scheduke=	Schedule::with('User')->where('id',$single_notification->schedule_id)->first();
@@ -82,7 +66,23 @@ class NotificationController extends Controller {
                                 if(!empty($tasks)){
 				$user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token')->get();
 				$scheduke->assigned_to=$user;
-                                }else{
+				foreach($user as $val){
+					if(empty($val->timezone_id) || $val->timezone_id == ''){
+						//get school timezone
+						$schooldata = School::where('id', $val->school_id)->first();
+						$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+						// $single_notification->timezone = $timezone;
+						$val->timezone_offset = $timezone->utc_offset;
+						$val->timezone_name = $timezone->timezone_name;
+						
+					}else{
+						//get user timezone
+						$timezone = Timezone::where('id', $val->timezone_id)->first();
+						// $single_notification->timezone = $timezone;
+						$val->timezone_offset = $timezone->utc_offset;
+						$val->timezone_name = $timezone->timezone_name;
+					}
+				}            }else{
 				$scheduke->assigned_to=null;   
                                 }
 
