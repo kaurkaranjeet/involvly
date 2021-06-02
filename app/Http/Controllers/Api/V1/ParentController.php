@@ -807,8 +807,22 @@ class ParentController extends Controller {
 			// 			)
 			// 			AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
             foreach ($tasks as $singlke_task) {
-                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id')->get();
+                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id','timezone_id','school_id')->get();
                 $singlke_task->assigned_to = $user;
+                foreach($user as $users){
+					if($users->timezone_id == null || $users->timezone_id == ''){
+                    //get school timezone
+                    $schooldata = School::where('id', $users->school_id)->first();
+                    $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                    $users->timezone = $timezone;
+                    
+                }else{
+                    //get user timezone
+                    $timezone = Timezone::where('id', $users->timezone_id)->first();
+                    $users->timezone = $timezone;
+                }
+				}
+
             }
 
 
