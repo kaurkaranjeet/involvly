@@ -814,12 +814,16 @@ class ParentController extends Controller {
                     //get school timezone
                     $schooldata = School::where('id', $users->school_id)->first();
                     $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                    $users->timezone = $timezone;
+                    // $users->timezone = $timezone;
+                    $users->timezone_offset = $timezone->utc_offset;
+                    $users->timezone_name = $timezone->timezone_name;
                     
                 }else{
                     //get user timezone
                     $timezone = Timezone::where('id', $users->timezone_id)->first();
-                    $users->timezone = $timezone;
+                    // $users->timezone = $timezone;
+                    $users->timezone_offset = $timezone->utc_offset;
+                    $users->timezone_name = $timezone->timezone_name;
                 }
 				}
 
