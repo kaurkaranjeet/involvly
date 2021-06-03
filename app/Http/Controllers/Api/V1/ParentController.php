@@ -258,10 +258,25 @@ class ParentController extends Controller {
                     $addUser->school_status = '0';
                 }
                  /*****get timezone data*******/
-                 $schooldata = School::where('id', $addUser->SchoolDetail->id)->first();
-                 $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                 $addUser->timezone_offset = $timezone->utc_offset;
-                 $addUser->timezone_name = $timezone->timezone_name;
+                 if(empty($addUser->timezone_id) || $addUser->timezone_id == ''){
+                    //get school timezone
+                    $schooldata = School::where('id', $addUser->school_id)->first();
+                    $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                    // $single_notification->timezone = $timezone;
+                    $addUser->timezone_offset = $timezone->utc_offset;
+                    $addUser->timezone_name = $timezone->timezone_name;
+                    
+                }else{
+                    //get user timezone
+                    $timezone = Timezone::where('id', $addUser->timezone_id)->first();
+                    // $single_notification->timezone = $timezone;
+                    $addUser->timezone_offset = $timezone->utc_offset;
+                    $addUser->timezone_name = $timezone->timezone_name;
+                }
+                //  $schooldata = School::where('id', $addUser->SchoolDetail->id)->first();
+                //  $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                //  $addUser->timezone_offset = $timezone->utc_offset;
+                //  $addUser->timezone_name = $timezone->timezone_name;
                 return response()->json(array('error' => false, 'message' => 'Successfully Updated', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
