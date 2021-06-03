@@ -59,16 +59,18 @@
             // } 
             if(empty($user->timezone_id) || $user->timezone_id == ''){
                 //get school timezone
-                $schooldata = School::where('id', $val->school_id)->first();
+                $schooldata = School::where('id', $user->school_id)->first();
                 $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
                 date_default_timezone_set($timezone->timezone_name);
                 
             }else{
                 //get user timezone
-                $timezone = Timezone::where('id', $val->timezone_id)->first();
+                $timezone = Timezone::where('id', $user->timezone_id)->first();
                 date_default_timezone_set($timezone->timezone_name);
             }
             return $next($request);
         }
     }
-    ?>
+    ?>				
+<!-- $mytime = Carbon::now()->format('Y-m-d H:i:s'); -->
+            <!-- echo $mytime; -->
