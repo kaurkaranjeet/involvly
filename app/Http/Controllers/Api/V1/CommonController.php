@@ -332,6 +332,7 @@ WHERE class_id= class_code_subject .class_code_id AND
             }
             //$update = User::find($request->user_id);
             $update = User::where('id', $request->user_id)->first();
+        if($update->type_of_schooling == 'school'){
             if(empty($update->timezone_id) || $update->timezone_id == ''){
                 //get school timezone
                 $schooldata = School::where('id', $update->school_id)->first();
@@ -347,6 +348,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 $update->timezone_offset = $timezone->utc_offset;
                 $update->timezone_name = $timezone->timezone_name;
             }
+        }
             return response()->json(array('error' => false, 'message' => 'Profile updated successfully', 'data' => $update), 200);
         }
     }

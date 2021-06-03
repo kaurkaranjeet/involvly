@@ -86,6 +86,7 @@ class LoginController extends Controller {
                 $user_details->status = strval($user_details->status);
                 $user_details->join_community = strval($user_details->join_community);
                 /*****get timezone data*******/
+            if($user_details->type_of_schooling == 'school'){
                 if(empty($user_details->timezone_id) || $user_details->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $user_details->school_id)->first();
@@ -101,10 +102,7 @@ class LoginController extends Controller {
                     $user_details->timezone_offset = $timezone->utc_offset;
                     $user_details->timezone_name = $timezone->timezone_name;
                 }
-                // $schooldata = School::where('id', $user_details->school_id)->first();
-                // $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                // $user_details->timezone_offset = $timezone->utc_offset;
-                // $user_details->timezone_name = $timezone->timezone_name;
+            }
                 if (!empty($user_details)) {
                     return response()->json(array('error' => false, 'data' => $user_details, 'message' => 'Login Successfully'), 200);
                 } else {

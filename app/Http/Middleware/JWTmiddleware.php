@@ -48,15 +48,6 @@
                     return response()->json(['message' => 'Authorization Token not found','status' => '0'],401);
                 }
             }
-            // if(!empty($user->school_id) || $user->school_id != null){
-            //     /*****get timezone data*******/
-            //     //check parent has own timezone or not 
-                
-            //     $schooldata = School::where('id', $user->school_id)->first();
-            //     $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-            //     date_default_timezone_set($timezone->timezone_name);
-                
-            // } 
             // if(empty($user->timezone_id) || $user->timezone_id == ''){
             //     //get school timezone
             //     $schooldata = School::where('id', $user->school_id)->first();
