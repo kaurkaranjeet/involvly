@@ -6,9 +6,9 @@
     use JWTAuth;
     use Exception;
     use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
-    use App\Models\School;
-    use App\Models\Timezone;
-    use App\User;
+    // use App\Models\School;
+    // use App\Models\Timezone;
+    // use App\User;
 
     class JwtMiddleware extends BaseMiddleware
     {
@@ -42,7 +42,7 @@
                     return response()->json(['message' => 'Someone else is using your account details. So, you have been logged out.','status' => '0'], 401);
                 }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
                     //remove the existing deivce token 
-                    User::where('id', $user->id)->update(['device_token' => null]);
+                    // User::where('id', $user->id)->update(['device_token' => null]);
                     return response()->json(['message' => 'Your token is Expired. Please login again.','status' => '0'], 401);
                 }else{
                     return response()->json(['message' => 'Authorization Token not found','status' => '0'],401);
@@ -57,20 +57,18 @@
             //     date_default_timezone_set($timezone->timezone_name);
                 
             // } 
-            if(empty($user->timezone_id) || $user->timezone_id == ''){
-                //get school timezone
-                $schooldata = School::where('id', $user->school_id)->first();
-                $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                date_default_timezone_set($timezone->timezone_name);
+            // if(empty($user->timezone_id) || $user->timezone_id == ''){
+            //     //get school timezone
+            //     $schooldata = School::where('id', $user->school_id)->first();
+            //     $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+            //     date_default_timezone_set($timezone->timezone_name);
                 
-            }else{
-                //get user timezone
-                $timezone = Timezone::where('id', $user->timezone_id)->first();
-                date_default_timezone_set($timezone->timezone_name);
-            }
+            // }else{
+            //     //get user timezone
+            //     $timezone = Timezone::where('id', $user->timezone_id)->first();
+            //     date_default_timezone_set($timezone->timezone_name);
+            // }   
             return $next($request);
         }
     }
     ?>				
-<!-- $mytime = Carbon::now()->format('Y-m-d H:i:s'); -->
-            <!-- echo $mytime; -->
