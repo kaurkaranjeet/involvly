@@ -579,73 +579,66 @@ class AssignmentController extends Controller {
 
     //send assignment notification
     public function AssignmentNotification() {
-        $assignments_data = Assignment::get();
-        foreach($assignments_data as $assignments_data){
-            //add teacher timezone
-            $teacher_data = User::where('id',$assignments_data->teacher_id)->first();
-            if($teacher_data->type_of_schooling == 'school'){
-                $schooldata = School::where('id', $teacher_data->school_id)->first();
-                $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                date_default_timezone_set($timezone->timezone_name);
- 
-            }
-
-        $today_date = Carbon::now()->format('Y-m-d');
-        $one_day_remaning = date('Y-m-d', strtotime($today_date . ' + 1 days'));
-        // one day pending for plan expire
-        $assignments = Assignment::where(DB::raw("(DATE_FORMAT(assignments_date,'%Y-%m-%d'))"),$one_day_remaning)->get();
+        $assignments = Assignment::get();
         foreach($assignments as $assignment){
-            //students
             $getData = SubmittedAssignments::with('subjects')->with('Student','Assignments')->where('assignment_id', $assignment->id)->first();
             if(!empty($getData)){
                 $teacher_name=User::where('id', $getData->Assignments->teacher_id)->first();
-                $message = 'You have not submitted your assignment ' .$getData->Assignments->assignments_name.'. Last date of submission is '. date('d-m-Y',strtotime($getData->Assignments->assignments_date)); 
-                
-                if (!empty($getData->Student->device_token)) { 
-                    //  $notify_type = 'Assignment';
-                    SendAllNotification($getData->Student->device_token, $message, 'school_notification',$assignment->id,'add_assign');
+                if($teacher_name->type_of_schooling == 'school'){
+                        $schooldata = School::where('id', $teacher_name->school_id)->first();
+                        $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                        date_default_timezone_set($timezone->timezone_name);
+             
                 }
-                $notificationobj=new Notification;
-                $notificationobj->user_id=$getData->student_id;
-                $notificationobj->notification_message=$message;
-                $notificationobj->notification_type='Assignment';
-                $notificationobj->class_id=$getData->class_id;
-                $notificationobj->type='school_notification';
-                $notificationobj->push_type='add_assign';
-                $notificationobj->assignment_id=$assignment->id;
-                $notificationobj->from_user_id=$getData->Assignments->teacher_id;
-                $notificationobj->save();
-                $notificationobj->role_type = 'child';
-                $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
-                
-                //parents
-                $results = ParentChildrens::with('ChildDetails')->where('children_id', $getData->student_id)->groupBy('parent_id')->get();
-                            if (!empty($results)) {
-                                foreach ($results as $users) {
-                                    $usersData = User::where('id', $users->parent_id)->first();
-                                    $message =  "Your child ".$getData->Student->name." has not submitted assignment ".$getData->Assignments->assignments_name.". Last date of submission is ". date('d-m-Y',strtotime($getData->Assignments->assignments_date));
-                                    //send notification
-                                    if (!empty($usersData->device_token)) { 
-                                       //  $notify_type = 'Assignment';
-                                        SendAllNotification($usersData->device_token, $message, 'school_notification',$assignment->id,'add_assign',null,$getData->Student->id);
+                //check assignment date
+                $today_date = Carbon::now()->format('Y-m-d');
+                $one_day_remaning = date('Y-m-d', strtotime($today_date . ' + 1 days'));
+                $assignment_date = Assignment::where(DB::raw("(DATE_FORMAT(assignments_date,'%Y-%m-%d'))"),$one_day_remaning)->where('id', $assignment->id)->first();
+                if(!empty($assignment_date)){
+                    $message = 'You have not submitted your assignment ' .$getData->Assignments->assignments_name.'. Last date of submission is '. date('d-m-Y',strtotime($getData->Assignments->assignments_date)); 
+                    if (!empty($getData->Student->device_token)) { 
+                        //  $notify_type = 'Assignment';
+                        SendAllNotification($getData->Student->device_token, $message, 'school_notification',$assignment->id,'add_assign');
+                    }
+                    $notificationobj=new Notification;
+                    $notificationobj->user_id=$getData->student_id;
+                    $notificationobj->notification_message=$message;
+                    $notificationobj->notification_type='Assignment';
+                    $notificationobj->class_id=$getData->class_id;
+                    $notificationobj->type='school_notification';
+                    $notificationobj->push_type='add_assign';
+                    $notificationobj->assignment_id=$assignment->id;
+                    $notificationobj->from_user_id=$getData->Assignments->teacher_id;
+                    $notificationobj->save();
+                    $notificationobj->role_type = 'child';
+                    $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
+                    //parents
+                    $results = ParentChildrens::with('ChildDetails')->where('children_id',   $getData->student_id)->groupBy('parent_id')->get();
+                                if (!empty($results)) {
+                                    foreach ($results as $users) {
+                                        $usersData = User::where('id', $users->parent_id)->first();
+                                        $message =  "Your child ".$getData->Student->name." has not submitted assignment ".$getData->Assignments->assignments_name.". Last date of submission is ". date('d-m-Y',strtotime($getData->Assignments->assignments_date));
+                                        //send notification
+                                        if (!empty($usersData->device_token)) { 
+                                        //  $notify_type = 'Assignment';
+                                            SendAllNotification($usersData->device_token, $message, 'school_notification',$assignment->id,'add_assign',null,$getData->Student->id);
+                                        }
+                                        $notificationobj=new Notification;
+                                        $notificationobj->user_id=$usersData->id;
+                                        $notificationobj->notification_message=$message;
+                                        $notificationobj->notification_type='Assignment';
+                                        $notificationobj->type='school_notification';
+                                        $notificationobj->class_id=$getData->class_id;
+                                        $notificationobj->from_user_id=$getData->Student->id;
+                                        $notificationobj->save();
+                                        $notificationobj->role_type = 'all';
+                                        $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                                     }
-                                    $notificationobj=new Notification;
-                                    $notificationobj->user_id=$usersData->id;
-                                    $notificationobj->notification_message=$message;
-                                    $notificationobj->notification_type='Assignment';
-                                    $notificationobj->type='school_notification';
-                                    $notificationobj->class_id=$getData->class_id;
-                                    $notificationobj->from_user_id=$getData->Student->id;
-                                    $notificationobj->save();
-                                    $notificationobj->role_type = 'all';
-                                    $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                                 }
-                            }
 
+                }
             }
         }
-
-       }
 
        }
 
