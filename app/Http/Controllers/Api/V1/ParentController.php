@@ -258,6 +258,7 @@ class ParentController extends Controller {
                     $addUser->school_status = '0';
                 }
                  /*****get timezone data*******/
+            if($addUser->type_of_schooling == 'school'){
                  if(empty($addUser->timezone_id) || $addUser->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $addUser->school_id)->first();
@@ -273,10 +274,7 @@ class ParentController extends Controller {
                     $addUser->timezone_offset = $timezone->utc_offset;
                     $addUser->timezone_name = $timezone->timezone_name;
                 }
-                //  $schooldata = School::where('id', $addUser->SchoolDetail->id)->first();
-                //  $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                //  $addUser->timezone_offset = $timezone->utc_offset;
-                //  $addUser->timezone_name = $timezone->timezone_name;
+            }
                 return response()->json(array('error' => false, 'message' => 'Successfully Updated', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
@@ -744,6 +742,7 @@ class ParentController extends Controller {
             $user = User::where('id', $task->assigned_to)->select('name', 'id','timezone_id','school_id')->get();
             $task->assigned_to = $user;
             foreach($user as $val){
+            if($val->type_of_schooling == 'school'){
                 if(empty($val->timezone_id) || $val->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $val->school_id)->first();
@@ -759,6 +758,7 @@ class ParentController extends Controller {
                     $val->timezone_offset = $timezone->utc_offset;
                     $val->timezone_name = $timezone->timezone_name;
                 }
+            }
             }
 
             $task->User;
@@ -842,6 +842,7 @@ class ParentController extends Controller {
                 $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id','timezone_id','school_id')->get();
                 $singlke_task->assigned_to = $user;
                 foreach($user as $users){
+            if($users->type_of_schooling == 'school'){
 					if($users->timezone_id == null || $users->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $users->school_id)->first();
@@ -857,6 +858,7 @@ class ParentController extends Controller {
                     $users->timezone_offset = $timezone->utc_offset;
                     $users->timezone_name = $timezone->timezone_name;
                 }
+            }
 				}
 
             }
@@ -1161,6 +1163,7 @@ class ParentController extends Controller {
                     foreach ($results as $single) {
 
                         $single->childrens = $childrens;
+                    if($single->type_of_schooling == 'school'){
                         if($single->timezone_id == null || $single->timezone_id == ''){
 							//get school timezone
                             $schooldata = School::where('id', $single->school_id)->first();
@@ -1174,6 +1177,7 @@ class ParentController extends Controller {
                             $single->timezone_offset = $timezone->utc_offset;
                             $single->timezone_name = $timezone->timezone_name;
                         }
+                    }
                     }
                     return response()->json(array('error' => false, 'data' => $results, 'message' => 'Parents fetched successfully.'), 200);
                 } else {
@@ -1321,6 +1325,7 @@ class ParentController extends Controller {
             $scheduke->User;
             $scheduke->assigned_to = $user;
             foreach($user as $users){
+            if($users->type_of_schooling == 'school'){
 				if($users->timezone_id == null || $users->timezone_id == ''){
 					//get school timezone
 					$schooldata = School::where('id', $users->school_id)->first();
@@ -1339,6 +1344,7 @@ class ParentController extends Controller {
                     $tasks->timezone_offset = $timezone->utc_offset;
                     $tasks->timezone_name = $timezone->timezone_name;
                 }
+            }
             }
             $scheduke->is_accept = '0';
             if (!empty($user[0]->device_token)) {
@@ -1412,6 +1418,7 @@ class ParentController extends Controller {
                 $schedule->save();
                $schedule->assigned_to = $users;
                foreach($users as $user){
+            if($user->type_of_schooling == 'school'){
 				if($user->timezone_id == null || $user->timezone_id == ''){
 					//get school timezone
 					$schooldata = School::where('id', $user->school_id)->first();
@@ -1425,6 +1432,7 @@ class ParentController extends Controller {
                     $user->timezone_offset = $timezone->utc_offset;
                     $user->timezone_name = $timezone->timezone_name;
                 }
+            }
                 }
                 
                 if ($request->accept_reject == 2) {

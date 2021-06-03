@@ -67,6 +67,7 @@ class NotificationController extends Controller {
 				$user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token','timezone_id','school_id')->get();
 				$scheduke->assigned_to=$user;
 				foreach($user as $val){
+				if($val->type_of_schooling == 'school'){
 					if(empty($val->timezone_id) || $val->timezone_id == ''){
 						//get school timezone
 						$schooldata = School::where('id', $val->school_id)->first();
@@ -82,6 +83,7 @@ class NotificationController extends Controller {
 						$val->timezone_offset = $timezone->utc_offset;
 						$val->timezone_name = $timezone->timezone_name;
 					}
+				}
 				}            }else{
 				$scheduke->assigned_to=null;   
                                 }
