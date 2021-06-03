@@ -6,8 +6,8 @@
     use JWTAuth;
     use Exception;
     use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
-    use App\Models\School;
-    use App\Models\Timezone;
+    // use App\Models\School;
+    // use App\Models\Timezone;
     use App\User;
 
     class JwtMiddleware extends BaseMiddleware
@@ -57,17 +57,17 @@
             //     date_default_timezone_set($timezone->timezone_name);
                 
             // } 
-            if(empty($user->timezone_id) || $user->timezone_id == ''){
-                //get school timezone
-                $schooldata = School::where('id', $user->school_id)->first();
-                $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
-                date_default_timezone_set($timezone->timezone_name);
+            // if(empty($user->timezone_id) || $user->timezone_id == ''){
+            //     //get school timezone
+            //     $schooldata = School::where('id', $user->school_id)->first();
+            //     $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+            //     date_default_timezone_set($timezone->timezone_name);
                 
-            }else{
-                //get user timezone
-                $timezone = Timezone::where('id', $user->timezone_id)->first();
-                date_default_timezone_set($timezone->timezone_name);
-            }   
+            // }else{
+            //     //get user timezone
+            //     $timezone = Timezone::where('id', $user->timezone_id)->first();
+            //     date_default_timezone_set($timezone->timezone_name);
+            // }   
             return $next($request);
         }
     }
