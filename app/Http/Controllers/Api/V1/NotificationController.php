@@ -18,6 +18,7 @@ use App\Events\NotificationEvent;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use App\Models\School;
+use App\Models\State;
 use App\Models\Timezone;
 
 class NotificationController extends Controller {
@@ -71,7 +72,8 @@ class NotificationController extends Controller {
 					if(empty($val->timezone_id) || $val->timezone_id == ''){
 						//get school timezone
 						$schooldata = School::where('id', $val->school_id)->first();
-						$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+						$statedata = State::where('id', $schooldata->state_id)->first();
+                        $timezone = Timezone::where('id', $statedata->timezone_id)->first();
 						// $single_notification->timezone = $timezone;
 						$val->timezone_offset = $timezone->utc_offset;
 						$val->timezone_name = $timezone->timezone_name;

@@ -18,6 +18,7 @@ use App\Models\ParentChildrens;
 use App\Models\Schedule;
 use App\Models\AssignedTeacher;
 use App\Models\School;
+use App\Models\State;
 use App\Models\Timezone;
 use App\Notification;
 use Pusher\Pusher;
@@ -262,7 +263,8 @@ class ParentController extends Controller {
                  if(empty($addUser->timezone_id) || $addUser->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $addUser->school_id)->first();
-                    $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                    $statedata = State::where('id', $schooldata->state_id)->first();
+                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
                     // $single_notification->timezone = $timezone;
                     $addUser->timezone_offset = $timezone->utc_offset;
                     $addUser->timezone_name = $timezone->timezone_name;
@@ -746,7 +748,8 @@ class ParentController extends Controller {
                 if(empty($val->timezone_id) || $val->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $val->school_id)->first();
-                    $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                    $statedata = State::where('id', $schooldata->state_id)->first();
+                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
                     // $single_notification->timezone = $timezone;
                     $val->timezone_offset = $timezone->utc_offset;
                     $val->timezone_name = $timezone->timezone_name;
@@ -846,7 +849,8 @@ class ParentController extends Controller {
 					if($users->timezone_id == null || $users->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $users->school_id)->first();
-                    $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                    $statedata = State::where('id', $schooldata->state_id)->first();
+                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
                     // $users->timezone = $timezone;
                     $users->timezone_offset = $timezone->utc_offset;
                     $users->timezone_name = $timezone->timezone_name;
@@ -1167,7 +1171,8 @@ class ParentController extends Controller {
                         if($single->timezone_id == null || $single->timezone_id == ''){
 							//get school timezone
                             $schooldata = School::where('id', $single->school_id)->first();
-                            $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                            $statedata = State::where('id', $schooldata->state_id)->first();
+                            $timezone = Timezone::where('id', $statedata->timezone_id)->first();
                             $single->timezone_offset = $timezone->utc_offset;
                             $single->timezone_name = $timezone->timezone_name;
                             
@@ -1329,7 +1334,8 @@ class ParentController extends Controller {
 				if($users->timezone_id == null || $users->timezone_id == ''){
 					//get school timezone
 					$schooldata = School::where('id', $users->school_id)->first();
-					$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+					$statedata = State::where('id', $schooldata->state_id)->first();
+                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
 					$users->timezone_offset = $timezone->utc_offset;
                     $users->timezone_name = $timezone->timezone_name;
                     $tasks->timezone_offset = $timezone->utc_offset;
@@ -1422,7 +1428,8 @@ class ParentController extends Controller {
 				if($user->timezone_id == null || $user->timezone_id == ''){
 					//get school timezone
 					$schooldata = School::where('id', $user->school_id)->first();
-					$timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+					$statedata = State::where('id', $schooldata->state_id)->first();
+                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
 					$user->timezone_offset = $timezone->utc_offset;
 					$user->timezone_name = $timezone->timezone_name;
                 

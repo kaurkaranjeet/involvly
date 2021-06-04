@@ -7,6 +7,7 @@
     use Exception;
     use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
     // use App\Models\School;
+    // use App\Models\State;
     // use App\Models\Timezone;
     use App\User;
 

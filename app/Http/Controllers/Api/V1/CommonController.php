@@ -336,7 +336,8 @@ WHERE class_id= class_code_subject .class_code_id AND
             if(empty($update->timezone_id) || $update->timezone_id == ''){
                 //get school timezone
                 $schooldata = School::where('id', $update->school_id)->first();
-                $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                $statedata = State::where('id', $schooldata->state_id)->first();
+                $timezone = Timezone::where('id', $statedata->timezone_id)->first();
                 // $single_notification->timezone = $timezone;
                 $update->timezone_offset = $timezone->utc_offset;
                 $update->timezone_name = $timezone->timezone_name;
