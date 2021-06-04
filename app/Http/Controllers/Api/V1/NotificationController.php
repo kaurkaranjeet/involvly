@@ -64,7 +64,7 @@ class NotificationController extends Controller {
 				$scheduke=	Schedule::with('User')->where('id',$single_notification->schedule_id)->first();
 				$tasks=  ParentTask::with('AssignedUser')->where('schedule_id',$single_notification->schedule_id)->first();
                                 if(!empty($tasks)){
-				$user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token','timezone_id','school_id')->get();
+				$user= User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name','id','device_token','timezone_id','school_id','type_of_schooling')->get();
 				$scheduke->assigned_to=$user;
 				foreach($user as $val){
 				if($val->type_of_schooling == 'school'){
