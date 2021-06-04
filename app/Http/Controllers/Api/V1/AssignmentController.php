@@ -21,6 +21,7 @@ use DB;
 use URL;
 use Carbon\Carbon;
     use App\Models\School;
+    use App\Models\State;
     use App\Models\Timezone;
 
 use Pusher\Pusher;
@@ -586,7 +587,8 @@ class AssignmentController extends Controller {
                 $teacher_name=User::where('id', $getData->Assignments->teacher_id)->first();
                 if($teacher_name->type_of_schooling == 'school'){
                         $schooldata = School::where('id', $teacher_name->school_id)->first();
-                        $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                        $statedata = State::where('id', $schooldata->state_id)->first();
+                        $timezone = Timezone::where('id', $statedata->timezone_id)->first();
                         date_default_timezone_set($timezone->timezone_name);
              
                 }

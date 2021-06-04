@@ -14,6 +14,7 @@ use Exception;
 use App\Models\UserClassCode;
 use App\Models\ClassCode;
 use App\Models\School;
+use App\Models\State;
 use App\Models\Timezone;
 
 class LoginController extends Controller {
@@ -90,7 +91,8 @@ class LoginController extends Controller {
                 if(empty($user_details->timezone_id) || $user_details->timezone_id == ''){
                     //get school timezone
                     $schooldata = School::where('id', $user_details->school_id)->first();
-                    $timezone = Timezone::where('id', $schooldata->timezone_id)->first();
+                    $statedata = State::where('id', $schooldata->state_id)->first();
+                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
                     // $single_notification->timezone = $timezone;
                     $user_details->timezone_offset = $timezone->utc_offset;
                     $user_details->timezone_name = $timezone->timezone_name;
