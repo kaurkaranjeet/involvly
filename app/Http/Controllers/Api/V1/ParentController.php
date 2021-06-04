@@ -739,7 +739,7 @@ class ParentController extends Controller {
 
 //            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get(); 
             $user = [];
-            $user = User::where('id', $task->assigned_to)->select('name', 'id','timezone_id','school_id')->get();
+            $user = User::where('id', $task->assigned_to)->select('name', 'id','timezone_id','school_id','type_of_schooling')->get();
             $task->assigned_to = $user;
             foreach($user as $val){
             if($val->type_of_schooling == 'school'){
@@ -839,7 +839,7 @@ class ParentController extends Controller {
 			// 			)
 			// 			AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
             foreach ($tasks as $singlke_task) {
-                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id','timezone_id','school_id')->get();
+                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id','timezone_id','school_id','type_of_schooling')->get();
                 $singlke_task->assigned_to = $user;
                 foreach($user as $users){
             if($users->type_of_schooling == 'school'){
@@ -1158,7 +1158,7 @@ class ParentController extends Controller {
                 // if(!empty($childrens)){
                 //$results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
                 $family_code = User::find($request->parent_id);
-                $results = User::whereRaw('family_code =\'' . $family_code->family_code . '\' AND role_id = 3')->select('id', 'name', 'last_name', 'role_id','school_id','timezone_id')->get();
+                $results = User::whereRaw('family_code =\'' . $family_code->family_code . '\' AND role_id = 3')->select('id', 'name', 'last_name', 'role_id','school_id','timezone_id','type_of_schooling')->get();
                 if (!empty($results)) {
                     foreach ($results as $single) {
 
@@ -1308,7 +1308,7 @@ class ParentController extends Controller {
                 ParentTaskAssigned::where('task_id', $task_datas->id)->update(['handover' => '1']);
             }
             // ParentTaskAssigned::where('task_id', $tasks->id)->update(['handover' => '1']);
-            $user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token','timezone_id','school_id')->get();
+            $user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token','timezone_id','school_id','type_of_schooling')->get();
 
 
             $notificationobj = new Notification;
