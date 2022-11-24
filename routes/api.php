@@ -28,7 +28,7 @@ Route::prefix('auth')->group(function () {
     Route::post('login', 'UserController@login');
     Route::any('/forgot-password-admin', 'UserController@adminForgotPasswordEmail');
     Route::any('/forgot-password', 'UserController@ForgotPasswordEmail');
-    Route::any('/token-checking', 'UserController@TokenChecking');\
+    Route::any('/token-checking', 'UserController@TokenChecking');
     Route::post('reset-change-password', 'UserController@resetchangePassword');
     Route::post('change-password', 'UserController@changePassword');
     Route::post('admin_list_schools', 'UserController@AdminGetSchools');

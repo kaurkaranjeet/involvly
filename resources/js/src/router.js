@@ -272,6 +272,23 @@ const router = new Router({
                         authRequired: true
                     }
                 },
+                 //Contractual Teachers side menu path
+                 {
+                    path: '/apps/user/contractual-list',
+                    name: 'app-contractual-list',
+                    component: () =>
+                        import ('@/views/apps/user/contractual-list/ContractualTeacher.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            // { title: 'Teachers', url: '/apps/user/user-list' },  
+                            { title: 'Teachers', active: true }
+                        ],
+                        pageTitle: 'Contractual List',  
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
                 {
                     path: '/apps/user/user-view/:userId',
                     name: 'app-user-view',
@@ -561,6 +578,24 @@ const router = new Router({
                         authRequired: true
                     }
                 },
+                // Training Program List
+                {
+                    path: '/apps/user/alltraining',
+                    name: 'app-training-list',
+                    component: () =>
+                        import ('@/views/apps/admin/user-list/TeacherList.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/dashboard' },
+                            // { title: 'Teachers', url: '/apps/user/allteachers' },
+                            { title: 'Training Program', active: true }
+                        ],
+                        pageTitle: 'Training Program List',
+                        rule: 'admin',
+                        authRequired: true
+                    }
+                },
+
                 {
                     path: '/apps/user/allstudents',
                     name: 'app-student-list',

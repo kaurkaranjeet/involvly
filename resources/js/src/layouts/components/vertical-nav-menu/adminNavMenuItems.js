@@ -43,6 +43,15 @@ export default [{
                 slug: 'all-parents',
                 i18n: 'List'
             },
+            // Training Program List
+            {
+                url: '/apps/user/alltraining',
+                name: 'Training Program List',
+                icon: "UsersIcon",
+                slug: 'all-training-program',
+                i18n: 'List'
+            },
+            
             {
                 url: '/apps/user/listofschooladmins',
                 name: 'School Admin List',
