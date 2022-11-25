@@ -57,3 +57,102 @@
  * @import "utilities/background-patterns";
  * @import "utilities/skew-transforms";
  */
+
+ .text-primary 
+ {
+   color: #CADC4F !important;
+ }
+.vs-button-primary.vs-button-filled {
+    background: #CADC4F !important;
+    color: #080717 !important;
+    font-weight: bold;
+  }
+  
+  .vs-button-primary.vs-button-border {
+    border: 1px solid #CADC4F;
+    background: transparent !important;
+    color: #080717 !important;
+  }
+  
+  h4.mb-4 {
+    font-weight: bold;
+  }
+  a:active, a:visited, a:hover, a
+  {
+    color: #45435D !important;
+  }
+  .vs-checkbox-primary input:checked+.vs-checkbox{
+        border: 2px solid #CADC4F !important; 
+        background:#CADC4F !important;
+  }
+  .vs-input-primary .vs-input--input:focus
+  {
+    border: 1px solid #CADC4F !important;
+     
+  }
+  .vs-input-primary .vs-input--input:focus~.icon-inputx
+  {
+    color:#CADC4F !important;
+  }
+.bg-primary-gradient
+  {
+    background: #fff !important;
+  }
+  [dir=ltr] .v-nav-menu .vs-sidebar--item .router-link-active
+  {
+    background:#CADC4F !important;
+
+  }
+  [dir] .v-nav-menu .vs-sidebar--item .router-link-active
+  {
+    box-shadow: 0px 0px 0px 0px rgba(var(--vs-dark), 0.7)!important;
+  }
+  .v-nav-menu .vs-sidebar--item .router-link-active .feather-icon
+  {
+    color: #000000 !important;
+  }
+  .v-nav-menu .vs-sidebar--item .router-link-active span
+  {
+    color: #000000 !important;
+    font-weight: 500 !important;
+  }
+
+  [dir=ltr] .v-nav-menu .header-sidebar
+  {
+    padding: 20px 19px 16px 40px !important; 
+  }
+  
+ li.cursor-pointer:hover
+ {
+    background: #CADC4F !important;
+    color: #000000 !important;
+ }
+ .h1-checkpoint
+ {
+    word-spacing: -0.2ch;
+    font-family: inherit;
+    font-size: 35px;
+}
+.vs-tabs-primary .con-ul-tabs .line-vs-tabs
+{
+    background: linear-gradient(30deg, #CADC4F ,#dde7a6)!important;
+    box-shadow: 0 0 8px 0 #CADC4F !important;
+}   
+[dir] .p-6
+{
+    padding: 0.5rem !important;
+}
+.vx-card.text-center.greet-user
+{
+    padding-left: 1.4rem !important;
+    padding-top:0.4rem !important;
+}
+.vx-col.w-full.sm\:w-1\/2.md\:w-1\/2.lg\:w-1\/4.xl\:w-1\/4.mb-base
+{
+    margin-top: 10px !important;
+}
+[dir] .ag-theme-material .ag-ltr .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected), [dir] .ag-theme-material .ag-ltr .ag-has-focus .ag-cell-focus.ag-cell-range-single-cell, [dir] .ag-theme-material .ag-ltr .ag-cell-focus.ag-cell-range-single-cell.ag-cell-range-handle, [dir] .ag-theme-material .ag-rtl .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected), [dir] .ag-theme-material .ag-rtl .ag-has-focus .ag-cell-focus.ag-cell-range-single-cell, [dir] .ag-theme-material .ag-rtl .ag-cell-focus.ag-cell-range-single-cell.ag-cell-range-handle
+{
+  border:1px solid #CADC4F !important;
+}
+ 

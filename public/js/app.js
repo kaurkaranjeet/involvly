@@ -6902,6 +6902,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'vx-breadcrumb',
   data: function data() {
@@ -40035,7 +40037,7 @@ var render = function(_h, _vm) {
             "li",
             { staticClass: "inline-flex items-end" },
             [
-              (_vm.props.route.meta.rule = "editor")
+              _vm.props.route.meta.rule == "editor"
                 ? _c(
                     "router-link",
                     { attrs: { to: "/" } },
@@ -73041,7 +73043,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     // =============================================================================
     path: '',
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(24), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, /*! ./layouts/main/Main.vue */ "./resources/js/src/layouts/main/Main.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(29), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, /*! ./layouts/main/Main.vue */ "./resources/js/src/layouts/main/Main.vue"));
     },
     children: [// =============================================================================
     // Theme Routes
@@ -73050,7 +73052,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/',
       name: 'home',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(9), __webpack_require__.e(8), __webpack_require__.e(30)]).then(__webpack_require__.bind(null, /*! ./views/Home.vue */ "./resources/js/src/views/Home.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(57), __webpack_require__.e(8), __webpack_require__.e(31)]).then(__webpack_require__.bind(null, /*! ./views/Home.vue */ "./resources/js/src/views/Home.vue"));
       },
       meta: {
         authRequired: true,
@@ -73060,7 +73062,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/dashboard',
       name: 'dashboard',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(9), __webpack_require__.e(8), __webpack_require__.e(29)]).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/src/views/Dashboard.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(57), __webpack_require__.e(8), __webpack_require__.e(30)]).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/src/views/Dashboard.vue"));
       },
       meta: {
         authRequired: true,
@@ -73070,24 +73072,22 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/page2',
       name: 'page-2',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 50).then(__webpack_require__.bind(null, /*! ./views/Page2.vue */ "./resources/js/src/views/Page2.vue"));
+        return __webpack_require__.e(/*! import() */ 55).then(__webpack_require__.bind(null, /*! ./views/Page2.vue */ "./resources/js/src/views/Page2.vue"));
       }
     }, //classes side menu path
     {
       path: '/apps/class/class-list',
       name: 'app-class-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-list/ClassList.vue */ "./resources/js/src/views/apps/class/class-list/ClassList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-list/ClassList.vue */ "./resources/js/src/views/apps/class/class-list/ClassList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
-        }, {
+        }, // { title: 'Classes', url: '/apps/class/class-list' },
+        {
           title: 'Classes',
-          url: '/apps/class/class-list'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Classes List',
@@ -73119,7 +73119,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/class-view/:classId',
       name: 'app-class-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-view/ClassView.vue */ "./resources/js/src/views/apps/class/class-view/ClassView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(18)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/class-view/ClassView.vue */ "./resources/js/src/views/apps/class/class-view/ClassView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73129,7 +73129,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Classes',
           url: '/apps/class/class-list'
         }, {
-          title: 'View',
+          title: 'View Details',
           active: true
         }],
         pageTitle: 'View Class Code',
@@ -73150,10 +73150,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Classes',
           url: '/apps/class/class-list'
         }, {
-          title: 'Edit',
+          title: 'Edit Details',
           active: true
         }],
-        pageTitle: 'Class Code Edit',
+        pageTitle: 'Edit Class Code',
         rule: 'editor',
         authRequired: true
       }
@@ -73161,7 +73161,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/subject-add/:classId',
       name: 'app-subject-add',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/class/subject-add/SubjectAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(19)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-add/SubjectAdd.vue */ "./resources/js/src/views/apps/class/subject-add/SubjectAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73182,7 +73182,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/subject-view/:subjectId',
       name: 'app-subject-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(41)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/class/subject-view/SubjectView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(52)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-view/SubjectView.vue */ "./resources/js/src/views/apps/class/subject-view/SubjectView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73192,10 +73192,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Subjects',
           url: '/apps/subject/subject-list'
         }, {
-          title: 'View',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Subject View',
+        pageTitle: 'View Subject ',
         rule: 'editor',
         authRequired: true
       }
@@ -73203,7 +73203,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/subject-edit/:subjectId',
       name: 'app-subject-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(40)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/class/subject-edit/SubjectEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(51)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/class/subject-edit/SubjectEdit.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73213,10 +73213,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Subjects',
           url: '/apps/subject/subject-list'
         }, {
-          title: 'Edit',
+          title: 'Edit Details',
           active: true
         }],
-        pageTitle: 'Subject Edit',
+        pageTitle: 'Edit Subject',
         rule: 'editor',
         authRequired: true
       }
@@ -73225,7 +73225,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/class/assign-teacher/:classId/:subjectId',
       name: 'app-assign-teacher',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/assign-teacher/AssignTeacher.vue */ "./resources/js/src/views/apps/class/assign-teacher/AssignTeacher.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(3), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, /*! @/views/apps/class/assign-teacher/AssignTeacher.vue */ "./resources/js/src/views/apps/class/assign-teacher/AssignTeacher.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73246,17 +73246,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/subject/subject-list',
       name: 'app-subject-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-list/SubjectList.vue */ "./resources/js/src/views/apps/subject/subject-list/SubjectList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(2), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-list/SubjectList.vue */ "./resources/js/src/views/apps/subject/subject-list/SubjectList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
-        }, {
+        }, // { title: 'Subjects', url: '/apps/subject/subject-list' },
+        {
           title: 'Subjects',
-          url: '/apps/subject/subject-list'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Subjects List',
@@ -73298,10 +73296,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Subjects',
           url: '/apps/subject/subject-list'
         }, {
-          title: 'View',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Subject View',
+        pageTitle: 'View Subject ',
         rule: 'editor',
         authRequired: true
       }
@@ -73309,7 +73307,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/subject/subject-edit/:subjectId',
       name: 'app-subject-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(44)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(3), __webpack_require__.e(40)]).then(__webpack_require__.bind(null, /*! @/views/apps/subject/subject-edit/SubjectEdit.vue */ "./resources/js/src/views/apps/subject/subject-edit/SubjectEdit.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73319,10 +73317,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Subjects',
           url: '/apps/subject/subject-list'
         }, {
-          title: 'Edit',
+          title: 'Edit Details',
           active: true
         }],
-        pageTitle: 'Subject Edit',
+        pageTitle: 'Edit Subject',
         rule: 'editor',
         authRequired: true
       }
@@ -73331,20 +73329,38 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/user-list',
       name: 'app-user-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(6), __webpack_require__.e(23)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/UserList.vue */ "./resources/js/src/views/apps/user/user-list/UserList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(6), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/UserList.vue */ "./resources/js/src/views/apps/user/user-list/UserList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
-        }, {
+        }, // { title: 'Teachers', url: '/apps/user/user-list' },
+        {
           title: 'Teachers',
-          url: '/apps/user/user-list'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Teachers List',
+        rule: 'editor',
+        authRequired: true
+      }
+    }, //Contractual Teachers side menu path
+    {
+      path: '/apps/user/contractual-list',
+      name: 'app-contractual-list',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 56).then(__webpack_require__.bind(null, /*! @/views/apps/user/contractual-list/ContractualTeacher.vue */ "./resources/js/src/views/apps/user/contractual-list/ContractualTeacher.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/'
+        }, // { title: 'Teachers', url: '/apps/user/user-list' },  
+        {
+          title: 'Teachers',
+          active: true
+        }],
+        pageTitle: 'Contractual List',
         rule: 'editor',
         authRequired: true
       }
@@ -73352,7 +73368,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/user-view/:userId',
       name: 'app-user-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(37)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/UserView.vue */ "./resources/js/src/views/apps/user/UserView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/UserView.vue */ "./resources/js/src/views/apps/user/UserView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73362,10 +73378,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Teachers',
           url: '/apps/user/user-list'
         }, {
-          title: 'Teacher',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Teacher View',
+        pageTitle: 'View Teacher Details',
         rule: 'editor',
         authRequired: true
       }
@@ -73373,7 +73389,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/admin/teacher-view/:userId',
       name: 'admin-teacher-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(36)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/UserAdminView.vue */ "./resources/js/src/views/apps/user/UserAdminView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(46)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/UserAdminView.vue */ "./resources/js/src/views/apps/user/UserAdminView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73383,10 +73399,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Teachers',
           url: '/apps/user/allteachers'
         }, {
-          title: 'Teacher',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Teacher View',
+        pageTitle: 'View Teacher Details',
         rule: 'admin',
         authRequired: true
       }
@@ -73394,7 +73410,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/student-view/:userId',
       name: 'app-student-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(35)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/StudentView.vue */ "./resources/js/src/views/apps/user/StudentView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(45)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/StudentView.vue */ "./resources/js/src/views/apps/user/StudentView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73404,10 +73420,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Students',
           url: '/apps/user/listofstudents'
         }, {
-          title: 'Student',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Student View',
+        pageTitle: 'View Student Details',
         rule: 'editor',
         authRequired: true
       }
@@ -73415,20 +73431,20 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/admin-student-view/:userId',
       name: 'admin-student-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(34)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/StudentAdminView.vue */ "./resources/js/src/views/apps/user/StudentAdminView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(44)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/StudentAdminView.vue */ "./resources/js/src/views/apps/user/StudentAdminView.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
-          url: '/'
+          url: '/dashboard'
         }, {
           title: 'Students',
           url: '/apps/user/allstudents'
         }, {
-          title: 'Student',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Student View',
+        pageTitle: 'View Student Details',
         rule: 'admin',
         authRequired: true
       }
@@ -73436,7 +73452,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/parent-view/:userId',
       name: 'app-parent-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(32)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/ParentsView.vue */ "./resources/js/src/views/apps/user/ParentsView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(42)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/ParentsView.vue */ "./resources/js/src/views/apps/user/ParentsView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73446,10 +73462,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Parents',
           url: '/apps/user/listofparents'
         }, {
-          title: 'Parent',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Parent View',
+        pageTitle: 'View Parent Details',
         rule: 'editor',
         authRequired: true
       }
@@ -73457,7 +73473,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/adminparent-view/:userId',
       name: 'adminparent-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(31)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/ParentsAdminView.vue */ "./resources/js/src/views/apps/user/ParentsAdminView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(41)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/ParentsAdminView.vue */ "./resources/js/src/views/apps/user/ParentsAdminView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73467,10 +73483,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Parents',
           url: '/apps/user/allparents'
         }, {
-          title: 'Parent',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'Parent View',
+        pageTitle: 'View Parent Details',
         rule: 'admin',
         authRequired: true
       }
@@ -73478,7 +73494,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/schooladmin-view/:userId',
       name: 'adminparent-view',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(33)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/SchoolAdminsView.vue */ "./resources/js/src/views/apps/user/SchoolAdminsView.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(43)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/SchoolAdminsView.vue */ "./resources/js/src/views/apps/user/SchoolAdminsView.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73488,10 +73504,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'School Admins',
           url: '/apps/user/listofschooladmins'
         }, {
-          title: 'School Admin',
+          title: 'View Details',
           active: true
         }],
-        pageTitle: 'School Admin View',
+        pageTitle: 'View School Details',
         rule: 'admin',
         authRequired: true
       }
@@ -73509,10 +73525,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Teachers',
           url: '/apps/user/user-list'
         }, {
-          title: 'Edit',
+          title: 'Edit Details',
           active: true
         }],
-        pageTitle: 'Teacher Edit',
+        pageTitle: 'Edit Teacher',
         rule: 'editor',
         authRequired: true
       }
@@ -73530,10 +73546,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Students',
           url: '/apps/user/listofstudents'
         }, {
-          title: 'Edit',
+          title: 'Edit Details',
           active: true
         }],
-        pageTitle: 'Students Edit',
+        pageTitle: 'Edit Student',
         rule: 'editor',
         authRequired: true
       }
@@ -73551,10 +73567,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Parents',
           url: '/apps/user/listofparents'
         }, {
-          title: 'Edit',
+          title: 'Edit Details',
           active: true
         }],
-        pageTitle: 'Parents Edit',
+        pageTitle: 'Edit Parent',
         rule: 'editor',
         authRequired: true
       }
@@ -73562,17 +73578,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/listofstudents',
       name: 'list-students',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(6), __webpack_require__.e(22)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentList.vue */ "./resources/js/src/views/apps/user/user-list/StudentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(6), __webpack_require__.e(28)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentList.vue */ "./resources/js/src/views/apps/user/user-list/StudentList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
-        }, {
+        }, // { title: 'Students', url: '/apps/user/listofstudents' },
+        {
           title: 'Students',
-          url: '/apps/user/listofstudents'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Students List',
@@ -73583,7 +73597,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/addstudent',
       name: 'add-student',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(46)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentAdd.vue */ "./resources/js/src/views/apps/user/user-list/StudentAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(49)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/StudentAdd.vue */ "./resources/js/src/views/apps/user/user-list/StudentAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73596,7 +73610,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Add',
           active: true
         }],
-        pageTitle: 'Student Add',
+        pageTitle: 'Add Student',
         rule: 'editor',
         authRequired: true
       }
@@ -73604,7 +73618,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/addnewteacher',
       name: 'add-teacher',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(47)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/TeacherAdd.vue */ "./resources/js/src/views/apps/user/user-list/TeacherAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(50)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/TeacherAdd.vue */ "./resources/js/src/views/apps/user/user-list/TeacherAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73625,7 +73639,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/add_new_parent',
       name: 'add-parent',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(45)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentAdd.vue */ "./resources/js/src/views/apps/user/user-list/ParentAdd.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(48)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentAdd.vue */ "./resources/js/src/views/apps/user/user-list/ParentAdd.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73646,17 +73660,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/listofschooladmins',
       name: 'list-admins-school',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(18)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/SchoolAdminList.vue */ "./resources/js/src/views/apps/admin/user-list/SchoolAdminList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(23)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/SchoolAdminList.vue */ "./resources/js/src/views/apps/admin/user-list/SchoolAdminList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
-          url: '/'
-        }, {
+          url: '/dashboard'
+        }, // { title: 'School Admins', url: '/apps/user/listofschooladmins' },
+        {
           title: 'School Admins',
-          url: '/apps/user/listofschooladmins'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'School Admin List',
@@ -73667,17 +73679,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/listofparents',
       name: 'list-parents',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(6), __webpack_require__.e(21)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentList.vue */ "./resources/js/src/views/apps/user/user-list/ParentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(6), __webpack_require__.e(27)]).then(__webpack_require__.bind(null, /*! @/views/apps/user/user-list/ParentList.vue */ "./resources/js/src/views/apps/user/user-list/ParentList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/'
-        }, {
+        }, // { title: 'Parents', url: '/apps/user/listofparents' },
+        {
           title: 'Parents',
-          url: '/apps/user/listofparents'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Parents List',
@@ -73690,20 +73700,38 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/allteachers',
       name: 'app-teacher-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(20)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/TeacherList.vue */ "./resources/js/src/views/apps/admin/user-list/TeacherList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/TeacherList.vue */ "./resources/js/src/views/apps/admin/user-list/TeacherList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/dashboard'
-        }, {
+        }, // { title: 'Teachers', url: '/apps/user/allteachers' },
+        {
           title: 'Teachers',
-          url: '/apps/user/allteachers'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Teachers List',
+        rule: 'admin',
+        authRequired: true
+      }
+    }, // Training Program List
+    {
+      path: '/apps/user/alltraining',
+      name: 'app-training-list',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(9)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/TeacherList.vue */ "./resources/js/src/views/apps/admin/user-list/TeacherList.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/dashboard'
+        }, // { title: 'Teachers', url: '/apps/user/allteachers' },
+        {
+          title: 'Training Program',
+          active: true
+        }],
+        pageTitle: 'Training Program List',
         rule: 'admin',
         authRequired: true
       }
@@ -73711,17 +73739,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/allstudents',
       name: 'app-student-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(19)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/StudentList.vue */ "./resources/js/src/views/apps/admin/user-list/StudentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(24)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/StudentList.vue */ "./resources/js/src/views/apps/admin/user-list/StudentList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/dashboard'
-        }, {
+        }, // { title: 'Students', url: '/apps/user/allstudents' },
+        {
           title: 'Students',
-          url: '/apps/user/allstudents'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Students List',
@@ -73732,17 +73758,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/user/allparents',
       name: 'app-parent-list',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/ParentList.vue */ "./resources/js/src/views/apps/admin/user-list/ParentList.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(4), __webpack_require__.e(22)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/user-list/ParentList.vue */ "./resources/js/src/views/apps/admin/user-list/ParentList.vue"));
       },
       meta: {
         breadcrumb: [{
           title: 'Home',
           url: '/dashboard'
-        }, {
+        }, // { title: 'Parents', url: '/apps/user/allparents' },
+        {
           title: 'Parents',
-          url: '/apps/user/allparents'
-        }, {
-          title: 'List',
           active: true
         }],
         pageTitle: 'Parents List',
@@ -73754,7 +73778,26 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/profile/changepassword',
       name: 'profile-edit',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 42).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ChangePassword.vue */ "./resources/js/src/views/apps/profile/ChangePassword.vue"));
+        return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ChangePassword.vue */ "./resources/js/src/views/apps/profile/ChangePassword.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/dashboard'
+        }, // { title: 'Parents', url: '/apps/user/allparents' },
+        {
+          title: 'Change Password',
+          active: true
+        }],
+        pageTitle: 'Change Password',
+        rule: 'editor',
+        authRequired: true
+      }
+    }, {
+      path: '/apps/admin/profile/changepassword',
+      name: 'profile-edit',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 10).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ChangePassword.vue */ "./resources/js/src/views/apps/profile/ChangePassword.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73773,7 +73816,25 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/apps/profile/editprofile',
       name: 'profile-edit',
       component: function component() {
-        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(43)]).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ProfileEdit.vue */ "./resources/js/src/views/apps/profile/ProfileEdit.vue"));
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ProfileEdit.vue */ "./resources/js/src/views/apps/profile/ProfileEdit.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/dashboard'
+        }, // { title: 'Parents', url: '/apps/user/allparents' },
+        {
+          title: 'Edit Details',
+          active: true
+        }],
+        pageTitle: 'Edit Profile',
+        rule: 'editor'
+      }
+    }, {
+      path: '/apps/admin/profile/editprofile',
+      name: 'profile-edit',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, /*! @/views/apps/profile/ProfileEdit.vue */ "./resources/js/src/views/apps/profile/ProfileEdit.vue"));
       },
       meta: {
         breadcrumb: [{
@@ -73784,7 +73845,26 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
           title: 'Profile',
           active: true
         }],
-        pageTitle: 'Profile Edit',
+        pageTitle: 'Edit Profile',
+        rule: 'admin',
+        authRequired: true
+      }
+    }, {
+      path: '/apps/report/users',
+      name: 'app-report-users',
+      component: function component() {
+        return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, /*! @/views/apps/admin/report/ReportList.vue */ "./resources/js/src/views/apps/admin/report/ReportList.vue"));
+      },
+      meta: {
+        breadcrumb: [{
+          title: 'Home',
+          url: '/dashboard'
+        }, // { title: 'Users', url: '/apps/report/users' },
+        {
+          title: 'Users',
+          active: true
+        }],
+        pageTitle: 'Report Users',
         rule: 'admin',
         authRequired: true
       }
@@ -73795,7 +73875,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   {
     path: '',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 49).then(__webpack_require__.bind(null, /*! @/layouts/full-page/FullPage.vue */ "./resources/js/src/layouts/full-page/FullPage.vue"));
+      return __webpack_require__.e(/*! import() */ 54).then(__webpack_require__.bind(null, /*! @/layouts/full-page/FullPage.vue */ "./resources/js/src/layouts/full-page/FullPage.vue"));
     },
     children: [// =============================================================================
     // PAGES
@@ -73804,19 +73884,49 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/pages/admin/login',
       name: 'page-admin-login',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 27).then(__webpack_require__.bind(null, /*! @/views/pages/AdminLogin.vue */ "./resources/js/src/views/pages/AdminLogin.vue"));
+        return __webpack_require__.e(/*! import() */ 32).then(__webpack_require__.bind(null, /*! @/views/pages/AdminLogin.vue */ "./resources/js/src/views/pages/AdminLogin.vue"));
       }
     }, {
       path: '/pages/login',
       name: 'page-login',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 28).then(__webpack_require__.bind(null, /*! @/views/pages/Login.vue */ "./resources/js/src/views/pages/Login.vue"));
+        return __webpack_require__.e(/*! import() */ 34).then(__webpack_require__.bind(null, /*! @/views/pages/Login.vue */ "./resources/js/src/views/pages/Login.vue"));
       }
     }, {
       path: '/pages/register',
       name: 'page-register',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 16).then(__webpack_require__.bind(null, /*! @/views/pages/register/Register.vue */ "./resources/js/src/views/pages/register/Register.vue"));
+        return __webpack_require__.e(/*! import() */ 20).then(__webpack_require__.bind(null, /*! @/views/pages/register/Register.vue */ "./resources/js/src/views/pages/register/Register.vue"));
+      },
+      meta: {
+        rule: 'editor'
+      }
+    }, {
+      path: '/pages/forgot/password',
+      name: 'page-forgot-password',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 33).then(__webpack_require__.bind(null, /*! @/views/pages/ForgotPassword.vue */ "./resources/js/src/views/pages/ForgotPassword.vue"));
+      }
+    }, {
+      path: '/reset/password',
+      name: 'page-reset-password',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 35).then(__webpack_require__.bind(null, /*! @/views/pages/ResetPassword.vue */ "./resources/js/src/views/pages/ResetPassword.vue"));
+      },
+      meta: {
+        rule: 'editor'
+      }
+    }, {
+      path: '/pages/forgot/adminpassword',
+      name: 'page-forgot-adminpassword',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 36).then(__webpack_require__.bind(null, /*! @/views/pages/adminForgotPassword.vue */ "./resources/js/src/views/pages/adminForgotPassword.vue"));
+      }
+    }, {
+      path: '/reset/adminpassword',
+      name: 'page-reset-adminpassword',
+      component: function component() {
+        return __webpack_require__.e(/*! import() */ 37).then(__webpack_require__.bind(null, /*! @/views/pages/adminResetPassword.vue */ "./resources/js/src/views/pages/adminResetPassword.vue"));
       },
       meta: {
         rule: 'editor'
@@ -73825,7 +73935,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
       path: '/pages/error-404',
       name: 'page-error-404',
       component: function component() {
-        return __webpack_require__.e(/*! import() */ 48).then(__webpack_require__.bind(null, /*! @/views/pages/Error404.vue */ "./resources/js/src/views/pages/Error404.vue"));
+        return __webpack_require__.e(/*! import() */ 53).then(__webpack_require__.bind(null, /*! @/views/pages/Error404.vue */ "./resources/js/src/views/pages/Error404.vue"));
       }
     }]
   }, // Redirect to 404 page, if no match found
@@ -73870,9 +73980,9 @@ router.beforeEach(function (to, from, next) {
   // } else {
   //     return next();
   // }
-  if (to.name !== 'page-login' && to.name !== 'page-register' && to.name !== 'page-admin-login' && !localStorage.getItem("accessToken")) next({
+  if (to.name !== 'page-login' && to.name !== 'page-forgot-password' && to.name !== 'page-forgot-adminpassword' && to.name !== 'page-reset-password' && to.name !== 'page-reset-adminpassword' && to.name !== 'page-register' && to.name !== 'page-admin-login' && !localStorage.getItem("accessToken")) next({
     name: 'page-login'
-  });else if (to.name === 'page-admin-login' && localStorage.getItem("accessToken") && localStorage.getItem("role_id") == '1') next({
+  });else if (to.name === 'page-admin-login' && to.name === 'page-forgot-password' && to.name === 'page-forgot-adminpassword' && to.name === 'page-reset-password' && to.name === 'page-reset-adminpassword' && localStorage.getItem("accessToken") && localStorage.getItem("role_id") == '1') next({
     name: 'dashboard'
   });else if ((to.name === 'page-login' || to.name === 'page-register') && localStorage.getItem("accessToken") && localStorage.getItem("role_id") != '1') next({
     name: 'home'
@@ -74395,17 +74505,88 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  //change password
-  changepassword: function changepassword(_ref12, data) {
+  //forgot password
+  ForgotPassword: function ForgotPassword(_ref12, code) {
     var commit = _ref12.commit;
     return new Promise(function (resolve, reject) {
-      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/change-password", data).then(function (response) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/forgot-password", code).then(function (response) {
         console.log(response);
 
-        if (response.data.datauser) {
+        if (response.data.user) {
           resolve(response);
         } else {
-          reject(response.data.message);
+          reject({
+            message: response.data.message
+          });
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  //forgot password
+  adminForgotPassword: function adminForgotPassword(_ref13, code) {
+    var commit = _ref13.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/forgot-password-admin", code).then(function (response) {
+        console.log(response);
+
+        if (response.data.user) {
+          resolve(response);
+        } else {
+          reject({
+            message: response.data.message
+          });
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  //change password
+  ChangePassword: function ChangePassword(_ref14, data) {
+    var commit = _ref14.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/reset-change-password", data).then(function (response) {
+        console.log(response);
+
+        if (response.data.user) {
+          resolve(response);
+        } else {
+          reject({
+            message: response.data.message
+          });
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  //token checkinf
+  TokenChecking: function TokenChecking(_ref15, data) {
+    var commit = _ref15.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/token-checking", data).then(function (res) {
+        if (res) {
+          resolve(res);
+        } else {
+          reject({
+            message: res.data.message
+          });
+        }
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  CreatePassword: function CreatePassword(_ref16, data) {
+    var commit = _ref16.commit;
+    return new Promise(function (resolve, reject) {
+      _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/change-password", data).then(function (res) {
+        if (res.data.datauser) {
+          resolve(res);
+        } else {
+          reject(res.data.message);
         }
       })["catch"](function (error) {
         reject(error);
@@ -74421,8 +74602,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     });
   },
-  UpdateUser: function UpdateUser(_ref13, data) {
-    var commit = _ref13.commit;
+  UpdateUser: function UpdateUser(_ref17, data) {
+    var commit = _ref17.commit;
     console.log(data);
     return new Promise(function (resolve, reject) {
       _axios_js__WEBPACK_IMPORTED_MODULE_1__["default"].post("/api/auth/update-school-profile", data).then(function (response) {
@@ -74837,7 +75018,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     // email: moduleEmail,
     auth: _auth_moduleAuth_js__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
-  strict: "development" !== 'production'
+  strict: false
 }));
 
 /***/ }),
@@ -74930,9 +75111,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuesax__WEBPACK_IMPORTED_MODULE_1
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\involvvely-backend\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! C:\xampp\htdocs\involvvely-backend\resources\sass\app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\involvvely-backend\resources\assets\css\main.css */"./resources/assets/css/main.css");
+__webpack_require__(/*! /var/www/html/involvvely/involvvely-backend/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /var/www/html/involvvely/involvvely-backend/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /var/www/html/involvvely/involvvely-backend/resources/assets/css/main.css */"./resources/assets/css/main.css");
 
 
 /***/ })

@@ -31,12 +31,15 @@
 
           <!-- Logo -->
           <router-link v-if="accessRole" tag="div" class="vx-logo cursor-pointer flex items-center" to="/dashboard">
-            <logo class="w-10 mr-4 fill-current text-primary" />
-            <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span>
+             <img src="@assets/images/logo/dashlogo.png" class="decore-left" alt="Decore Left" width="150" href="/dashboard" />
+            <!-- <logo class="w-10 mr-4 fill-current text-primary" />
+            <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span>  -->
           </router-link>
           <router-link v-if="!accessRole" tag="div" class="vx-logo cursor-pointer flex items-center" to="/">
-            <logo class="w-10 mr-4 fill-current text-primary" />
-            <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span>
+            <img src="@assets/images/logo/dashlogo.png" class="decore-left" alt="Decore Left" width="150" href="/dashboard" />
+
+            <!-- <logo class="w-10 mr-4 fill-current text-primary" />
+            <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span> -->
           </router-link>
           <!-- /Logo -->
 
@@ -48,14 +51,14 @@
             </template>
 
             <!-- Toggle Buttons -->
-            <template v-else-if="!showCloseButton && !verticalNavMenuItemsMin">
+            <!-- <template v-else-if="!showCloseButton && !verticalNavMenuItemsMin">
               <feather-icon
                 id="btnVNavMenuMinToggler"
                 class="mr-0 cursor-pointer"
                 :icon="reduce ? 'CircleIcon' : 'DiscIcon'"
                 svg-classes="stroke-current text-primary"
                 @click="toggleReduce(!reduce)" />
-            </template>
+            </template> -->
           </div>
           <!-- /Menu Toggle Buttons -->
         </div>
@@ -369,7 +372,26 @@ export default {
 }
 
 </script>
+<style>
+ .text-primary 
+ {
+   color: #CADC4F !important;
+ }
+ .hover\:text-primary:hover
+ {
+  color: #CADC4F !important;
+  
+ }
+ .vs-pagination-primary .effect, .vs-pagination-primary .vs-pagination--buttons:hover
+ {
+  background:#CADC4F !important;
+ }
+ .vs-pagination-primary li:hover:not(.is-current)
+ {
+  color:#CADC4F !important;
 
+ }
+</style>
 
 <style lang="scss">
 @import "@sass/vuexy/components/verticalNavMenu.scss"

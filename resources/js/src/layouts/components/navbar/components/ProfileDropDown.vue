@@ -3,7 +3,7 @@
 
     <div class="text-right leading-tight hidden sm:block" v-if="checkpointReward.name">
       <p class="font-semibold">{{ checkpointReward.name }}</p>
-      <small>Available</small>
+      <span class="logged-in" style="color: #CADC4F;">●</span><small>Available</small>
     </div>
 
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer" id="custom_profile">
@@ -15,14 +15,14 @@
       <vs-dropdown-menu class="vx-navbar-dropdown">
         <ul style="min-width: 9rem">
 
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="profile">
+          <li class="flex py-2 px-4 cursor-pointer" @click="profile">
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4" />
             <span class="ml-2">Profile</span>
           </li>
           
           <vs-divider class="m-1" />
 
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white" @click="changepassword">
+          <li class="flex py-2 px-4 cursor-pointer" @click="changepassword">
             <feather-icon icon="KeyIcon" svgClasses="w-4 h-4" />
             <span class="ml-2">Change Password</span>
           </li>
@@ -45,7 +45,7 @@
           <vs-divider class="m-1" />
 
           <li
-            class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+            class="flex py-2 px-4 cursor-pointer"
             @click="logout">
             <feather-icon icon="LogOutIcon" svgClasses="w-4 h-4" />
             <span class="ml-2">Logout</span>

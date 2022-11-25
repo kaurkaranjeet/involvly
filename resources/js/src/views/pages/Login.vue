@@ -24,35 +24,52 @@
               <div class="p-8 login-tabs-container">
 
                 <div class="vx-card__title mb-4">
-                  <h4 class="mb-4">Login</h4>
+                  <h4 class="mb-4" style="font-weight: bold;">Login</h4>
                   <p>Welcome back, please login to your account.</p>
                   <div style="visibility: hidden;">Welcome back, please login to your account.</div>
                 </div>
 
                 <div>
-                  <vs-input v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border
-                    icon="icon icon-user" icon-pack="feather" label-placeholder="Email" v-model="email" class="w-full"
-                    v-on:keyup.enter="loginJWT" />
-                  <span class="text-danger text-sm">{{ errors.first('email') }}</span>
+                   <vs-input
+        v-validate="'required|email|min:3'"
+        data-vv-validate-on="blur"
+        name="email"
+        icon-no-border
+        icon="icon icon-user"
+        icon-pack="feather"
+        label-placeholder="Email"
+        v-model="email"
+        class="w-full"
+        v-on:keyup.enter="loginJWT"/>
+                       <span class="text-danger text-sm">{{ errors.first('email') }}</span>
 
-                  <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password"
-                    name="password" icon-no-border icon="icon icon-lock" icon-pack="feather"
-                    label-placeholder="Password" v-model="password" class="w-full mt-8" v-on:keyup.enter="loginJWT" />
-                  <span class="text-danger text-sm">{{ errors.first('password') }}</span>
+                 <vs-input
+        data-vv-validate-on="blur"
+        v-validate="'required|min:6|max:10'"
+        type="password"
+        name="password"
+        icon-no-border
+        icon="icon icon-lock"
+        icon-pack="feather"
+        label-placeholder="Password"
+        v-model="password"
+        class="w-full mt-8" 
+        v-on:keyup.enter="loginJWT"/>
+  <span class="text-danger text-sm">{{ errors.first('password') }}</span>
 
                   <div class="flex flex-wrap justify-between my-5">
-                    <vs-checkbox v-model="checkbox_remember_me" class="mb-3 remember-margin">Remember Me</vs-checkbox>
-                    <router-link to="/pages/forgot/password">Forgot Password?</router-link>
+                      <vs-checkbox v-model="checkbox_remember_me" class="mb-3 remember-margin">Remember Me</vs-checkbox>
+                      <router-link to="/pages/forgot/password">Forgot Password?</router-link>
                   </div>
-                  <vs-button type="border" @click="registerUser">Register</vs-button>
-                  <vs-button :disabled="!validateForm" @click="loginJWT" class="float-right">Login</vs-button>
+                   <vs-button  type="border" @click="registerUser">Register</vs-button>
+                  <vs-button  :disabled="!validateForm" @click="loginJWT" class="float-right">Login</vs-button>
 
-
+               
 
                   <div class="social-login-buttons flex flex-wrap items-center mt-4">
 
                     <!-- facebook -->
-
+                   
                   </div>
                 </div>
 
@@ -67,7 +84,7 @@
 
 <script>
 
-export default {
+export default{
   data() {
     return {
       email: "",
@@ -76,62 +93,62 @@ export default {
 
     }
   },
-  created() {
+   created() {
 
     this.checkRemmember();
 
   },
 
-
-  computed: {
-    validateForm() {
+  
+   computed: {
+    validateForm () {
       return !this.errors.any() && this.email !== '' && this.password !== ''
     }
   },
-
+ 
   methods: {
 
-    checkRemmember() {
+    checkRemmember(){
+    // alert(localStorage.getItem('checkbox_remember_me'))
+       if (localStorage.getItem('checkbox_remember_me')) {
+            this.checkbox_remember_me=true;
+            this.email=localStorage.getItem('email_check');
+            this.password=localStorage.getItem('password_chk');
+          }
+          else{
+            this.checkbox_remember_me=false;
+            this.email='';
+            this.password='';
+          }
+        
+        },
+        checkRemmember(){
       // alert(localStorage.getItem('checkbox_remember_me'))
-      if (localStorage.getItem('checkbox_remember_me')) {
-        this.checkbox_remember_me = true;
-        this.email = localStorage.getItem('email_check');
-        this.password = localStorage.getItem('password_chk');
-      }
-      else {
-        this.checkbox_remember_me = false;
-        this.email = '';
-        this.password = '';
-      }
+       if (localStorage.getItem('checkbox_remember_me')) {
+            // alert("if")
+            if(localStorage.getItem('checkbox_remember_me') == 'true'){
+            // alert("ifif")
+            this.checkbox_remember_me=true;
+            this.email=localStorage.getItem('email_check');
+            this.password=localStorage.getItem('password_chk');
+            }else{
+            // alert("ifelse")
+            this.checkbox_remember_me=false;
+            this.email='';
+            this.password='';
+            }
+          }
+          else{
+            // alert("else")
+            this.checkbox_remember_me=false;
+            this.email='';
+            this.password='';
+          }
+        
+        },
+    checkLogin () {
 
-    },
-    checkRemmember() {
-      // alert(localStorage.getItem('checkbox_remember_me'))
-      if (localStorage.getItem('checkbox_remember_me')) {
-        // alert("if")
-        if (localStorage.getItem('checkbox_remember_me') == 'true') {
-          // alert("ifif")
-          this.checkbox_remember_me = true;
-          this.email = localStorage.getItem('email_check');
-          this.password = localStorage.getItem('password_chk');
-        } else {
-          // alert("ifelse")
-          this.checkbox_remember_me = false;
-          this.email = '';
-          this.password = '';
-        }
-      }
-      else {
-        // alert("else")
-        this.checkbox_remember_me = false;
-        this.email = '';
-        this.password = '';
-      }
-
-    },
-    checkLogin() {
-
-      //  If user is already logged in notify
+    //  If user is already logged in notify
       if (this.$store.state.auth.isUserLoggedIn()) {
 
         // Close animation if passed as payload
@@ -145,11 +162,11 @@ export default {
           color: 'warning'
         })
 
-        return false;
+      return false;
       }
       return true
     },
-    loginJWT() {
+    loginJWT () {
 
       if (!this.checkLogin()) return
 
@@ -164,26 +181,25 @@ export default {
         }
       }
 
-      if (this.checkbox_remember_me == true) {
-        // alert("if")
-        localStorage.setItem('checkbox_remember_me', this.checkbox_remember_me);
-        localStorage.setItem('email_check', this.email);
-        localStorage.setItem('password_chk', this.password);
-        // alert(localStorage.getItem('email_check'));
-      } else {
-        // alert("else")
-        localStorage.setItem('checkbox_remember_me', this.checkbox_remember_me);
-        localStorage.setItem('email_check', '');
-        localStorage.setItem('password_chk', '');
-        // alert(localStorage.getItem('email_check'));   
+      if(this.checkbox_remember_me == true){
+      // alert("if")
+      localStorage.setItem('checkbox_remember_me', this.checkbox_remember_me);
+      localStorage.setItem('email_check', this.email);
+      localStorage.setItem('password_chk', this.password);  
+      // alert(localStorage.getItem('email_check'));
+      }else{
+      // alert("else")
+      localStorage.setItem('checkbox_remember_me', this.checkbox_remember_me);
+      localStorage.setItem('email_check', '');
+      localStorage.setItem('password_chk', '');
+      // alert(localStorage.getItem('email_check'));   
       }
       this.$store.dispatch('auth/loginJWT', payload)
-        .then(() => {
+        .then(() => {     
 
 
-          this.$router.push('/').catch(() => { })
-          this.$vs.loading.close()
-        })
+          this.$router.push('/').catch(() => {})
+          this.$vs.loading.close() })
         .catch(error => {
           this.$vs.loading.close()
           this.$vs.notify({
@@ -195,9 +211,9 @@ export default {
           })
         })
     },
-    registerUser() {
+    registerUser () {
       if (!this.checkLogin()) return
-      this.$router.push('/pages/register').catch(() => { })
+      this.$router.push('/pages/register').catch(() => {})
     }
   }
 }
@@ -207,63 +223,29 @@ export default {
 <style lang="scss">
 #page-login {
   .social-login-buttons {
-    .bg-facebook {
-      background-color: #1551b1
-    }
-
-    .bg-twitter {
-      background-color: #00aaff
-    }
-
-    .bg-google {
-      background-color: #4285F4
-    }
-
-    .bg-github {
-      background-color: #333
-    }
+    .bg-facebook { background-color: #1551b1 }
+    .bg-twitter { background-color: #00aaff }
+    .bg-google { background-color: #4285F4 }
+    .bg-github { background-color: #333 }
   }
 }
-
 .remember-margin {
-  margin-left: 0px !important;
+  margin-left : 0px !important;
 }
-
 .vs-input--placeholder {
-  font-size: .90rem !important;
-  color: #626262 !important;
+    font-size: .90rem !important;
+    color: #626262 !important;
 }
-
-.vs-button-primary.vs-button-filled {
+.vs-button-primary.vs-button-filled
+{
   background: #CADC4F !important;
   color: #080717 !important;
   font-weight: bold;
 }
-
-.vs-button-primary.vs-button-border {
-  border: 1px solid #CADC4F;
-  background: transparent !important;
-  color: #080717 !important;
-}
-
-h4.mb-4 {
-  font-weight: bold;
-}
-a:active, a:visited, a:hover, a
+.vs-button-primary.vs-button-border
 {
-  color: #45435D !important;
-}
-.vs-checkbox-primary input:checked+.vs-checkbox{
-      border: 2px solid #CADC4F !important; 
-      background:#CADC4F !important;
-}
-.vs-input-primary .vs-input--input:focus
-{
-  border: 1px solid #CADC4F !important;
-   
-}
-.vs-input-primary .vs-input--input:focus~.icon-inputx
-{
-  color:#CADC4F;
+      border: 1px solid  #CADC4F;
+    background: transparent!important;
+    color: #080717 !important;
 }
 </style>
