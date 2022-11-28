@@ -17,13 +17,21 @@ export default [{
 },
 
 {
+    // Search Teacher Tab
+    url: '/apps/user/teacher-list',
+    name: 'Search Teachers',
+    icon: "SearchIcon",
+    slug: 'app-search-list',
+    i18n: 'List'
+},
+{
     url: null,
     name: 'Users',
     icon: 'UserIcon',
     i18n: 'User',
     submenu: [
         {
-            //Contractual Teacher
+            // Contractual Teacher Tab
             url: '/apps/user/contractual-list',
             name: 'Contractual Teachers',
             icon: "UsersIcon",

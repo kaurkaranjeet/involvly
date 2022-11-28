@@ -60,7 +60,26 @@ const router = new Router({
                     component: () =>
                         import ('./views/Page2.vue')
                 },
-                //classes side menu path
+
+                // Search Teacher Tab
+    
+                {
+                    path: '/apps/user/teacher-list',
+                    name: 'app-search-list',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/SearchTeacher.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            // { title: 'Teachers', url: '/apps/user/user-list' },  
+                            { title: 'Teachers', active: true }
+                        ],
+                        pageTitle: 'Search a Contractual Teachers',  
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+                // classes side menu path
                 {
                     path: '/apps/class/class-list',
                     name: 'app-class-list',
@@ -277,7 +296,7 @@ const router = new Router({
                     path: '/apps/user/contractual-list',
                     name: 'app-contractual-list',
                     component: () =>
-                        import ('@/views/apps/user/contractual-list/ContractualTeacher.vue'),
+                        import ('@/views/apps/user/teacher-list/ContractualTeacher.vue'),
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
@@ -583,12 +602,11 @@ const router = new Router({
                     path: '/apps/user/alltraining',
                     name: 'app-training-list',
                     component: () =>
-                        import ('@/views/apps/admin/user-list/TeacherList.vue'),
+                        import ('@/views/apps/admin/user-list/ProgramTeacher.vue'),
                     meta: {
                         breadcrumb: [
-                            { title: 'Home', url: '/dashboard' },
-                            // { title: 'Teachers', url: '/apps/user/allteachers' },
-                            { title: 'Training Program', active: true }
+                            { title: 'Home', url: '/dashboard' }, 
+                            { title: 'TrainingProgram', active: true }
                         ],
                         pageTitle: 'Training Program List',
                         rule: 'admin',
