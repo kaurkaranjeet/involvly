@@ -21,35 +21,38 @@
           <v-select :options="classOptions" :clearable="false" v-model="isclassFilter" class="mb-4 md:mb-0"
             @input="getSubjects" />
         </div>
-        
+
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Availability</label>
-          <v-select :options="AvailabilityType" :clearable="false" v-model="isavailFilter" class="mb-4 md:mb-0" @input="getSubjects" />
+          <v-select :options="AvailabilityType" :clearable="false" v-model="isavailFilter" class="mb-4 md:mb-0"
+            @input="getSubjects" />
         </div>
       </div>
       <div class="vx-row">
 
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Location</label>
-          <v-select  class="mb-4 md:mb-0"    @input="getSubjects" />
+          <v-select class="mb-4 md:mb-0" @input="getSubjects" />
         </div>
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
-      <label class="text-sm opacity-75">Select Subject</label>
-        <v-select  :options="Subjectoptions"   :clearable="false"  v-model="subjectFilter" class="mb-4 md:mb-0"  @input="getRecord"  />
-      </div>
-        
+          <label class="text-sm opacity-75">Select Subject</label>
+          <v-select :options="Subjectoptions" :clearable="false" v-model="subjectFilter" class="mb-4 md:mb-0"
+            @input="getRecord" />
+        </div>
+
       </div>
       <div class="vx-row">
 
-         
+
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Preferences</label>
-          <v-select  class="mb-4 md:mb-0" @input="getSubjects" />
+          <v-select class="mb-4 md:mb-0" @input="getSubjects" />
         </div>
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full text-right">
           <!-- <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery"
-          @input="updateSearchQuery" placeholder="Search..." /> --><br/>
-           <vs-button color="primary" type="filled">Find a Teacher</vs-button> </div>
+          @input="updateSearchQuery" placeholder="Search..." /> --><br />
+          <vs-button color="primary" type="filled">Find a Teacher</vs-button>
+        </div>
       </div>
 
     </vx-card>
@@ -207,6 +210,7 @@ export default {
       ],
 
       statusFilter: { label: 'All', value: 'all' },
+
       statusOptions: [
         { label: 'All', value: 'all' },
         { label: 'Active', value: 'active' },
@@ -221,8 +225,11 @@ export default {
         { label: 'No', value: 'no' }
       ],
       isclassFilter: { label: 'All', value: 'all', id: '0' },
+      isavailFilter: {
+        label: 'All', value: 'all', id: '0'
+      },
 
-      subjectFilter: { label: 'All', value: 'all' },
+      subjectFilter: { label: 'All', value: 'all', id: '0' },
       Subjectoptions: [{ label: 'All', value: 'all' }],
 
       classOptions: [
@@ -231,8 +238,8 @@ export default {
 
       AvailabilityType: [
         { label: 'All', value: 'all' },
-        // { label: 'Part time', value: '0' },
-        // { label: 'Full time', value: '1' },
+        { label: 'Part time', value: '0' },
+        { label: 'Full time', value: '1' },
 
       ],
 
@@ -260,7 +267,6 @@ export default {
           field: 'id',
           width: 95,
           filter: true,
-          
         },
         {
           headerName: 'PROFILE',
@@ -291,10 +297,10 @@ export default {
           width: 160,
           //cellRendererFramework: 'CellRendererStatus'
         },
-        
+
         {
           headerName: 'PREFERENCES',
-          field: 'class_codes',
+          field: 'prefrences',
           filter: true,
           width: 160,
           //cellRendererFramework: 'CellRendererStatus'
@@ -320,22 +326,14 @@ export default {
           width: 140,
           //cellRendererFramework: 'CellRendererStatus'
         },
-   
+
         {
           headerName: 'ACTIONS',
           field: 'transactions',
           width: 200,
           cellRendererFramework: 'CellRendererPlaceReq'
         },
-
-        /* {
-           headerName: 'Verified',
-           field: 'is_verified',
-           filter: true,
-           width: 125,
-           cellRendererFramework: 'CellRendererVerified',
-           cellClass: 'hidden'
-         },*/
+ 
       ],
 
       // Cell Renderer Components
@@ -379,7 +377,10 @@ export default {
   computed: {
 
     usersData() {
-      return this.$store.state.userManagement.users
+      // this.subjectonload();
+
+      return this.$store.state.userManagement.users;
+
     },
     paginationPageSize() {
       if (this.gridApi) return this.gridApi.paginationGetPageSize()
@@ -397,15 +398,24 @@ export default {
       set(val) {
         this.gridApi.paginationGoToPage(val - 1)
       }
-    }
+    },
+
   },
   methods: {
 
     getSubjects(a) {
       this.subjectFilter = { label: 'All', value: 'all' };
       this.Subjectoptions = [{ label: 'All', value: 'all' }];
+      let school_id = localStorage.getItem('school_id');
+      let x = localStorage.getItem('accessToken');
+
+      const requestOptions = {
+        'school_id': school_id,
+        headers: { 'Authorization': 'Bearer ' + x },
+
+      };
       this.$http
-        .post("/api/auth/manage-subjects/" + a.id)
+        .post("/api/auth/manage-subjects/" + a.id, requestOptions)
         .then(response => {
           var data = response.data.subjects;
           for (var index in data) {
@@ -419,28 +429,16 @@ export default {
           console.log(error);
         });
     },
-
+    // function to use append subjects data.
+    getSubjectss(response) {
+      for (var index in response) {
+        let newobj = {}
+        newobj.label = response[index].subject_name;
+        newobj.value = response[index].id;
+        this.Subjectoptions.push(newobj);
+      }
+    },
     getRecord(a) {
-
-      var x = localStorage.getItem('accessToken');
-      var school_id = localStorage.getItem('school_id');
-      //  User Reward Card
-      const requestOptions = {
-        'subject_id': a.value,
-        'class_id': this.isclassFilter.id,
-        'school_id': school_id,
-        headers: { 'Authorization': 'Bearer ' + x },
-
-      };
-      this.$http
-        .post("/api/auth/get_record", requestOptions)
-        .then(response => {
-          // this. rowDataresponse.data.users;
-
-        })
-        .catch(error => {
-          console.log(error);
-        });
     },
 
     setColumnFilter(column, val) {
@@ -487,6 +485,27 @@ export default {
       moduleUserManagement.isRegistered = true
     }
     this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
+
+    // fetch all subject based on current user(school).
+    
+    let school_id = localStorage.getItem('school_id');
+    let xd = localStorage.getItem('accessToken');
+    const requestOptions2 = {
+      'school_id': school_id,
+      headers: { 'Authorization': 'Bearer ' + x },
+    };
+    this.$http
+      .post("/api/auth/manage-subjects/1", requestOptions2)
+      .then(response => {
+        var data = response.data.subjects;
+        // console.log(data);
+        this.getSubjectss(data);
+        // console.log(Subjectoptionss);
+      }).catch(err => { console.error(err) })
+
+    // end fetch all subject based on current user(school).
+
+
     var x = localStorage.getItem('accessToken');
     var user_id = localStorage.getItem('user_id');
     // console.warn('Help'+user_id);
@@ -505,15 +524,17 @@ export default {
           newobj.label = data[index].class_name;
           newobj.value = data[index].class_name;
           newobj.id = data[index].id;
+          // console.log(newobj);
+
           this.classOptions.push(newobj);
         }
       })
       .catch(error => {
         console.log(error);
       });
+  },
 
 
-  }
 }
 </script>
 
@@ -531,5 +552,14 @@ export default {
 
 .vx-card__header {
   display: none !important;
+}
+
+[dir] .vs-button:not(.vs-radius):not(.includeIconOnly):not(.small):not(.large) {
+  padding: 0.5rem 1rem;
+}
+
+.ag-header.ag-pivot-off {
+  height: 50px !important;
+  min-height: 0px !important;
 }
 </style>

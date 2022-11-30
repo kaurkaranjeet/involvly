@@ -238,7 +238,6 @@ class UserController extends Controller {
 
 
         if ($request->type == 'teacher') {
-        
 
             $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } elseif ($request->type == 'searchdata') {
@@ -275,7 +274,14 @@ class UserController extends Controller {
 
     public function Getrecord(Request $request){
  //DB::enableQueryLog();
-        $users = User::join('assigned_teachers', 'users.id', '=', 'assigned_teachers.teacher_id')->where('role_id', 4)->where('status', 1)->where('users.school_id', $request->school_id)->where('class_id',$request->class_id)->where('subject_id',$request->subject_id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+        $query = User::join('assigned_teachers', 'users.id', '=', 'assigned_teachers.teacher_id')->where('role_id', 4)->where('status', 1)->where('users.school_id', $request->school_id);
+        if($request->class_id){
+            $query->where('assigned_teachers.class_id',$request->class_id);
+        }
+        if($request->subject_id){
+            $query->where('assigned_teachers.subject_id',$request->subject_id);
+        }
+        $users = $query->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
 
         //print_r(DB::getQueryLog());die;
      if (isset($users) && count($users) > 0) {

@@ -48,6 +48,7 @@ export default {
             headers: { 'Authorization': 'Bearer ' + x },
 
         };
+       
         return new Promise((resolve, reject) => {
             axios.post('/api/auth/manage-users/' + school_id, requestOptions)
                 .then((response) => {
@@ -58,6 +59,32 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+    fetchSeacrhRecord({commit}){
+
+        var x = localStorage.getItem('accessToken');
+        var school_id = localStorage.getItem('school_id');
+        //  User Reward Card
+        const requestOptions = {
+          'subject_id': a.value,
+          'class_id': this.isclassFilter.id,
+          'school_id': school_id,
+          headers: { 'Authorization': 'Bearer ' + x },
+  
+        };
+        return new Promise((resolve, reject) => {
+            axios.post("/api/auth/get_record", requestOptions)
+          .then(response => {
+            // this.usersDatas(response.data.users);
+            commit('SET_USERS', response.data.users)
+            resolve(response)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        })
+       
+    },
+    
     fulltimeUsers({ commit }) {
         var x = localStorage.getItem('accessToken');
         var school_id = localStorage.getItem('school_id');

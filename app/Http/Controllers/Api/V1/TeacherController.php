@@ -28,13 +28,14 @@ class TeacherController extends Controller {
        $validator = Validator::make($input, [
         'first_name' => 'required',
         'last_name' => 'required',
+        'phone' => 'required',
         'email' => 'required|unique:users',
         'password' => 'required',
         'type_of_schooling' => 'required',
         'country' => 'required',
         'state_id' => 'required|exists:states,id',
         'city_id' => 'required|exists:cities,id',
-       'school_id' => 'required_if:type_of_schooling, =,school'
+        'school_id' => 'required_if:type_of_schooling, =,school'
       ]);
        
        if ($validator->fails()) {

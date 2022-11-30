@@ -13,19 +13,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-
+use Illuminate\Support\Facades\Auth;
 class SubjectController extends Controller {
 
     //subject listing
+    // public function manageSubjects(Request $request , $id) {
+    //     DB::enableQueryLog();
+    //     $subjects = Subject::join('class_code_subject', 'class_code_subject.subject_id', '=', 'subjects.id')->where('class_code_id', $id)->get();
+    //     if (!empty($subjects)) {
+    //         return response()->json(compact('subjects'), 200);
+    //     } else {
+    //         return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
+    //     }
+    // }
+
     public function manageSubjects(Request $request , $id) {
-        DB::enableQueryLog();
-        $subjects = Subject::join('class_code_subject', 'class_code_subject.subject_id', '=', 'subjects.id')->where('class_code_id', $id)->get();
-        if (!empty($subjects)) {
-            return response()->json(compact('subjects'), 200);
-        } else {
-            return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
-        }
-    }
+      DB::enableQueryLog();
+     $school_id = $request->school_id;
+      $subjects = Subject::where('school_id', $school_id)->get();
+      if (!empty($subjects)) {
+          return response()->json(compact('subjects'), 200);
+      } else {
+          return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
+      }
+  }
 
     public function manageSchoolSubjects(Request $request , $id) {
         DB::enableQueryLog();
