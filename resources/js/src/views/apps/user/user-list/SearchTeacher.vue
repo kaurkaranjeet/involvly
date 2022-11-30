@@ -10,7 +10,7 @@
 <template>
 
   <div id="page-user-list">
-    
+
 
     <vx-card ref="filterCard" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters"
       @remove="resetColFilters">
@@ -21,45 +21,42 @@
           <v-select :options="classOptions" :clearable="false" v-model="isclassFilter" class="mb-4 md:mb-0"
             @input="getSubjects" />
         </div>
+        
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Availabilty</label>
-          <v-select :options="Subjectoptions" :clearable="false" v-model="subjectFilter" class="mb-4 md:mb-0"
-            @input="getRecord" />
+          <label class="text-sm opacity-75">Availability</label>
+          <v-select :options="AvailabilityType" :clearable="false" v-model="isavailFilter" class="mb-4 md:mb-0" @input="getSubjects" />
         </div>
       </div>
-      <div class="vx-row">``
-        <div class="vx-col md:w-4/4  sm:w-1/2 w-full">
+      <div class="vx-row">
+
+        <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Location</label>
-          <v-select :options="isVerifiedOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'"
-            v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
+          <v-select  class="mb-4 md:mb-0"    @input="getSubjects" />
         </div>
-        <div class="vx-col md:w-4/4  sm:w-1/2 w-full">
-          <label class="text-sm opacity-75">Subject</label>
-          <v-select :options="departmentOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'"
-            v-model="departmentFilter" />
-        </div>
+        <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
+      <label class="text-sm opacity-75">Select Subject</label>
+        <v-select  :options="Subjectoptions"   :clearable="false"  v-model="subjectFilter" class="mb-4 md:mb-0"  @input="getRecord"  />
+      </div>
+        
       </div>
       <div class="vx-row">
-        <div class="vx-col md:w-4/4  sm:w-1/2 w-full">
+
+         
+        <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Preferences</label>
-          <v-select :options="isVerifiedOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'"
-            v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
+          <v-select  class="mb-4 md:mb-0" @input="getSubjects" />
         </div>
-         
+        <div class="vx-col md:w-4/4 sm:w-1/2 w-full text-right">
+          <!-- <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery"
+          @input="updateSearchQuery" placeholder="Search..." /> --><br/>
+           <vs-button color="primary" type="filled">Find a Teacher</vs-button> </div>
       </div>
-      <div class="vx-row">
-        <div class="vx-col md:w-4/4  sm:w-2/2 w-full">
-          <div class="col-md-12 bg-light text-right mb-5">
-            <vs-button color="primary" type="filled" @click="addStudentdata">Find a Teacher</vs-button>
-        </div>
-        </div>
-         
-      </div>
+
     </vx-card>
 
-    <div class="vx-card p-6">
+    <div class="vx-card p-6 ">
 
-      <div class="flex flex-wrap items-center">
+      <div class="flex flex-wrap items-right ">
 
         <!-- ITEMS PER PAGE -->
         <!-- <div class="flex-grow">
@@ -106,10 +103,10 @@
         <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
         <!-- <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery"
           @input="updateSearchQuery" placeholder="Search..." /> -->
-        <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
+        <!-- <vs-button class="mb-4 md:mb-0"  @click="searchQuery">Export as CSV</vs-button> -->
 
         <!-- ACTION - DROPDOWN -->
-        <vs-dropdown vs-trigger-click class="cursor-pointer" style="display:none">
+        <!-- <vs-dropdown vs-trigger-click class="cursor-pointer" style="display:none">
 
           <div
             class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-medium w-32">
@@ -148,19 +145,19 @@
             </vs-dropdown-item>
 
           </vs-dropdown-menu>
-        </vs-dropdown>
+        </vs-dropdown> -->
       </div>
 
 
       <!-- AgGrid Table -->
-      <!-- <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions"
+      <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions"
         class="ag-theme-material w-100 my-4 ag-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef"
         :rowData="usersData" rowSelection="multiple" colResizeDefault="shift" :animateRows="true" :floatingFilter="true"
         :pagination="true" :paginationPageSize="paginationPageSize" :suppressPaginationPanel="true"
         :enableRtl="$vs.rtl">
       </ag-grid-vue>
 
-      <vs-pagination :total="totalPages" :max="7" v-model="currentPage" /> -->
+      <vs-pagination :total="totalPages" :max="7" v-model="currentPage" />
 
     </div>
   </div>
@@ -180,6 +177,9 @@ import CellRendererLink from './cell-renderer/CellRendererLink.vue'
 import CellRendererStatus from './cell-renderer/CellRendererStatus.vue'
 import CellRendererVerified from './cell-renderer/CellRendererVerified.vue'
 import CellRendererActions from './cell-renderer/CellRendererActions.vue'
+import CellRendererPlaceReq from './cell-renderer/CellRendererPlaceReq.vue'
+
+
 
 
 export default {
@@ -191,7 +191,8 @@ export default {
     CellRendererLink,
     CellRendererStatus,
     CellRendererVerified,
-    CellRendererActions
+    CellRendererActions,
+    CellRendererPlaceReq,
   },
   data() {
     return {
@@ -228,6 +229,13 @@ export default {
         { label: 'All', value: 'all' },
       ],
 
+      AvailabilityType: [
+        { label: 'All', value: 'all' },
+        // { label: 'Part time', value: '0' },
+        // { label: 'Full time', value: '1' },
+
+      ],
+
       departmentFilter: { label: 'All', value: 'all' },
       departmentOptions: [
         { label: 'All', value: 'all' },
@@ -250,40 +258,74 @@ export default {
         {
           headerName: 'ID',
           field: 'id',
-          width: 125,
+          width: 95,
           filter: true,
+          
+        },
+        {
+          headerName: 'PROFILE',
+          filter: true,
+          width: 125,
           checkboxSelection: false,
           headerCheckboxSelectionFilteredOnly: false,
           headerCheckboxSelection: false,
           cellRendererFramework: 'CellRendererLink'
         },
         {
-          headerName: 'Name',
+          headerName: 'NAME',
           field: 'name',
           filter: true,
-          width: 225
+          width: 170
         },
         {
-          headerName: 'Email',
-          field: 'email',
+          headerName: 'LOCATION',
+          field: 'country',
           filter: true,
-          width: 225
+          width: 170
         },
 
-
         {
-          headerName: 'Assigned Classes',
-          field: 'class_codes',
+          headerName: 'AVAILABILITY',
+          field: 'availability',
           filter: true,
-          width: 225,
+          width: 160,
           //cellRendererFramework: 'CellRendererStatus'
         },
-
+        
         {
-          headerName: 'Actions',
-          field: 'transactions',
+          headerName: 'PREFERENCES',
+          field: 'class_codes',
+          filter: true,
+          width: 160,
+          //cellRendererFramework: 'CellRendererStatus'
+        },
+        {
+          headerName: 'SUBJECTS',
+          field: 'subject_id',
+          filter: true,
           width: 150,
-          cellRendererFramework: 'CellRendererActions'
+          //cellRendererFramework: 'CellRendererStatus'
+        },
+        {
+          headerName: 'CLASSES',
+          field: 'class_codes',
+          filter: true,
+          width: 120,
+          //cellRendererFramework: 'CellRendererStatus'
+        },
+        {
+          headerName: 'RATE',
+          field: 'hourly_rate',
+          filter: true,
+          width: 140,
+          //cellRendererFramework: 'CellRendererStatus'
+        },
+   
+        {
+          headerName: 'ACTIONS',
+          field: 'transactions',
+          width: 200,
+          cellRendererFramework: 'CellRendererPlaceReq'
         },
 
         /* {
@@ -301,7 +343,8 @@ export default {
         CellRendererLink,
         CellRendererStatus,
         CellRendererVerified,
-        CellRendererActions
+        CellRendererActions,
+        CellRendererPlaceReq,
       }
     }
   },
@@ -312,6 +355,11 @@ export default {
     isclassFilter(obj) {
       this.setColumnFilter('class_codes', obj.value)
     },
+
+    isavailFilter(obj) {
+      this.setColumnFilter('availability', obj.value)
+    },
+
 
     subjectFilter(obj) {
       // this.setColumnFilter('class_codes', obj.value)
@@ -333,8 +381,6 @@ export default {
     usersData() {
       return this.$store.state.userManagement.users
     },
-
-
     paginationPageSize() {
       if (this.gridApi) return this.gridApi.paginationGetPageSize()
       else return 10
@@ -440,9 +486,10 @@ export default {
       this.$store.registerModule('userManagement', moduleUserManagement)
       moduleUserManagement.isRegistered = true
     }
-    this.$store.dispatch('userManagement/fetchUsers').catch(err => { console.error(err) })
+    this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
     var x = localStorage.getItem('accessToken');
     var user_id = localStorage.getItem('user_id');
+    // console.warn('Help'+user_id);
     //  User Reward Card
     const requestOptions = {
       'type': 'teacher',
@@ -468,7 +515,6 @@ export default {
 
   }
 }
-
 </script>
 
 <style lang="scss">
@@ -482,8 +528,8 @@ export default {
     }
   }
 }
-.vx-card__header
-{
+
+.vx-card__header {
   display: none !important;
 }
 </style>

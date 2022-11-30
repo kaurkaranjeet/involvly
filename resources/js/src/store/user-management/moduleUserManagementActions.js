@@ -30,6 +30,63 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
+            axios.post('/api/auth/anage-umsers/' + school_id, requestOptions)
+                .then((response) => {
+                    //  console.log(response.data.users);
+                    commit('SET_USERS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    fetchSearch({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        var school_id = localStorage.getItem('school_id');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'searchdata',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-users/' + school_id, requestOptions)
+                .then((response) => {
+                    //  console.log(response.data.users);
+                    commit('SET_USERS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    fulltimeUsers({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        var school_id = localStorage.getItem('school_id');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'fulltime-teacher',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-users/' + school_id, requestOptions)
+                .then((response) => {
+                    //  console.log(response.data.users);
+                    commit('SET_USERS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    contractualUsers({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        var school_id = localStorage.getItem('school_id');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'contractual-teacher',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
             axios.post('/api/auth/manage-users/' + school_id, requestOptions)
                 .then((response) => {
                     //  console.log(response.data.users);
@@ -177,6 +234,24 @@ export default {
         //  User Reward Card
         const requestOptions = {
             'type': 'teacher',
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-admin-users', requestOptions)
+                .then((response) => {
+                    console.log(response.data.users);
+                    commit('SET_ADMIN_USERS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
+    fetchAdminProgramUsers({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'program-teacher',
             headers: { 'Authorization': 'Bearer ' + x },
 
         };

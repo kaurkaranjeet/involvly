@@ -433,7 +433,7 @@
         this.$store.registerModule('userManagement', moduleUserManagement)
         moduleUserManagement.isRegistered = true
       }
-      this.$store.dispatch('userManagement/contractualUsers').catch(err => { console.error(err) })
+      this.$store.dispatch('userManagement/fulltimeUsers').catch(err => { console.error(err) })
       var x = localStorage.getItem('accessToken');
           var user_id = localStorage.getItem('user_id');
           //  User Reward Card

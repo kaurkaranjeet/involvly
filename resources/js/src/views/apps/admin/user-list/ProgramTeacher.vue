@@ -362,7 +362,7 @@
         this.$store.registerModule('userManagement', moduleUserManagement)
         moduleUserManagement.isRegistered = true
       }
-      this.$store.dispatch('userManagement/fetchAdminUsers').catch(err => { console.error(err) })
+      this.$store.dispatch('userManagement/fetchAdminProgramUsers').catch(err => { console.error(err) })
     }
   }
   

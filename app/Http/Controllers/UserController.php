@@ -241,7 +241,21 @@ class UserController extends Controller {
         
 
             $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
-        } else if ($request->type == 'student') {
+        } elseif ($request->type == 'searchdata') {
+        
+
+            $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+        } elseif ($request->type == 'fulltime-teacher') {
+        
+
+            $users = User::where('role_id', 4)->where('school_id', $id)->where('availability', '1')->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+        } elseif ($request->type == 'contractual-teacher') {
+        
+
+            $users = User::where('role_id', 4)->where('school_id', $id)->where('availability', '0')->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+        } else  if ($request->type == 'student') {
+
+
             $users = User::where('role_id', 2)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } else {
 
@@ -291,7 +305,23 @@ class UserController extends Controller {
                     }
                 }
             }
-        } else if ($request->type == 'student') {
+        } else if ($request->type == 'program-teacher') {
+            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)->where('ptp','1')->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            foreach($users as $user){
+                if($user->type_of_schooling == 'home'){
+                    $user->type_of_schooling = 'Not Assigned';
+                    $user->school_name= '-';
+                }else{
+                    $user->type_of_schooling = 'School';
+                    if(!empty($user->SchoolDetail)){
+                        $user->school_name= $user->SchoolDetail->school_name;
+                    }else{
+                        $user->school_name= '-';
+                    }
+                }
+            }
+        }
+        else if ($request->type == 'student') {
             $users = User::with('SchoolDetail')->where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
             foreach($users as $user){
                 if($user->type_of_schooling == 'home'){
@@ -619,5 +649,3 @@ class UserController extends Controller {
     }
 
 }
-
-?>

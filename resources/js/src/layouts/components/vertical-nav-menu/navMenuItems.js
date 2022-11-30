@@ -31,6 +31,14 @@ export default [{
     i18n: 'User',
     submenu: [
         {
+            // Full Time Teacher List
+            url: '/apps/user/fulltime-list',
+            name: 'Full-time Teachers',
+            icon: "UsersIcon",
+            slug: 'app-fulltime-list',
+            i18n: 'List'
+        },
+        {
             // Contractual Teacher Tab
             url: '/apps/user/contractual-list',
             name: 'Contractual Teachers',
@@ -39,13 +47,13 @@ export default [{
             i18n: 'List'
         },
 
-        {
-            url: '/apps/user/user-list',
-            name: 'Teachers List',
-            icon: "UsersIcon",
-            slug: 'app-user-list',
-            i18n: 'List'
-        },
+        // {
+        //     url: '/apps/user/user-list',
+        //     name: 'Teachers List',
+        //     icon: "UsersIcon",
+        //     slug: 'app-user-list',
+        //     i18n: 'List'
+        // },
 
         {
             url: '/apps/user/listofstudents',

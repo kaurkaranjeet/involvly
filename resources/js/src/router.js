@@ -291,12 +291,12 @@ const router = new Router({
                         authRequired: true
                     }
                 },
-                 //Contractual Teachers side menu path
+                //Contractual Teachers side menu path
                  {
                     path: '/apps/user/contractual-list',
                     name: 'app-contractual-list',
                     component: () =>
-                        import ('@/views/apps/user/teacher-list/ContractualTeacher.vue'),
+                        import ('@/views/apps/user/user-list/ContractualTeacher.vue'),
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
@@ -304,6 +304,23 @@ const router = new Router({
                             { title: 'Teachers', active: true }
                         ],
                         pageTitle: 'Contractual List',  
+                        rule: 'editor',
+                        authRequired: true
+                    }
+                },
+                //Full-time Teachers side menu path
+                {
+                    path: '/apps/user/fulltime-list',
+                    name: 'app-fulltime-list',
+                    component: () =>
+                        import ('@/views/apps/user/user-list/FulltimeTeacher.vue'),
+                    meta: {
+                        breadcrumb: [
+                            { title: 'Home', url: '/' },
+                            // { title: 'Teachers', url: '/apps/user/user-list' },  
+                            { title: 'Teachers', active: true }
+                        ],
+                        pageTitle: 'Full-time Teacher List',  
                         rule: 'editor',
                         authRequired: true
                     }
