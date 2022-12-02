@@ -8,4 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class Cities extends Model
 { 
+    protected $table = 'cities';
+    protected $fillable = [
+        'city',
+        'county',
+        'latitude',
+        'longitude',
+        'state_id',
+    ];
 }
+    

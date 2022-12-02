@@ -6,6 +6,9 @@ use App\User;
 use App\Models\Role;
 use App\Models\ClassCode;
 use App\Models\Subject;
+use App\Models\Cities;
+
+ 
 use App\Models\ClassSubjects;
 use DB;
 use Illuminate\Http\Request;
@@ -17,17 +20,17 @@ use Illuminate\Support\Facades\Auth;
 class SubjectController extends Controller {
 
     //subject listing
-    // public function manageSubjects(Request $request , $id) {
-    //     DB::enableQueryLog();
-    //     $subjects = Subject::join('class_code_subject', 'class_code_subject.subject_id', '=', 'subjects.id')->where('class_code_id', $id)->get();
-    //     if (!empty($subjects)) {
-    //         return response()->json(compact('subjects'), 200);
-    //     } else {
-    //         return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
-    //     }
-    // }
-
     public function manageSubjects(Request $request , $id) {
+        DB::enableQueryLog();
+        $subjects = Subject::join('class_code_subject', 'class_code_subject.subject_id', '=', 'subjects.id')->where('class_code_id', $id)->get();
+        if (!empty($subjects)) {
+            return response()->json(compact('subjects'), 200);
+        } else {
+            return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
+        }
+    }
+
+    public function selectSubjects(Request $request , $id) {
       DB::enableQueryLog();
      $school_id = $request->school_id;
       $subjects = Subject::where('school_id', $school_id)->get();
@@ -37,6 +40,18 @@ class SubjectController extends Controller {
           return response()->json(['error' => 'true', 'subjects' => [], 'message' => 'No record found'], 200);
       }
   }
+  // Function to fetch location Lists
+  
+  public function selectLocation(Request $request , $id) {
+     
+    DB::enableQueryLog();
+     $location = Cities::select('county')->groupBy('county')->havingRaw('count(*) > 1')->get();
+    if (!empty($location)) {
+        return response()->json(compact('location'), 200);
+    } else {
+        return response()->json(['error' => 'true', 'location' => [], 'message' => 'No record found'], 200);
+    }
+}
 
     public function manageSchoolSubjects(Request $request , $id) {
         DB::enableQueryLog();
@@ -231,5 +246,3 @@ class SubjectController extends Controller {
         }
     }
 }
-
-?>

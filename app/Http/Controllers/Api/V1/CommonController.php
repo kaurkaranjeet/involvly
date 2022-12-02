@@ -217,8 +217,9 @@ WHERE class_id= class_code_subject .class_code_id AND
 
     public function GetSubjects(Request $request) {
         try {
+            
 
-            $Subject = Subject::whereNull('school_id')->get();
+             $Subject = Subject::whereNotNull('school_id')->get();
             if (!empty($Subject)) {
                 return response()->json(array('error' => false, 'data' => $Subject), 200);
             } else {

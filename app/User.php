@@ -9,6 +9,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use URL;
 use Hash;
 use App\Models\School;
+use App\Models\TeachingProgram;
 
 class User extends Authenticatable implements JWTSubject {
 
@@ -41,6 +42,11 @@ class User extends Authenticatable implements JWTSubject {
         'email_verified_at' => 'datetime',
     ];
 
+    public function TeachingProgram()
+    {
+        return $this->hasOne(TeachingProgram::class,'user_id');
+    }
+    
     public function isRole() {
         return $this->role;
     }
@@ -175,4 +181,5 @@ class User extends Authenticatable implements JWTSubject {
     protected function getteachers($id){
    return  User::where('school_id',$id)->where('role_id',4)->where('status',1);
    }
+
 }

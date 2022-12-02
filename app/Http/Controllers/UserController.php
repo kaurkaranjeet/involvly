@@ -16,7 +16,9 @@ use App\Models\ReportUser;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Pusher\Pusher;
 use App\Notification;
+use App\Models\TeachingProgram;
 use App\Models\Comment;
+
 use App\Models\CommentReply;
 use App\Models\DiscussionComment;
 use App\Models\DiscussionCommentReply;
@@ -25,9 +27,10 @@ use App\Models\ParentChildrens;
 use Mail;
 use Illuminate\Support\Str;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
-     public function __construct()
+    public function __construct()
     {
         $options = array(
             'cluster' => env('PUSHER_APP_CLUSTER'),
@@ -36,14 +39,13 @@ class UserController extends Controller {
         $this->pusher = new Pusher(
             env('PUSHER_APP_KEY'),
             env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_ID'), 
+            env('PUSHER_APP_ID'),
             $options
         );
-
-       
     }
 
-    public function adminLogin(Request $request) {
+    public function adminLogin(Request $request)
+    {
         $credentials = $request->only('email', 'password');
 
         try {
@@ -55,13 +57,14 @@ class UserController extends Controller {
         }
 
         $user = User::where('email', '=', $request->input('email'))->where('role_id', 1)->first();
-        if(empty($user)){
-            return response()->json(['message' => 'Invalid Credentials'], 200); 
+        if (empty($user)) {
+            return response()->json(['message' => 'Invalid Credentials'], 200);
         }
         return response()->json(compact('accessToken', 'user'));
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->only('email', 'password');
 
         try {
@@ -73,29 +76,31 @@ class UserController extends Controller {
         }
 
         $users = User::where('email', '=', $request->input('email'))->where('role_id', 5)->first();
-        if(empty($users)){
-            return response()->json(['message' => 'Invalid Credentials'], 200); 
-        }else{
-           $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
-           if(empty($user)){
-              return response()->json(['message' => 'Your account approval is pending'], 200);            }   
+        if (empty($users)) {
+            return response()->json(['message' => 'Invalid Credentials'], 200);
+        } else {
+            $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
+            if (empty($user)) {
+                return response()->json(['message' => 'Your account approval is pending'], 200);
+            }
         }
         return response()->json(compact('accessToken', 'user'));
     }
 
     // Register API
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
 
 
         $validator = Validator::make($request->all(), [
-                    'first_name' => 'required|string|max:255',
-                    'last_name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255|unique:users',
-                    'password' => 'required|string|min:6',
-                    'city' => 'required',
-                    'state_id' => 'required',
-                    'school_id' => 'required',
-                    'country' => 'required'
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'city' => 'required',
+            'state_id' => 'required',
+            'school_id' => 'required',
+            'country' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -128,33 +133,35 @@ class UserController extends Controller {
         $user->role_id = 5;
         $user->save();
         //school approved code
-        School::where('id',$request->school_id)->update(['approved' => '1']);
+        School::where('id', $request->school_id)->update(['approved' => '1']);
         if ($request->hasfile('documents')) {
             foreach ($request->file('documents') as $key => $file) {
                 $name = time() . $key . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path() . '/images/', $name);
                 DB::table('teacher_documents')->insert(
-                        ['user_id' => $user->id, 'document_name' => $name, 'document_url' => URL::to('/') . '/images/' . $name]);
+                    ['user_id' => $user->id, 'document_name' => $name, 'document_url' => URL::to('/') . '/images/' . $name]
+                );
             }
         }
 
-        $group_count= Group::where('school_id',$request->school_id)->where('type','school_admin')->count();
-        if($group_count==0){
-         $school_name=School::where('id',$request->school_id)->select('school_name')->first();
-         $group_obj= new  Group;
-         $group_obj->group_name= $school_name->school_name;
-         $group_obj->school_id=$request->school_id;
-         $group_obj->user_id=$user->id;
-         $group_obj->type='school_admin';
-         $group_obj->save();
-     }
+        $group_count = Group::where('school_id', $request->school_id)->where('type', 'school_admin')->count();
+        if ($group_count == 0) {
+            $school_name = School::where('id', $request->school_id)->select('school_name')->first();
+            $group_obj = new  Group;
+            $group_obj->group_name = $school_name->school_name;
+            $group_obj->school_id = $request->school_id;
+            $group_obj->user_id = $user->id;
+            $group_obj->type = 'school_admin';
+            $group_obj->save();
+        }
         $token = JWTAuth::fromUser($user);
         $error = false;
 
         return response()->json(compact('user', 'token', 'error'), 200);
     }
 
-    public function gettotalStatistic($id) {
+    public function gettotalStatistic($id)
+    {
         $students = User::getstudents($id)->count();
         $data = array();
         $series_sql = User::getstudents($id)->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
@@ -162,7 +169,7 @@ class UserController extends Controller {
 
             foreach ($series_sql as $rr) {
 
-                $rv= ['x'=>$rr->date,'y'=>$rr->views];
+                $rv = ['x' => $rr->date, 'y' => $rr->views];
                 $data[] = $rv;
             }
         }
@@ -174,7 +181,7 @@ class UserController extends Controller {
 
 
             foreach ($tseries_sql as $rr) {
-                 $rva= ['x'=>$rr->date,'y'=>$rr->views];
+                $rva = ['x' => $rr->date, 'y' => $rr->views];
                 $tdata[] = $rva;
             }
         }
@@ -183,28 +190,29 @@ class UserController extends Controller {
     }
 
 
-     public function gettotalRecords(Request $request) {
-        $students = User::where('role_id',5)->where('status',1)->count();
+    public function gettotalRecords(Request $request)
+    {
+        $students = User::where('role_id', 5)->where('status', 1)->count();
         $data = array();
-        $tdata=array();
-        $Studentseries=array();
-        $series_sql =  User::where('role_id',5)->where('status',1)->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
+        $tdata = array();
+        $Studentseries = array();
+        $series_sql =  User::where('role_id', 5)->where('status', 1)->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
         if (!empty($series_sql)) {
 
             foreach ($series_sql as $rr) {
-                $rva= ['x'=>$rr->date,'y'=>$rr->views];
+                $rva = ['x' => $rr->date, 'y' => $rr->views];
                 $data[] = $rva;
                 // $data[] = $rr->views;
             }
         }
         $Studentseries[]['data'] = $data;
 
-        $teachers = User::where('role_id',4)->where('type_of_schooling','home')->where('status',1)->count();
-        $tseries_sql =User::where('role_id',4)->where('status',1)->where('type_of_schooling','home')->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
+        $teachers = User::where('role_id', 4)->where('type_of_schooling', 'home')->where('status', 1)->count();
+        $tseries_sql = User::where('role_id', 4)->where('status', 1)->where('type_of_schooling', 'home')->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as views'))->groupBy('date')->get();
         if (!empty($tseries_sql)) {
 
             foreach ($tseries_sql as $rr) {
-                $rva= ['x'=>$rr->date,'y'=>$rr->views];
+                $rva = ['x' => $rr->date, 'y' => $rr->views];
                 $tdata[] = $rva;
                 // $tdata[] = $rr->views;
             }
@@ -213,7 +221,8 @@ class UserController extends Controller {
         return response()->json(compact('students', 'teachers', 'Studentseries', 'Teacherseries'), 200);
     }
 
-    public function getAuthenticatedUser() {
+    public function getAuthenticatedUser()
+    {
         try {
 
             if (!$user = JWTAuth::parseToken()->authenticate()) {
@@ -233,7 +242,8 @@ class UserController extends Controller {
         return response()->json(compact('user'), 200);
     }
 
-    public function manageUsers(Request $request, $id) {
+    public function manageUsers(Request $request, $id)
+    {
         DB::enableQueryLog();
 
 
@@ -241,17 +251,17 @@ class UserController extends Controller {
 
             $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } elseif ($request->type == 'searchdata') {
-        
+
+               $users = User::where('role_id', 4)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->with(['TeachingProgram'])->orderBy('id', 'DESC')->get();
+              
+        } elseif ($request->type == 'fulltime-teacher') {
+
 
             $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
-        } elseif ($request->type == 'fulltime-teacher') {
-        
-
-            $users = User::where('role_id', 4)->where('school_id', $id)->where('availability', '1')->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } elseif ($request->type == 'contractual-teacher') {
-        
 
-            $users = User::where('role_id', 4)->where('school_id', $id)->where('availability', '0')->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+
+            $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } else  if ($request->type == 'student') {
 
 
@@ -261,8 +271,8 @@ class UserController extends Controller {
             $users = User::where('role_id', 3)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
         }
         //  print_r(DB::getQueryLog());die;
-        foreach($users as $user){
-            $user->subjects='Hindi';
+        foreach ($users as $user) {
+            $user->subjects = 'Hindi';
         }
 
         if (isset($users) && count($users) > 0) {
@@ -272,93 +282,91 @@ class UserController extends Controller {
         }
     }
 
-    public function Getrecord(Request $request){
- //DB::enableQueryLog();
+    public function Getrecord(Request $request)
+    {
+        //DB::enableQueryLog();
         $query = User::join('assigned_teachers', 'users.id', '=', 'assigned_teachers.teacher_id')->where('role_id', 4)->where('status', 1)->where('users.school_id', $request->school_id);
-        if($request->class_id){
-            $query->where('assigned_teachers.class_id',$request->class_id);
+        if ($request->class_id) {
+            $query->where('assigned_teachers.class_id', $request->class_id);
         }
-        if($request->subject_id){
-            $query->where('assigned_teachers.subject_id',$request->subject_id);
+        if ($request->subject_id) {
+            $query->where('assigned_teachers.subject_id', $request->subject_id);
         }
         $users = $query->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
 
         //print_r(DB::getQueryLog());die;
-     if (isset($users) && count($users) > 0) {
-        return response()->json(compact('users'), 200);
-    } else {
-        return response()->json(['error' => 'true', 'users' => [], 'message' => 'No record found'], 200);
+        if (isset($users) && count($users) > 0) {
+            return response()->json(compact('users'), 200);
+        } else {
+            return response()->json(['error' => 'true', 'users' => [], 'message' => 'No record found'], 200);
+        }
     }
 
-}
-
     //fetch all admin users
-    public function manageAdminUsers(Request $request) {
+    public function manageAdminUsers(Request $request)
+    {
         DB::enableQueryLog();
 
         if ($request->type == 'teacher') {
             $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
-            foreach($users as $user){
-                if($user->type_of_schooling == 'home'){
+            foreach ($users as $user) {
+                if ($user->type_of_schooling == 'home') {
                     $user->type_of_schooling = 'Not Assigned';
-                    $user->school_name= '-';
-                }else{
+                    $user->school_name = '-';
+                } else {
                     $user->type_of_schooling = 'School';
-                    if(!empty($user->SchoolDetail)){
-                        $user->school_name= $user->SchoolDetail->school_name;
-                    }else{
-                        $user->school_name= '-';
+                    if (!empty($user->SchoolDetail)) {
+                        $user->school_name = $user->SchoolDetail->school_name;
+                    } else {
+                        $user->school_name = '-';
                     }
                 }
             }
         } else if ($request->type == 'program-teacher') {
-            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)->where('ptp','1')->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
-            foreach($users as $user){
-                if($user->type_of_schooling == 'home'){
+            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)->where('ptp', '1')->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            foreach ($users as $user) {
+                if ($user->type_of_schooling == 'home') {
                     $user->type_of_schooling = 'Not Assigned';
-                    $user->school_name= '-';
-                }else{
+                    $user->school_name = '-';
+                } else {
                     $user->type_of_schooling = 'School';
-                    if(!empty($user->SchoolDetail)){
-                        $user->school_name= $user->SchoolDetail->school_name;
-                    }else{
-                        $user->school_name= '-';
+                    if (!empty($user->SchoolDetail)) {
+                        $user->school_name = $user->SchoolDetail->school_name;
+                    } else {
+                        $user->school_name = '-';
                     }
                 }
             }
-        }
-        else if ($request->type == 'student') {
+        } else if ($request->type == 'student') {
             $users = User::with('SchoolDetail')->where('role_id', 2)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
-            foreach($users as $user){
-                if($user->type_of_schooling == 'home'){
+            foreach ($users as $user) {
+                if ($user->type_of_schooling == 'home') {
                     $user->type_of_schooling = 'Home Schooling';
-                    $user->school_name= '-';
-                }else{
+                    $user->school_name = '-';
+                } else {
                     $user->type_of_schooling = 'School';
-                    if(!empty($user->SchoolDetail)){
-                        $user->school_name= $user->SchoolDetail->school_name;
-                    }else{
-                        $user->school_name= '-';
+                    if (!empty($user->SchoolDetail)) {
+                        $user->school_name = $user->SchoolDetail->school_name;
+                    } else {
+                        $user->school_name = '-';
                     }
                 }
             }
-        }
-        else if ($request->type == 'school_admins') {
+        } else if ($request->type == 'school_admins') {
             $users = User::with('SchoolDetail')->where('role_id', 5)->where('status', 1)->orderBy('id', 'DESC')->get();
-            foreach($users as $user){
-                $user->school_name= $user->SchoolDetail->school_name;
+            foreach ($users as $user) {
+                $user->school_name = $user->SchoolDetail->school_name;
             }
-        }
-         else {
+        } else {
             $users = User::with('SchoolDetail')->where('role_id', 3)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
-            foreach($users as $user){
-                if($user->type_of_schooling == 'home'){
-                    $user->school_name= '-';
-                }else{
-                    if(!empty($user->SchoolDetail)){
-                       $user->school_name= $user->SchoolDetail->school_name;
-                    }else{
-                       $user->school_name= '-';
+            foreach ($users as $user) {
+                if ($user->type_of_schooling == 'home') {
+                    $user->school_name = '-';
+                } else {
+                    if (!empty($user->SchoolDetail)) {
+                        $user->school_name = $user->SchoolDetail->school_name;
+                    } else {
+                        $user->school_name = '-';
                     }
                 }
             }
@@ -372,48 +380,50 @@ class UserController extends Controller {
         }
     }
 
-    public function fetchUser($id) {
-    $data = User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->with('Timetables')->where('id', $id)->first();
-    // print_r($data->StateDetail);die;
-        $UnapproveStudent=[];
-        $relationshipStudent=[];
-        $relationshipParent=[];
-        if(!empty($data->StateDetail)){
-        $data->state_name= $data->StateDetail->state_name;
-        }else{
-        $data->state_name= '';    
+    public function fetchUser($id)
+    {
+        $data = User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->with('Timetables')->where('id', $id)->first();
+        // print_r($data->StateDetail);die;
+        $UnapproveStudent = [];
+        $relationshipStudent = [];
+        $relationshipParent = [];
+        if (!empty($data->StateDetail)) {
+            $data->state_name = $data->StateDetail->state_name;
+        } else {
+            $data->state_name = '';
         }
-    //    if(!empty($data->CityDetail)){
-    //         $data->city= $data->CityDetail->city;
-    //     }else{
-    //         $data->city= '';
-    //     }   
-        if(count($data->documents)){
-             $data->is_document= 1;
+        //    if(!empty($data->CityDetail)){
+        //         $data->city= $data->CityDetail->city;
+        //     }else{
+        //         $data->city= '';
+        //     }   
+        if (count($data->documents)) {
+            $data->is_document = 1;
         }
-        if($data->role_id==3){
-          $UnapproveStudent=   UnapproveStudent::where('parent_id',$id)->get();
-          $relationshipParent = ParentChildrens::with('ChildDetails.SchoolDetail')->where('parent_id',$id)->get();
-          $data['relationshipParent'] = $relationshipParent;
+        if ($data->role_id == 3) {
+            $UnapproveStudent =   UnapproveStudent::where('parent_id', $id)->get();
+            $relationshipParent = ParentChildrens::with('ChildDetails.SchoolDetail')->where('parent_id', $id)->get();
+            $data['relationshipParent'] = $relationshipParent;
         }
-        if($data->role_id==2){
-          $relationshipStudent = ParentChildrens::with('ParentDetails')->where('children_id',$id)->get();
-          $data['relationshipStudent'] = $relationshipStudent;
+        if ($data->role_id == 2) {
+            $relationshipStudent = ParentChildrens::with('ParentDetails')->where('children_id', $id)->get();
+            $data['relationshipStudent'] = $relationshipStudent;
         }
         if (isset($data)) {
-         $data['unapproveStudent']=$UnapproveStudent;
+            $data['unapproveStudent'] = $UnapproveStudent;
             return response()->json(compact('data'), 200);
         } else {
             return response()->json(['message' => 'No record found'], 200);
         }
     }
 
-    public function UpdateProfile(Request $request) {
+    public function UpdateProfile(Request $request)
+    {
         $name = $request->first_name . ' ' . $request->last_name;
-        if($request->role_id == '1'){
+        if ($request->role_id == '1') {
             User::where('id', $request->id)->update(['name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'status' => 1]);
-        }else{
-            User::where('id', $request->id)->update(['state_id' => $request->state_id,'city' => $request->city, 'name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'status' => 1]);
+        } else {
+            User::where('id', $request->id)->update(['state_id' => $request->state_id, 'city' => $request->city, 'name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'status' => 1]);
         }
         $data = User::find($request->id);
         if (!empty($data)) {
@@ -423,9 +433,10 @@ class UserController extends Controller {
         }
     }
 
-    public function UpdateSchoolProfile(Request $request) {
+    public function UpdateSchoolProfile(Request $request)
+    {
         $name = $request->first_name . ' ' . $request->last_name;
-        User::where('id', $request->user_id)->update(['state_id' => $request->state,'city' => $request->city, 'name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'position' => $request->position, 'school_id' => $request->school]);
+        User::where('id', $request->user_id)->update(['state_id' => $request->state, 'city' => $request->city, 'name' => $name, 'first_name' => $request->first_name, 'last_name' => $request->last_name, 'position' => $request->position, 'school_id' => $request->school]);
         $data = User::find($request->id);
         if (!empty($data)) {
             return response()->json(compact('data'), 200);
@@ -434,8 +445,9 @@ class UserController extends Controller {
         }
     }
 
-    public function RemoveUser($id) {
-        $userobj=User::where('id', $id)->first();
+    public function RemoveUser($id)
+    {
+        $userobj = User::where('id', $id)->first();
         $data = User::where('id', $id)->delete();
 
         $this->pusher->trigger('remove-channel', 'delete_user', $userobj);
@@ -449,49 +461,56 @@ class UserController extends Controller {
         return response()->json(compact('data'), 200);
     }
 
-    public function getRequest($school_id) {
+    public function getRequest($school_id)
+    {
         $data = User::where('role_id', 4)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
         $count = User::where('role_id', 4)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
-    
-        return response()->json(compact('data','count'), 200);
+
+        return response()->json(compact('data', 'count'), 200);
     }
 
-      public function getteacherRequest() {
-        $data = User::where('role_id', 4)->where('status', 1)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-        $count = User::where('role_id', 4)->where('status', 1)->where('type_of_schooling','home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
-            return response()->json(compact('data','count'), 200);
+    public function getteacherRequest()
+    {
+        $data = User::where('role_id', 4)->where('status', 1)->where('type_of_schooling', 'home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
+        $count = User::where('role_id', 4)->where('status', 1)->where('type_of_schooling', 'home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        return response()->json(compact('data', 'count'), 200);
     }
 
-      public function WebSchoolAdmins() {
+    public function WebSchoolAdmins()
+    {
         $data = User::where('role_id', 5)->where('status', 0)->with('SchoolDetail:id,school_name')->select('id', 'name', 'email', 'school_id', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-              $count = User::where('role_id', 5)->where('status', 0)->with('SchoolDetail:id,school_name')->select('id', 'name', 'email', 'school_id', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
-        return response()->json(compact('data','count'), 200);
+        $count = User::where('role_id', 5)->where('status', 0)->with('SchoolDetail:id,school_name')->select('id', 'name', 'email', 'school_id', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        return response()->json(compact('data', 'count'), 200);
     }
-    public function getStudentRequest($school_id) {
+    public function getStudentRequest($school_id)
+    {
         $data = User::where('role_id', 2)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-          $count = User::where('role_id', 2)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
-        return response()->json(compact('data','count'), 200);
+        $count = User::where('role_id', 2)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        return response()->json(compact('data', 'count'), 200);
     }
 
-    public function getParentRequest($school_id) {
+    public function getParentRequest($school_id)
+    {
         $data = User::where('role_id', 3)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();
-         $count = User::where('role_id', 3)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
-        return response()->json(compact('data','count'), 200);
+        $count = User::where('role_id', 3)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
+        return response()->json(compact('data', 'count'), 200);
     }
 
 
-    public function RefreshToken(Request $request){
+    public function RefreshToken(Request $request)
+    {
 
-          /* $accessToken = JWTAuth::refresh();
+        /* $accessToken = JWTAuth::refresh();
                 $user = JWTAuth::setToken($accessToken)->toUser();*/
 
-         //  return response()->json(compact('accessToken'), 200);
+        //  return response()->json(compact('accessToken'), 200);
     }
     // send mail for forgot password
-    public function ForgotPasswordEmail(Request $request) {
+    public function ForgotPasswordEmail(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'email' => 'required',
+            'email' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => true, 'message' => $validator->errors()->first()], 200);
@@ -516,10 +535,11 @@ class UserController extends Controller {
         }
     }
     // send mail for forgot password
-    public function adminForgotPasswordEmail(Request $request) {
+    public function adminForgotPasswordEmail(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'email' => 'required',
+            'email' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => true, 'message' => $validator->errors()->first()], 200);
@@ -543,37 +563,37 @@ class UserController extends Controller {
             }
         }
     }
-    public function changePassword(Request $request) {
+    public function changePassword(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'current_password' => 'required',
-                    'new_password' => 'required',
-                    'confirm_password' => 'required',
+            'current_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-                    $userpassword = User::where("id", $request->user_id)->first();
-                    //check current password is matched
-                    if(Hash::check($request->current_password , $userpassword->password)){ 
-                    if(Hash::check($request->new_password , $userpassword->password)){
-                        return response()->json(['error' => 'true', 'message' => 'You can not set old password again'], 200); 
-                    }else{
+            $userpassword = User::where("id", $request->user_id)->first();
+            //check current password is matched
+            if (Hash::check($request->current_password, $userpassword->password)) {
+                if (Hash::check($request->new_password, $userpassword->password)) {
+                    return response()->json(['error' => 'true', 'message' => 'You can not set old password again'], 200);
+                } else {
                     if ($request->confirm_password == $request->new_password) {
                         $datauser = User::where("id", $request->user_id)->update(["password" => Hash::make($request->input('new_password'))]);
                         return response()->json(compact('datauser'), 200);
-                    }else{
+                    } else {
                         return response()->json(['error' => 'true', 'message' => 'Passwords do not match. Please try again.'], 200);
-                        
-                    }   
                     }
-                }else{
-                    return response()->json(['error' => 'true', 'message' => 'Your current password is invalid'], 200);
                 }
-            
+            } else {
+                return response()->json(['error' => 'true', 'message' => 'Your current password is invalid'], 200);
+            }
         }
     }
-    public function resetchangePassword(Request $request) {
+    public function resetchangePassword(Request $request)
+    {
         $token = $request->token;
         $user_id = DB::table('users')->where('remember_token', $token)->first();
         if (isset($user_id)) {
@@ -599,7 +619,8 @@ class UserController extends Controller {
         }
     }
     // token checking
-    public function TokenChecking(Request $request) {
+    public function TokenChecking(Request $request)
+    {
         $token = $request->token;
         $user = DB::table('users')->where('remember_token', $token)->first();
         if (isset($user)) {
@@ -610,11 +631,12 @@ class UserController extends Controller {
     }
 
     //admin schools list 
-    public function AdminGetSchools(Request $request) {
+    public function AdminGetSchools(Request $request)
+    {
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'city_id' => 'required|exists:cities,id'
+                'city_id' => 'required|exists:cities,id'
             ]);
             if ($validator->fails()) {
                 return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
@@ -631,9 +653,10 @@ class UserController extends Controller {
         }
     }
     //fetch all admin users
-    public function manageReportUsers(Request $request) {
+    public function manageReportUsers(Request $request)
+    {
         DB::enableQueryLog();
-            $users = ReportUser::with('FromDetail')->with('ToDetail')->orderBy('id', 'DESC')->get();
+        $users = ReportUser::with('FromDetail')->with('ToDetail')->orderBy('id', 'DESC')->get();
         if (isset($users) && count($users) > 0) {
             return response()->json(compact('users'), 200);
         } else {
@@ -641,17 +664,16 @@ class UserController extends Controller {
         }
     }
     //send mail to reported users
-    public function SendWarningMail(request $request) {
-                $user = User::where("id", $request->user_id)->first();
-                $data = array("name" => $user->name, "reason" =>$request->reason);
-                Mail::send("email.warning-report-mail", $data, function ($m) use ($user) {
-                    $m->from('involvvely@gmail.com', 'Involvvely');
-                    $m->to($user->email);
-                    $m->subject('Warning Mail');
-                });
-                $arr = array("error" => false, "message" => 'Warning email has been sent', "data" => $data);
-                return response()->json(compact('user'), 200);
-            
+    public function SendWarningMail(request $request)
+    {
+        $user = User::where("id", $request->user_id)->first();
+        $data = array("name" => $user->name, "reason" => $request->reason);
+        Mail::send("email.warning-report-mail", $data, function ($m) use ($user) {
+            $m->from('involvvely@gmail.com', 'Involvvely');
+            $m->to($user->email);
+            $m->subject('Warning Mail');
+        });
+        $arr = array("error" => false, "message" => 'Warning email has been sent', "data" => $data);
+        return response()->json(compact('user'), 200);
     }
-
 }

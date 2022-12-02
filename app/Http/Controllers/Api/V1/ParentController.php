@@ -23,58 +23,72 @@ use App\Models\Timezone;
 use App\Notification;
 use Pusher\Pusher;
 use App\Events\NotificationEvent;
+use App\Models\TeachingProgram;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use URL;
 
-class ParentController extends Controller {
+use function GuzzleHttp\json_encode;
 
-    public function __construct() {
+class ParentController extends Controller
+{
+
+    public function __construct()
+    {
         $options = array(
             'cluster' => env('PUSHER_APP_CLUSTER'),
             'encrypted' => true
         );
         $this->pusher = new Pusher(
-                env('PUSHER_APP_KEY'),
-                env('PUSHER_APP_SECRET'),
-                env('PUSHER_APP_ID'),
-                $options
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
         );
     }
 
     // Register Student
-    public function FirststepParentRegister(Request $request) {
+    public function FirststepParentRegister(Request $request)
+    {
         try {
 
             $input = $request->all();
-            $validator = Validator::make($input, [
-                        'first_name' => 'required',
-                        'device_token' => 'required',
-                        'last_name' => 'required',
-                        'email' => 'required|unique:users',
-                        'password' => 'required',
-                        'role_id' => 'required'
+            $user = [
+                'first_name' => 'required',
+                'device_token' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|unique:users',
+                'password' => 'required',
+                'role_id' => 'required',
+                'class_id' => 'required_if:teaching_program,teaching_program',
+                'subject_id' => 'required_if:teaching_program,teaching_program',
+                'hourly_rate' => 'required_if:teaching_program,teaching_program',
+                'availability' => 'required_if:teaching_program,teaching_program|in:0,1,2',
+                'location' => 'required_if:teaching_program,teaching_program',
+                'preferences' => 'required_if:teaching_program,teaching_program',
+            ];
 
-                            // 'type_of_schooling' => 'required',
-                            // 'country' => 'required',
-                            // 'state_id' => 'required|exists:states,id',
-                            // 'city_id' => 'required|exists:cities,id',
-                            //  'school_id' => 'required_if:type_of_schooling, =,school'
-            ]);
-
+            $validator = Validator::make($input,$user);
+            // var_dump($request->location);exit;
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
+                // var_dump($input['subject_id']);
+                
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
+                if ($request->teaching_program == 'teaching_program') {
+                    $input['id'] = $addUser->id;
+                     TeachingProgram::add($input);
+                }
                 $addUser->ActiveJwttoken = $token;
                 $addUser->school_status = '0';
                 $addUser->update_detail = '0';
                 $addUser->school_live = '0';
                 //Update jwt Token
-                User::where('id',$addUser->id)->update(['ActiveJwttoken'=>$token]);
+                User::where('id', $addUser->id)->update(['ActiveJwttoken' => $token]);
                 //  $addUser->relationship = $request->relationship;
 
                 return response()->json(array('error' => false, 'message' => 'Registered Successfully', 'data' => $addUser), 200);
@@ -84,17 +98,18 @@ class ParentController extends Controller {
         }
     }
 
-    public function updateotherDetails(Request $request) {
+    public function updateotherDetails(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'user_id' => 'required',
-                        'country' => 'required',
-                        'type_of_schooling' => 'required',
-                        'state_id' => 'required|exists:states,id',
-                        'city_id' => 'required|exists:cities,id',
-                            //'school_id' => 'required_if:type_of_schooling, =,school'
+                'user_id' => 'required',
+                'country' => 'required',
+                'type_of_schooling' => 'required',
+                'state_id' => 'required|exists:states,id',
+                'city_id' => 'required|exists:cities,id',
+                //'school_id' => 'required_if:type_of_schooling, =,school'
             ]);
 
             if ($validator->fails()) {
@@ -107,14 +122,14 @@ class ParentController extends Controller {
                 $student_obj->city = $request->city_id;
                 $student_obj->school_id = $request->school_id;
                 $student_obj->update_detail = '1';
-                if($request->type_of_schooling == 'home'){
-                    if($student_obj->role_id == '4'){
-                    $student_obj->status = '0';
-                    }else{
-                    $student_obj->status = '1';     
+                if ($request->type_of_schooling == 'home') {
+                    if ($student_obj->role_id == '4') {
+                        $student_obj->status = '0';
+                    } else {
+                        $student_obj->status = '1';
                     }
-                }else{
-                $student_obj->status = '1';    
+                } else {
+                    $student_obj->status = '1';
                 }
                 $student_obj->type_of_schooling = $request->type_of_schooling;
                 // $student_obj->status=2;
@@ -122,8 +137,7 @@ class ParentController extends Controller {
                     $student_obj->status = '1';
                     if (empty($request->family_code)) {
                         $digits = 5;
-                        $family_code = $this->random_strings(5);
-                        ;
+                        $family_code = $this->random_strings(5);;
                         $student_obj->family_code = $family_code;
                     } else {
                         $code = User::where('family_code', $request->family_code)->count();
@@ -170,7 +184,8 @@ class ParentController extends Controller {
                             $class_code = ClassCode::where('class_name', $search_class_name)->where('school_id', $school_obj->id)->first();
                             if (!empty($class_code)) {
                                 $classobj = ClassUser::create(
-                                                ['user_id' => $request->user_id, 'class_id' => $class_code->id, 'active' => 0]);
+                                    ['user_id' => $request->user_id, 'class_id' => $class_code->id, 'active' => 0]
+                                );
                             } else {
                                 // return response()->json(array('error' => true, 'message' => $search_class_name), 200);
                             }
@@ -187,7 +202,8 @@ class ParentController extends Controller {
                     $class_code = ClassCode::where('id', $request->class_code)->where('school_id', $request->school_id)->first();
                     if (!empty($class_code)) {
                         $classobj = ClassUser::create(
-                                        ['user_id' => $request->user_id, 'class_id' => $class_code->id, 'active' => 0]);
+                            ['user_id' => $request->user_id, 'class_id' => $class_code->id, 'active' => 0]
+                        );
                     } else {
                         return response()->json(array('error' => true, 'message' => 'Class code does not belong to this school'), 200);
                     }
@@ -197,35 +213,37 @@ class ParentController extends Controller {
                     if (!empty($request->family_code)) {
                         $parents = User::where('family_code', $request->family_code)->where('role_id', 3)->get();
                         foreach ($parents as $singl) {
-                    $count=  ParentChildrens::where('parent_id', $singl->id)->where('children_id', $request->user_id)->count();
-               if($count==0){
-                            DB::table('parent_childrens')->insert(
+                            $count =  ParentChildrens::where('parent_id', $singl->id)->where('children_id', $request->user_id)->count();
+                            if ($count == 0) {
+                                DB::table('parent_childrens')->insert(
                                     [
                                         'parent_id' => $singl->id,
                                         'children_id' => $request->user_id,
                                         'relationship' => $singl->relationship
-                            ]);
+                                    ]
+                                );
+                            }
                         }
-                    }
                     }
                 }
 
                 if ($student_obj->role_id == '3') {
                     if (!empty($request->family_code)) {
-                        $students = User::where('family_code', $request->family_code)->where('role_id',2)->get();
+                        $students = User::where('family_code', $request->family_code)->where('role_id', 2)->get();
                         foreach ($students as $singl) {
-                  $count=  ParentChildrens::where('parent_id', $student_obj->id)->where('children_id',$singl->id)->count();
-               if($count==0){
+                            $count =  ParentChildrens::where('parent_id', $student_obj->id)->where('children_id', $singl->id)->count();
+                            if ($count == 0) {
 
-                            DB::table('parent_childrens')->insert(
-                                [
-                                    'parent_id' => $student_obj->id,
-                                    'children_id' => $singl->id
-                                    //'relationship' => $request->relationship
-                                ]);
+                                DB::table('parent_childrens')->insert(
+                                    [
+                                        'parent_id' => $student_obj->id,
+                                        'children_id' => $singl->id
+                                        //'relationship' => $request->relationship
+                                    ]
+                                );
+                            }
                         }
                     }
-                }
 
                     $parents = ParentChildrens::where('parent_id', $request->user_id)->get();
                     foreach ($parents as $singl) {
@@ -239,15 +257,15 @@ class ParentController extends Controller {
                 // }
 
                 $addUser = User::with('StateDetail')->with('CityDetail')->with('SchoolDetail')->where('id', $request->user_id)->first();
-                if(!empty($addUser->SchoolDetail)){
-                  
-                    if($addUser->SchoolDetail->approved == '1'){
+                if (!empty($addUser->SchoolDetail)) {
+
+                    if ($addUser->SchoolDetail->approved == '1') {
                         $addUser->school_live = '1';
-                    }else{
+                    } else {
                         $addUser->school_live = '0';
                     }
-                }else{
-                   $addUser->school_live = '0'; 
+                } else {
+                    $addUser->school_live = '0';
                 }
                 if (isset($classobj)) {
                     $addUser->class_id = $class_code->id;
@@ -258,25 +276,24 @@ class ParentController extends Controller {
                     $addUser->class_name == '';
                     $addUser->school_status = '0';
                 }
-                 /*****get timezone data*******/
-            if($addUser->type_of_schooling == 'school'){
-                 if(empty($addUser->timezone_id) || $addUser->timezone_id == ''){
-                    //get school timezone
-                    $schooldata = School::where('id', $addUser->school_id)->first();
-                    $statedata = State::where('id', $schooldata->state_id)->first();
-                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
-                    // $single_notification->timezone = $timezone;
-                    $addUser->timezone_offset = $timezone->utc_offset;
-                    $addUser->timezone_name = $timezone->timezone_name;
-                    
-                }else{
-                    //get user timezone
-                    $timezone = Timezone::where('id', $addUser->timezone_id)->first();
-                    // $single_notification->timezone = $timezone;
-                    $addUser->timezone_offset = $timezone->utc_offset;
-                    $addUser->timezone_name = $timezone->timezone_name;
+                /*****get timezone data*******/
+                if ($addUser->type_of_schooling == 'school') {
+                    if (empty($addUser->timezone_id) || $addUser->timezone_id == '') {
+                        //get school timezone
+                        $schooldata = School::where('id', $addUser->school_id)->first();
+                        $statedata = State::where('id', $schooldata->state_id)->first();
+                        $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                        // $single_notification->timezone = $timezone;
+                        $addUser->timezone_offset = $timezone->utc_offset;
+                        $addUser->timezone_name = $timezone->timezone_name;
+                    } else {
+                        //get user timezone
+                        $timezone = Timezone::where('id', $addUser->timezone_id)->first();
+                        // $single_notification->timezone = $timezone;
+                        $addUser->timezone_offset = $timezone->utc_offset;
+                        $addUser->timezone_name = $timezone->timezone_name;
+                    }
                 }
-            }
                 return response()->json(array('error' => false, 'message' => 'Successfully Updated', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
@@ -285,21 +302,22 @@ class ParentController extends Controller {
     }
 
     // Register Student
-    public function ParentRegister(Request $request) {
+    public function ParentRegister(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'first_name' => 'required',
-                        //  'device_token' => 'required',
-                        'last_name' => 'required',
-                        'email' => 'required|unique:users',
-                        'password' => 'required',
-                        'type_of_schooling' => 'required',
-                        'country' => 'required',
-                        'state_id' => 'required|exists:states,id',
-                        'city_id' => 'required|exists:cities,id',
-                        'school_id' => 'required_if:type_of_schooling, =,school'
+                'first_name' => 'required',
+                //  'device_token' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|unique:users',
+                'password' => 'required',
+                'type_of_schooling' => 'required',
+                'country' => 'required',
+                'state_id' => 'required|exists:states,id',
+                'city_id' => 'required|exists:cities,id',
+                'school_id' => 'required_if:type_of_schooling, =,school'
             ]);
 
             if ($validator->fails()) {
@@ -316,7 +334,8 @@ class ParentController extends Controller {
                         $class_code = ClassCode::where('class_code', $request->class_code)->first();
                         if (!empty($class_code)) {
                             $classobj = ClassUser::create(
-                                            ['user_id' => $addUser->id, 'class_id' => $class_code->id]);
+                                ['user_id' => $addUser->id, 'class_id' => $class_code->id]
+                            );
                         } else {
                             return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
                         }
@@ -327,11 +346,12 @@ class ParentController extends Controller {
                         foreach ($explode as $single) {
 
                             DB::table('parent_childrens')->updateOrInsert(
-                                    [
-                                        'parent_id' => $addUser->id,
-                                        'children_id' => $single,
-                                        'relationship' => $request->relationship
-                            ]);
+                                [
+                                    'parent_id' => $addUser->id,
+                                    'children_id' => $single,
+                                    'relationship' => $request->relationship
+                                ]
+                            );
                         }
                     }
                     // Store unapprove Student
@@ -367,11 +387,12 @@ class ParentController extends Controller {
         }
     }
 
-    public function GetStudents(Request $request) {
+    public function GetStudents(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'school_id' => 'required',
-                    'class_code' => 'required',
+            'school_id' => 'required',
+            'class_code' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -381,18 +402,19 @@ class ParentController extends Controller {
             //  $students=User::with('SchoolDetail')
 
             $students = User::with('SchoolDetail:id,school_name')
-                            ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
-                            ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
-                            ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('status', 1)->where('class_code.class_code', $request->class_code)->where('users.school_id', $request->school_id)->get();
+                ->leftJoin('user_class_code', 'users.id', '=', 'user_class_code.user_id')
+                ->leftJoin('class_code', 'user_class_code.class_id', '=', 'class_code.id')
+                ->select('users.*', 'class_code.class_name')->where('role_id', 2)->where('status', 1)->where('class_code.class_code', $request->class_code)->where('users.school_id', $request->school_id)->get();
             return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $students), 200);
         }
     }
 
-    public function GetAssociatedParents(Request $request) {
+    public function GetAssociatedParents(Request $request)
+    {
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'class_id' => 'required'
+                'class_id' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -409,12 +431,13 @@ class ParentController extends Controller {
         }
     }
 
-    public function GetAssociatedClasses(Request $request) {
+    public function GetAssociatedClasses(Request $request)
+    {
 
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'parent_id' => 'required'
+                'parent_id' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -450,25 +473,26 @@ class ParentController extends Controller {
         }
     }
 
-    public function MyParents(Request $request) {
+    public function MyParents(Request $request)
+    {
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'student_id' => 'required'
+                'student_id' => 'required'
             ]);
 
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
 
-//DB::enableQueryLog(); // Enable query log
+                //DB::enableQueryLog(); // Enable query log
                 $parents = ParentChildrens::where('children_id', $request->student_id)->with('ParentDetails:id,name,first_name,last_name,role_id')->get();
                 foreach ($parents as $single) {
                     $children = User::Join('parent_childrens', 'parent_childrens.children_id', '=', 'users.id')->select('users.id', 'users.name', 'users.role_id')->where('parent_id', $single->parent_id)->distinct()->get();
                     $single->childrens = $children;
                 }
 
-//dd(DB::getQueryLog());
+                //dd(DB::getQueryLog());
                 return response()->json(array('error' => false, 'message' => 'Parents fetched successfully', 'data' => $parents), 200);
             }
         } catch (\Exception $e) {
@@ -476,10 +500,11 @@ class ParentController extends Controller {
         }
     }
 
-    public function GethomeStudents(Request $request) {
+    public function GethomeStudents(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'city_id' => 'required',
+            'city_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -494,16 +519,17 @@ class ParentController extends Controller {
         }
     }
 
-    public function AddChildren(Request $request) {
+    public function AddChildren(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'type_of_schooling' => 'required',
-                        'parent_id' => 'required',
-                        'school_id' => 'required_if:type_of_schooling, =,school',
-                            //'class_code' => 'required_if:type_of_schooling, =,school',
-                            // 'student_id' => 'required_if:type_of_schooling, =,school'
+                'type_of_schooling' => 'required',
+                'parent_id' => 'required',
+                'school_id' => 'required_if:type_of_schooling, =,school',
+                //'class_code' => 'required_if:type_of_schooling, =,school',
+                // 'student_id' => 'required_if:type_of_schooling, =,school'
             ]);
 
             if ($validator->fails()) {
@@ -514,7 +540,8 @@ class ParentController extends Controller {
                     $class_code = ClassCode::where('class_code', $request->class_code)->first();
                     if (!empty($class_code)) {
                         DB::table('user_class_code')->insert(
-                                ['user_id' => $request->parent_id, 'class_id' => $class_code->id]);
+                            ['user_id' => $request->parent_id, 'class_id' => $class_code->id]
+                        );
                     } else {
                         return response()->json(array('error' => true, 'message' => 'Class code is not valid.'), 200);
                     }
@@ -525,11 +552,12 @@ class ParentController extends Controller {
                     if (!empty($explode)) {
                         foreach ($explode as $student_id) {
                             DB::table('parent_childrens')->insert(
-                                    [
-                                        'parent_id' => $request->parent_id,
-                                        'children_id' => $student_id,
-                                        'relationship' => $request->relationship
-                            ]);
+                                [
+                                    'parent_id' => $request->parent_id,
+                                    'children_id' => $student_id,
+                                    'relationship' => $request->relationship
+                                ]
+                            );
 
                             if ($request->has('family_code')) {
                                 User::where('id', $student_id)->update(['family_code' => $request->family_code]);
@@ -568,14 +596,15 @@ class ParentController extends Controller {
     }
 
     // Create task 
-    public function AddScheduleTask(Request $request) {
+    public function AddScheduleTask(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'task_assigned_by' => 'required|exists:users,id',
-//                    'task_assigned_to' => 'required',
-                    'task_name' => 'required',
-                    'schedule_id' => 'required|exists:schedules,id',
-//                  'task_time' => 'required',
+            'task_assigned_by' => 'required|exists:users,id',
+            //                    'task_assigned_to' => 'required',
+            'task_name' => 'required',
+            'schedule_id' => 'required|exists:schedules,id',
+            //                  'task_time' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -613,12 +642,12 @@ class ParentController extends Controller {
             $task->save();
             //get task_assigned_to values
             $taskassignedids = Schedule::where('id', $request->schedule_id)->first();
-            if($taskassignedids->accept_reject_schedule != null){
-               $accept_reject_status = '1';
-            }else if($taskassignedids->rejected_user != null) {
-               $accept_reject_status = '2';
-            }else{
-               $accept_reject_status = '0';
+            if ($taskassignedids->accept_reject_schedule != null) {
+                $accept_reject_status = '1';
+            } else if ($taskassignedids->rejected_user != null) {
+                $accept_reject_status = '2';
+            } else {
+                $accept_reject_status = '0';
             }
 
             $dates_implode = implode(',', $dates);
@@ -629,7 +658,7 @@ class ParentController extends Controller {
 
             $task_assigned = new ParentTaskAssigned; //then create new object
             $task_assigned->task_id = $task->id;
-//            $task_assigned->task_assigned_to = $request->task_assigned_to; 
+            //            $task_assigned->task_assigned_to = $request->task_assigned_to; 
             $task_assigned->task_assigned_to = $taskassignedids->assigned_to;
             if ($request->task_assigned_by == $taskassignedids->assigned_to) {
                 $task_assigned->handover = '1';
@@ -648,7 +677,7 @@ class ParentController extends Controller {
 							) THEN TRUE
 							ELSE FALSE END)
 							AS is_complete,parent_tasks.*")))->with('User')->where('id', $task->id)->first();
-//             $addded->task_assigned_to=$request->task_assigned_to;
+                //             $addded->task_assigned_to=$request->task_assigned_to;
                 $addded->task_assigned_to = $taskassignedids->assigned_to;
                 $this->pusher->trigger('task-channel', 'task_add', $addded);
 
@@ -659,7 +688,7 @@ class ParentController extends Controller {
 
                 $message = 'A new task has been assigned to you in this schedule \'' . $taskassignedids->schedule_name . '\'';
                 if (!empty($user_data_to->device_token)) {
-                    SendAllNotification($user_data_to->device_token, $message, 'social_notification', $task->id, 'add_task',null,null,null,null,null,$accept_reject_status);
+                    SendAllNotification($user_data_to->device_token, $message, 'social_notification', $task->id, 'add_task', null, null, null, null, null, $accept_reject_status);
                 }
                 $notificationobj = new Notification;
                 $notificationobj->user_id = $user_data_to->id;
@@ -671,7 +700,7 @@ class ParentController extends Controller {
                 $notificationobj->push_type = 'add_task';
                 $notificationobj->from_user_id = $user_data_by->id;
                 $notificationobj->save();
-                
+
                 $notificationobj->role_type = 'all';
                 $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                 $data = array(
@@ -694,14 +723,15 @@ class ParentController extends Controller {
         }
     }
 
-    public function AddSchedule(Request $request) {
+    public function AddSchedule(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'created_by' => 'required|exists:users,id',
-                    'assigned_to' => 'required',
-                    'schedule_name' => 'required',
-                    'from_time' => 'required',
-                    'to_time' => 'required'
+            'created_by' => 'required|exists:users,id',
+            'assigned_to' => 'required',
+            'schedule_name' => 'required',
+            'from_time' => 'required',
+            'to_time' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -739,29 +769,28 @@ class ParentController extends Controller {
             $task->selected_days = $days_data;
             $task->save();
 
-//            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get(); 
+            //            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get(); 
             $user = [];
-            $user = User::where('id', $task->assigned_to)->select('name', 'id','timezone_id','school_id','type_of_schooling')->get();
+            $user = User::where('id', $task->assigned_to)->select('name', 'id', 'timezone_id', 'school_id', 'type_of_schooling')->get();
             $task->assigned_to = $user;
-            foreach($user as $val){
-            if($val->type_of_schooling == 'school'){
-                if(empty($val->timezone_id) || $val->timezone_id == ''){
-                    //get school timezone
-                    $schooldata = School::where('id', $val->school_id)->first();
-                    $statedata = State::where('id', $schooldata->state_id)->first();
-                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
-                    // $single_notification->timezone = $timezone;
-                    $val->timezone_offset = $timezone->utc_offset;
-                    $val->timezone_name = $timezone->timezone_name;
-                    
-                }else{
-                    //get user timezone
-                    $timezone = Timezone::where('id', $val->timezone_id)->first();
-                    // $single_notification->timezone = $timezone;
-                    $val->timezone_offset = $timezone->utc_offset;
-                    $val->timezone_name = $timezone->timezone_name;
+            foreach ($user as $val) {
+                if ($val->type_of_schooling == 'school') {
+                    if (empty($val->timezone_id) || $val->timezone_id == '') {
+                        //get school timezone
+                        $schooldata = School::where('id', $val->school_id)->first();
+                        $statedata = State::where('id', $schooldata->state_id)->first();
+                        $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                        // $single_notification->timezone = $timezone;
+                        $val->timezone_offset = $timezone->utc_offset;
+                        $val->timezone_name = $timezone->timezone_name;
+                    } else {
+                        //get user timezone
+                        $timezone = Timezone::where('id', $val->timezone_id)->first();
+                        // $single_notification->timezone = $timezone;
+                        $val->timezone_offset = $timezone->utc_offset;
+                        $val->timezone_name = $timezone->timezone_name;
+                    }
                 }
-            }
             }
 
             $task->User;
@@ -775,13 +804,13 @@ class ParentController extends Controller {
 
 
 
-//            $users_explode = explode(',', $request->assigned_to);
-//            foreach ($users_explode as $single) {   
+            //            $users_explode = explode(',', $request->assigned_to);
+            //            foreach ($users_explode as $single) {   
             $user_data_to = User::where('id', $request->assigned_to)->first();
             //email notification             
             if ($request->notify_parent == '1') {
                 $notify_date = date('d/m/Y', strtotime($request->notify_date));
-//Good News! Your schedule |schedule name here| is set for Saturday , January 4th, 2018 to Sunday, January 5th, 2018.
+                //Good News! Your schedule |schedule name here| is set for Saturday , January 4th, 2018 to Sunday, January 5th, 2018.
                 $message = 'Good News! Your schedule ' . $task->schedule_name . ' is set for ' . $notify_date . ' at ' . $request->notify_time;
                 if (!empty($user_data_to->device_token)) {
                     SendAllNotification($user_data_to->device_token, $message, 'social_notification');
@@ -794,7 +823,7 @@ class ParentController extends Controller {
                 $notificationobj->from_user_id = $user_data_by->id;
                 $notificationobj->schedule_id = $task->id;
                 $notificationobj->save();
-                
+
                 $notificationobj->role_type = 'all';
                 $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                 $data = array(
@@ -818,9 +847,10 @@ class ParentController extends Controller {
     }
 
     //Get tasks
-    public function Getschedules(Request $request) {
+    public function Getschedules(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -834,37 +864,35 @@ class ParentController extends Controller {
 						)
 						AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL OR  created_by=' . $request->user_id . ')')->orderBy('id', 'DESC')->get();
             // $tasks = Schedule::select((DB::raw("(SELECT CASE
-			// 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
+            // 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
 
-			// 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
-			// 			ELSE 0
-			// 			END
-			// 			)
-			// 			AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
+            // 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
+            // 			ELSE 0
+            // 			END
+            // 			)
+            // 			AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
             foreach ($tasks as $singlke_task) {
-                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id','timezone_id','school_id','type_of_schooling')->get();
+                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id', 'timezone_id', 'school_id', 'type_of_schooling')->get();
                 $singlke_task->assigned_to = $user;
-                foreach($user as $users){
-            if($users->type_of_schooling == 'school'){
-					if($users->timezone_id == null || $users->timezone_id == ''){
-                    //get school timezone
-                    $schooldata = School::where('id', $users->school_id)->first();
-                    $statedata = State::where('id', $schooldata->state_id)->first();
-                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
-                    // $users->timezone = $timezone;
-                    $users->timezone_offset = $timezone->utc_offset;
-                    $users->timezone_name = $timezone->timezone_name;
-                    
-                }else{
-                    //get user timezone
-                    $timezone = Timezone::where('id', $users->timezone_id)->first();
-                    // $users->timezone = $timezone;
-                    $users->timezone_offset = $timezone->utc_offset;
-                    $users->timezone_name = $timezone->timezone_name;
+                foreach ($user as $users) {
+                    if ($users->type_of_schooling == 'school') {
+                        if ($users->timezone_id == null || $users->timezone_id == '') {
+                            //get school timezone
+                            $schooldata = School::where('id', $users->school_id)->first();
+                            $statedata = State::where('id', $schooldata->state_id)->first();
+                            $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                            // $users->timezone = $timezone;
+                            $users->timezone_offset = $timezone->utc_offset;
+                            $users->timezone_name = $timezone->timezone_name;
+                        } else {
+                            //get user timezone
+                            $timezone = Timezone::where('id', $users->timezone_id)->first();
+                            // $users->timezone = $timezone;
+                            $users->timezone_offset = $timezone->utc_offset;
+                            $users->timezone_name = $timezone->timezone_name;
+                        }
+                    }
                 }
-            }
-				}
-
             }
 
 
@@ -874,13 +902,13 @@ class ParentController extends Controller {
     }
 
     //Get tasks
-    public function GetScheduleTask(Request $request) {
+    public function GetScheduleTask(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:schedules,id'
+            'schedule_id' => 'required|exists:schedules,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
-            
         } else {
             $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
 							SELECT *
@@ -891,21 +919,22 @@ class ParentController extends Controller {
 							AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
 							FROM parent_task_assigned
 							WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.handover = 1 AND task_assigned_to=' . $request->user_id . ')  OR  task_assigned_by=' . $request->user_id . ')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
-                            foreach ($tasks as $signle_user) {
-                                //check task schedule is accepted or not 
-                                $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
-                                if($schedule_status->rejected_user != null){
-                                   $signle_user->is_complete = 2;
-                                }
-                            }    
+            foreach ($tasks as $signle_user) {
+                //check task schedule is accepted or not 
+                $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
+                if ($schedule_status->rejected_user != null) {
+                    $signle_user->is_complete = 2;
+                }
+            }
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
 
     //Get tasks assigned to me 
-    public function TaskAssignedToMe(Request $request) {
+    public function TaskAssignedToMe(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -916,15 +945,16 @@ class ParentController extends Controller {
     }
 
     //task detail
-    public function GetScheduleTaskDetail(Request $request) {
+    public function GetScheduleTaskDetail(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'task_id' => 'required|exists:parent_tasks,id'
+            'task_id' => 'required|exists:parent_tasks,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $accept_reject_data = ParentTaskAssigned::with('User', 'ParentTask.User')->where(['task_id' => $request->task_id, 'task_assigned_to' => $request->parent_id])->first();
-//           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id, 'handover'=>'1'])->first();
+            //           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id, 'handover'=>'1'])->first();
             if (!empty($accept_reject_data)) {
 
                 if ($request->accept_reject == 1) {
@@ -934,7 +964,6 @@ class ParentController extends Controller {
                 }
                 // SElect parent_tasks.*, (CASE WHEN (Select Count(id) from parent_task_assigned where task_id=parent_tasks.id AND (parent_task_assigned.accept_reject=1 OR parent_task_assigned.accept_reject=0)) > 0  THEN parent_task_assigned.accept_reject ELSE '2' END )   from parent_tasks 
             } else {
-                
             }
             $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
 							SELECT *
@@ -947,12 +976,12 @@ class ParentController extends Controller {
             foreach ($tasks as $signle_user) {
                 $task_user = ParentTaskAssigned::select('image', 'notes', 'task_assigned_to')->with('User:id,name')->where('task_id', $request->task_id)->first();
                 $signle_user->assigned_to = $task_user;
-                
+
                 //check task schedule is accepted or not 
-				$schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
-				if($schedule_status->rejected_user != null){
-				   $signle_user->is_complete = 2;
-				}
+                $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
+                if ($schedule_status->rejected_user != null) {
+                    $signle_user->is_complete = 2;
+                }
             }
 
 
@@ -967,15 +996,16 @@ class ParentController extends Controller {
     }
 
     //Schedule Detail
-    public function GetScheduleDetail(Request $request) {
+    public function GetScheduleDetail(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:schedules,id'
+            'schedule_id' => 'required|exists:schedules,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             //GET ASSIGNED USER_ID
-            $assigned_id = Schedule::where('id',$request->schedule_id)->first();
+            $assigned_id = Schedule::where('id', $request->schedule_id)->first();
             $tasks = Schedule::select((DB::raw("(SELECT CASE
 						WHEN  FIND_IN_SET(" . $assigned_id->assigned_to . " ,schedules.accept_reject_schedule ) THEN 1
 						WHEN FIND_IN_SET(" . $assigned_id->assigned_to . ", schedules.rejected_user) THEN 2
@@ -985,12 +1015,12 @@ class ParentController extends Controller {
 						AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
 
             // $tasks = Schedule::select((DB::raw("(SELECT CASE
-			// 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
-			// 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
-			// 			ELSE 0
-			// 			END
-			// 			)
-			// 			AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
+            // 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
+            // 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
+            // 			ELSE 0
+            // 			END
+            // 			)
+            // 			AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
             $user = User::whereIn('id', explode(',', $tasks->assigned_to))->select('name')->get();
             $tasks->assigned_to = $user;
 
@@ -1001,10 +1031,11 @@ class ParentController extends Controller {
     }
 
     //remove task
-    public function RemoveScheduleTask(Request $request) {
+    public function RemoveScheduleTask(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
-                    'task_id' => 'required|exists:parent_tasks,id',
+            'task_id' => 'required|exists:parent_tasks,id',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -1023,11 +1054,12 @@ class ParentController extends Controller {
     }
 
     //remove task
-    public function RemoveSchedule(Request $request) {
+    public function RemoveSchedule(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:schedules,id',
-                    'user_id' => 'required|exists:users,id',
+            'schedule_id' => 'required|exists:schedules,id',
+            'user_id' => 'required|exists:users,id',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -1044,11 +1076,12 @@ class ParentController extends Controller {
     }
 
     //remove task
-    public function RemoveAssignScheduleTask(Request $request) {
+    public function RemoveAssignScheduleTask(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
-                    'task_id' => 'required|exists:parent_tasks,id',
-                    'task_assigned_to' => 'required|exists:users,id',
+            'task_id' => 'required|exists:parent_tasks,id',
+            'task_assigned_to' => 'required|exists:users,id',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -1062,12 +1095,13 @@ class ParentController extends Controller {
         }
     }
 
-    public function GetListofParents(Request $request) {
+    public function GetListofParents(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'school_id' => 'required|exists:schools,id',
+                'school_id' => 'required|exists:schools,id',
             ]);
 
             if ($validator->fails()) {
@@ -1088,12 +1122,13 @@ class ParentController extends Controller {
         }
     }
 
-    public function GetListofStudents(Request $request) {
+    public function GetListofStudents(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'school_id' => 'required|exists:schools,id',
+                'school_id' => 'required|exists:schools,id',
             ]);
 
             if ($validator->fails()) {
@@ -1114,12 +1149,13 @@ class ParentController extends Controller {
         }
     }
 
-    public function GetListofTeachers(Request $request) {
+    public function GetListofTeachers(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'school_id' => 'required|exists:schools,id',
+                'school_id' => 'required|exists:schools,id',
             ]);
 
             if ($validator->fails()) {
@@ -1144,12 +1180,13 @@ class ParentController extends Controller {
         }
     }
 
-    public function GetRelatedParents(Request $request) {
+    public function GetRelatedParents(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'parent_id' => 'required',
+                'parent_id' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -1162,27 +1199,26 @@ class ParentController extends Controller {
                 // if(!empty($childrens)){
                 //$results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name')->whereRaw('children_id IN('.$childrens.')')->get();
                 $family_code = User::find($request->parent_id);
-                $results = User::whereRaw('family_code =\'' . $family_code->family_code . '\' AND role_id = 3')->select('id', 'name', 'last_name', 'role_id','school_id','timezone_id','type_of_schooling')->get();
+                $results = User::whereRaw('family_code =\'' . $family_code->family_code . '\' AND role_id = 3')->select('id', 'name', 'last_name', 'role_id', 'school_id', 'timezone_id', 'type_of_schooling')->get();
                 if (!empty($results)) {
                     foreach ($results as $single) {
 
                         $single->childrens = $childrens;
-                    if($single->type_of_schooling == 'school'){
-                        if($single->timezone_id == null || $single->timezone_id == ''){
-							//get school timezone
-                            $schooldata = School::where('id', $single->school_id)->first();
-                            $statedata = State::where('id', $schooldata->state_id)->first();
-                            $timezone = Timezone::where('id', $statedata->timezone_id)->first();
-                            $single->timezone_offset = $timezone->utc_offset;
-                            $single->timezone_name = $timezone->timezone_name;
-                            
-                        }else{
-                            //get user timezone
-                            $timezone = Timezone::where('id', $single->timezone_id)->first();
-                            $single->timezone_offset = $timezone->utc_offset;
-                            $single->timezone_name = $timezone->timezone_name;
+                        if ($single->type_of_schooling == 'school') {
+                            if ($single->timezone_id == null || $single->timezone_id == '') {
+                                //get school timezone
+                                $schooldata = School::where('id', $single->school_id)->first();
+                                $statedata = State::where('id', $schooldata->state_id)->first();
+                                $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                                $single->timezone_offset = $timezone->utc_offset;
+                                $single->timezone_name = $timezone->timezone_name;
+                            } else {
+                                //get user timezone
+                                $timezone = Timezone::where('id', $single->timezone_id)->first();
+                                $single->timezone_offset = $timezone->utc_offset;
+                                $single->timezone_name = $timezone->timezone_name;
+                            }
                         }
-                    }
                     }
                     return response()->json(array('error' => false, 'data' => $results, 'message' => 'Parents fetched successfully.'), 200);
                 } else {
@@ -1198,12 +1234,13 @@ class ParentController extends Controller {
         }
     }
 
-    public function GetFamily(Request $request) {
+    public function GetFamily(Request $request)
+    {
         try {
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'parent_id' => 'required',
+                'parent_id' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -1212,7 +1249,7 @@ class ParentController extends Controller {
                 //$resultsa= ParentChildrens::select( DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id',$request->parent_id)->first();
                 //$childrens= $resultsa->children;
                 //  if(!empty($childrens)){
-//         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
+                //         $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
                 // $results= ParentChildrens::select(DB::raw('DISTINCT parent_id'))->with('ParentDetails:id,name,first_name,last_name,role_id')->whereRaw('children_id IN('.$childrens.')')->where('parent_id','!=',$request->parent_id)->get();
                 $id = $request->parent_id;
                 $results = DB::select(DB::raw("select id,name,role_id,relationship FROM users where family_code='" . $request->family_code . "'  AND role_id=3  ORDER BY FIELD(id, " . $id . ") DESC "));
@@ -1235,11 +1272,12 @@ class ParentController extends Controller {
         }
     }
 
-    public function AcceptRejectTask(Request $request) {
+    public function AcceptRejectTask(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'task_id' => 'required|exists:parent_tasks,id',
-                    // 'accept_reject' => 'required',
-                    'parent_id' => 'required'
+            'task_id' => 'required|exists:parent_tasks,id',
+            // 'accept_reject' => 'required',
+            'parent_id' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -1270,7 +1308,7 @@ class ParentController extends Controller {
 
                 $message = $accept_reject_data->User->name . ' has completed the task ' . $accept_reject_data->ParentTask->task_name;
                 if (!empty($accept_reject_data->ParentTask->User->device_token)) {
-                    SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'social_notification',null,'complete_task',null,null,null,null,$request->task_id);
+                    SendAllNotification($accept_reject_data->ParentTask->User->device_token, $message, 'social_notification', null, 'complete_task', null, null, null, null, $request->task_id);
                 }
                 $notificationobj = new Notification;
                 $notificationobj->user_id = $accept_reject_data->ParentTask->User->id;
@@ -1293,9 +1331,10 @@ class ParentController extends Controller {
         }
     }
 
-    public function SendAcceptNotification(Request $request) {
+    public function SendAcceptNotification(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:schedules,id'
+            'schedule_id' => 'required|exists:schedules,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -1309,11 +1348,11 @@ class ParentController extends Controller {
 
             $tasks = ParentTask::with('AssignedUser')->where('schedule_id', $request->schedule_id)->first();
             $task_data = ParentTask::with('AssignedUser')->where('schedule_id', $request->schedule_id)->get();
-            foreach($task_data as $task_datas){
+            foreach ($task_data as $task_datas) {
                 ParentTaskAssigned::where('task_id', $task_datas->id)->update(['handover' => '1']);
             }
             // ParentTaskAssigned::where('task_id', $tasks->id)->update(['handover' => '1']);
-            $user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token','timezone_id','school_id','type_of_schooling')->get();
+            $user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token', 'timezone_id', 'school_id', 'type_of_schooling')->get();
 
 
             $notificationobj = new Notification;
@@ -1329,28 +1368,26 @@ class ParentController extends Controller {
 
             $scheduke->User;
             $scheduke->assigned_to = $user;
-            foreach($user as $users){
-            if($users->type_of_schooling == 'school'){
-				if($users->timezone_id == null || $users->timezone_id == ''){
-					//get school timezone
-					$schooldata = School::where('id', $users->school_id)->first();
-					$statedata = State::where('id', $schooldata->state_id)->first();
-                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
-					$users->timezone_offset = $timezone->utc_offset;
-                    $users->timezone_name = $timezone->timezone_name;
-                    $tasks->timezone_offset = $timezone->utc_offset;
-                    $tasks->timezone_name = $timezone->timezone_name;
-                    
-                
-                }else{
-                    //get user timezone
-                    $timezone = Timezone::where('id', $users->timezone_id)->first();
-                    $users->timezone_offset = $timezone->utc_offset;
-                    $users->timezone_name = $timezone->timezone_name;
-                    $tasks->timezone_offset = $timezone->utc_offset;
-                    $tasks->timezone_name = $timezone->timezone_name;
+            foreach ($user as $users) {
+                if ($users->type_of_schooling == 'school') {
+                    if ($users->timezone_id == null || $users->timezone_id == '') {
+                        //get school timezone
+                        $schooldata = School::where('id', $users->school_id)->first();
+                        $statedata = State::where('id', $schooldata->state_id)->first();
+                        $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                        $users->timezone_offset = $timezone->utc_offset;
+                        $users->timezone_name = $timezone->timezone_name;
+                        $tasks->timezone_offset = $timezone->utc_offset;
+                        $tasks->timezone_name = $timezone->timezone_name;
+                    } else {
+                        //get user timezone
+                        $timezone = Timezone::where('id', $users->timezone_id)->first();
+                        $users->timezone_offset = $timezone->utc_offset;
+                        $users->timezone_name = $timezone->timezone_name;
+                        $tasks->timezone_offset = $timezone->utc_offset;
+                        $tasks->timezone_name = $timezone->timezone_name;
+                    }
                 }
-            }
             }
             $scheduke->is_accept = '0';
             if (!empty($user[0]->device_token)) {
@@ -1383,18 +1420,19 @@ class ParentController extends Controller {
         }
     }
 
-    public function AcceptRejectSchedule(Request $request) {
+    public function AcceptRejectSchedule(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:schedules,id',
-                    'accept_reject' => 'required',
-                    'parent_id' => 'required'
+            'schedule_id' => 'required|exists:schedules,id',
+            'accept_reject' => 'required',
+            'parent_id' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $schedule = Schedule::with('User')->find($request->schedule_id);
             $user = User::find($request->parent_id);
-            $users = User::where('id',$request->parent_id)->get();
+            $users = User::where('id', $request->parent_id)->get();
             if (!empty($schedule)) {
                 if ($request->accept_reject == 1) {
                     $type = 'accepted';
@@ -1422,26 +1460,25 @@ class ParentController extends Controller {
                 }
 
                 $schedule->save();
-               $schedule->assigned_to = $users;
-               foreach($users as $user){
-            if($user->type_of_schooling == 'school'){
-				if($user->timezone_id == null || $user->timezone_id == ''){
-					//get school timezone
-					$schooldata = School::where('id', $user->school_id)->first();
-					$statedata = State::where('id', $schooldata->state_id)->first();
-                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
-					$user->timezone_offset = $timezone->utc_offset;
-					$user->timezone_name = $timezone->timezone_name;
-                
-                }else{
-                    //get user timezone
-                    $timezone = Timezone::where('id', $user->timezone_id)->first();
-                    $user->timezone_offset = $timezone->utc_offset;
-                    $user->timezone_name = $timezone->timezone_name;
+                $schedule->assigned_to = $users;
+                foreach ($users as $user) {
+                    if ($user->type_of_schooling == 'school') {
+                        if ($user->timezone_id == null || $user->timezone_id == '') {
+                            //get school timezone
+                            $schooldata = School::where('id', $user->school_id)->first();
+                            $statedata = State::where('id', $schooldata->state_id)->first();
+                            $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                            $user->timezone_offset = $timezone->utc_offset;
+                            $user->timezone_name = $timezone->timezone_name;
+                        } else {
+                            //get user timezone
+                            $timezone = Timezone::where('id', $user->timezone_id)->first();
+                            $user->timezone_offset = $timezone->utc_offset;
+                            $user->timezone_name = $timezone->timezone_name;
+                        }
+                    }
                 }
-            }
-                }
-                
+
                 if ($request->accept_reject == 2) {
                     $this->pusher->trigger('decline-channel', 'decline_schedule', $schedule);
                 }
@@ -1459,7 +1496,7 @@ class ParentController extends Controller {
                 $notificationobj->schedule_id = $schedule->id;
                 $notificationobj->push_type = $type;
                 $notificationobj->save();
-                
+
                 $notificationobj->role_type = 'all';
                 $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
 
@@ -1470,13 +1507,14 @@ class ParentController extends Controller {
         }
     }
 
-    public function ConnectWithSchool(Request $request) {
+    public function ConnectWithSchool(Request $request)
+    {
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'user_id' => 'required',
-                        'school_id' => 'required',
-                        'class_code' => 'required',
+                'user_id' => 'required',
+                'school_id' => 'required',
+                'class_code' => 'required',
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
@@ -1513,15 +1551,18 @@ class ParentController extends Controller {
         }
     }
 
-    function random_strings($length_of_string) {
+    function random_strings($length_of_string)
+    {
 
         // String of all alphanumeric character 
         $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
         // Shufle the $str_result and returns substring 
         // of specified length 
-        return substr(str_shuffle($str_result),
-                0, $length_of_string);
+        return substr(
+            str_shuffle($str_result),
+            0,
+            $length_of_string
+        );
     }
-
 }

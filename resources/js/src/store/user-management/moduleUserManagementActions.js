@@ -48,7 +48,6 @@ export default {
             headers: { 'Authorization': 'Bearer ' + x },
 
         };
-       
         return new Promise((resolve, reject) => {
             axios.post('/api/auth/manage-users/' + school_id, requestOptions)
                 .then((response) => {

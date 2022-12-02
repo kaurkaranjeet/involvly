@@ -10,29 +10,26 @@
 <template>
 
   <div id="page-user-list">
-
-
     <vx-card ref="filterCard" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters"
       @remove="resetColFilters">
       <div class="vx-row">
 
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Select Class</label>
-          <v-select :options="classOptions" :clearable="false" v-model="isclassFilter" class="mb-4 md:mb-0"
-            @input="getSubjects" />
+          <v-select :options="classOptions" :clearable="false" v-model="isclassFilter" class="mb-4 md:mb-0" />
         </div>
 
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Availability</label>
-          <v-select :options="AvailabilityType" :clearable="false" v-model="isavailFilter" class="mb-4 md:mb-0"
-            @input="getSubjects" />
+          <v-select :options="AvailOptions" :clearable="false" v-model="AvailFilter" class="mb-4 md:mb-0" />
         </div>
       </div>
       <div class="vx-row">
 
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Location</label>
-          <v-select class="mb-4 md:mb-0" @input="getSubjects" />
+          <v-select :options="Locationoptions" :clearable="false" v-model="locationFilter" class="mb-4 md:mb-0"
+            @input="getRecord" />
         </div>
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Select Subject</label>
@@ -42,15 +39,12 @@
 
       </div>
       <div class="vx-row">
-
-
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Preferences</label>
-          <v-select class="mb-4 md:mb-0" @input="getSubjects" />
+          <v-select :options="PreferencesOption" :clearable="false" v-model="PreferencesFilter" class="mb-4 md:mb-0" />
         </div>
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full text-right">
-          <!-- <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery"
-          @input="updateSearchQuery" placeholder="Search..." /> --><br />
+          <br />
           <vs-button color="primary" type="filled">Find a Teacher</vs-button>
         </div>
       </div>
@@ -60,7 +54,6 @@
     <div class="vx-card p-6 ">
 
       <div class="flex flex-wrap items-right ">
-
         <!-- ITEMS PER PAGE -->
         <!-- <div class="flex-grow">
           <vs-dropdown vs-trigger-click class="cursor-pointer">
@@ -151,7 +144,6 @@
         </vs-dropdown> -->
       </div>
 
-
       <!-- AgGrid Table -->
       <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions"
         class="ag-theme-material w-100 my-4 ag-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef"
@@ -159,9 +151,7 @@
         :pagination="true" :paginationPageSize="paginationPageSize" :suppressPaginationPanel="true"
         :enableRtl="$vs.rtl">
       </ag-grid-vue>
-
       <vs-pagination :total="totalPages" :max="7" v-model="currentPage" />
-
     </div>
   </div>
 
@@ -181,6 +171,7 @@ import CellRendererStatus from './cell-renderer/CellRendererStatus.vue'
 import CellRendererVerified from './cell-renderer/CellRendererVerified.vue'
 import CellRendererActions from './cell-renderer/CellRendererActions.vue'
 import CellRendererPlaceReq from './cell-renderer/CellRendererPlaceReq.vue'
+import { exit } from 'process'
 
 
 
@@ -189,7 +180,6 @@ export default {
   components: {
     AgGridVue,
     vSelect,
-
     // Cell Renderer
     CellRendererLink,
     CellRendererStatus,
@@ -208,41 +198,19 @@ export default {
         { label: 'User', value: 'user' },
         { label: 'Staff', value: 'staff' }
       ],
-
       statusFilter: { label: 'All', value: 'all' },
-
       statusOptions: [
         { label: 'All', value: 'all' },
         { label: 'Active', value: 'active' },
         { label: 'Deactivated', value: 'deactivated' },
         { label: 'Blocked', value: 'blocked' }
       ],
-
       isVerifiedFilter: { label: 'All', value: 'all' },
       isVerifiedOptions: [
         { label: 'All', value: 'all' },
         { label: 'Yes', value: 'yes' },
         { label: 'No', value: 'no' }
       ],
-      isclassFilter: { label: 'All', value: 'all', id: '0' },
-      isavailFilter: {
-        label: 'All', value: 'all', id: '0'
-      },
-
-      subjectFilter: { label: 'All', value: 'all', id: '0' },
-      Subjectoptions: [{ label: 'All', value: 'all' }],
-
-      classOptions: [
-        { label: 'All', value: 'all' },
-      ],
-
-      AvailabilityType: [
-        { label: 'All', value: 'all' },
-        { label: 'Part time', value: '0' },
-        { label: 'Full time', value: '1' },
-
-      ],
-
       departmentFilter: { label: 'All', value: 'all' },
       departmentOptions: [
         { label: 'All', value: 'all' },
@@ -251,6 +219,50 @@ export default {
         { label: 'Management', value: 'management' }
       ],
 
+
+      // Class Options
+      classOptions: [
+        { label: 'All', value: 'all' },
+      ],
+      isclassFilter: { label: 'All', value: 'all', id: '0' },
+
+      // Availabilty Options
+      AvailFilter: {
+        label: 'All', value: 'all', id: '0'
+      },
+      AvailOptions: [
+        { label: 'All', value: 'all' },
+        { label: 'Part time', value: '0' },
+        { label: 'Full time', value: '1' },
+      ],
+
+      // Subject Options
+      subjectFilter: { 
+        label: 'All', value: 'all', id: '0' 
+      },
+      Subjectoptions: [
+        { label: 'All', value: 'all' }
+      ],
+      
+      // Location Options
+      locationFilter: { 
+        label: 'All', value: 'all', id: '0' 
+      },
+      Locationoptions: [
+        { label: 'All', value: 'all' }
+      ],
+
+      // Preferences Options
+      PreferencesFilter: {
+        label: 'All', value: 'all', id: '0'
+      },
+      PreferencesOption: [
+        { label: 'All', value: 'all' },
+        { label: 'On-Site', value: '0' },
+        { label: 'Remote', value: '1' },
+      ],
+
+      
       searchQuery: '',
 
       // AgGrid
@@ -285,7 +297,7 @@ export default {
         },
         {
           headerName: 'LOCATION',
-          field: 'country',
+          field: 'location',
           filter: true,
           width: 170
         },
@@ -300,7 +312,7 @@ export default {
 
         {
           headerName: 'PREFERENCES',
-          field: 'prefrences',
+          field: 'preferences',
           filter: true,
           width: 160,
           //cellRendererFramework: 'CellRendererStatus'
@@ -314,7 +326,7 @@ export default {
         },
         {
           headerName: 'CLASSES',
-          field: 'class_codes',
+          field: 'class_id',
           filter: true,
           width: 120,
           //cellRendererFramework: 'CellRendererStatus'
@@ -333,7 +345,7 @@ export default {
           width: 200,
           cellRendererFramework: 'CellRendererPlaceReq'
         },
- 
+
       ],
 
       // Cell Renderer Components
@@ -351,10 +363,10 @@ export default {
       //  this.setColumnFilter('role', obj.value)
     },
     isclassFilter(obj) {
-      this.setColumnFilter('class_codes', obj.value)
+      // this.setColumnFilter('class_codes', obj.value)
     },
 
-    isavailFilter(obj) {
+    AvailFilter(obj) {
       this.setColumnFilter('availability', obj.value)
     },
 
@@ -405,7 +417,11 @@ export default {
 
     getSubjects(a) {
       this.subjectFilter = { label: 'All', value: 'all' };
+      this.locationFilter = { label: 'All', value: 'all' };
+
       this.Subjectoptions = [{ label: 'All', value: 'all' }];
+      this.Locationoptions = [{ label: 'All', value: 'all' }];
+
       let school_id = localStorage.getItem('school_id');
       let x = localStorage.getItem('accessToken');
 
@@ -436,6 +452,15 @@ export default {
         newobj.label = response[index].subject_name;
         newobj.value = response[index].id;
         this.Subjectoptions.push(newobj);
+      }
+    },
+    // function to use append location data.
+    getLocation(response) {
+      for (var index in response) {
+        let newobj = {}
+        newobj.label = response[index].county;
+        newobj.value = response[index].id;
+        this.Locationoptions.push(newobj);
       }
     },
     getRecord(a) {
@@ -486,8 +511,28 @@ export default {
     }
     this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
 
-    // fetch all subject based on current user(school).
-    
+    // +++++++++++++++ Fetch Location List in Select++++++++++++++++++++++++
+
+    let location_id = localStorage.getItem('school_id');
+    let xsd = localStorage.getItem('accessToken');
+    const requestLocOptions = {
+      'location_id': location_id,
+      headers: { 'Authorization': 'Bearer ' + x },
+    };
+    this.$http
+      .post("/api/auth/select-location/1", requestLocOptions)
+      .then(response => {
+        var data = response.data.location;
+        console.log(data);
+
+        this.getLocation(data);
+        // console.log(Subjectoptionss);
+      }).catch(err => { console.error(err) })
+
+    // +++++++++++++++ End Fetch Location List in Select+++++++++++++++++++++++
+
+    // +++++++++++++++ Fetch subject List in Select++++++++++++++++++++++++
+
     let school_id = localStorage.getItem('school_id');
     let xd = localStorage.getItem('accessToken');
     const requestOptions2 = {
@@ -495,15 +540,18 @@ export default {
       headers: { 'Authorization': 'Bearer ' + x },
     };
     this.$http
-      .post("/api/auth/manage-subjects/1", requestOptions2)
+      .post("/api/auth/select-subjects/1", requestOptions2)
       .then(response => {
+        // console.log(response);
+
         var data = response.data.subjects;
         // console.log(data);
         this.getSubjectss(data);
         // console.log(Subjectoptionss);
       }).catch(err => { console.error(err) })
 
-    // end fetch all subject based on current user(school).
+    // +++++++++++++++ End Fetch subject List in Select+++++++++++++++++++++++
+
 
 
     var x = localStorage.getItem('accessToken');

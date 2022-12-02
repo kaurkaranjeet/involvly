@@ -60,6 +60,12 @@ Route::prefix('auth')->group(function () {
     Route::any('/edit-class-code', ['as' => 'edit.classes', 'uses' => 'ClassController@editClassCode']);
     //classes - subjects
     Route::any('/manage-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@manageSubjects']);
+    // Class-list in search Teacher
+    Route::any('/select-subjects/{id}', ['as' => 'manage.subjects', 'uses' => 'SubjectController@selectSubjects']);
+    // Location-list in search Teacher
+    Route::any('/select-location/{id}', ['as' => 'manage.location', 'uses' => 'SubjectController@selectLocation']);
+
+
     Route::any('/save-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSubject']);
     Route::any('/delete-subject/{id}', ['as' => 'delete.subjects', 'uses' => 'SubjectController@deleteSubject']);
     Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);
@@ -89,13 +95,14 @@ Route::prefix('v1')->group(function () {
     Route::get('send_assignment_notification', 'Api\V1\AssignmentController@AssignmentNotification');
     Route::post('login', 'Api\V1\LoginController@login');
     Route::post('logout', 'Api\V1\LoginController@Logout');
-    Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');
-    Route::post('signup_teacher', 'Api\V1\TeacherController@TeacherRegister');
-    Route::post('signup_parent', 'Api\V1\ParentController@ParentRegister');
+    // Route::post('signup_student', 'Api\V1\StudentController@StudentRegister');
+    // Route::post('signup_teacher', 'Api\V1\TeacherController@TeacherRegister');
+    // Route::post('signup_parent', 'Api\V1\ParentController@ParentRegister');
     Route::post('get_cities', 'Api\V1\CommonController@GetCities');
     Route::get('list_states', 'Api\V1\CommonController@GetStates');
     Route::post('list_schools', 'Api\V1\CommonController@GetSchools');
     Route::get('list_subjects', 'Api\V1\CommonController@GetSubjects');
+    // Route::get('list_class', 'Api\V1\CommonController@GetClasses');
     Route::post('verify_otp', 'Api\V1\LoginController@VerifyOtp');
     Route::post('signup_first_step', 'Api\V1\ParentController@FirststepParentRegister');
     Route::post('email_exist', 'Api\V1\LoginController@EmailExist');
