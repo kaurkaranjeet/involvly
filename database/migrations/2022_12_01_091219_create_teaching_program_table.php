@@ -14,14 +14,14 @@ class CreateTeachingProgramTable extends Migration
     public function up()
     {
         Schema::create('teaching_program', function (Blueprint $table) {
-            $table->id();
+            $table->id('teaching_id');
             $table->string('class_id');
             $table->string('subject_id');
             $table->string('hourly_rate');
-            $table->enum('availability', [0,1,2])->default(0);
+            $table->enum('availability',['Full-Time','Part-Time','Both'])->default('Both');
             $table->string('location');
 
-            $table->boolean('preferences')->default(0);
+            $table->enum('preferences',['On-Site','Remote'])->default('On-Site');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

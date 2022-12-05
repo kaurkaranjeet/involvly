@@ -1,12 +1,12 @@
 <!-- =========================================================================================
-  File Name: UserList.vue
-  Description: User List page
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
+    File Name: UserList.vue
+    Description: User List page
+    ----------------------------------------------------------------------------------------
+    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+    Author: Pixinvent
+    Author URL: http://www.themeforest.net/user/pixinvent
+  ========================================================================================== -->
+  
 <template>
 
   <div id="page-user-list">
@@ -17,6 +17,7 @@
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Select Class</label>
           <v-select :options="classOptions" :clearable="false" v-model="isclassFilter" class="mb-4 md:mb-0" />
+
         </div>
 
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
@@ -28,13 +29,12 @@
 
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Location</label>
-          <v-select :options="Locationoptions" :clearable="false" v-model="locationFilter" class="mb-4 md:mb-0"
-            @input="getRecord" />
+          <v-select :options="Locationoptions" :clearable="false" v-model="locationFilter" class="mb-4 md:mb-0" />
         </div>
+        
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Select Subject</label>
-          <v-select :options="Subjectoptions" :clearable="false" v-model="subjectFilter" class="mb-4 md:mb-0"
-            @input="getRecord" />
+          <v-select :options="Subjectoptions" :clearable="false" v-model="subjectFilter" class="mb-4 md:mb-0"/>
         </div>
 
       </div>
@@ -45,7 +45,7 @@
         </div>
         <div class="vx-col md:w-4/4 sm:w-1/2 w-full text-right">
           <br />
-          <vs-button color="primary" type="filled">Find a Teacher</vs-button>
+          <!-- <vs-button color="primary" type="filled">Find a Teacher</vs-button> -->
         </div>
       </div>
 
@@ -53,96 +53,7 @@
 
     <div class="vx-card p-6 ">
 
-      <div class="flex flex-wrap items-right ">
-        <!-- ITEMS PER PAGE -->
-        <!-- <div class="flex-grow">
-          <vs-dropdown vs-trigger-click class="cursor-pointer">
-            <div v-if="usersData.length == '0'"
-              class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-              <span class="mr-2">0 - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage *
-                  paginationPageSize : usersData.length
-              }} of {{ usersData.length }}</span>
-              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-            </div>
-            <div v-if="usersData.length != '0'"
-              class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length
-                  - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length
-              }} of {{
-    usersData.length
-}}</span>
-              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-            </div>
-            <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-              <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
-              <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-            </div>
-             <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button>
-            <vs-dropdown-menu>
-
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(10)">
-                <span>10</span>
-              </vs-dropdown-item>
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(20)">
-                <span>20</span>
-              </vs-dropdown-item>
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(25)">
-                <span>25</span>
-              </vs-dropdown-item>
-              <vs-dropdown-item @click="gridApi.paginationSetPageSize(30)">
-                <span>30</span>
-              </vs-dropdown-item>
-            </vs-dropdown-menu>
-          </vs-dropdown>
-        </div> -->
-
-        <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-        <!-- <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery"
-          @input="updateSearchQuery" placeholder="Search..." /> -->
-        <!-- <vs-button class="mb-4 md:mb-0"  @click="searchQuery">Export as CSV</vs-button> -->
-
-        <!-- ACTION - DROPDOWN -->
-        <!-- <vs-dropdown vs-trigger-click class="cursor-pointer" style="display:none">
-
-          <div
-            class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-medium w-32">
-            <span class="mr-2 leading-none">Actions</span>
-            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-          </div>
-
-          <vs-dropdown-menu>
-
-            <vs-dropdown-item>
-              <span class="flex items-center">
-                <feather-icon icon="TrashIcon" svgClasses="h-4 w-4" class="mr-2" />
-                <span>Delete</span>
-              </span>
-            </vs-dropdown-item>
-
-            <vs-dropdown-item>
-              <span class="flex items-center">
-                <feather-icon icon="ArchiveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                <span>Archive</span>
-              </span>
-            </vs-dropdown-item>
-
-            <vs-dropdown-item>
-              <span class="flex items-center">
-                <feather-icon icon="FileIcon" svgClasses="h-4 w-4" class="mr-2" />
-                <span>Print</span>
-              </span>
-            </vs-dropdown-item>
-
-            <vs-dropdown-item>
-              <span class="flex items-center">
-                <feather-icon icon="SaveIcon" svgClasses="h-4 w-4" class="mr-2" />
-                <span>CSV</span>
-              </span>
-            </vs-dropdown-item>
-
-          </vs-dropdown-menu>
-        </vs-dropdown> -->
-      </div>
+       
 
       <!-- AgGrid Table -->
       <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions"
@@ -156,7 +67,7 @@
   </div>
 
 </template>
-
+  
 <script>
 import { AgGridVue } from 'ag-grid-vue'
 import '@sass/vuexy/extraComponents/agGridStyleOverride.scss'
@@ -221,10 +132,12 @@ export default {
 
 
       // Class Options
+      isclassFilter: {
+        label: 'All', value: 'all', id: '0'
+      },
       classOptions: [
         { label: 'All', value: 'all' },
       ],
-      isclassFilter: { label: 'All', value: 'all', id: '0' },
 
       // Availabilty Options
       AvailFilter: {
@@ -232,24 +145,28 @@ export default {
       },
       AvailOptions: [
         { label: 'All', value: 'all' },
-        { label: 'Part time', value: '0' },
-        { label: 'Full time', value: '1' },
+        { label: 'Part time', value: 'Part-time' },
+        { label: 'Full time', value: 'Full-time' },
+        { label: 'Both', value: 'Both' },
+
       ],
 
       // Subject Options
-      subjectFilter: { 
-        label: 'All', value: 'all', id: '0' 
+      subjectFilter: {
+        label: 'All', value: 'all', id: '0'
       },
       Subjectoptions: [
         { label: 'All', value: 'all' }
       ],
-      
+
       // Location Options
-      locationFilter: { 
-        label: 'All', value: 'all', id: '0' 
+      locationFilter: {
+        label: 'All', value: 'all', id: '0'
       },
       Locationoptions: [
-        { label: 'All', value: 'all' }
+        { label: 'All', value: 'all' },
+
+
       ],
 
       // Preferences Options
@@ -258,11 +175,11 @@ export default {
       },
       PreferencesOption: [
         { label: 'All', value: 'all' },
-        { label: 'On-Site', value: '0' },
-        { label: 'Remote', value: '1' },
+        { label: 'On-Site', value: 'On-Site' },
+        { label: 'Remote', value: 'Remote' },
       ],
 
-      
+
       searchQuery: '',
 
       // AgGrid
@@ -363,16 +280,21 @@ export default {
       //  this.setColumnFilter('role', obj.value)
     },
     isclassFilter(obj) {
-      // this.setColumnFilter('class_codes', obj.value)
+      // console.log(obj.value);
+      this.setColumnFilter('class_id', obj.value)
     },
-
+    PreferencesFilter(obj) {
+      this.setColumnFilter('preferences', obj.value)
+    },
+    locationFilter(obj) {
+      console.log(obj.value);
+      this.setColumnFilter('location', obj.value)
+    },
     AvailFilter(obj) {
       this.setColumnFilter('availability', obj.value)
     },
-
-
     subjectFilter(obj) {
-      // this.setColumnFilter('class_codes', obj.value)
+      this.setColumnFilter('subject_id', obj.value)
     },
 
     statusFilter(obj) {
@@ -396,7 +318,7 @@ export default {
     },
     paginationPageSize() {
       if (this.gridApi) return this.gridApi.paginationGetPageSize()
-      else return 10
+      else return 7
     },
     totalPages() {
       if (this.gridApi) return this.gridApi.paginationGetTotalPages()
@@ -410,47 +332,41 @@ export default {
       set(val) {
         this.gridApi.paginationGoToPage(val - 1)
       }
-    },
-
+    }
   },
   methods: {
 
-    getSubjects(a) {
-      this.subjectFilter = { label: 'All', value: 'all' };
-      this.locationFilter = { label: 'All', value: 'all' };
+    // getSubjects(a) {
 
-      this.Subjectoptions = [{ label: 'All', value: 'all' }];
-      this.Locationoptions = [{ label: 'All', value: 'all' }];
+    //   let school_id = localStorage.getItem('school_id');
+    //   let x = localStorage.getItem('accessToken');
 
-      let school_id = localStorage.getItem('school_id');
-      let x = localStorage.getItem('accessToken');
+    //   const requestOptions = {
+    //     'school_id': school_id,
+    //     headers: { 'Authorization': 'Bearer ' + x },
 
-      const requestOptions = {
-        'school_id': school_id,
-        headers: { 'Authorization': 'Bearer ' + x },
-
-      };
-      this.$http
-        .post("/api/auth/manage-subjects/" + a.id, requestOptions)
-        .then(response => {
-          var data = response.data.subjects;
-          for (var index in data) {
-            let newobj = {}
-            newobj.label = data[index].subject_name;
-            newobj.value = data[index].id;
-            this.Subjectoptions.push(newobj);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    //   };
+    //   this.$http
+    //     .post("/api/auth/manage-subjects/" + a.id, requestOptions)
+    //     .then(response => {
+    //       var data = response.data.subjects;
+    //       for (var index in data) {
+    //         let newobj = {}
+    //         newobj.label = data[index].subject_name;
+    //         newobj.value = data[index].id;
+    //         this.Subjectoptions.push(newobj);
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // },
     // function to use append subjects data.
     getSubjectss(response) {
       for (var index in response) {
         let newobj = {}
         newobj.label = response[index].subject_name;
-        newobj.value = response[index].id;
+        newobj.value = response[index].subject_name;
         this.Subjectoptions.push(newobj);
       }
     },
@@ -459,19 +375,48 @@ export default {
       for (var index in response) {
         let newobj = {}
         newobj.label = response[index].county;
-        newobj.value = response[index].id;
+        newobj.value = response[index].county;
+
         this.Locationoptions.push(newobj);
       }
     },
     getRecord(a) {
-    },
 
+      var x = localStorage.getItem('accessToken');
+      var school_id = localStorage.getItem('school_id');
+      //  User Reward Card
+      const requestOptions = {
+        'subject_id': a.value,
+        'class_id': this.isclassFilter.id,
+        'school_id': school_id,
+        headers: { 'Authorization': 'Bearer ' + x },
+
+      };
+      this.$http
+        .post("/api/auth/get_record", requestOptions)
+        .then(response => {
+          // this. rowDataresponse.data.users;
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    addStudentdata() {
+      this.$router
+        .push(`/apps/user/addnewteacher`)
+        .catch(() => { });
+    },
     setColumnFilter(column, val) {
+      console.log("hssssere" + val);
       const filter = this.gridApi.getFilterInstance(column)
+
       let modelObj = null
 
       if (val !== 'all') {
         modelObj = { type: 'contains', filter: val }
+        // console.log('hi'+modelObj); 
+
       }
 
       filter.setModel(modelObj)
@@ -505,11 +450,6 @@ export default {
     }*/
   },
   created() {
-    if (!moduleUserManagement.isRegistered) {
-      this.$store.registerModule('userManagement', moduleUserManagement)
-      moduleUserManagement.isRegistered = true
-    }
-    this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
 
     // +++++++++++++++ Fetch Location List in Select++++++++++++++++++++++++
 
@@ -523,9 +463,10 @@ export default {
       .post("/api/auth/select-location/1", requestLocOptions)
       .then(response => {
         var data = response.data.location;
-        console.log(data);
+        // console.log(data);
 
         this.getLocation(data);
+
         // console.log(Subjectoptionss);
       }).catch(err => { console.error(err) })
 
@@ -554,6 +495,13 @@ export default {
 
 
 
+    if (!moduleUserManagement.isRegistered) {
+      this.$store.registerModule('userManagement', moduleUserManagement)
+      moduleUserManagement.isRegistered = true
+    }
+    this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
+
+
     var x = localStorage.getItem('accessToken');
     var user_id = localStorage.getItem('user_id');
     // console.warn('Help'+user_id);
@@ -574,6 +522,7 @@ export default {
           newobj.id = data[index].id;
           // console.log(newobj);
 
+
           this.classOptions.push(newobj);
         }
       })
@@ -585,7 +534,7 @@ export default {
 
 }
 </script>
-
+  
 <style lang="scss">
 #page-user-list {
   .user-list-filters {
@@ -610,4 +559,14 @@ export default {
   height: 50px !important;
   min-height: 0px !important;
 }
+.ag-grid-table {
+  
+      height: 400px !important;
+   
+  }
+  .vs-col.vs-pagination--mb.vs-xs-12.vs-sm-12.vs-lg-12
+  {
+    justify-content: flex-start !important;
+  }
 </style>
+  

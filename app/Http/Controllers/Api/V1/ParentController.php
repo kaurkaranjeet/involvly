@@ -64,9 +64,9 @@ class ParentController extends Controller
                 'class_id' => 'required_if:teaching_program,teaching_program',
                 'subject_id' => 'required_if:teaching_program,teaching_program',
                 'hourly_rate' => 'required_if:teaching_program,teaching_program',
-                'availability' => 'required_if:teaching_program,teaching_program|in:0,1,2',
+                'availability' => 'required_if:teaching_program,teaching_program|in:Full-Time,Part-Time,Both',
                 'location' => 'required_if:teaching_program,teaching_program',
-                'preferences' => 'required_if:teaching_program,teaching_program',
+                'preferences' => 'required_if:teaching_program,teaching_program|in:On-Site,Remote',
             ];
 
             $validator = Validator::make($input,$user);
