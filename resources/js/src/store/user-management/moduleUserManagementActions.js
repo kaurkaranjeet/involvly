@@ -254,6 +254,18 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+    // Place a Request fucntion 
+    placeRecord({ commit }, userId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/auth/place-user/${userId}`)
+                .then((response) => {
+                    commit('PLACE_RECORD', userId)
+                    commit('PLACE_RECORD_ADMIN', userId)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
     //admin functions 
     fetchAdminUsers({ commit }) {
         var x = localStorage.getItem('accessToken');

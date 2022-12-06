@@ -1,6 +1,6 @@
 <!-- =========================================================================================
-    File Name: UserList.vue
-    Description: User List page
+    File Name: SearchTeacher.vue
+    Description: Search List page
     ----------------------------------------------------------------------------------------
     Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
     Author: Pixinvent
@@ -287,7 +287,7 @@ export default {
       this.setColumnFilter('preferences', obj.value)
     },
     locationFilter(obj) {
-      console.log(obj.value);
+      // console.log(obj.value);
       this.setColumnFilter('location', obj.value)
     },
     AvailFilter(obj) {
@@ -408,7 +408,7 @@ export default {
         .catch(() => { });
     },
     setColumnFilter(column, val) {
-      console.log("hssssere" + val);
+      // console.log("hssssere" + val);
       const filter = this.gridApi.getFilterInstance(column)
 
       let modelObj = null
@@ -564,9 +564,6 @@ export default {
       height: 400px !important;
    
   }
-  .vs-col.vs-pagination--mb.vs-xs-12.vs-sm-12.vs-lg-12
-  {
-    justify-content: flex-start !important;
-  }
+  
 </style>
   

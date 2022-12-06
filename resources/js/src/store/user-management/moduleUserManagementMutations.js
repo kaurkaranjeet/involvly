@@ -12,6 +12,14 @@ export default {
     SET_USERS(state, users) {
         state.users = users
     },
+    PLACE_RECORD(state, itemId) {
+        const userIndex = state.users.findIndex((u) => u.id === itemId)
+        state.users.splice(userIndex, 1)
+    },
+    PLACE_RECORD_ADMIN(state, itemId) {
+        const userIndex = state.adminusers.findIndex((u) => u.id === itemId)
+        state.adminusers.splice(userIndex, 1)
+    },
     REMOVE_RECORD(state, itemId) {
         const userIndex = state.users.findIndex((u) => u.id === itemId)
         state.users.splice(userIndex, 1)

@@ -1,6 +1,6 @@
 <!-- =========================================================================================
-  File Name: UserList.vue
-  Description: User List page
+  File Name: ContractualTeacher.vue
+  Description: Contractual Teacher List page
   ----------------------------------------------------------------------------------------
   Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
   Author: Pixinvent
@@ -11,54 +11,14 @@
 
     <div id="page-user-list">
       <div class="col-md-12 bg-light text-right mb-5">
-              <vs-button color="primary" type="filled" @click="addStudentdata">Add New Teacher</vs-button>
+              <vs-button color="dark" type="filled" @click="addStudentdata">Find New Teachers</vs-button>
           </div>
-  
-   
+
   
       <div class="vx-card p-6">
   
         <div class="flex flex-wrap items-center">
-  
-          <!-- ITEMS PER PAGE -->
-          <div class="flex-grow">
-            <vs-dropdown vs-trigger-click class="cursor-pointer">
-            <div v-if="usersData.length == '0'" class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-                <span class="mr-2">0 - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
-                <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-              </div>
-              <div v-if="usersData.length != '0'" class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-                <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
-                <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-              </div>
-              <!--<div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-                <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
-                <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
-              </div>
-               <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
-              <vs-dropdown-menu>
-  
-                <vs-dropdown-item @click="gridApi.paginationSetPageSize(10)">
-                  <span>10</span>
-                </vs-dropdown-item>
-                <vs-dropdown-item @click="gridApi.paginationSetPageSize(20)">
-                  <span>20</span>
-                </vs-dropdown-item>
-                <vs-dropdown-item @click="gridApi.paginationSetPageSize(25)">
-                  <span>25</span>
-                </vs-dropdown-item>
-                <vs-dropdown-item @click="gridApi.paginationSetPageSize(30)">
-                  <span>30</span>
-                </vs-dropdown-item>
-              </vs-dropdown-menu>
-            </vs-dropdown>
-          </div>
-  
-          <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-            <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." />
-            <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
-  
-            <!-- ACTION - DROPDOWN -->
+             <!-- ACTION - DROPDOWN -->
             <vs-dropdown vs-trigger-click class="cursor-pointer" style="display:none">
   
               <div class="p-3 shadow-drop rounded-lg d-theme-dark-light-bg cursor-pointer flex items-end justify-center text-lg font-medium w-32">
@@ -158,97 +118,16 @@
     },
     data () {
       return {
-  
-      // Filter Options
-      roleFilter: { label: 'All', value: 'all' },
-      roleOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Admin', value: 'admin' },
-        { label: 'User', value: 'user' },
-        { label: 'Staff', value: 'staff' }
-      ],
-      statusFilter: { label: 'All', value: 'all' },
-      statusOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Active', value: 'active' },
-        { label: 'Deactivated', value: 'deactivated' },
-        { label: 'Blocked', value: 'blocked' }
-      ],
-      isVerifiedFilter: { label: 'All', value: 'all' },
-      isVerifiedOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Yes', value: 'yes' },
-        { label: 'No', value: 'no' }
-      ],
-      departmentFilter: { label: 'All', value: 'all' },
-      departmentOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Sales', value: 'sales' },
-        { label: 'Development', value: 'development' },
-        { label: 'Management', value: 'management' }
-      ],
-
-
-      // Class Options
-      isclassFilter: {
-        label: 'All', value: 'all', id: '0'
-      },
-      classOptions: [
-        { label: 'All', value: 'all' },
-      ],
-
-      // Availabilty Options
-      AvailFilter: {
-        label: 'All', value: 'all', id: '0'
-      },
-      AvailOptions: [
-        { label: 'All', value: 'all' },
-        { label: 'Part time', value: 'Part-time' },
-        { label: 'Full time', value: 'Full-time' },
-        { label: 'Both', value: 'Both' },
-
-      ],
-
-      // Subject Options
-      subjectFilter: {
-        label: 'All', value: 'all', id: '0'
-      },
-      Subjectoptions: [
-        { label: 'All', value: 'all' }
-      ],
-
-      // Location Options
-      locationFilter: {
-        label: 'All', value: 'all', id: '0'
-      },
-      Locationoptions: [
-        { label: 'All', value: 'all' },
-
-
-      ],
-
-      // Preferences Options
-      PreferencesFilter: {
-        label: 'All', value: 'all', id: '0'
-      },
-      PreferencesOption: [
-        { label: 'All', value: 'all' },
-        { label: 'On-Site', value: 'On-Site' },
-        { label: 'Remote', value: 'Remote' },
-      ],
-
-
-      searchQuery: '',
-
-      // AgGrid
-      gridApi: null,
-      gridOptions: {},
-      defaultColDef: {
-        sortable: true,
-        resizable: true,
-        suppressMenu: true
-      },
-      columnDefs: [
+   
+        // AgGrid
+        gridApi: null,
+        gridOptions: {},
+        defaultColDef: {
+          sortable: true,
+          resizable: true,
+          suppressMenu: true
+        },
+        columnDefs: [
         {
           headerName: 'ID',
           field: 'id',
@@ -313,16 +192,22 @@
           width: 140,
           //cellRendererFramework: 'CellRendererStatus'
         },
-
-        {
-          headerName: 'ACTIONS',
-          field: 'transactions',
-          width: 200,
-          cellRendererFramework: 'CellRendererPlaceReq'
-        },
-
-      ],
-
+          {
+            headerName: 'Actions',
+            field: 'transactions',
+            width: 150,
+            cellRendererFramework: 'CellRendererActions'
+          },
+  
+         /* {
+            headerName: 'Verified',
+            field: 'is_verified',
+            filter: true,
+            width: 125,
+            cellRendererFramework: 'CellRendererVerified',
+            cellClass: 'hidden'
+          },*/
+        ],
   
         // Cell Renderer Components
         components: {
@@ -333,39 +218,13 @@
         }
       }
     },
-    watch: {
-      roleFilter (obj) {
-      //  this.setColumnFilter('role', obj.value)
-      },
-       isclassFilter (obj) {
-        this.setColumnFilter('class_codes', obj.value)
-      },
-  
-   subjectFilter (obj) {
-       // this.setColumnFilter('class_codes', obj.value)
-      },
-  
-      statusFilter (obj) {
-       // this.setColumnFilter('status', obj.value)
-      },
-      isVerifiedFilter (obj) {
-        const val = obj.value === 'all' ? 'all' : obj.value === 'yes' ? 'true' : 'false'
-        this.setColumnFilter('is_verified', val)
-      },
-      departmentFilter (obj) {
-      //  this.setColumnFilter('department', obj.value)
-      }
-    },
     computed: {
-  
       usersData () {
         return this.$store.state.userManagement.users
       },
-  
-    
       paginationPageSize () {
         if (this.gridApi) return this.gridApi.paginationGetPageSize()
-        else return 10
+        else return 14
       },
       totalPages () {
         if (this.gridApi) return this.gridApi.paginationGetTotalPages()
@@ -382,28 +241,7 @@
       }
     },
     methods: {
-  
-      getSubjects(a){
-       this.subjectFilter= { label: 'All', value: 'all' };
-       this.Subjectoptions=[{ label: 'All', value: 'all' }];
-       this.$http
-       .post("/api/auth/manage-subjects/"+a.id)
-       .then(response => {
-        var data=response.data.subjects;
-        for ( var index in data ) {
-         let newobj={}
-         newobj.label=data[index].subject_name;
-         newobj.value=data[index].id;
-         this.Subjectoptions.push( newobj );
-       }
-     })
-       .catch(error => {
-        console.log(error);
-      });
-     },
-  
       getRecord(a){
-  
           var x = localStorage.getItem('accessToken');
           var school_id = localStorage.getItem('school_id');
           //  User Reward Card
@@ -412,13 +250,11 @@
               'class_id': this.isclassFilter.id,
               'school_id': school_id,
               headers: { 'Authorization': 'Bearer ' + x },
-  
           };
        this.$http
        .post("/api/auth/get_record",requestOptions)
        .then(response => {
      // this. rowDataresponse.data.users;
-       
      })
        .catch(error => {
         console.log(error);
@@ -426,7 +262,7 @@
      },
         addStudentdata() {
               this.$router
-                  .push(`/apps/user/addnewteacher`)
+                  .push(`/apps/user/teacher-list`)
                   .catch(() => {});
           },
       setColumnFilter (column, val) {
@@ -497,7 +333,6 @@
           console.log(error);
         }); 
   
-  
     }
   }
   
@@ -513,6 +348,18 @@
         transform: translateY(-58%);
       }
     }
+  }
+  [dir] .vs-button:not(.vs-radius):not(.includeIconOnly):not(.small):not(.large) {
+  padding: 0.8rem 1rem;
+}
+  .ag-header.ag-pivot-off {
+  height: 50px !important;
+  min-height: 0px !important;
+}
+.ag-grid-table {
+  
+      height: 625px !important;
+   
   }
   </style>
   

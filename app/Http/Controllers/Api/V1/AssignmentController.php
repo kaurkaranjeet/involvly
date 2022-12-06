@@ -211,7 +211,7 @@ class AssignmentController extends Controller {
                                 $notificationobj->from_user_id=$getData->Student->id;
                                 $notificationobj->save();
                                 $notificationobj->role_type = 'all';
-             $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
+                                $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
                                    /* Notification::create(['user_id'=>$usersData->id,'notification_message'=>$message,'type'=>'school_notification','notification_type'=>'Assignment','from_user_id'=>$getData->Assignments->teacher_id]); */
                                 
                             }
