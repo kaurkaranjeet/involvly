@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 // use App\Jobs\ProcessRequest;
+
+use App\Jobs\ProcessRequest;
+use App\Jobs\SendNotification;
+use App\Models\ClassCode;
 use App\User;
 use App\Models\Role;
 use DB;
@@ -25,6 +29,8 @@ use App\Models\DiscussionComment;
 use App\Models\DiscussionCommentReply;
 
 use App\Models\ParentChildrens;
+use App\Models\Subject;
+use App\UserSubject;
 use Mail;
 use Illuminate\Support\Str;
 
@@ -253,10 +259,13 @@ class UserController extends Controller
             $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } elseif ($request->type == 'searchdata') {
 
-            $users =  User::where('role_id', 4)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,teaching_program.*, users.*'))->orderBy('id', 'DESC')->get();
+
+
+            $users =  User::where('role_id', 4)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,
+               (select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name  ,teaching_program.*,users.*'))->orderBy('id', 'DESC')->get();
         } elseif ($request->type == 'fulltime-teacher') {
 
-            $users = User::where('role_id', 4)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,teaching_program.*,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::where('role_id', 4)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->where('request_status', '=', '0')->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,teaching_program.*,users.*'))->orderBy('id', 'DESC')->get();
 
             // $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
         } elseif ($request->type == 'contractual-teacher') {
@@ -463,15 +472,16 @@ class UserController extends Controller
     }
     // Place a request function
     public function PlaceUser($id)
-    { 
-        
+    {
+
         $usersData = User::where('id', $id)->first();
         // Job for notification for request process
-        $process = new Pro
-        return $data = ProcessRequest::dispatch($usersData);
-       
-        return response()->json(['message' => 'Successfully Place Request','data'=>$usersData], 200);
- 
+        $process = new SendNotification();
+        dispatch($process);
+
+        // return $data = ProcessRequest::dispatch($usersData);
+
+        return response()->json(['message' => 'Successfully Place Request', 'data' => $usersData], 200);
     }
 
     public function getRequest($school_id)

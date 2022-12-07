@@ -18,30 +18,31 @@ name: 'CellRendererActions',
   }
 },
 methods: {
-  editRecord () {
-   // this.$router.push(`/apps/user/user-edit/${  268}`).catch(() => {})
-            this.$router.push("/apps/user/user-edit/" + this.params.data.id).catch(() => {})
-         
-  },
+
   PlaceRequest() {
-    
-    console.log(this.params.id);
+ 
 
     this.$vs.dialog({
+      html: true,
       type: 'confirm',
       color: 'primary',
       title: 'Place Request',
-      text: `You want to place a request for this user?`,
+      text: "By clicking here, I state that I have read and understood the terms and conditions. Request will be placed!",
       accept: this.placeRecord,
-      acceptText: 'Place Request'
+      acceptText: 'Accept',
+      cancelText:'Decline'
+     
     })
+  },
+  checkBox(){
+// console.log('here');
   },
   placeRecord () {
     /* Below two lines are just for demo purpose */
     // this.showPlaceSuccess()
 
     /* UnComment below lines for enabling true flow if deleting user */
-    console.log(this.params.data.id);
+    // console.log(this.params.data.id);
     this.$store.dispatch("userManagement/placeRecord", this.params.data.id)
       .then(()   => { this.showPlaceSuccess() })
       .catch(err => { console.error(err)       })

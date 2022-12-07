@@ -236,14 +236,14 @@ export default {
         },
         {
           headerName: 'SUBJECTS',
-          field: 'subject_id',
+          field: 'subject_pr',
           filter: true,
           width: 150,
           //cellRendererFramework: 'CellRendererStatus'
         },
         {
           headerName: 'CLASSES',
-          field: 'class_id',
+          field: 'class_name',
           filter: true,
           width: 120,
           //cellRendererFramework: 'CellRendererStatus'
@@ -281,7 +281,7 @@ export default {
     },
     isclassFilter(obj) {
       // console.log(obj.value);
-      this.setColumnFilter('class_id', obj.value)
+      this.setColumnFilter('class_name', obj.value)
     },
     PreferencesFilter(obj) {
       this.setColumnFilter('preferences', obj.value)
@@ -294,7 +294,7 @@ export default {
       this.setColumnFilter('availability', obj.value)
     },
     subjectFilter(obj) {
-      this.setColumnFilter('subject_id', obj.value)
+      this.setColumnFilter('subject_pr', obj.value)
     },
 
     statusFilter(obj) {
@@ -335,32 +335,7 @@ export default {
     }
   },
   methods: {
-
-    // getSubjects(a) {
-
-    //   let school_id = localStorage.getItem('school_id');
-    //   let x = localStorage.getItem('accessToken');
-
-    //   const requestOptions = {
-    //     'school_id': school_id,
-    //     headers: { 'Authorization': 'Bearer ' + x },
-
-    //   };
-    //   this.$http
-    //     .post("/api/auth/manage-subjects/" + a.id, requestOptions)
-    //     .then(response => {
-    //       var data = response.data.subjects;
-    //       for (var index in data) {
-    //         let newobj = {}
-    //         newobj.label = data[index].subject_name;
-    //         newobj.value = data[index].id;
-    //         this.Subjectoptions.push(newobj);
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // },
+ 
     // function to use append subjects data.
     getSubjectss(response) {
       for (var index in response) {
@@ -386,7 +361,7 @@ export default {
       var school_id = localStorage.getItem('school_id');
       //  User Reward Card
       const requestOptions = {
-        'subject_id': a.value,
+        'subject_pr': a.value,
         'class_id': this.isclassFilter.id,
         'school_id': school_id,
         headers: { 'Authorization': 'Bearer ' + x },
@@ -521,7 +496,6 @@ export default {
           newobj.value = data[index].class_name;
           newobj.id = data[index].id;
           // console.log(newobj);
-
 
           this.classOptions.push(newobj);
         }

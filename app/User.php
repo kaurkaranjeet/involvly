@@ -42,7 +42,15 @@ class User extends Authenticatable implements JWTSubject {
         'email_verified_at' => 'datetime',
     ];
 
-    public function TeachingProgram()
+   
+    
+    public function preferSubjects()
+    {
+        return $this->belongsTo('App\UserSubject', 'user_id', 'id');
+    }
+
+
+   public function TeachingProgram()
     {
         return $this->hasOne(TeachingProgram::class,'user_id');
     }

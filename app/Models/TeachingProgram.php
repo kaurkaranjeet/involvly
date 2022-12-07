@@ -18,13 +18,21 @@ class TeachingProgram extends Model
         'location',
         'preferences',
         'user_id',
-    ];
-    protected $casts = [
-        'location' => 'array',
-        'subject_id' =>'array',
-        'class_id' =>'array'
+        'request_status',
 
     ];
+    protected $casts = [
+        'subject_id' =>'array',
+        'class_id' =>'array'
+    ];
+    
+    public function Subject() {
+        return $this->belongsTo('App\Models\Subject', 'subject_id');
+    }
+
+    public function Class() {
+        return $this->belongsTo('App\Models\ClassCode', 'class_id');
+    }
 
     public function users()
     {
@@ -33,16 +41,15 @@ class TeachingProgram extends Model
     public static function add($data)
     {
         return self::insert([
-            'class_id' =>  implode(',',$data['class_id']),
-            'subject_id' => implode(',',$data['subject_id']),
+            
+            'class_id' => $data['class_id'],
+            'subject_id' => $data['subject_id'],
             'hourly_rate' => $data['hourly_rate'],
             'availability' => $data['availability'],
-            'location' => implode(',',$data['location']),
+            'location' => $data['location'],
             'preferences' => $data['preferences'],
             'user_id' =>  $data['id'],
         ]);
     }
-
-
     
 }

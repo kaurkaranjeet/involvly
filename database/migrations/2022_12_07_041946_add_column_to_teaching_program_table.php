@@ -14,7 +14,7 @@ class AddColumnToTeachingProgramTable extends Migration
     public function up()
     {
         Schema::table('teaching_program', function (Blueprint $table) {
-            //
+            $table->boolean('request_status')->defaul;
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnToTeachingProgramTable extends Migration
     public function down()
     {
         Schema::table('teaching_program', function (Blueprint $table) {
-            //
+            $table->dropColumn('request_status');
         });
     }
 }

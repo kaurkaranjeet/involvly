@@ -50,8 +50,7 @@ class ProcessRequest implements ShouldQueue
                 SendAllNotification($usersData->device_token, $message, 'place_notification');
             }
         }
-        for($i=0;$i<100;$i++)
-        {
+       
             Notification::create([
                 'user_id'=> $usersData->id,
                 'notification_message'=> $message,
@@ -60,7 +59,7 @@ class ProcessRequest implements ShouldQueue
                 'push_type'=> 'place_request',
                 'from_user_id'=> $rom_user_id,
              ]);
-        }
+        
        
     }
 }
