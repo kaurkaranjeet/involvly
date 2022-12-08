@@ -14,7 +14,7 @@ class AddColumnToTeachingProgramTable extends Migration
     public function up()
     {
         Schema::table('teaching_program', function (Blueprint $table) {
-            $table->boolean('request_status')->defaul;
+            $table->enum('request_status',[0,1,2])->comment('0:pending,1:accepted,2:Rejected');
         });
     }
 

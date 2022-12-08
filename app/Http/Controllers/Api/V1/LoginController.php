@@ -25,7 +25,7 @@ class LoginController extends Controller {
      * @return type
      */
     public function login(Request $request) {
-
+         
         //email,adriod_token,ios_token,access_token,profile picture
         $input = $request->all();
         $validator = Validator::make($input, [
@@ -44,7 +44,7 @@ class LoginController extends Controller {
             } catch (JWTException $e) {
                 return response()->json(['message' => 'could_not_create_token', 'error' => true], 500);
             }
-            $user_details = User::validateLogin($request->all());
+                $user_details = User::validateLogin($request->all());
             //Update Device Token andJWY token
             User::where('id',$user_details->id)->update(['device_token' => $request->device_token,'ActiveJwttoken'=>$token]);
             $user_details->device_token=$request->device_token;
@@ -54,7 +54,7 @@ class LoginController extends Controller {
 
                 
                 if (!empty($classCode)) {
-                     $class_code = ClassCode::where('id', $classCode->class_id)->first();
+                               $class_code = ClassCode::where('id', $classCode->class_id)->first();
                     $user_details->class_id = $classCode->class_id;
                     $user_details->class_name = $class_code->class_name;
                     $user_details->school_status= $classCode->active;
@@ -65,7 +65,6 @@ class LoginController extends Controller {
                    $user_details->school_status = '0';
               }
               //check school approval status 
-              $school_details = School::where('id', $user_details->school_id)->first();
               if(!empty($school_details)){
                   if($school_details->approved == 1){
                      $user_details->school_live = '1'; 
@@ -79,7 +78,7 @@ class LoginController extends Controller {
 
             //}
             $user_details->ActiveJwttoken=$token;
-
+ 
             if ($user_details->role_id == $request->role_id) {
                 $user_details->role_id =$user_details->role_id;
                 $user_details->state_id = strval($user_details->state_id);

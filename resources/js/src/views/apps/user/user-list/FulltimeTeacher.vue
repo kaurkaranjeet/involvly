@@ -173,14 +173,14 @@ export default {
       },
       {
         headerName: 'SUBJECTS',
-        field: 'subject_id',
+        field: 'subject_pr',
         filter: true,
         width: 150,
         //cellRendererFramework: 'CellRendererStatus'
       },
       {
         headerName: 'CLASSES',
-        field: 'class_id',
+        field: 'class_name',
         filter: true,
         width: 120,
         //cellRendererFramework: 'CellRendererStatus'
@@ -246,8 +246,8 @@ export default {
         var school_id = localStorage.getItem('school_id');
         //  User Reward Card
         const requestOptions = {
-            'subject_id': a.value,
-            'class_id': this.isclassFilter.id,
+            'subject_pr': a.value,
+            'class_name': this.isclassFilter.id,
             'school_id': school_id,
             headers: { 'Authorization': 'Bearer ' + x },
         };

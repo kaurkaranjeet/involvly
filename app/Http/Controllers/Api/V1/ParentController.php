@@ -23,6 +23,8 @@ use App\Models\Timezone;
 use App\Notification;
 use Pusher\Pusher;
 use App\Events\NotificationEvent;
+use App\Models\Cities;
+use App\Models\Subject;
 use App\Models\TeachingProgram;
 use App\UserClass;
 use App\UserSubject;
@@ -54,8 +56,6 @@ class ParentController extends Controller
     public function FirststepParentRegister(Request $request)
     {
         try {
-
-
             $input = $request->all();
             $user = [
                 'first_name' => 'required',
@@ -83,44 +83,27 @@ class ParentController extends Controller
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
                 if ($request->teaching_program == 'teaching_program') {
-
-                    $TeachingProgram = new TeachingProgram;
-                    $TeachingProgram->class_id = $request->class_id;
-                    $TeachingProgram->subject_id = $request->subject_id;
-                    $TeachingProgram->hourly_rate = $request->hourly_rate;
-                    $TeachingProgram->availability = $request->availability;
-                    $TeachingProgram->location = $request->location;
-                    $TeachingProgram->preferences = $request->preferences;
-                    $TeachingProgram->user_id = $addUser->id;
-                    $TeachingProgram->save();
-
-                    //  TeachingProgram::add($input);
+                    $input['id'] = $addUser->id;
+                    TeachingProgram::add($input);
                 }
-
-                if(is_array($request->subject_id))
-                {
+                if (is_array($request->subject_id)) {
                     foreach ($request->subject_id as $key => $value) {
                         $subject['subject_id'] = $value;
                         $subject['user_id'] = $addUser->id;
-                        $add = UserSubject::add($subject);
+                        UserSubject::add($subject);
                     }
                 }
-                if(is_array($request->class_id))
-                {
+                if (is_array($request->class_id)) {
                     foreach ($request->class_id as $key => $value) {
                         $class_id['class_id'] = $value;
                         $class_id['user_id'] = $addUser->id;
-                        $add = UserClass::add($class_id);
+                        UserClass::add($class_id);
                     }
                 }
                 $addUser->ActiveJwttoken = $token;
                 $addUser->school_status = '0';
                 $addUser->update_detail = '0';
                 $addUser->school_live = '0';
-                //Update jwt Token
-                // User::where('id', $addUser->id)->update(['ActiveJwttoken' => $token]);
-                //  $addUser->relationship = $request->relationship;
-
                 return response()->json(array('error' => false, 'message' => 'Registered Successfully', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
@@ -1181,8 +1164,8 @@ class ParentController extends Controller
 
     public function GetListofTeachers(Request $request)
     {
-        try {
 
+        try {
             $input = $request->all();
             $validator = Validator::make($input, [
                 'school_id' => 'required|exists:schools,id',
@@ -1204,6 +1187,79 @@ class ParentController extends Controller
                 } else {
                     throw new Exception('No Record found');
                 }
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+    // Teacher list for Hiring from Parent
+    public function GetTeacherList()
+    {
+        try {
+            $classes = ClassCode::select('class_name', 'id')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
+            $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
+            $subjects = Subject::select('subject_name', 'id')->groupBy('subject_name')->get();
+            $data = array([
+                'class' => $classes,
+                'location' => $location,
+                'subjects' => $subjects,
+            ]);
+            if (!empty($data)) {
+
+                return response()->json(array('error' => false, 'message' => 'record found', 'data' => $data), 200);
+            } else {
+                throw new Exception('No Record found');
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+    // Hire Teacher Request List
+    public function HireTeacherList(Request $request)
+    {
+        try {
+
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                // 'availabilty' => 'required',
+                // 'location' => 'required',
+                // 'availabilty' => 'required',
+                // 'availabilty' => 'required',
+ 
+            ]);
+
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                $users = User::with('')->leftJoin('user_subjects', 'user_subjects.user_id', '=', 'users.id')
+                    ->leftJoin('subjects', 'subjects.id', '=', 'user_subjects.subject_id')
+                    ->leftJoin('user_class', 'user_class.user_id', '=', 'users.id')
+                    ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
+                    ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+                    ->select('users.id', 'users.name', 'teaching_program.hourly_rate', 'teaching_program.availability', 'class_code.class_name')
+                    ->whereNotNull('user_subjects.subject_id');
+                    
+                if ($request->subject_id) {
+                    $users = $users->where('user_subjects.subject_id', $request->subject_id);
+                }
+                if ($request->class) {
+                    $users = $users->where('class_code.class_name', $request->class);
+                }
+                if ($request->location) {
+                    $users = $users->where('class_code.class_name', $request->location);
+                }
+                if ($request->availabilty) {
+                    $users = $users->where('teaching_program.availability', $request->availabilty);
+                }
+
+                $users = $users->groupBy('users.id')->get();
+            }
+            if (!empty($users)) {
+
+                return response()->json(array('error' => false, 'message' => 'record found', 'data' => $users), 200);
+            } else {
+                throw new Exception('No Record found');
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);

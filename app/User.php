@@ -67,7 +67,7 @@ class User extends Authenticatable implements JWTSubject {
         {
             return [];
         }
-    protected function validateLogin($data) {
+    protected static function validateLogin($data) {
         return User::where('email', $data['email'])->with('SchoolDetail')->with('StateDetail')->with('CityDetail')->first();
     }
     protected function validateautheticationkey($data) {

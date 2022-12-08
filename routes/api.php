@@ -228,6 +228,13 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
     Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
     Route::post('get_parent_schools', 'Api\V1\CommonController@GetParentSchools');
 
+
+    // New Hire Teacher Request Api
+    Route::get('hire_teacher_list', 'Api\V1\ParentController@GetTeacherList');
+    Route::post('hire_teacher_list', 'Api\V1\ParentController@HireTeacherList');
+    Route::post('place_teacher_req', 'Api\V1\ParentController@PlaceTeacherReq');
+
+
 });
 
 

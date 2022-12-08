@@ -40,16 +40,18 @@ class TeachingProgram extends Model
     }
     public static function add($data)
     {
-        return self::insert([
-            
-            'class_id' => $data['class_id'],
-            'subject_id' => $data['subject_id'],
-            'hourly_rate' => $data['hourly_rate'],
-            'availability' => $data['availability'],
-            'location' => $data['location'],
-            'preferences' => $data['preferences'],
-            'user_id' =>  $data['id'],
-        ]);
+        if($data)
+        {
+            $TeachingProgram = new TeachingProgram;
+            $TeachingProgram->class_id = $data['class_id'];
+            $TeachingProgram->subject_id = $data['subject_id'];
+            $TeachingProgram->hourly_rate =  $data['hourly_rate'];
+            $TeachingProgram->availability =$data['availability'];
+            $TeachingProgram->location =$data['location'];
+            $TeachingProgram->preferences = $data['preferences'];
+            $TeachingProgram->user_id = $data['id'];
+            return $TeachingProgram->save();
+        }
     }
     
 }
