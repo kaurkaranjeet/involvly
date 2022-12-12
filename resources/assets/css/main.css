@@ -156,3 +156,20 @@
   border:1px solid #CADC4F !important;
 }
  
+
+.ag-theme-material .ag-header
+{
+  color: rgb(0, 0, 0) !important;
+}
+.v-select .vs__selected
+{
+  color: rgb(0, 0, 0) !important;
+
+}
+.ag-header.ag-pivot-off {
+  height: 50px !important;
+  min-height: 0px !important;
+}
+.ag-grid-table {
+      /* height: 400px !important; */
+  }

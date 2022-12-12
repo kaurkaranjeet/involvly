@@ -252,25 +252,20 @@ class UserController extends Controller
     public function manageUsers(Request $request, $id)
     {
         DB::enableQueryLog();
-       
 
-        if ($request->type == 'teacher') {
-            $users = User::where('role_id', 4)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
-        } else  if ($request->type == 'student') {
-            $users = User::where('role_id', 2)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+        $users = User::where('role_id', 4)->where('school_id', $id)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*'));
+        if ($request->type == 'student') {
+            $users = User::where('role_id', 2)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'));
         } elseif ($request->type == 'searchdata') {
-            $users =  User::where('role_id', 4)->where('school_id', $id)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*'))->orderBy('id', 'DESC')->get();
-      
+            $users = $users->where('school_id', $id);
         } elseif ($request->type == 'fulltime-teacher') {
-            $users =  User::where('role_id', 4)->where('school_id', $id)->where('availability', 'Full-Time')->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*'))->orderBy('id', 'DESC')->get();
-             
+            $users = $users->where('availability', 'Full-Time');
         } elseif ($request->type == 'contractual-teacher') {
-            $users =  User::where('role_id', 4)->where('school_id', $id)->where('teaching_id','>',0)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*'))->orderBy('id', 'DESC')->get();
- 
+            $users = $users->where('teaching_id', '>', 0);
         } else {
-
-            $users = User::where('role_id', 3)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::where('role_id', 3)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'));
         }
+        $users = $users->orderBy('id', 'DESC')->get();
 
         //  print_r(DB::getQueryLog());die;
         foreach ($users as $user) {

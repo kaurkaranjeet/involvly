@@ -37,7 +37,6 @@
           :chartData="subscribersGained.Studentseries"-->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirect" style="cursor: pointer">
         <span style="padding-left: 10px;margin-top: 10px;">
-          <img src="@assets/images/elements/students.svg" alt="Group svg" width="35px" />
 
         </span>
         <statistics-card-line icon="UsersIcon" :statistic="subscribersGained.students"
@@ -49,7 +48,7 @@
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirecteacchers"
         style="cursor: pointer">
         <span style="padding-left: 10px;margin-top: 10px;">
-          <img src="@assets/images/elements/indvidual.svg" alt="Group svg" width="35px" />
+         
 
         </span>
         <statistics-card-line icon="UsersIcon" :statistic="subscribersGained.teachers"
