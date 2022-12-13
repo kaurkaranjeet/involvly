@@ -17,6 +17,9 @@
       }">
         <!-- <feather-icon :icon="icon" class="p-3 inline-flex rounded-full" :class="[`text-${color}`, { 'mb-4': !iconRight }]"
           :style="{ background: `rgba(var(--vs-${color}),.15)` }"></feather-icon> -->
+        <span style="margin-top: 10px;">
+          <img src="@assets/images/elements/indvidual.svg" alt="Group svg" width="35px" />
+        </span>
         <div class="truncate">
           <h2 class="mb-1 font-bold">{{ statistic }}</h2>
           <span>{{ statisticTitle }}</span>
@@ -24,7 +27,7 @@
       </div>
 
       <div class="line-area-chart" v-if="!hideChart">
-        <vue-apex-charts ref="apexChart" :type="type" height="100" width="100%" :options="chartOptions"
+        <vue-apex-charts ref="apexChart" :type="type" height="70" width="100%" :options="chartOptions"
           :series="chartData" />
       </div>
     </div>

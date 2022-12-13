@@ -31,6 +31,7 @@ use App\Models\DiscussionCommentReply;
 use App\Models\ParentChildrens;
 use App\Models\Subject;
 use App\UserSubject;
+use Exception;
 use Mail;
 use Illuminate\Support\Str;
 
@@ -461,15 +462,29 @@ class UserController extends Controller
     // Place a request function
     public function PlaceUser($id)
     {
+        try {
+            $request_status = 0;
+            $usersData = User::where('id', $id)->first();
+            if (!$usersData) {
+                return response()->json(array('error' => true, 'message' => 'User id not found'), 400);
+            } else {
+                // Job for notification for request process
+                //  $process = new SendNotification();
+                $data['request_status'] = $request_status;
+                $message = "Successfully Place Request";
 
-        $usersData = User::where('id', $id)->first();
-        // Job for notification for request process
-        $process = new SendNotification();
-        dispatch($process);
+                $users = TeachingProgram::requestStatus($data);
+                $process = ProcessRequest::dispatch($usersData);
 
-        // return $data = ProcessRequest::dispatch($usersData);
-
-        return response()->json(['message' => 'Successfully Place Request', 'data' => $usersData], 200);
+                if (!empty($process)) {
+                    return response()->json(['message' => $message, 'data' => $usersData], 200);
+                } else {
+                    throw new Exception('Notification not sent!');
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
     }
 
     public function getRequest($school_id)

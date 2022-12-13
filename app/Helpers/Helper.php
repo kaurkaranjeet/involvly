@@ -87,7 +87,6 @@ fclose ($tSocket);
 
 function SendAllNotification($token,$message,$notify_type,$schedule=null,$type=null,$post_id=null,$student_id=null,$class_id=null,$userreceiver=null,$task_id=null,$accept_reject_status=null){
 $API_ACCESS_KEY= env('API_ACCESS_KEY');
-
  $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 // $token='235zgagasd634sdgds46436';
 

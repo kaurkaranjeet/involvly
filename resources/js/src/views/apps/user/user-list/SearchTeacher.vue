@@ -86,7 +86,6 @@ import { exit } from 'process'
 
 
 
-
 export default {
   components: {
     AgGridVue,
@@ -424,89 +423,89 @@ export default {
       header.style.left = `-${  String(Number(header.style.transform.slice(11, -3)) + 9)  }px`
     }*/
   },
-  created() {
+    created() {
 
-    // +++++++++++++++ Fetch Location List in Select++++++++++++++++++++++++
+      // +++++++++++++++ Fetch Location List in Select++++++++++++++++++++++++
 
-    let location_id = localStorage.getItem('school_id');
-    let xsd = localStorage.getItem('accessToken');
-    const requestLocOptions = {
-      'location_id': location_id,
-      headers: { 'Authorization': 'Bearer ' + x },
-    };
-    this.$http
-      .post("/api/auth/select-location/1", requestLocOptions)
-      .then(response => {
-        var data = response.data.location;
-        // console.log(data);
+      let location_id = localStorage.getItem('school_id');
+      let xsd = localStorage.getItem('accessToken');
+      const requestLocOptions = {
+        'location_id': location_id,
+        headers: { 'Authorization': 'Bearer ' + x },
+      };
+      this.$http
+        .post("/api/auth/select-location/1", requestLocOptions)
+        .then(response => {
+          var data = response.data.location;
+          // console.log(data);
 
-        this.getLocation(data);
+          this.getLocation(data);
 
-        // console.log(Subjectoptionss);
-      }).catch(err => { console.error(err) })
+          // console.log(Subjectoptionss);
+        }).catch(err => { console.error(err) })
 
-    // +++++++++++++++ End Fetch Location List in Select+++++++++++++++++++++++
+      // +++++++++++++++ End Fetch Location List in Select+++++++++++++++++++++++
 
-    // +++++++++++++++ Fetch subject List in Select++++++++++++++++++++++++
+      // +++++++++++++++ Fetch subject List in Select++++++++++++++++++++++++
 
-    let school_id = localStorage.getItem('school_id');
-    let xd = localStorage.getItem('accessToken');
-    const requestOptions2 = {
-      'school_id': school_id,
-      headers: { 'Authorization': 'Bearer ' + x },
-    };
-    this.$http
-      .post("/api/auth/select-subjects/1", requestOptions2)
-      .then(response => {
-        // console.log(response);
+      let school_id = localStorage.getItem('school_id');
+      let xd = localStorage.getItem('accessToken');
+      const requestOptions2 = {
+        'school_id': school_id,
+        headers: { 'Authorization': 'Bearer ' + x },
+      };
+      this.$http
+        .post("/api/auth/select-subjects/1", requestOptions2)
+        .then(response => {
+          // console.log(response);
 
-        var data = response.data.subjects;
-        // console.log(data);
-        this.getSubjectss(data);
-        // console.log(Subjectoptionss);
-      }).catch(err => { console.error(err) })
+          var data = response.data.subjects;
+          // console.log(data);
+          this.getSubjectss(data);
+          // console.log(Subjectoptionss);
+        }).catch(err => { console.error(err) })
 
-    // +++++++++++++++ End Fetch subject List in Select+++++++++++++++++++++++
-
-
-
-    if (!moduleUserManagement.isRegistered) {
-      this.$store.registerModule('userManagement', moduleUserManagement)
-      moduleUserManagement.isRegistered = true
-    }
-    this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
+      // +++++++++++++++ End Fetch subject List in Select+++++++++++++++++++++++
 
 
-    var x = localStorage.getItem('accessToken');
-    var user_id = localStorage.getItem('user_id');
-    // console.warn('Help'+user_id);
-    //  User Reward Card
-    const requestOptions = {
-      'type': 'teacher',
-      headers: { 'Authorization': 'Bearer ' + x },
 
-    };
-    this.$http
-      .get('/api/auth/manage-classes/' + user_id, requestOptions)
-      .then(response => {
-        var data = response.data.classes;
-        for (var index in data) {
-          let newobj = {}
-          newobj.label = data[index].class_name;
-          newobj.value = data[index].class_name;
-          newobj.id = data[index].id;
-          // console.log(newobj);
-
-          this.classOptions.push(newobj);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  },
+      if (!moduleUserManagement.isRegistered) {
+        this.$store.registerModule('userManagement', moduleUserManagement)
+        moduleUserManagement.isRegistered = true
+      }
+      this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
 
 
-}
+      var x = localStorage.getItem('accessToken');
+      var user_id = localStorage.getItem('user_id');
+      // console.warn('Help'+user_id);
+      //  User Reward Card
+      const requestOptions = {
+        'type': 'teacher',
+        headers: { 'Authorization': 'Bearer ' + x },
+
+      };
+      this.$http
+        .get('/api/auth/manage-classes/' + user_id, requestOptions)
+        .then(response => {
+          var data = response.data.classes;
+          for (var index in data) {
+            let newobj = {}
+            newobj.label = data[index].class_name;
+            newobj.value = data[index].class_name;
+            newobj.id = data[index].id;
+            // console.log(newobj);
+
+            this.classOptions.push(newobj);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+
+  }
 </script>
   
 <style lang="scss">

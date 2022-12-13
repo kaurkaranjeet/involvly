@@ -50,7 +50,6 @@ class ProcessRequest implements ShouldQueue
                 SendAllNotification($usersData->device_token, $message, 'place_notification');
             }
         }
-       
             Notification::create([
                 'user_id'=> $usersData->id,
                 'notification_message'=> $message,

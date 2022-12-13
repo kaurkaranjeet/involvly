@@ -1196,7 +1196,7 @@ class ParentController extends Controller
     // Teacher list for Hiring from Parent
     public function GetTeacherList()
     {
-        try {
+        try { 
             $classes = ClassCode::select('class_name', 'id')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
             $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
             $subjects = Subject::select('subject_name', 'id')->groupBy('subject_name')->get();
@@ -1219,18 +1219,18 @@ class ParentController extends Controller
     public function HireTeacherList(Request $request)
     {
         try {
-     
+            
             $input = $request->all();
             $validator = Validator::make($input, [
-                'availabilty' =>  'string|exists:teaching_program,availability',
-                'location' => 'string|exists:teaching_program,location',
-                'class' => 'string|exists:class_code,class_name',
-                'subject' => 'integer|exists:user_subjects,subject_id',
+                'availabilty' =>  'nullable|integer',
+                'location' => 'nullable|string|exists:teaching_program,location',
+                'class' => 'nullable|string|exists:class_code,class_name',
+                'subject' => 'nullable|integer|exists:user_subjects,subject_id',
             ]);
 
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
-            } else {
+            } else { 
                 $users = User::leftJoin('user_subjects', 'user_subjects.user_id', '=', 'users.id')
                     ->leftJoin('subjects', 'subjects.id', '=', 'user_subjects.subject_id')
                     ->leftJoin('user_class', 'user_class.user_id', '=', 'users.id')
