@@ -254,7 +254,7 @@ class UserController extends Controller
     {
         DB::enableQueryLog();
 
-        $users = User::where('role_id', 4)->where('school_id', $id)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*'));
+        $users = User::where('role_id', 4)->where('school_id', $id)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*,teaching_program.request_status'));
         if ($request->type == 'student') {
             $users = User::where('role_id', 2)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'));
         } elseif ($request->type == 'searchdata') {
@@ -460,22 +460,25 @@ class UserController extends Controller
         return response()->json(compact('data'), 200);
     }
     // Place a request function
-    public function PlaceUser($id)
+    public function PlaceUser($id, $status)
     {
         try {
-            $request_status = 0;
-            $usersData = User::where('id', $id)->first();
-            if (!$usersData) {
+
+            if (!$id) {
                 return response()->json(array('error' => true, 'message' => 'User id not found'), 400);
             } else {
                 // Job for notification for request process
                 //  $process = new SendNotification();
-                $data['request_status'] = $request_status;
+                $data['id'] = $id; 
+                $data['request_status'] = $status;
                 $message = "Successfully Place Request";
-
                 $users = TeachingProgram::requestStatus($data);
+                $usersData = User::where('id', $id)
+                ->select( 'users.*','teaching_program.*')
+                ->leftJoin('teaching_program', 'users.id', '=', 'teaching_program.user_id')
+                ->first();
+                $usersData->from_user_id = 2;
                 $process = ProcessRequest::dispatch($usersData);
-
                 if (!empty($process)) {
                     return response()->json(['message' => $message, 'data' => $usersData], 200);
                 } else {

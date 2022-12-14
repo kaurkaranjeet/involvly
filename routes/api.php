@@ -39,7 +39,7 @@ Route::prefix('auth')->group(function () {
     Route::post('update-profile', 'UserController@UpdateProfile');
     Route::post('update-school-profile', 'UserController@UpdateSchoolProfile');
     Route::get('delete-user/{id}', 'UserController@RemoveUser');
-    Route::get('place-user/{id}', 'UserController@PlaceUser');
+    Route::get('place-user/{id}/{status}', 'UserController@PlaceUser');
 
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('get_total_statistic/{id}', 'UserController@gettotalStatistic');

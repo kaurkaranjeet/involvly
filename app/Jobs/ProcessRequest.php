@@ -43,7 +43,7 @@ class ProcessRequest implements ShouldQueue
 
   
         $message = $usersData->name . ' You have recieved a place request!';
-        $rom_user_id = 2;
+        // $rom_user_id = 2;
        
         if (!empty($usersData->device_token) && $usersData->device_token != null) {
             if ($usersData->notification_settings == 1) {
@@ -56,7 +56,7 @@ class ProcessRequest implements ShouldQueue
                 'notification_type'=> 'PlaceRequest',
                 'type'=> 'teacher_notification',
                 'push_type'=> 'place_request',
-                'from_user_id'=> $rom_user_id,
+                'from_user_id'=> $usersData->from_user_id,
              ]);
         
        

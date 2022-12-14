@@ -143,7 +143,7 @@ export default {
       cityoptions:[],
       classoptions:[],
       stateFilter: { label: 'Select State*', value: '0' },
-       classFilter: { label: 'Select Class*', value: '0' },
+      classFilter: { label: 'Select Class*', value: '0' },
       cityFilter: { label: 'Select city*', value: '0' }, 
     }
   },
@@ -228,13 +228,7 @@ isNumorLetter(e) {
             color: "danger",
           });
           }
-          // this.$vs.notify({
-          //   title: "Error",
-          //   text: res.data.message,
-          //   iconPack: "feather",
-          //   icon: "icon-alert-circle",
-          //   color: "danger",
-          // });
+   
 
             }else{
              

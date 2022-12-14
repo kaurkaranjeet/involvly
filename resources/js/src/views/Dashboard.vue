@@ -36,10 +36,7 @@
           :chartData="subscribersGained.Studentseries"-->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirectschooladmins"
         style="cursor: pointer">
-        <span style="padding-left: 10px;margin-top: 10px;">
-          <img src="@assets/images/elements/Group.svg" alt="Group svg" width="35px" />
-
-        </span>
+       
         <statistics-card-line icon="UsersIcon" :statistic="subscribersGained.students" statisticTitle="School Admins"
           type="area"></statistics-card-line>
       </div>
@@ -47,10 +44,7 @@
       <!-- CARD 3: ORDER RECIEVED 
           :chartData="subscribersGained.Teacherseries"-->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
-        <span style="padding-left: 10px;margin-top: 10px;">
-          <img src="@assets/images/elements/indvidual.svg" alt="Group svg" width="35px" />
-
-        </span>
+        
         <statistics-card-line icon="UsersIcon" :statistic="subscribersGained.teachers"
           statisticTitle="Independent Teachers" color="warning" type="area"></statistics-card-line>
       </div>

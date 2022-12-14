@@ -255,12 +255,12 @@ export default {
         })
     },
     // Place a Request fucntion 
-    placeRecord({ commit }, userId, request_status=1) {
-        console.log(request_status);
+    placeRecord({ commit }, userId) {
+      
         return new Promise((resolve, reject) => {
-            axios.get(`/api/auth/place-user/user_id=${userId}&user_status=${request_status}`)
-                .then((response) => {
-                    
+            axios.get(`/api/auth/place-user/${userId}`)
+                .then((response) => { 
+                    window.console.log(response)
                     resolve(response)
                 })
                 .catch((error) => { reject(error) })
