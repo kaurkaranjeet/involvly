@@ -98,7 +98,9 @@ export default {
     CellRendererPlaceReq,
   },
   data() {
+    
     return {
+      
 
       // Filter Options
       roleFilter: { label: 'All', value: 'all' },
@@ -411,6 +413,7 @@ export default {
     }
   },
   mounted() {
+    
     this.gridApi = this.gridOptions.api
 
     /* =================================================================

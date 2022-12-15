@@ -463,7 +463,6 @@ class UserController extends Controller
     public function PlaceUser($id, $status)
     {
         try {
-
             if (!$id) {
                 return response()->json(array('error' => true, 'message' => 'User id not found'), 400);
             } else {

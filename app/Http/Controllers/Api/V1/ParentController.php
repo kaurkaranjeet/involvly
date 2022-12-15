@@ -1269,7 +1269,7 @@ class ParentController extends Controller
     // API- Make a Request for Hire Teacher
     public function PlaceTeacherReq(Request $request)
     {
-        try {
+        try { 
             $input = $request->all();
             $validator = Validator::make($input, [
                 'request_status' => 'required|integer|in:0,1',
@@ -1279,12 +1279,11 @@ class ParentController extends Controller
             } else {
                 if (!empty($request->id)) {
                     $data['id'] = $request->id;
+                    $data['request_status'] = $request->request_status;
                     if ($request->request_status == 0) {
-                        $data['request_status'] = null;
                         $message = "Request has been cancelled";
                     }
                     if ($request->request_status == 1) {
-                        $data['request_status'] = 1;
                         $message = "Request has been Placed";
                     }
                     $users = TeachingProgram::requestStatus($data);
