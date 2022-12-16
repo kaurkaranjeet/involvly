@@ -351,10 +351,14 @@ class UserController extends Controller
                 }
             }
         } else if ($request->type == 'school_admins') {
-            $users = User::with('SchoolDetail')->where('role_id', 5)->where('status', 1)->orderBy('id', 'DESC')->get();
-            foreach ($users as $user) {
-                $user->school_name = $user->SchoolDetail->school_name;
-            }
+            
+            $users = User::with('SchoolDetail')->leftJoin('schools', 'schools.id', '=', 'users.school_id')->where('role_id', 5)->where('status', 1)
+            
+            ->select('users.*','school_name')
+            ->orderBy('id', 'DESC')->get();
+            // foreach ($users as $user) {
+            //     $user->school_name = $user->SchoolDetail->school_name;
+            // }
         } else {
             $users = User::with('SchoolDetail')->where('role_id', 3)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'))->orderBy('id', 'DESC')->get();
             foreach ($users as $user) {
@@ -503,6 +507,7 @@ class UserController extends Controller
         $count = User::where('role_id', 4)->where('status', 1)->where('type_of_schooling', 'home')->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->count();
         return response()->json(compact('data', 'count'), 200);
     }
+
 
     public function WebSchoolAdmins()
     {
