@@ -101,3 +101,9 @@ export default {
 }
 
 </script>
+<style>
+.vs-tabs-primary .con-ul-tabs .activeChild button, .vs-tabs-primary .con-ul-tabs button:not(:disabled):hover
+{
+  color: #CADC4F !important;
+}
+</style>

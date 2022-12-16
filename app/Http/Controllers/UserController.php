@@ -262,7 +262,7 @@ class UserController extends Controller
         } elseif ($request->type == 'fulltime-teacher') {
             $users = $users->where('availability', 'Full-Time');
         } elseif ($request->type == 'contractual-teacher') {
-            $users = $users->where('teaching_id', '>', 0);
+            // $users = $users->where('request_status', '=', '2');
         } else {
             $users = User::where('role_id', 3)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'));
         }

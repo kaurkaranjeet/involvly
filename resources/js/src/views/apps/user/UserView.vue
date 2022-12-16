@@ -13,7 +13,8 @@
     <vs-alert color="danger" title="User Not Found" :active.sync="user_not_found">
       <span>User record with id: {{ $route.params.userId }} not found. </span>
       <span>
-        <span>Check </span><router-link :to="{name:'page-user-list'}" class="text-inherit underline">All Users</router-link>
+        <span>Check </span><router-link :to="{ name: 'page-user-list' }" class="text-inherit underline">All
+          Users</router-link>
       </span>
     </vs-alert>
 
@@ -34,7 +35,7 @@
           <!-- Information - Col 1 -->
           <div class="vx-col flex-1" id="account-info-col-1">
             <table>
-           <!--    <tr>
+              <!--    <tr>
                 <td class="font-semibold">Username</td>
                 <td>{{ user_data.username }}</td>
               </tr> -->
@@ -46,12 +47,12 @@
                 <td class="font-semibold">Email</td>
                 <td>{{ user_data.email }}</td>
               </tr>
-               <tr>
+              <tr>
                 <td class="font-semibold">City</td>
                 <td>{{ user_data.city_detail.city }}</td>
               </tr>
-               <tr>
-                <td class="font-semibold"  v-if="user_data.position!=null">Position</td>
+              <tr>
+                <td class="font-semibold" v-if="user_data.position != null">Position</td>
                 <td>{{ user_data.position }}</td>
               </tr>
             </table>
@@ -68,7 +69,7 @@
               </tr>-->
               </tr>
 
-               <tr  v-if="user_data.school_id>0">
+              <tr v-if="user_data.school_id > 0">
                 <td class="font-semibold">School Name</td>
                 <td>{{ user_data.school_detail.school_name }}</td>
               </tr>
@@ -76,14 +77,16 @@
                 <td class="font-semibold">State</td>
                 <td>{{ user_data.state_name }}</td>
               </tr>
-              <tr v-if="user_data.is_document==1">
+              <tr v-if="user_data.is_document == 1">
                 <td class="font-semibold">Documents</td>
-                <td><ul id="example-1">
-                  <li v-for="item in user_data.documents" :key="item.id">
-                   <a :href="item.document_url" target="_blank">{{item.document_name}}</a>
-                 </li>
-               </ul></td>
-             </tr>
+                <td>
+                  <ul id="example-1">
+                    <li v-for="item in user_data.documents" :key="item.id">
+                      <a :href="item.document_url" target="_blank">{{ item.document_name }}</a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
             </table>
           </div>
           <!-- /Information - Col 2 
@@ -102,34 +105,38 @@
       <div class="vx-row">
         <div class="vx-col lg w-full">
           <vx-card v-if="user_data.timetables.length" title="Timetables" class="mb-base bottom-padding">
-           <table  v-for="item in user_data.timetables" :key="item.id">
+            <table v-for="item in user_data.timetables" :key="item.id">
               <tr>
-                <td class="">Date : {{ item.date }}<div>Repeats : {{ item.selected_days.toString() }}</div></td>
+                <td class="">Date : {{ item.date }}<div>Repeats : {{ item.selected_days.toString() }}</div>
+                </td>
                 <td></td>
               </tr>
-                 <tr>
+              <tr>
                 <td class="font-semibold">Links : </td>
 
 
-               <tr v-if="item.timetable_doc!=''">
-               
-                <td><ul id="example-1">
-                  <li>
+              <tr v-if="item.timetable_doc != ''">
 
-                   <a :href="item.timetable_doc" target="_blank">{{item.timetable_doc}}</a>
+                <td>
+                  <ul id="example-1">
+                    <li>
 
-                 </li>
-               </ul>
-             </td> 
-             </tr>
+                      <a :href="item.timetable_doc" target="_blank">{{ item.timetable_doc }}</a>
+
+                    </li>
+                  </ul>
+                </td>
               </tr>
-             <tr><td type= "border">----------------------</td></tr>
+              </tr>
+              <tr>
+                <td type="border">----------------------</td>
+              </tr>
             </table>
           </vx-card>
-           </vx-card>
+          </vx-card>
         </div>
 
-       <!--  <div class="vx-col lg:w-1/2 w-full">
+        <!--  <div class="vx-col lg:w-1/2 w-full">
           <vx-card title="Social Links" class="mb-base">
             <table>
               <tr>
@@ -162,7 +169,7 @@
       </div>
 
       <!-- Permissions -->
-     <!--  <vx-card>
+      <!--  <vx-card>
 
         <div class="vx-row">
           <div class="vx-col w-full">
@@ -199,23 +206,23 @@
 import moduleUserManagement from '@/store/user-management/moduleUserManagement.js'
 
 export default {
-  data () {
+  data() {
     return {
       user_data: null,
       user_not_found: false
     }
   },
   computed: {
-    userAddress () {
+    userAddress() {
       let str = ''
       for (const field in this.user_data.location) {
-        str += `${field  } `
+        str += `${field} `
       }
       return str
     }
   },
   methods: {
-    confirmDeleteRecord () {
+    confirmDeleteRecord() {
       this.$vs.dialog({
         type: 'confirm',
         color: 'danger',
@@ -225,89 +232,89 @@ export default {
         acceptText: 'Delete'
       })
     },
-    deleteRecord () {
+    deleteRecord() {
       /* Below two lines are just for demo purpose */
-     // this.$router.push({name:'app-user-list'})
-     // this.showDeleteSuccess()
+      // this.$router.push({name:'app-user-list'})
+      // this.showDeleteSuccess()
 
       /* UnComment below lines for enabling true flow if deleting user */
       this.$store.dispatch("userManagement/removeRecord", this.user_data.id)
-        .then(()   => { this.$router.push({name:'app-user-list'}); this.showDeleteSuccess() })
-        .catch(err => { console.error(err)       })
-        
+        .then(() => { this.$router.push({ name: 'app-user-list' }); this.showDeleteSuccess() })
+        .catch(err => { console.error(err) })
+
     },
-    showDeleteSuccess () {
+    showDeleteSuccess() {
       this.$vs.notify({
         color: 'success',
         // title: 'User Deleted',
         text: 'The selected user is deleted successfully.'
       })
     },
-     Approveteacher (id,el) {
+    Approveteacher(id, el) {
 
-        var x = localStorage.getItem('accessToken');
-    //  User Reward Card
-    const requestOptions = {
-        
-        headers: { 'Authorization': 'Bearer '+x }
-    };
-       this.$http
-      .post("/api/auth/approve_teacher/"+id,requestOptions)
-      .then(response => {
-         this.$vs.notify({
-          title: 'Approve',
-          text: 'Approved Successfully',
-          iconPack: 'feather',
-          icon: 'icon-alert-circle',
-          color: 'success'
+      var x = localStorage.getItem('accessToken');
+      //  User Reward Card
+      const requestOptions = {
+
+        headers: { 'Authorization': 'Bearer ' + x }
+      };
+      this.$http
+        .post("/api/auth/approve_teacher/" + id, requestOptions)
+        .then(response => {
+          this.$vs.notify({
+            title: 'Approve',
+            text: 'Approved Successfully',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+            color: 'success'
+          })
+          location.reload();
+
+
+          // el.target.getElementsByClassName('tr-values').style.display='none';
+          // el.parentNode.style.display='none';
         })
-         location.reload();
-       
-
-        // el.target.getElementsByClassName('tr-values').style.display='none';
-// el.parentNode.style.display='none';
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        .catch(error => {
+          console.log(error);
+        });
 
     },
 
 
-     Rejectteacher (id,el) {
+    Rejectteacher(id, el) {
 
-        var x = localStorage.getItem('accessToken');
-    //  User Reward Card
-    const requestOptions = {
-        
-        headers: { 'Authorization': 'Bearer '+x }
-    };
-       this.$http
-      .post("/api/auth/disapprove_teacher/"+id,requestOptions)
-      .then(response => {
-         this.$vs.notify({
-          title: 'Rejected',
-          text: 'Rejected Successfully',
-          iconPack: 'feather',
-          icon: 'icon-alert-circle',
-          color: 'success'
+      var x = localStorage.getItem('accessToken');
+      //  User Reward Card
+      const requestOptions = {
+
+        headers: { 'Authorization': 'Bearer ' + x }
+      };
+      this.$http
+        .post("/api/auth/disapprove_teacher/" + id, requestOptions)
+        .then(response => {
+          this.$vs.notify({
+            title: 'Rejected',
+            text: 'Rejected Successfully',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+            color: 'success'
+          })
+          location.reload();
+
+          // el.target.getElementsByClassName('tr-values').style.display='none';
+          // el.parentNode.style.display='none';
         })
-         location.reload();
-
-        // el.target.getElementsByClassName('tr-values').style.display='none';
-// el.parentNode.style.display='none';
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        .catch(error => {
+          console.log(error);
+        });
 
     }
 
   },
-  created () {
+  created() {
     var value = [[1234213, 1234231], [1234213, 1234231]];
-      var dato = value[0];
-      console.log("cvvc",dato.toString());
+    var dato = value[0];
+    console.log("cvvc", dato.toString());
     // Register Module UserManagement Module
     if (!moduleUserManagement.isRegistered) {
       this.$store.registerModule('userManagement', moduleUserManagement)
@@ -316,17 +323,15 @@ export default {
 
     const userId = this.$route.params.userId
     this.$store.dispatch('userManagement/fetchUser', userId)
-      .then(res => 
+      .then(res => { this.user_data = res.data.data }
 
-        { this.user_data = res.data.data }
-
-        )
+      )
       .catch(err => {
         if (err.response.status === 404) {
           this.user_not_found = true
           return
         }
-        console.error(err) 
+        console.error(err)
       })
   }
 }
@@ -385,7 +390,12 @@ only screen and (min-width:636px) and (max-width:991px) {
   // }
 
 }
+
 .bottom-padding {
   padding-bottom: 1.5rem !important;
+}
+.vs-tabs-primary .con-ul-tabs .activeChild button, .vs-tabs-primary .con-ul-tabs button:not(:disabled):hover
+{
+  color: #CADC4F !important;
 }
 </style>
