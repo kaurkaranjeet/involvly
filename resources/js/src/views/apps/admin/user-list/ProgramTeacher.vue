@@ -217,7 +217,7 @@
           {
             headerName: 'ID',
             field: 'id',
-            width: 125,
+            width: 100,
             filter: true,
             checkboxSelection: false,
             headerCheckboxSelectionFilteredOnly: false,
@@ -228,25 +228,25 @@
             headerName: 'Name',
             field: 'name',
             filter: true,
-            width: 225
+            width: 200
           },
           {
             headerName: 'Email',
             field: 'email',
             filter: true,
-            width: 225
+            width: 300
           },
           {
             headerName: 'Hourly Rate',
             field: 'hourly_rate',
             filter: true,
-            width: 225
+            width: 150
           },
           {
             headerName: 'Availability',
             field: 'availability',
             filter: true,
-            width: 225
+            width: 150
           },
           {
             headerName: 'Type of Schooling',
