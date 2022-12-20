@@ -23,9 +23,11 @@ use App\Models\Timezone;
 use App\Notification;
 use Pusher\Pusher;
 use App\Events\NotificationEvent;
+use App\Jobs\ProcessRequest;
 use App\Models\Cities;
 use App\Models\Subject;
 use App\Models\TeachingProgram;
+use App\Models\TeachingProgramReq;
 use App\UserClass;
 use App\UserSubject;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -1196,7 +1198,8 @@ class ParentController extends Controller
     // Teacher list for Hiring from Parent
     public function GetTeacherList()
     {
-        try { 
+        try {
+
             $classes = ClassCode::select('class_name', 'id')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
             $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
             $subjects = Subject::select('subject_name', 'id')->groupBy('subject_name')->get();
@@ -1215,30 +1218,37 @@ class ParentController extends Controller
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
     }
+
     // Hire Teacher Request List
     public function HireTeacherList(Request $request)
     {
         try {
-            
+
             $input = $request->all();
             $validator = Validator::make($input, [
-                'availabilty' =>  'nullable|integer',
+                'availabilty' =>  'nullable|string',
                 'location' => 'nullable|string|exists:teaching_program,location',
-                'class' => 'nullable|string|exists:class_code,class_name',
                 'subject' => 'nullable|integer|exists:user_subjects,subject_id',
+                'class' => 'nullable|string|exists:class_code,class_name',
             ]);
 
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
-            } else { 
-                $users = User::leftJoin('user_subjects', 'user_subjects.user_id', '=', 'users.id')
+            } else {
+                $users =
+                    User::leftJoin('user_subjects', 'user_subjects.user_id', '=', 'users.id')
                     ->leftJoin('subjects', 'subjects.id', '=', 'user_subjects.subject_id')
+
                     ->leftJoin('user_class', 'user_class.user_id', '=', 'users.id')
                     ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
+
                     ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+
                     ->select('users.id', 'users.name', 'class_code.class_name', 'teaching_program.*')
-                    ->selectRaw('GROUP_CONCAT(subjects.subject_name) as subject_names')
-                    ->selectRaw('GROUP_CONCAT(class_code.class_name) as class_names')
+
+                    ->selectRaw('GROUP_CONCAT(DISTINCT subjects.subject_name) as subject_names')
+                    ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
+
                     ->whereNotNull('user_subjects.subject_id');
                 if ($request->subject_id) {
                     $users = $users->where('user_subjects.subject_id', $request->subject_id);
@@ -1269,32 +1279,117 @@ class ParentController extends Controller
     // API- Make a Request for Hire Teacher
     public function PlaceTeacherReq(Request $request)
     {
-        try { 
+        try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'request_status' => 'required|integer|in:0,1',
+                'id' => 'required|integer',
+                'from_user' => 'required|integer',
+                'request_status' => 'required|integer|in:0,1,2',
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-                if (!empty($request->id)) {
+                if (!empty($input)) {
                     $data['id'] = $request->id;
+                    $data['from_user'] = $request->from_user;
                     $data['request_status'] = $request->request_status;
+                    $users = TeachingProgramReq::requestStatus($data);
+                    
+                    $usersData = User::where('id', $request->id)
+                        ->select('users.*', 'teaching_program.*')
+                        ->leftJoin('teaching_program', 'users.id', '=', 'teaching_program.user_id')
+                        ->first();
+                    $usersData->from_user_id = $request->from_user;
+                    $process = ProcessRequest::dispatch($usersData);
+
                     if ($request->request_status == 0) {
                         $message = "Request has been cancelled";
                     }
-                    if ($request->request_status == 1) {
-                        $message = "Request has been Placed";
+                    else if ($request->request_status == 1) {
+                        $message = "Request has been Sent";
                     }
-                    $users = TeachingProgram::requestStatus($data);
-                } else {
-                    throw new Exception('No User Found');
-                };
+                    else if ($request->request_status == 2) {
+                        $message = "Request has been Accepted";
+                    }
+                    else{
+                        $message = "Request not Placed";
+                    }
+
+                    if (!empty($process)) {
+                        return response()->json(['message' => $message, 'data' => $users], 200);
+                    } 
+                    // $users = TeachingProgram::requestStatus($data); 
+                }
             }
-            if (!empty($users)) {
-                return response()->json(array('error' => false, 'message' => $message, 'data' => $users), 200);
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
+    }
+
+    // API- Make a Request for Hire Teacher
+    public function TeacherReqList(Request $request)
+    {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'id' => 'required|integer',
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
             } else {
-                throw new Exception('No Request Made');
+                if (!empty($input)) {
+                    $users = 
+                    TeachingProgramReq::where('to_user', $request->id)
+                        ->where('request_status', '1')
+                        ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.from_user')
+                        ->select('users.*','teachin_program_requests.request_status')
+                        ->get()
+                        ->sortByDesc('teaching_id');
+
+                    if (!empty($users)) {
+                        return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);
+                    } else {
+                        throw new Exception('List empty!');
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
+
+    // API- Make a Request for Hire Teacher
+    public function AcceptRequest(Request $request)
+    {
+        try {
+            // return "Here";
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'id' => 'required|integer',
+                'from_user' => 'required|integer',
+                'request_status' => 'required|integer|in:0,1,2',
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                if (!empty($input)) {
+                    $data['id'] = $request->id;
+                    $data['from_user'] =  $request->from_user;
+                    $data['request_status'] = $request->request_status;
+                    $users = TeachingProgramReq::requestStatus($data);
+                    if ($request->request_status == 0) {
+                        $message = "Request has been removed";
+                    }
+                    if ($request->request_status == 2) {
+                        $message = "Request has been Accepted";
+                    }
+                     
+                    if (!empty($users)) {
+                        return response()->json(['message' => $message, 'data' => $users], 200);
+                    } else {
+                        throw new Exception('List empty!');
+                    }
+                }
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);

@@ -30,6 +30,7 @@ use App\Models\DiscussionCommentReply;
 
 use App\Models\ParentChildrens;
 use App\Models\Subject;
+use App\Models\TeachingProgramReq;
 use App\UserSubject;
 use Exception;
 use Mail;
@@ -254,7 +255,10 @@ class UserController extends Controller
     {
         DB::enableQueryLog();
 
-        $users = User::where('role_id', 4)->where('school_id', $id)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*,teaching_program.request_status'));
+        $users = User::where('role_id', 4)->where('school_id', $id)
+            ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+            ->leftJoin('teachin_program_requests', 'teachin_program_requests.to_user', '=', 'users.id')
+            ->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*,teachin_program_requests.request_status as request_status'));
         if ($request->type == 'student') {
             $users = User::where('role_id', 2)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'));
         } elseif ($request->type == 'searchdata') {
@@ -351,11 +355,11 @@ class UserController extends Controller
                 }
             }
         } else if ($request->type == 'school_admins') {
-            
+
             $users = User::with('SchoolDetail')->leftJoin('schools', 'schools.id', '=', 'users.school_id')->where('role_id', 5)->where('status', 1)
-            
-            ->select('users.*','school_name')
-            ->orderBy('id', 'DESC')->get();
+
+                ->select('users.*', 'school_name')
+                ->orderBy('id', 'DESC')->get();
             // foreach ($users as $user) {
             //     $user->school_name = $user->SchoolDetail->school_name;
             // }
@@ -464,35 +468,49 @@ class UserController extends Controller
         return response()->json(compact('data'), 200);
     }
     // Place a request function
-    public function PlaceUser($id, $status)
+    public function PlaceUser(Request $request)
     {
         try {
-            if (!$id) {
-                return response()->json(array('error' => true, 'message' => 'User id not found'), 400);
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'id' => 'required|integer',
+                'from_user' => 'required|integer',
+                'request_status' => 'required|integer|in:0,1',
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
             } else {
-                // Job for notification for request process
-                //  $process = new SendNotification();
-                $data['id'] = $id; 
-                $data['request_status'] = $status;
-                $message = "Successfully Place Request";
-                $users = TeachingProgram::requestStatus($data);
-                $usersData = User::where('id', $id)
-                ->select( 'users.*','teaching_program.*')
-                ->leftJoin('teaching_program', 'users.id', '=', 'teaching_program.user_id')
-                ->first();
-                $usersData->from_user_id = 2;
-                $process = ProcessRequest::dispatch($usersData);
-                if (!empty($process)) {
-                    return response()->json(['message' => $message, 'data' => $usersData], 200);
-                } else {
-                    throw new Exception('Notification not sent!');
+                if (!empty($input)) {
+                    $data['id'] = $request->id;
+                    $data['from_user'] = $request->from_user;
+                    $data['request_status'] = $request->request_status;
+                    $users = TeachingProgramReq::requestStatus($data);
+                    $usersData = User::where('id', $request->id)
+                        ->select('users.*', 'teaching_program.*')
+                        ->leftJoin('teaching_program', 'users.id', '=', 'teaching_program.user_id')
+                        ->first();
+                    $usersData->from_user_id = $request->from_user;
+                    $process = ProcessRequest::dispatch($usersData);
+
+                    if ($request->request_status == 0) {
+                        $message = "Request has been cancelled";
+                    }
+                    if ($request->request_status == 1) {
+                        $message = "Request has been Placed";
+                    }
+                    if (!empty($process)) {
+                        return response()->json(['message' => $message, 'data' => $users], 200);
+                    } else {
+                        throw new Exception('Notification not sent!');
+                    }
+                    // $users = TeachingProgram::requestStatus($data); 
                 }
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
-
+    
     public function getRequest($school_id)
     {
         $data = User::where('role_id', 4)->where('school_id', $school_id)->select('id', 'name', 'email', DB::raw('DATE(created_at) as date'), 'id', 'status')->orderBy('id', 'DESC')->get();

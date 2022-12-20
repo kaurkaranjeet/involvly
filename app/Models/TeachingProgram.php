@@ -54,15 +54,5 @@ class TeachingProgram extends Model
             return $TeachingProgram->save();
         }
     }
-    public static function requestStatus($data)
-    {
-         
-        if ($data) { 
-            $users= self::where('user_id', $data['id'])->update([
-                'request_status' => $data['request_status']
-            ]);
-           
-            return  $users;
-        }
-    }
+    // 
 }

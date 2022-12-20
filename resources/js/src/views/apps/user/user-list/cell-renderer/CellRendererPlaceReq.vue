@@ -85,11 +85,17 @@ export default {
     // Place a Request fucntion 
     placeRecord(id) {
       new Promise((resolve, reject) => {
-        let request_status = id;
-        axios.get(`/api/auth/place-user/${this.params.data.id}/${request_status}`)
+      
+        var arr = {
+          'id':this.params.data.id,
+          'request_status' :id,
+          'from_user':localStorage.user_id,
+        }; 
+        axios.post(`/api/auth/place-user`,arr)
           .then((response) => {
             this.showPlaceSuccess();
             resolve(response)
+            
           })
           .catch((error) => { reject(error) })
       })
@@ -102,8 +108,10 @@ export default {
       this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
     },
   },
-  mounted() {
-    if (this.params.data.request_status == 0) {
+  mounted() { 
+   
+  console.log('here',   localStorage.user_id);
+    if (this.params.data.request_status == 0 || this.params.data.request_status == null) {
       this.place = true;
       this.isActive = true;
       this.hasError = false;
