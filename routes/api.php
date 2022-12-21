@@ -197,7 +197,7 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
   Route::post('add_discussion_comment', 'Api\V1\GroupController@AddDiscussionComments');
   Route::post('get_discussion_comments', 'Api\V1\GroupController@GetComments');
 
-  /*    Route::post('group_list', 'Api\V1\GroupController@GroupList');*/
+  /* Route::post('group_list', 'Api\V1\GroupController@GroupList');*/
   Route::post('send_group_message', 'Api\V1\GroupController@SendGroupMessage');
   Route::post('group_messages', 'Api\V1\GroupController@GroupMessages');
   Route::post('read_group_message', 'Api\V1\GroupController@ReadGroupMessage');
@@ -227,14 +227,13 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
   Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
   Route::post('get_parent_schools', 'Api\V1\CommonController@GetParentSchools');
 
-
   // New Hire Teacher Request Api
   Route::get('hire_teacher_list', 'Api\V1\ParentController@GetTeacherList'); //done
   Route::post('hire_teacher_list', 'Api\V1\ParentController@HireTeacherList'); //done
-  Route::post('place_teacher_req', 'Api\V1\ParentController@PlaceTeacherReq'); //done  for accept also this can use
-  // Teacher Accept Api
+  Route::post('place_teacher_req', 'Api\V1\ParentController@PlaceTeacherReq'); //done  Teacher Accept Api will use by this api
+
+  // Teacher Accept Api List
   Route::post('teacher_req_list', 'Api\V1\ParentController@TeacherReqList');  //done
-  
   // Route::post('accept_req', 'Api\V1\ParentController@AcceptRequest');  //done
 
  

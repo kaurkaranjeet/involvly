@@ -19,7 +19,8 @@ class TeachingProgramReq extends Model
     //    echo  $data['request_status'];exit;
         if ($data) {
             $users = self::updateOrCreate(
-                ['to_user' => $data['id'],'from_user' => $data['from_user']],
+                ['to_user' => $data['id'],
+                'from_user' => $data['from_user']],
                 [
                   'to_user' => $data['id'],
                   'from_user' => $data['from_user'],

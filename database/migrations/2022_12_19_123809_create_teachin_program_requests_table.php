@@ -22,11 +22,9 @@ class CreateTeachinProgramRequestsTable extends Migration
             // $table->unsignedBigInteger('teaching_req_id')->nullable();
             // $table->foreign('teaching_req_id')->references('teaching_id')->on('teaching_program')->onDelete('cascade');
             $table->enum('request_status',['0','1','2'])->comment('0:default,1:pending,2:Accept')->nullable();
-            
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

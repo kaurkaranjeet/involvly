@@ -109,8 +109,7 @@ export default {
     },
   },
   mounted() { 
-   
-  console.log('here',   localStorage.user_id);
+    
     if (this.params.data.request_status == 0 || this.params.data.request_status == null) {
       this.place = true;
       this.isActive = true;

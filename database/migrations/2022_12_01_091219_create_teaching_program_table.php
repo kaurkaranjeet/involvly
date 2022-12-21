@@ -15,8 +15,7 @@ class CreateTeachingProgramTable extends Migration
     {
         Schema::create('teaching_program', function (Blueprint $table) {
             $table->id('teaching_id');
-            $table->string('class_id');
-            $table->string('subject_id');
+ 
             $table->string('hourly_rate');
             $table->enum('availability',['Full-Time','Part-Time','Both'])->default('Both');
             $table->string('location');
