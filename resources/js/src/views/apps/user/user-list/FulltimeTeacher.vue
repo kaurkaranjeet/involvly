@@ -349,16 +349,10 @@ export default {
     }
   }
 }
-[dir] .vs-button:not(.vs-radius):not(.includeIconOnly):not(.small):not(.large) {
-padding: 0.8rem 1rem;
-}
+ 
 .ag-header.ag-pivot-off {
 height: 50px !important;
 min-height: 0px !important;
 }
-.ag-grid-table {
-
-    height: 625px !important;
  
-}
 </style>

@@ -167,9 +167,7 @@
   height: 50px !important;
   min-height: 0px !important;
 }
-.ag-grid-table {
-      /* height: 400px !important; */
-  }
+ 
   [dir] .vx-card
   {
     padding-top: 20px;

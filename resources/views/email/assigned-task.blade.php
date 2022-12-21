@@ -25,7 +25,7 @@
           <br/>
           Task Details as follow 
           <div class="container">
-            <div>Name:  {{$task_name}}</div>		
+            <div>Name:  {{$task_name}}</div>		  `
             <div>Description:  {{$task_description}}</div>
             <div> Task Dates:
               @foreach($task_date as $single)

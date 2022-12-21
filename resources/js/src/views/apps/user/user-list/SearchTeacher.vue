@@ -57,7 +57,7 @@
 
       <!-- AgGrid Table -->
       <ag-grid-vue ref="agGridTable" :components="components" :gridOptions="gridOptions"
-        class="ag-theme-material w-100 my-4 ag-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef"
+        class="ag-theme-material w-100 my-4 ag-grid-table" id="a-grid-table" :columnDefs="columnDefs" :defaultColDef="defaultColDef"
         :rowData="usersData" rowSelection="multiple" colResizeDefault="shift" :animateRows="true" :floatingFilter="true"
         :pagination="true" :paginationPageSize="paginationPageSize" :suppressPaginationPanel="true"
         :enableRtl="$vs.rtl">
@@ -67,7 +67,7 @@
   </div>
 
 </template>
-  
+
 <script>
 import { AgGridVue } from 'ag-grid-vue'
 import '@sass/vuexy/extraComponents/agGridStyleOverride.scss'
@@ -376,7 +376,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
-        });
+          });
     },
     addStudentdata() {
       this.$router
@@ -413,7 +413,12 @@ export default {
     }
   },
   mounted() {
-    
+    if (!moduleUserManagement.isRegistered) {
+      this.$store.registerModule('userManagement', moduleUserManagement)
+      moduleUserManagement.isRegistered = true
+    }
+    this.$store.dispatch('userManagement/fetchSearch').catch(err => { console.error(err) })
+
     this.gridApi = this.gridOptions.api
 
     /* =================================================================
@@ -528,7 +533,7 @@ export default {
 }
 
 [dir] .vs-button:not(.vs-radius):not(.includeIconOnly):not(.small):not(.large) {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem !important;
 }
 
 .ag-header.ag-pivot-off {
@@ -536,10 +541,5 @@ export default {
   min-height: 0px !important;
 }
 
-.ag-grid-table {
-
-  height: 400px !important;
-
-}
 </style>
   

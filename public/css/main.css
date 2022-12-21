@@ -10352,14 +10352,34 @@ li.cursor-pointer:hover
   padding-right: 1.4rem !important;
 }
 
-[dir] .vx-col.w-full.sm\:w-1\/2.md\:w-1\/2.lg\:w-1\/4.xl\:w-1\/4.mb-base
-{
-  margin-top: 10px !important;
-}
-
 [dir] .ag-theme-material .ag-ltr .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected), [dir] .ag-theme-material .ag-ltr .ag-has-focus .ag-cell-focus.ag-cell-range-single-cell, [dir] .ag-theme-material .ag-ltr .ag-cell-focus.ag-cell-range-single-cell.ag-cell-range-handle, [dir] .ag-theme-material .ag-rtl .ag-has-focus .ag-cell-focus:not(.ag-cell-range-selected), [dir] .ag-theme-material .ag-rtl .ag-has-focus .ag-cell-focus.ag-cell-range-single-cell, [dir] .ag-theme-material .ag-rtl .ag-cell-focus.ag-cell-range-single-cell.ag-cell-range-handle
 {
   border:1px solid #CADC4F !important;
+}
+
+.ag-theme-material .ag-header
+{
+  color: rgb(0, 0, 0) !important;
+}
+
+.v-select .vs__selected
+{
+  color: rgb(0, 0, 0) !important;
+}
+
+.ag-header.ag-pivot-off {
+  height: 50px !important;
+  min-height: 0px !important;
+}
+
+[dir] .vx-card
+  {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+[dir] .vx-card .vx-card__collapsible-content .vx-card__body {
+  padding: 1.9rem !important;
 }
 
 @media (min-width: 576px) 
@@ -48693,4 +48713,3 @@ li.cursor-pointer:hover
     transition-delay: 1000ms !important;
   }
 }
- 

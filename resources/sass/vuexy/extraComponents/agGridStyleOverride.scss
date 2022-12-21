@@ -29,6 +29,20 @@ $primary-color: #7367F0;
 
 @import "../_variables.scss";
 
+#vs-button {
+  padding: 0.8rem 1rem !important;
+}
+.ag-theme-material.w-100.my-4.ag-grid-table
+{
+  height: 600px !important;
+}
+
+
+#a-grid-table
+{
+  height: 385px !important;
+
+}
 .ag-grid-table {
 
   color: inherit !important;

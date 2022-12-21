@@ -473,9 +473,9 @@ class UserController extends Controller
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'id' => 'required|integer',
-                'from_user' => 'required|integer',
+                'id' => 'required|integer|exists:users,id',
                 'request_status' => 'required|integer|in:0,1',
+                'from_user' => 'required|integer|exists:users,id',
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
@@ -485,25 +485,10 @@ class UserController extends Controller
                     $data['from_user'] = $request->from_user;
                     $data['request_status'] = $request->request_status;
                     $users = TeachingProgramReq::requestStatus($data);
-                    $usersData = User::where('id', $request->id)
-                        ->select('users.*', 'teaching_program.*')
-                        ->leftJoin('teaching_program', 'users.id', '=', 'teaching_program.user_id')
-                        ->first();
-                    $usersData->from_user_id = $request->from_user;
-                    $process = ProcessRequest::dispatch($usersData);
 
-                    if ($request->request_status == 0) {
-                        $message = "Request has been cancelled";
-                    }
-                    if ($request->request_status == 1) {
-                        $message = "Request has been Placed";
-                    }
-                    if (!empty($process)) {
-                        return response()->json(['message' => $message, 'data' => $users], 200);
-                    } else {
-                        throw new Exception('Notification not sent!');
-                    }
-                    // $users = TeachingProgram::requestStatus($data); 
+                    if (!empty($users)) {
+                        return response()->json(['message' =>'Updated req!', 'data' => $users], 200);
+                    }  
                 }
             }
         } catch (\Exception $e) {
