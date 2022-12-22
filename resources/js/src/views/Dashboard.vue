@@ -61,7 +61,6 @@
               <div>
                 <h2 class="mb-1 font-bold">{{ salesBarSession.analyticsData.session | k_formatter }}</h2>
                 <span class="font-medium">Avg Sessions</span>
-
                 <!-- Previous Data Comparison -->
                 <p class="mt-2 text-xl font-medium">
                   <span :class="salesBarSession.analyticsData.comparison.result >= 0 ? 'text-success' : 'text-danger'">
@@ -75,7 +74,6 @@
               <vs-button icon-pack="feather" icon="icon-chevrons-right" icon-after
                 class="shadow-md w-full lg:mt-0 mt-4">View Details</vs-button>
             </div>
-
             <!-- RIGHT COL -->
             <div
               class="vx-col w-full md:w-full sm:w-1/2 lg:w-1/2 xl:w-1/2 flex flex-col lg:mb-0 md:mb-base sm:mb-0 mb-base">

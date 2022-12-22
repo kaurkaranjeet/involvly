@@ -6,7 +6,6 @@
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
-
 <template>
   <div id="dashboard-analytics">
     <div class="vx-row">
@@ -24,7 +23,6 @@
             <h4 class="mb-1 text-dark text-left demo-1">Welcome </h4>
             <h1 class="mb-4 text-left" style="margin-top:-10px;"><b class="h1-checkpoint">{{ checkpointReward.name
             }}</b><img src="@assets/images/elements/party.png" alt="Decore Right" width="40px" /></h1>
-
           </div>
           <p class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white">
 
