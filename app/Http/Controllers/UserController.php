@@ -118,10 +118,10 @@ class UserController extends Controller
 
 
         $user = new User;
-              $name = $request->first_name . ' ' . $request->last_name;
+        $name = $request->first_name . ' ' . $request->last_name;
         $user->name = $name;
         $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
+        $user->last_name = $request->last_name; 
         $user->email = $request->email;
         $user->password = $request->password;
         $user->city = $request->city;
@@ -129,7 +129,6 @@ class UserController extends Controller
         $user->school_id = $request->school_id;
         $user->country = $request->country;
         $user->position = $request->position;
-        // $user->status = 0;
         $user->status = 1;
         $user->password = Hash::make($request->password);
         $user->role_id = 5;
