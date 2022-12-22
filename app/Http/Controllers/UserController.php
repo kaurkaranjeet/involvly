@@ -118,14 +118,7 @@ class UserController extends Controller
 
 
         $user = new User;
-        // $name = explode(',', $request->name);
-        // $user->first_name = $name[0];
-        // if (isset($name[1])) {
-        //     $user->last_name = $name[1];
-        // } else {
-        //     $user->last_name = '';
-        // }
-        $name = $request->first_name . ' ' . $request->last_name;
+              $name = $request->first_name . ' ' . $request->last_name;
         $user->name = $name;
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -385,10 +378,8 @@ class UserController extends Controller
             return response()->json(['error' => 'true', 'users' => [], 'message' => 'No record found'], 200);
         }
     }
-
     public function fetchUser($id)
     {
-
         $data = User::with('role')->with('StateDetail')->with('CityDetail')->with('SchoolDetail')->with('documents')->with('Timetables')->where('id', $id)->first();
         // print_r($data->StateDetail);die;
         $UnapproveStudent = [];
