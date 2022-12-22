@@ -24,11 +24,14 @@ class ProcessRequest implements ShouldQueue
      */
     protected $usersData;
     protected $notificationobj;
+    protected $from_user_id;
 
   
-    public function __construct($usersData)
+    public function __construct($usersData, $from_user_id)
     {
         $this->usersData = $usersData;
+        $this->from_user_id = $from_user_id;
+
     }
    
     /**
@@ -39,10 +42,13 @@ class ProcessRequest implements ShouldQueue
     public function handle()
     {
         $usersData = $this->usersData;
+       
+
+        
         // $notificationobj = $this->notificationobj;
 
   
-        $message = $usersData->name . ' You have recieved a place request!';
+        $message = $usersData->from_user_id . ' You have recieved a place request!';
         // $rom_user_id = 2;
        
         if (!empty($usersData->device_token) && $usersData->device_token != null) {
@@ -56,7 +62,7 @@ class ProcessRequest implements ShouldQueue
                 'notification_type'=> 'PlaceRequest',
                 'type'=> 'teacher_notification',
                 'push_type'=> 'place_request',
-                'from_user_id'=> $usersData->from_user_id,
+                'from_user_id'=> $this->from_user_id,
              ]);
         
        
