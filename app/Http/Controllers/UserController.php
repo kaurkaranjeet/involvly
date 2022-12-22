@@ -302,7 +302,8 @@ class UserController extends Controller
         DB::enableQueryLog();
 
         if ($request->type == 'teacher') {
-            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)
+            ->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
             foreach ($users as $user) {
                 if ($user->type_of_schooling == 'home') {
                     $user->type_of_schooling = 'Not Assigned';
@@ -317,7 +318,9 @@ class UserController extends Controller
                 }
             }
         } else if ($request->type == 'program-teacher') {
-            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,hourly_rate,availability,users.*'))->orderBy('id', 'DESC')->get();
+            $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)
+            ->rightJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+            ->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,hourly_rate,availability,users.*'))->orderBy('id', 'DESC')->get();
             foreach ($users as $user) {
                 if ($user->type_of_schooling == 'home') {
                     $user->type_of_schooling = 'Not Assigned';

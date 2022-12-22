@@ -1305,6 +1305,7 @@ class ParentController extends Controller
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
+
     // API- Make a Request for Hire Teacher
     public function TeacherReqList(Request $request)
     {
