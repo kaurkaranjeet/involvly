@@ -30,7 +30,7 @@ export default {
 
         };
         return new Promise((resolve, reject) => {
-            axios.post('/api/auth/anage-umsers/' + school_id, requestOptions)
+            axios.post('/api/auth/manage-users/' + school_id, requestOptions)
                 .then((response) => {
                     //  console.log(response.data.users);
                     commit('SET_USERS', response.data.users)

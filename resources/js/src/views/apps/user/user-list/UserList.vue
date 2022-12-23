@@ -14,40 +14,40 @@
             <vs-button color="primary" type="filled" @click="addStudentdata">Add New Teacher</vs-button>
         </div>
 
-    <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
+   <!-- <vx-card ref="filterCard" title="Filters" class="user-list-filters mb-8" actionButtons @refresh="resetColFilters" @remove="resetColFilters">
       <div class="vx-row">
-       <!--  <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Role</label>
           <v-select :options="roleOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="roleFilter" class="mb-4 md:mb-0" />
-        </div> -->
+        </div>
         <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Select Class</label>
           <v-select :options="classOptions" :clearable="false"  v-model="isclassFilter" class="mb-4 md:mb-0"   @input="getSubjects"/>
         </div>
-<!-- <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+<div class="vx-col md:w-1/4 sm:w-1/2 w-full">
       <label class="text-sm opacity-75">Select Subject</label>
         <v-select  :options="Subjectoptions"   :clearable="false"  v-model="subjectFilter" class="mb-4 md:mb-0"  @input="getRecord"  />
 
      
-      </div> -->
+      </div>
 
-       <!--  <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Verified</label>
           <v-select :options="isVerifiedOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="isVerifiedFilter" class="mb-4 sm:mb-0" />
-        </div> -->
-      <!--   <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
+        </div>
+        <div class="vx-col md:w-1/4 sm:w-1/2 w-full">
           <label class="text-sm opacity-75">Department</label>
           <v-select :options="departmentOptions" :clearable="false" :dir="$vs.rtl ? 'rtl' : 'ltr'" v-model="departmentFilter" />
-        </div> -->
+        </div>
       </div>
-    </vx-card>
+    </vx-card>-->
 
     <div class="vx-card p-6">
 
       <div class="flex flex-wrap items-center">
 
         <!-- ITEMS PER PAGE -->
-        <div class="flex-grow">
+        <!-- <div class="flex-grow">
           <vs-dropdown vs-trigger-click class="cursor-pointer">
           <div v-if="usersData.length == '0'" class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
               <span class="mr-2">0 - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
@@ -57,11 +57,11 @@
               <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
               <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
             </div>
-            <!--<div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+            <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
               <span class="mr-2">{{ currentPage * paginationPageSize - (paginationPageSize - 1) }} - {{ usersData.length - currentPage * paginationPageSize > 0 ? currentPage * paginationPageSize : usersData.length }} of {{ usersData.length }}</span>
               <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
             </div>
-             <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
+             <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button>  
             <vs-dropdown-menu>
 
               <vs-dropdown-item @click="gridApi.paginationSetPageSize(10)">
@@ -78,10 +78,10 @@
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
-        </div>
+        </div> -->
 
         <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
-          <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." />
+          <!-- <vs-input class="sm:mr-4 mr-0 sm:w-auto w-full sm:order-normal order-3 sm:mt-0 mt-4" v-model="searchQuery" @input="updateSearchQuery" placeholder="Search..." /> -->
           <!-- <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()">Export as CSV</vs-button> -->
 
           <!-- ACTION - DROPDOWN -->
@@ -256,7 +256,7 @@ export default {
           headerName: 'Email',
           field: 'email',
           filter: true,
-          width: 225
+          width: 300
         },
        
       
@@ -264,7 +264,7 @@ export default {
           headerName: 'Assigned Classes',
           field: 'class_codes',
           filter: true,
-          width: 225,
+          width: 300,
           //cellRendererFramework: 'CellRendererStatus'
         },
         

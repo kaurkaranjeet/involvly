@@ -32,10 +32,10 @@ export default [{
     submenu: [
         {
             // Full Time Teacher List
-            url: '/apps/user/fulltime-list',
+            url: '/apps/user/user-list',
             name: 'Full-time Teachers',
             icon: "UsersIcon",
-            slug: 'app-fulltime-list',
+            slug: 'app-user-list',
             i18n: 'List'
         },
         {
