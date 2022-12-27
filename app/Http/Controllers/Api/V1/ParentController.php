@@ -1313,7 +1313,7 @@ class ParentController extends Controller
             $input = $request->all();
             $validator = Validator::make($input, [
                 'id' => 'required|integer',
-                'request_type' =>'required|status'
+                'request_type' =>'required'
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
