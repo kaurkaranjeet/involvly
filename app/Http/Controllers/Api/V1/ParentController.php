@@ -1319,21 +1319,10 @@ class ParentController extends Controller
                 throw new Exception($validator->errors()->first());
             } else {
                 if (!empty($input)) {
-                    $users = 
-                    TeachingProgramReq::where('to_user', $request->id)
-                        ->where('request_status', '1')
-                        ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.from_user')
-                        ->select('users.*','teachin_program_requests.request_status');
-                        if($request->request_type == 5)
-                        {
-                            $users->where('users.role_id','=', $request->request_type);
-                        }
-                        if($request->request_type == 3)
-                        {
-                            $users->where('users.role_id','=', $request->request_type);
-                        }
-                        $users =  $users->get()
-                        ->sortByDesc('teaching_id');
+                    $data['id'] = $request->id;
+                    $data['req_satus'] = '1';
+                    $data['request_type'] = $request->request_type;
+                    $users = TeachingProgramReq::fetchList($data); 
 
                     if (!empty($users)) {
                         return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);
@@ -1347,6 +1336,35 @@ class ParentController extends Controller
         }
     }
 
+    // Ongoing  List
+    public function ongoingList(Request $request)
+    {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'id' => 'required|integer',
+                'request_type' =>'required'
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                if (!empty($input)) {
+                    $data['id'] = $request->id;
+                    $data['req_satus'] = '2';
+                    $data['request_type'] = $request->request_type;
+                    $users = TeachingProgramReq::fetchList($data); 
+
+                    if (!empty($users)) {
+                        return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);
+                    } else {
+                        throw new Exception('List empty!');
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+    }
     // API- Make a Request for Hire Teacher
     public function AcceptRequest(Request $request)
     {

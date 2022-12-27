@@ -61,4 +61,22 @@ class TeachingProgramReq extends Model
  
         }
     }
+    public static function fetchList($data)
+    {
+
+        $users = self::where('to_user', $data['id'])
+        ->where('request_status',$data['req_satus'])
+        ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.from_user')
+        ->select('users.*','teachin_program_requests.request_status');
+        if($data['request_type'] == 5)
+        {
+            $users->where('users.role_id','=', $data['request_type']);
+        }
+        if($data['request_type'] == 3)
+        {
+            $users->where('users.role_id','=', $data['request_type']);
+        }
+        return $users =  $users->get()
+        ->sortByDesc('teaching_id');
+    }
 }
