@@ -1332,7 +1332,7 @@ class ParentController extends Controller
                         {
                             $users->where('users.role_id','=', $request->request_type);
                         }
-                        $users->get()
+                        $users =  $users->get()
                         ->sortByDesc('teaching_id');
 
                     if (!empty($users)) {
