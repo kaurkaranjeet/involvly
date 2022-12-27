@@ -1313,6 +1313,7 @@ class ParentController extends Controller
             $input = $request->all();
             $validator = Validator::make($input, [
                 'id' => 'required|integer',
+                'request_type' =>'required|status'
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
@@ -1322,8 +1323,16 @@ class ParentController extends Controller
                     TeachingProgramReq::where('to_user', $request->id)
                         ->where('request_status', '1')
                         ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.from_user')
-                        ->select('users.*','teachin_program_requests.request_status')
-                        ->get()
+                        ->select('users.*','teachin_program_requests.request_status');
+                        if($request->request_type == 5)
+                        {
+                            $users->where('users.role_id','=', $request->request_type);
+                        }
+                        if($request->request_type == 3)
+                        {
+                            $users->where('users.role_id','=', $request->request_type);
+                        }
+                        $users->get()
                         ->sortByDesc('teaching_id');
 
                     if (!empty($users)) {
