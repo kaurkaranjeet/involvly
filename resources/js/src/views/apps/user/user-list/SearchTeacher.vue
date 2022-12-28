@@ -195,13 +195,13 @@ export default {
         {
           headerName: 'ID',
           field: 'id',
-          width: 95,
+          width: 100,
           filter: true,
         },
         {
           headerName: 'PROFILE',
           filter: true,
-          width: 125,
+          width: 120,
           checkboxSelection: false,
           headerCheckboxSelectionFilteredOnly: false,
           headerCheckboxSelection: false,
@@ -211,13 +211,13 @@ export default {
           headerName: 'NAME',
           field: 'name',
           filter: true,
-          width: 170
+          width: 150
         },
         {
           headerName: 'LOCATION',
           field: 'location',
           filter: true,
-          width: 170
+          width: 150
         },
 
         {
@@ -239,28 +239,28 @@ export default {
           headerName: 'SUBJECTS',
           field: 'subject_pr',
           filter: true,
-          width: 150,
+          width: 240,
           //cellRendererFramework: 'CellRendererStatus'
         },
         {
           headerName: 'CLASSES',
           field: 'class_name',
           filter: true,
-          width: 120,
+          width: 240,
           //cellRendererFramework: 'CellRendererStatus'
         },
         {
           headerName: 'RATE',
           field: 'hourly_rate',
           filter: true,
-          width: 140,
+          width: 90,
           //cellRendererFramework: 'CellRendererStatus'
         },
 
         {
           headerName: 'ACTIONS',
           field: 'transactions',
-          width: 200,
+          width: 150,
           cellRendererFramework: 'CellRendererPlaceReq'
         },
 

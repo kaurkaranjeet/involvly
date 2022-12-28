@@ -162,14 +162,14 @@ export default {
           headerName: 'SUBJECTS',
           field: 'subject_pr',
           filter: true,
-          width: 150,
+          width: 190,
           //cellRendererFramework: 'CellRendererStatus'
         },
         {
           headerName: 'CLASSES',
           field: 'class_name',
           filter: true,
-          width: 120,
+          width: 190,
           //cellRendererFramework: 'CellRendererStatus'
         },
         {

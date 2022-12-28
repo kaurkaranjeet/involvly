@@ -217,7 +217,7 @@ export default {
         {
           headerName: 'ID',
           field: 'id',
-          width: 125,
+          width: 200,
           filter: true,
           checkboxSelection: false,
           headerCheckboxSelectionFilteredOnly: false,
@@ -228,26 +228,26 @@ export default {
           headerName: 'Name',
           field: 'name',
           filter: true,
-          width: 225
+          width: 300
         },
         {
           headerName: 'Email',
           field: 'email',
           filter: true,
-          width: 225
+          width: 300
         },
         {
           headerName: 'Type of Schooling',
           field: 'type_of_schooling',
           filter: true,
-          width: 225,
+          width: 200,
           //cellRendererFramework: 'CellRendererStatus'
         },
         {
           headerName: 'School Name',
           field: 'school_detail.school_name',
           filter: true,
-          width: 225,
+          width: 400,
           //cellRendererFramework: 'CellRendererStatus'
         },
         

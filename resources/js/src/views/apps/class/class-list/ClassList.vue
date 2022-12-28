@@ -204,7 +204,7 @@ export default {
             columnDefs: [{
                     headerName: 'ID',
                     field: 'id',
-                    width: 125,
+                    width: 200,
                     filter: true,
                     checkboxSelection: false,
                     headerCheckboxSelectionFilteredOnly: false,
@@ -215,13 +215,13 @@ export default {
                     headerName: 'Class Name',
                     field: 'class_name',
                     filter: true,
-                    width: 210
+                    width: 300
                 },
                 {
                     headerName: 'Class Code',
                     field: 'class_code',
                     filter: true,
-                    width: 225
+                    width: 400
                 },
 
 
@@ -236,7 +236,7 @@ export default {
                 {
                     headerName: 'Actions',
                     field: 'transactions',
-                    width: 150,
+                    width: 200,
                     cellRendererFramework: 'CellRendererActions'
                 }
             ],

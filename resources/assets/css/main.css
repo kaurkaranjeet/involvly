@@ -177,3 +177,7 @@
   [dir] .vx-card .vx-card__collapsible-content .vx-card__body {
     padding: 1.9rem !important;
 }
+.ag-center-cols-container
+{
+  width: 100% !important  ;
+}

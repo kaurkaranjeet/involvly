@@ -224,7 +224,7 @@ export default {
         {
           headerName: 'ID',
           field: 'id',
-          width: 125,
+          width: 200,
           filter: true,
           checkboxSelection: false,
           headerCheckboxSelectionFilteredOnly: false,
@@ -235,13 +235,13 @@ export default {
           headerName: 'Name',
           field: 'name',
           filter: true,
-          width: 225
+          width: 300
         },
         {
           headerName: 'Email',
           field: 'email',
           filter: true,
-          width: 225
+          width: 400
         },
        
       
@@ -249,14 +249,14 @@ export default {
           headerName: 'Associated child',
           field: 'associated_child',
           filter: true,
-          width: 225,
+          width: 400,
           //cellRendererFramework: 'CellRendererStatus'
         },
         
         {
           headerName: 'Actions',
           field: 'transactions',
-          width: 150,
+          width: 200,
           cellRendererFramework: 'CellRendererActionsParents'
         }
       ],
