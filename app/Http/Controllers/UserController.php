@@ -242,7 +242,6 @@ class UserController extends Controller
 
         return response()->json(compact('user'), 200);
     }
-
     public function manageUsers(Request $request, $id)
     {
         DB::enableQueryLog();
