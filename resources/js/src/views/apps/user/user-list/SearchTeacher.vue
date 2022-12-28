@@ -195,7 +195,7 @@ export default {
         {
           headerName: 'ID',
           field: 'id',
-          width: 100,
+          width: 85,
           filter: true,
         },
         {
@@ -211,13 +211,13 @@ export default {
           headerName: 'NAME',
           field: 'name',
           filter: true,
-          width: 150
+          width: 130
         },
         {
           headerName: 'LOCATION',
           field: 'location',
           filter: true,
-          width: 150
+          width: 140
         },
 
         {
