@@ -260,7 +260,7 @@ export default {
         {
           headerName: 'ACTIONS',
           field: 'transactions',
-          width: 180,
+          width: 160,
           cellRendererFramework: 'CellRendererPlaceReq'
         },
 
