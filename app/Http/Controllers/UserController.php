@@ -256,6 +256,12 @@ class UserController extends Controller
             ->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*,teachin_program_requests.request_status as request_status'));
         } elseif ($request->type == 'teacher') {
             $users = User::where('role_id', 4)->where('school_id', $id)
+            ->whereNotExists(function($query)
+            {
+                $query->select(DB::raw(1))
+                      ->from('teaching_program')
+                      ->whereRaw('teaching_program.user_id = users.id');
+            })
             ->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'));
         } elseif ($request->type == 'contractual-teacher') {
             $users = User::where('role_id', 4)->where('school_id', $id)
@@ -265,7 +271,7 @@ class UserController extends Controller
         } else {
             $users = User::where('role_id', 3)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'));
         }
-        $users = $users->get();
+        $users = $users->orderBy('id', 'DESC')->get();
 
         //  print_r(DB::getQueryLog());die;
         foreach ($users as $user) {
