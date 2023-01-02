@@ -84,10 +84,7 @@ class ParentController extends Controller
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
-                if ($request->teaching_program == 'teaching_program') {
-                    $input['id'] = $addUser->id;
-                    TeachingProgram::add($input);
-                }
+                
                 if (is_array($request->subject_id)) {
                     foreach ($request->subject_id as $key => $value) {
                         $subject['subject_id'] = $value;
@@ -102,10 +99,16 @@ class ParentController extends Controller
                         UserClass::add($class_id);
                     }
                 }
+                
                 $addUser->ActiveJwttoken = $token;
                 $addUser->school_status = '0';
                 $addUser->update_detail = '0';
                 $addUser->school_live = '0';
+
+                if ($request->teaching_program == 'teaching_program') {
+                    $input['id'] = $addUser->id;
+                    TeachingProgram::add($input);
+                }
                 return response()->json(array('error' => false, 'message' => 'Registered Successfully', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
