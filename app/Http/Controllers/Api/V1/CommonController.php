@@ -25,6 +25,10 @@ use App\Models\CommentReply;
 use App\Models\DiscussionComment;
 use App\Models\DiscussionCommentReply;
 use App\Models\Group;
+use App\Models\TeachingProgram;
+use App\Models\TeachingProgramReq;
+use App\UserClass;
+use App\UserSubject;
 use App\Models\Timezone;
 
 class CommonController extends Controller {
@@ -248,6 +252,65 @@ WHERE class_id= class_code_subject .class_code_id AND
         }
     }
 
+    public function JoinProgram(Request $request) {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'user_id' => 'required',
+                        'join_program_status' => 'required',
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
+                return response()->json(array('error' => false, 'data' => [], 'message' => 'Updated Successfully'), 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
+    }
+    public function AddTeachingProgram(Request $request) {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                        'user_id' => 'required',
+                        'class_id' => 'required_if:teaching_program,teaching_program',
+                        'subject_id' => 'required_if:teaching_program,teaching_program',
+                        'hourly_rate' => 'required_if:teaching_program,teaching_program',
+                        'availability' => 'required_if:teaching_program,teaching_program|in:Full-Time,Part-Time,Both',
+                        'location' => 'required_if:teaching_program,teaching_program',
+                        'preferences' => 'required_if:teaching_program,teaching_program|in:On-Site,Remote',
+                       
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                 $input['id'] = $request->user_id;
+                    TeachingProgram::add($input);
+                    
+                    if (is_array($request->subject_id)) {
+                        foreach ($request->subject_id as $key => $value) {
+                            $subject['subject_id'] = $value;
+                            $subject['user_id'] = $addUser->id;
+                            UserSubject::add($subject);
+                        }
+                    }
+                    if (is_array($request->class_id)) {
+                        foreach ($request->class_id as $key => $value) {
+                            $class_id['class_id'] = $value;
+                            $class_id['user_id'] = $addUser->id;
+                            UserClass::add($class_id);
+                        }
+                    }
+                
+                User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
+                return response()->json(array('error' => false, 'data' => [], 'message' => 'Updated Successfully'), 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
+    }
+    
     public function UpdateUserImage(Request $request) {
         $input = $request->all();
         $validator = Validator::make($input, [
