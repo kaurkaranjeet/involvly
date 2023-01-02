@@ -59,21 +59,23 @@ class ParentController extends Controller
     {
         try {
             $input = $request->all();
-            $validator = Validator::make($input, [
-                        'first_name' => 'required',
-                        'device_token' => 'required',
-                        'last_name' => 'required',
-                        'email' => 'required|unique:users',
-                        'password' => 'required',
-                        'role_id' => 'required'
+            $user = [
+                'first_name' => 'required',
+                'device_token' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|unique:users',
+                'password' => 'required',
+                'role_id' => 'required',
+                'class_id' => 'required_if:teaching_program,teaching_program',
+                'subject_id' => 'required_if:teaching_program,teaching_program',
+                'hourly_rate' => 'required_if:teaching_program,teaching_program',
+                'availability' => 'required_if:teaching_program,teaching_program|in:Full-Time,Part-Time,Both',
+                'location' => 'required_if:teaching_program,teaching_program',
+                'preferences' => 'required_if:teaching_program,teaching_program|in:On-Site,Remote',
+            ];
 
-                            // 'type_of_schooling' => 'required',
-                            // 'country' => 'required',
-                            // 'state_id' => 'required|exists:states,id',
-                            // 'city_id' => 'required|exists:cities,id',
-                            //  'school_id' => 'required_if:type_of_schooling, =,school'
-            ]);
-
+            $validator = Validator::make($input, $user);
+            // var_dump($request->location);exit;
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
@@ -82,11 +84,33 @@ class ParentController extends Controller
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
-              
+                if ($request->teaching_program == 'teaching_program') {
+                    $input['id'] = $addUser->id;
+                    TeachingProgram::add($input);
+                }
+                if (is_array($request->subject_id)) {
+                    foreach ($request->subject_id as $key => $value) {
+                        $subject['subject_id'] = $value;
+                        $subject['user_id'] = $addUser->id;
+                        UserSubject::add($subject);
+                    }
+                }
+                if (is_array($request->class_id)) {
+                    foreach ($request->class_id as $key => $value) {
+                        $class_id['class_id'] = $value;
+                        $class_id['user_id'] = $addUser->id;
+                        UserClass::add($class_id);
+                    }
+                }
                 $addUser->ActiveJwttoken = $token;
                 $addUser->school_status = '0';
                 $addUser->update_detail = '0';
                 $addUser->school_live = '0';
+                 //Update jwt Token
+                 User::where('id',$addUser->id)->update(['ActiveJwttoken'=>$token]);
+                 //  $addUser->relationship = $request->relationship;
+ 
+ 
                 return response()->json(array('error' => false, 'message' => 'Registered Successfully', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
