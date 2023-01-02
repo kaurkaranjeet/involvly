@@ -21,8 +21,9 @@ class CreateTeachingProgramTable extends Migration
             $table->string('location');
 
             $table->enum('preferences',['On-Site','Remote'])->default('On-Site');
+
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->nullable();
             $table->timestamps();
         });
     }
