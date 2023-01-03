@@ -253,7 +253,7 @@ WHERE class_id= class_code_subject .class_code_id AND
     }
 
     public function JoinProgram(Request $request) {
-        try {
+        try { 
             $input = $request->all();
             $validator = Validator::make($input, [
                         'user_id' => 'required',
@@ -262,8 +262,8 @@ WHERE class_id= class_code_subject .class_code_id AND
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-                User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
-                return response()->json(array('error' => false, 'data' => [], 'message' => 'Updated Successfully'), 200);
+               $users= User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
+                return response()->json(array('error' => false, 'data' => $users, 'message' => 'Updated Successfully'), 200);
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);

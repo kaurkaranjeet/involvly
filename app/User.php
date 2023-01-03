@@ -21,7 +21,7 @@ class User extends Authenticatable implements JWTSubject {
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'profile_image',
+        'name', 'email', 'password', 'profile_image','join_teaching_program'
     ];
 
     /**
@@ -190,4 +190,5 @@ class User extends Authenticatable implements JWTSubject {
    return  User::where('school_id',$id)->where('role_id',4)->where('status',1);
    }
 
+   
 }
