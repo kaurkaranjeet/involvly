@@ -120,6 +120,11 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
   Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
   Route::post('add_children', 'Api\V1\ParentController@AddChildren');
   Route::post('join_community', 'Api\V1\CommonController@Joincommunity');
+  // Teaching Program Apis
+  Route::post('join_program', 'Api\V1\CommonController@JoinProgram');
+  Route::post('add_teaching_program', 'Api\V1\CommonController@AddTeachingProgram');
+
+
   Route::post('add_post', 'Api\V1\PostController@AddPost');
   Route::post('add_comment', 'Api\V1\PostController@AddComments');
   Route::get('get_home_feed', 'Api\V1\PostController@GetPostHomefeed');
