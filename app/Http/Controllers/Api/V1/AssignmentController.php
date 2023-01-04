@@ -332,7 +332,7 @@ class AssignmentController extends Controller {
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $getData = SubmittedAssignments::select('submitted_attachement as attachments')->where('student_id', $request->user_id)->where('class_id', $request->class_id)->where('submit_status', '1')->orderBy('id', 'DESC')->get();
+            $getData = SubmittedAssignments::select('submitted_attachement')->where('student_id', $request->user_id)->where('class_id', $request->class_id)->where('submit_status', '1')->orderBy('id', 'DESC')->get();
             
             $assignment = Assignment::select((DB::raw("assignments.*,( CASE WHEN EXISTS (
               SELECT id
@@ -340,7 +340,7 @@ class AssignmentController extends Controller {
               WHERE assignment_id = assignments.id  AND submitted_assignments.submit_status = '1' AND student_id=".$request->user_id."
               ) THEN TRUE ELSE FALSE END) AS is_submit")))->with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
 
-            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment,'submitted_assignments'=>$getData), 200);
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment,'assignments'=>$getData), 200);
         }
     }
 
