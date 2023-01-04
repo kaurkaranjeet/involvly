@@ -326,14 +326,13 @@ class AssignmentController extends Controller {
         $validator = Validator::make($request->all(), [
                     'assignment_id' => 'required|exists:assignments,id',
                     'user_id' => 'required|exists:users,id',
-                    'student_id' => 'required|exists:users,id',
                     'class_id' => 'required|exists:class_code,id'
                     
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $getData = SubmittedAssignments::select('submitted_attachement as attachments')->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '1')->orderBy('id', 'DESC')->get();
+            $getData = SubmittedAssignments::select('submitted_attachement as attachments')->where('student_id', $request->user_id)->where('class_id', $request->class_id)->where('submit_status', '1')->orderBy('id', 'DESC')->get();
             
             $assignment = Assignment::select((DB::raw("assignments.*,( CASE WHEN EXISTS (
               SELECT id
