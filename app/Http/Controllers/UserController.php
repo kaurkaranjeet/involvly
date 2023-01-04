@@ -262,7 +262,7 @@ class UserController extends Controller
                       ->from('teaching_program')
                       ->whereRaw('teaching_program.user_id = users.id');
             })
-            ->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'));
+            ->select(DB::raw('(select GROUP_CONCAT(DISTINCT u.class_name) AS class_codes from assigned_teachers inner join class_code as u ON assigned_teachers.class_id=u.id WHERE  assigned_teachers.teacher_id= users.id) as class_codes ,users.*'));
         } elseif ($request->type == 'contractual-teacher') {
             $users = User::where('role_id', 4)->where('school_id', $id)
             ->rightJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
