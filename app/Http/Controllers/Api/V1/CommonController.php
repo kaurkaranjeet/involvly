@@ -291,14 +291,14 @@ WHERE class_id= class_code_subject .class_code_id AND
                     if (is_array($request->subject_id)) {
                         foreach ($request->subject_id as $key => $value) {
                             $subject['subject_id'] = $value;
-                            $subject['user_id'] = $addUser->id;
+                            $subject['user_id'] = $request->id;
                             UserSubject::add($subject);
                         }
                     }
                     if (is_array($request->class_id)) {
                         foreach ($request->class_id as $key => $value) {
                             $class_id['class_id'] = $value;
-                            $class_id['user_id'] = $addUser->id;
+                            $class_id['user_id'] = $request->id;
                             UserClass::add($class_id);
                         }
                     }
