@@ -326,17 +326,22 @@ class AssignmentController extends Controller {
         $validator = Validator::make($request->all(), [
                     'assignment_id' => 'required|exists:assignments,id',
                     'user_id' => 'required|exists:users,id',
+                    'student_id' => 'required|exists:users,id',
+                    'class_id' => 'required|exists:class_code,id'
+                    
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
+            $getData = SubmittedAssignments::with('subjects')->with('Assignments.User')->where('student_id', $request->student_id)->where('class_id', $request->class_id)->where('submit_status', '1')->orderBy('id', 'DESC')->get();
+            
             $assignment = Assignment::select((DB::raw("assignments.*,( CASE WHEN EXISTS (
               SELECT id
               FROM submitted_assignments
               WHERE assignment_id = assignments.id  AND submitted_assignments.submit_status = '1' AND student_id=".$request->user_id."
               ) THEN TRUE ELSE FALSE END) AS is_submit")))->with('User:id,name,profile_image')->where('id', $request->assignment_id)->first();
 
-            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
+            return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment,'submitted_assignments'=>$getData), 200);
         }
     }
 
