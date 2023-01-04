@@ -172,10 +172,9 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
      // Group List
     public function GroupListNew(Request $request) {
         try {
-
             $input = $request->all();
             $validator = Validator::make($input, [
-                    'user_id' => 'required|exists:users,id',
+                        'user_id' => 'required|exists:users,id',
             ]);
 
             if ($validator->fails()) {
@@ -188,7 +187,8 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
               ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as get_groups'))->first();
+              
+              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as get_group'))->first();
               if($request->has('search')){
                 $search=$request->search;
                   $search="  AND  group_name LIKE '" .$search."%'";
@@ -213,7 +213,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               }
 
 
-
+              
               $clear_chat_groups= ClearChatGroup::where('user_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_number)) as group_number'))->first();
               if(!empty($clear_chat_groups->group_number)){
                 $group_number_sql=' AND  ( group_number NOT IN('.$clear_chat_groups->group_number.'))';
@@ -221,12 +221,11 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               else{
                 $group_number_sql='';
               }
-
-               if($request->has('search')){
-                   $sql_oo= Group::whereRaw("type='custom_group'  AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id 
-) " . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
-
-               foreach($sql_oo as $single_group){
+              
+              if($request->has('search')){
+                $sql_oo= Group::whereRaw("type='custom_group'  AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id) " . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
+                
+                foreach($sql_oo as $single_group){
             
                 $count=GroupMember::where('group_id',$single_group->id)->count();
                   $single_group->member_count=$count;
@@ -249,29 +248,33 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 
 
                  } else{
+                  
             if(!empty($teachers->schools)){
+              
                $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
 AND join_community=1))  OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  )   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-) ". $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ".$group_number_sql." ORDER by id DESC limit 1) as file");
+) ". $search)->select('groups.*')->selectRaw(" (SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id ".$group_number_sql." ORDER by id DESC limit 1) as file");
                /*  if(!empty($classes->classes)){
                  $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' 
 AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1)) OR ( type='school_admin' AND school_id IN('".$teachers->schools."'))  OR ( type='class_group' AND class_id IN('".$classes->classes."'))  ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id)")->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id ".$group_number_sql."  ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file");
                }*/
              }else{
+              
               $sql= Group::whereRaw(" ((type='parent_community' AND 
   EXISTS (SELECT join_community from users WHERE id='".$user->id."' AND join_community=1))  )   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-)  ". $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file");
+)  ". $search)->select('groups.*')->selectRaw("(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file");
            }
-
-$groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
+           
+           $groups=$sql->orderBy('message_date', 'DESC')->orderBy(DB::raw( '  FIELD(type, "custom_group", "parent_community", "school","school_admin", "class_group") '))->orderBy('created_at', 'DESC')->get();
+          
 
    $sql_oo= Group::whereRaw("type='custom_group' AND  group_category='community_group'   AND ( ".$msql." )  ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id 
-)" . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
+)" . $search)->select('groups.*')->selectRaw("(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
 
  $digital_learning= Group::whereRaw("type='custom_group' AND  group_category='digital_learning'   AND ( ".$msql."  ) ".$msql1." AND status=1 AND NOT EXISTS (SELECT id FROM report_groups WHERE user_id = '".$user->id."' AND group_id = groups.id
-) "  . $search)->selectRaw(" groups.* ,(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
+) "  . $search)->select('groups.*')->selectRaw("(SELECT message FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as last_message,(SELECT created_at FROM group_messages WHERE group_id=groups.id  ".$group_number_sql."  ORDER by id DESC limit 1) as message_date,(SELECT file FROM group_messages WHERE group_id=groups.id  ".$group_number_sql." ORDER by id DESC limit 1) as file")->orderBy('message_date', 'DESC')->orderBy('created_at', 'DESC')->get();
                  
                foreach($groups as $single_group){
                 if($single_group->type=='parent_community'){
