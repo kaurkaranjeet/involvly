@@ -175,7 +175,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
 
             $input = $request->all();
             $validator = Validator::make($input, [
-                        'user_id' => 'required|exists:users,id',
+                    'user_id' => 'required|exists:users,id',
             ]);
 
             if ($validator->fails()) {
@@ -188,7 +188,7 @@ AND join_community=1)) OR (type='school' AND EXISTS (SELECT join_community from 
               $classes = ParentChildrens::Join('user_class_code', 'user_class_code.user_id', '=', 'parent_childrens.children_id')
               ->select(DB::raw('group_concat(DISTINCT(class_id)) as classes'))
               ->where('parent_id', $user->id)->groupBy('parent_id')->first();
-              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as groups'))->first();
+              $members= GroupMember::where('member_id',$request->user_id)->select(DB::raw('group_concat(DISTINCT(group_id)) as get_groups'))->first();
               if($request->has('search')){
                 $search=$request->search;
                   $search="  AND  group_name LIKE '" .$search."%'";
