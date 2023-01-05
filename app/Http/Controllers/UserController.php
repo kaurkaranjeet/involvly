@@ -133,6 +133,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->role_id = 5;
         $user->save();
+        
         //school approved code
         School::where('id', $request->school_id)->update(['approved' => '1']);
         if ($request->hasfile('documents')) {
@@ -307,11 +308,16 @@ class UserController extends Controller
 
     //fetch all admin users
     public function manageAdminUsers(Request $request)
-    {
+    { 
         DB::enableQueryLog();
         if ($request->type == 'teacher') {
             $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)
-            ->join('teaching_program', 'teaching_program.user_id', '!=', 'users.id')
+            ->whereNotExists(function($query)
+            {
+                $query->select(DB::raw(1))
+                      ->from('teaching_program')
+                      ->whereRaw('teaching_program.user_id = users.id');
+            })
             ->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
             foreach ($users as $user) {
                 if ($user->type_of_schooling == 'home') {
@@ -322,7 +328,7 @@ class UserController extends Controller
                     if (!empty($user->SchoolDetail)) {
                         $user->school_name = $user->SchoolDetail->school_name;
                     } else {
-                        $user->school_name = '-';
+                        $user->school_name = '-';   
                     }
                 }
             }
