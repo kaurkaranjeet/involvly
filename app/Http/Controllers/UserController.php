@@ -309,7 +309,6 @@ class UserController extends Controller
     public function manageAdminUsers(Request $request)
     {
         DB::enableQueryLog();
-
         if ($request->type == 'teacher') {
             $users = User::with('SchoolDetail')->where('role_id', 4)->where('status', 1)
             ->join('teaching_program', 'teaching_program.user_id', '!=', 'users.id')
