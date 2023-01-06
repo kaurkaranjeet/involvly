@@ -21,7 +21,7 @@
                   statistic="36.9k"
                   statisticTitle="Views" />
             </div>
-
+ 
             <div class="vx-col w-1/2 md:w-1/3 xl:w-1/6">
                 <statistics-card-line
                   hideChart

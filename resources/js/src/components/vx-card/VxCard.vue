@@ -17,7 +17,7 @@
         cardClasses ]" :style="cardStyles"
         v-on="$listeners">
         <div class="vx-card__header" v-if="hasHeader">
-
+          
             <!-- card title -->
             <div class="vx-card__title">
                 <h4 v-if="this.$props.title" :style="titleStyles" :class="titleClasses">{{ title }}</h4>

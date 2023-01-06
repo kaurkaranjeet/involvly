@@ -8,21 +8,28 @@
 ========================================================================================== -->
 
 <template>
-  <vx-card class="overflow-hidden">
+  <vx-card class="overflow-hidden" :style="{ 
+    padding: '35px',
+    backgroundImage: 'url(' + image + ')',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right',   
+    }" >
     <div slot="no-body">
       <div class="p-6" :class="{
         'flex justify-between flex-row-reverse items-center': iconRight,
         'text-center': !iconRight && hideChart,
         'pb-0': !hideChart
       }">
-        <!-- <feather-icon :icon="icon" class="p-3 inline-flex rounded-full" :class="[`text-${color}`, { 'mb-4': !iconRight }]"
+        <!-- <feather-icon :icon="icon" class="p-3 inline-flex rounded-full"
+          :class="[`text-${color}`, { 'mb-4': !iconRight }]"
           :style="{ background: `rgba(var(--vs-${color}),.15)` }"></feather-icon> -->
         <span style="margin-top: 10px;">
-          <img src="@assets/images/elements/indvidual.svg" alt="Group svg" width="35px" />
+          <img :src="imageUrl" alt="Group svg" width="35px" />
         </span>
         <div class="truncate">
           <h2 class="mb-1 font-bold">{{ statistic }}</h2>
-          <span>{{ statisticTitle }}</span>
+          <span> 
+            {{ statisticTitle }}</span>
         </div>
       </div>
 
@@ -52,6 +59,13 @@ export default {
     statisticTitle: {
       type: String
     },
+    statisticImage:{
+      type: String
+    },
+    CardBackground:{
+      type:String
+    },
+
     chartData: {
       // type: Array,
       // required: true
@@ -82,10 +96,12 @@ export default {
   },
   data() {
     return {
+      imageUrl: this.statisticImage,
+      image: this.CardBackground,
       chartOptions: null
     }
   },
-  watch: {
+  watch: {  
     themePrimaryColor() {
       this.$refs.apexChart.updateOptions({ theme: { monochrome: { color: this.getHex(this.color) } } })
     }
