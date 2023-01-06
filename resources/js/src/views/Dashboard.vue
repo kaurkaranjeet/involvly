@@ -21,7 +21,7 @@
           <!-- content inside body(with padding) -->
           <vx-card__body class="vx-row" :style="welcomePadding" >
             <slot>
-              <div class="wrapper">
+              <div class="wrapper">   
                 <h4 class="mb-1 text-dark text-left demo-1"><img src="@assets/images/elements/Group.svg" alt="Group svg"
                     width="35px" /> </h4>
 
@@ -55,7 +55,8 @@
 
       <!-- CARD 3: ORDER RECIEVED 
           :chartData="subscribersGained.Teacherseries"-->
-      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base">
+      <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base"  @click="redirectteacheradmins"
+        style="cursor: pointer">
 
         <statistics-card-line 
           icon="UsersIcon" 
@@ -511,6 +512,13 @@ export default {
 
       this.$router
         .push(`/apps/user/listofschooladmins`)
+        .catch(() => { });
+    },
+    
+    redirectteacheradmins()
+    {
+      this.$router
+        .push(`/apps/user/allteachers`)
         .catch(() => { });
     },
 
