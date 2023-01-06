@@ -47,8 +47,8 @@
           :statistic="subscribersGained.students" 
           statisticTitle="School Admins"
           type="area"
-          statisticImage="/images/elements/Group1.svg"
-          CardBackground="'/images/elements/card1.png'"
+          statisticImage="@assets/images/elements/Group1.svg"
+          CardBackground="'@assets/images/elements/card1.png'"
           >      
         </statistics-card-line>
       </div>
@@ -62,8 +62,8 @@
           :statistic="subscribersGained.teachers"
           statisticTitle="Independent Teachers" 
           color="warning" 
-          statisticImage="/images/elements/indvidual.svg"
-          CardBackground="'/images/elements/card2.png'"
+          statisticImage="@assets/images/elements/Group.svg"
+          CardBackground="'@assets/images/elements/card1.png'"
           type="area"
           ></statistics-card-line>
       </div>

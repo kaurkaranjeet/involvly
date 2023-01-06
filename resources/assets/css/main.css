@@ -168,12 +168,7 @@
   min-height: 0px !important;
 }
  
-  [dir] .vx-card
-  {
-    padding-top: 20px;
  
-    padding-left: 20px;
-  }
   [dir] .vx-card .vx-card__collapsible-content .vx-card__body {
     padding: 1.9rem !important;
 }
