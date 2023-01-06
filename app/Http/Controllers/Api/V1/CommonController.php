@@ -274,19 +274,19 @@ WHERE class_id= class_code_subject .class_code_id AND
             $input = $request->all();
             $validator = Validator::make($input, [
                         'user_id' => 'required',
-                        'class_id' => 'required_if:teaching_program,teaching_program',
-                        'subject_id' => 'required_if:teaching_program,teaching_program',
-                        'hourly_rate' => 'required_if:teaching_program,teaching_program',
-                        'availability' => 'required_if:teaching_program,teaching_program|in:Full-Time,Part-Time,Both',
-                        'location' => 'required_if:teaching_program,teaching_program',
-                        'preferences' => 'required_if:teaching_program,teaching_program|in:On-Site,Remote',
+                        'class_id' => 'required',
+                        'subject_id' => 'required',
+                        'hourly_rate' => 'required',
+                        'availability' => 'required|in:Full-Time,Part-Time,Both',
+                        'location' => 'required',
+                        'preferences' => 'required|in:On-Site,Remote',
                        
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
                  $input['id'] = $request->user_id;
-                $data = TeachingProgram::add($input);
+                $data=  TeachingProgram::add($input);
                     
                     if (is_array($request->subject_id)) {
                         foreach ($request->subject_id as $key => $value) {
@@ -304,7 +304,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                     }
                 
                 User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
-                return response()->json(array('error' => false, 'data' =>  $data , 'message' => 'Updated Successfully'), 200);
+                return response()->json(array('error' => false, 'data' => [], 'message' => 'Updated Successfully'), 200);
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);

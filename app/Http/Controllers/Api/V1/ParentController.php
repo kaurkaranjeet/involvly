@@ -1187,7 +1187,7 @@ class ParentController extends Controller
             $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
             $subjects = Subject::select('subject_name', 'id')->groupBy('subject_name')->get();
             $data = array([
-                'class' => $classes,
+                'classes' => $classes,
                 'location' => $location,
                 'subjects' => $subjects,
             ]);
