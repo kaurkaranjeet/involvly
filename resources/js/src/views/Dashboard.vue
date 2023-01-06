@@ -62,8 +62,8 @@
           :statistic="subscribersGained.teachers"
           statisticTitle="Independent Teachers" 
           color="warning" 
-          statisticImage="/images/elements/Group.svg"
-          CardBackground="'/images/elements/card1.png'"
+          statisticImage="/images/elements/indvidual.svg"
+          CardBackground="'/images/elements/card2.png'"
           type="area"
           ></statistics-card-line>
       </div>
