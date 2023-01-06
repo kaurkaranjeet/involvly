@@ -43,7 +43,7 @@ class TeachingProgram extends Model
     public static function add($data)
     {
         if ($data) {
-            return self::create([
+            return self::updateOrCreate([
                 'hourly_rate' => $data['hourly_rate'],
                 'availability' => $data['availability'],
                 'location' => $data['location'],

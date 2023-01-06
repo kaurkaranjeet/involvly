@@ -18,7 +18,7 @@ class UserClass extends Model
  
     public static function add($data)
     {
-        return self::create([
+        return self::updateOrCreate([
             'user_id' => $data['user_id'], 
             'class_id' => $data['class_id'],
         ]);

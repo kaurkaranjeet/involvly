@@ -18,7 +18,7 @@ class UserSubject extends Model
  
     public static function add($data)
     {
-        return self::create([
+        return self::updateOrCreate([
             'user_id' => $data['user_id'], 
             'subject_id' => $data['subject_id'],
         ]);

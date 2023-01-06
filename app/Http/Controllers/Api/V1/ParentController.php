@@ -57,6 +57,7 @@ class ParentController extends Controller
     // Register Student
     public function FirststepParentRegister(Request $request)
     {
+        
         try {
             $input = $request->all();
             $user = [

@@ -286,25 +286,25 @@ WHERE class_id= class_code_subject .class_code_id AND
                 throw new Exception($validator->errors()->first());
             } else {
                  $input['id'] = $request->user_id;
-                    TeachingProgram::add($input);
+                $data = TeachingProgram::add($input);
                     
                     if (is_array($request->subject_id)) {
                         foreach ($request->subject_id as $key => $value) {
                             $subject['subject_id'] = $value;
-                            $subject['user_id'] = $request->id;
+                            $subject['user_id'] = $request->user_id;
                             UserSubject::add($subject);
                         }
                     }
                     if (is_array($request->class_id)) {
                         foreach ($request->class_id as $key => $value) {
                             $class_id['class_id'] = $value;
-                            $class_id['user_id'] = $request->id;
+                            $class_id['user_id'] = $request->user_id;
                             UserClass::add($class_id);
                         }
                     }
                 
                 User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
-                return response()->json(array('error' => false, 'data' => [], 'message' => 'Updated Successfully'), 200);
+                return response()->json(array('error' => false, 'data' =>  $data , 'message' => 'Updated Successfully'), 200);
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
