@@ -11,12 +11,15 @@
     <div class="vx-row">
       <!-- CARD 1: CONGRATS -->
       <div class="vx-col w-full lg:w-1/2 mb-base">
-        <vx-card slot="no-body" class="text-center bg-primary-gradient greet-user" v-bind:style="styleObject">
+        <vx-card class="text-center bg-primary-gradient greet-user" v-bind:style="styleObject">
           <!-- <img src="@assets/images/elements/decore-left.png" class="decore-left" alt="Decore Left" width="200" />
           <img src="@assets/images/elements/decore-right.png" class="decore-right" alt="Decore Right" width="175" />
           <feather-icon icon="AwardIcon" class="p-6 mb-8 bg-primary inline-flex rounded-full text-white shadow"
             svgClasses="h-8 w-8"></feather-icon> -->
-          <div class="wrapper">
+          <vx-card__body class="vx-row" :style="welcomePadding" >
+            <slot>
+            <div class="wrapper">
+           
             <h4 class="mb-1 text-dark text-left demo-1"><img src="@assets/images/elements/Group.svg" alt="Group svg"
                 width="35px" /> </h4>
 
@@ -24,10 +27,10 @@
             <h1 class="mb-4 text-left" style="margin-top:-10px;"><b class="h1-checkpoint">{{ checkpointReward.name
             }}</b><img src="@assets/images/elements/party.png" alt="Decore Right" width="40px" /></h1>
           </div>
-          <p class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white">
-
-            <strong></strong>
-          </p>
+          <!-- <p class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white">
+  -->
+        </slot>
+          </vx-card__body>
         </vx-card>
       </div>
       <!-- CARD 2: SUBSCRIBERS GAINED 
@@ -444,6 +447,9 @@ export default {
 
       styleObject: {
         padding: "1.4rem"
+      },
+      welcomePadding:{
+        padding: "1.8rem !important"
       },
       checkpointReward: {},
       subscribersGained: { "teachers": 0, "students": 0 },
