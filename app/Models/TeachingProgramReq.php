@@ -33,7 +33,7 @@ class TeachingProgramReq extends Model
             );
             // Need Assistance
             if ($data['request_status'] == 0) {
-                self::where(['to_user' => $data['id'], 'from_user' => $data['from_user']])->delete();
+                 self::where(['to_user' => $data['id'], 'from_user' => $data['from_user']])->delete();
             }
 
 
@@ -63,7 +63,6 @@ class TeachingProgramReq extends Model
     }
     public static function fetchList($data)
     {
-
         $users = self::where('to_user', $data['id'])
         ->where('request_status',$data['req_satus'])
         ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.from_user')

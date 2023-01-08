@@ -1179,11 +1179,40 @@ class ParentController extends Controller
     }
 
     // Teacher list for Hiring from Parent
-    public function GetTeacherList()
+    public function GetTeacherList(Request $request)
     {
         try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'school_id' => 'required',
+                'selected_class' => 'exists:class_code,class_name',
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
 
-            $classes = ClassCode::select('class_name', 'id')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
+               $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
+
+                $subjects = Subject::select('id','subject_name')->where('school_id', $request->school_id);
+                if (strpos($request->selected_class, 'Grade') !== false) {
+                    $subjects->where('subject_name', 'not like', 'General' . '%');
+                } else {
+                    $subjects->where('subject_name', 'like', '%' . $request->selected_class);
+                }
+
+                $subjects = $subjects->get();
+                $data = array('classes' => $classes, 'subjects' => $subjects, 'location' => $location);
+                return response()->json(array('error' => false, 'data' => $data, 'message' => 'Record fetched Success!'), 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
+        }
+
+
+        try { 
+            $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
+ 
             $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
             $subjects = Subject::select('subject_name', 'id')->groupBy('subject_name')->get();
             $data = array([
@@ -1206,7 +1235,6 @@ class ParentController extends Controller
     public function HireTeacherList(Request $request)
     {
         try {
-
             $input = $request->all();
             $validator = Validator::make($input, [
                 'availabilty' =>  'nullable|string',
@@ -1276,11 +1304,12 @@ class ParentController extends Controller
                     $data['id'] = $request->id;
                     $data['from_user'] = $request->from_user;
                     $data['request_status'] = $request->request_status;
+
                     $users = TeachingProgramReq::requestStatus($data);
 
                     if (!empty($users)) {
                         return response()->json(['message' =>'Updated req!', 'data' => $users], 200);
-                    } 
+                    }  
                     // $users = TeachingProgram::requestStatus($data); 
                 }
             }
@@ -1305,7 +1334,7 @@ class ParentController extends Controller
                     $data['id'] = $request->id;
                     $data['req_satus'] = '1';
                     $data['request_type'] = $request->request_type;
-                    $users = TeachingProgramReq::fetchList($data); 
+                   return $users = TeachingProgramReq::fetchList($data); 
 
                     if (!empty($users)) {
                         return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);

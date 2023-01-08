@@ -120,8 +120,11 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
   Route::post('check_classcode', 'Api\V1\StudentController@Checkifclassvalid');
   Route::post('add_children', 'Api\V1\ParentController@AddChildren');
   Route::post('join_community', 'Api\V1\CommonController@Joincommunity');
+
+
   // Teaching Program Apis
   Route::post('join_program', 'Api\V1\CommonController@JoinProgram');
+  Route::post('program_filter_list', 'Api\V1\CommonController@GetProgramList');  
   Route::post('add_teaching_program', 'Api\V1\CommonController@AddTeachingProgram');
 
 
@@ -232,8 +235,10 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
   Route::post('connect_with_school', 'Api\V1\ParentController@ConnectWithSchool');
   Route::post('get_parent_schools', 'Api\V1\CommonController@GetParentSchools');
 
+  //Teaching Program
+
   // New Hire Teacher Request Api
-  Route::get('hire_teacher_list', 'Api\V1\ParentController@GetTeacherList'); //done
+  Route::post('get_teacher_list', 'Api\V1\ParentController@GetTeacherList'); //done
   Route::post('hire_teacher_list', 'Api\V1\ParentController@HireTeacherList'); //done
   Route::post('place_teacher_req', 'Api\V1\ParentController@PlaceTeacherReq'); //done  Teacher Accept Api will use by this api
 
