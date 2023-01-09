@@ -285,22 +285,28 @@ WHERE class_id= class_code_subject .class_code_id AND
             $input = $request->all();
             $validator = Validator::make($input, [
                 'school_id' => 'required',
-                'selected_class' => 'exists:class_code,class_name',
+                // 'selected_class' => 'exists:class_code,class_name',
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
                 $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
-
-                $subjects = Subject::where('school_id', $request->school_id);
-                if (strpos($request->selected_class, 'Grade') !== false) {
-                    $subjects->where('subject_name', 'not like', 'General' . '%');
-                } else {
-                    $subjects->where('subject_name', 'like', '%' . $request->selected_class);
+                $subject = array();
+                if(!empty($request->selected_class)){
+                    foreach ($request->selected_class as $key => $data) {
+                        $subjects = Subject::select('id', 'subject_name')
+                            ->where('school_id', $request->school_id);
+                        if (strpos($data, 'Grade') !== false) {
+                            $subjects->where('subject_name', 'not like', 'General' . '%');
+                        } else {
+                            $subjects->where('subject_name', 'like', '%' . $data);
+                        } 
+                        $subject[] = $subjects->get();
+                    } 
                 }
-                $subjects = $subjects->get();
+
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
-                $data = array('classes' => $classes, 'subjects' => $subjects, 'location' => $location);
+                $data = array('classes' => $classes, 'subjects' => $subject, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
             }
         } catch (\Exception $e) {
