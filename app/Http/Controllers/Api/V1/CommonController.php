@@ -298,9 +298,9 @@ WHERE class_id= class_code_subject .class_code_id AND
                 } else {
                     $subjects->where('subject_name', 'like', '%' . $request->selected_class);
                 }
-
                 $subjects = $subjects->get();
-                $data = array('classes' => $classes, 'subjects' => $subjects);
+                $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
+                $data = array('classes' => $classes, 'subjects' => $subjects, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
             }
         } catch (\Exception $e) {
