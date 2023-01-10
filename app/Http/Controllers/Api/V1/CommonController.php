@@ -304,15 +304,10 @@ WHERE class_id= class_code_subject .class_code_id AND
                         } else {
                             $subjects->where('subject_name', 'like', '%' . $data);
                         }
-                          
                     $subjects = $subjects->get()->toArray();
-                    $subject = array_merge($subject, $subjects);
-       
-                    }
-                     //return array_values($subject);
-                     
+                    $subject =  array_unique(array_merge($subject, $subjects), SORT_REGULAR);
+                    }  
                 }
-
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
                 $data = array('classes' => $classes, 'subjects' => $subject, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
