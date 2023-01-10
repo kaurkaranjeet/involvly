@@ -252,8 +252,7 @@ class UserController extends Controller
             $users = User::where('role_id', 2)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.class_name) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'));
         } elseif ($request->type == 'searchdata') {
             $users = User::where('role_id', 4)->where('school_id', $id)
-            ->rightJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
-            ->leftJoin('teachin_program_requests', 'teachin_program_requests.to_user', '=', 'users.id')
+            ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id') 
             ->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= users.id) as subject_pr ,(select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= users.id) as class_name ,availability,hourly_rate, location,preferences,users.*,teachin_program_requests.request_status as request_status'));
         } elseif ($request->type == 'teacher') {
             $users = User::where('role_id', 4)->where('school_id', $id)
