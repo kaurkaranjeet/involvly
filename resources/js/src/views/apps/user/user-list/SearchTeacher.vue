@@ -413,6 +413,7 @@ export default {
     }
   },
   mounted() {
+    // console.log('here',localStorage.user_id);
     if (!moduleUserManagement.isRegistered) {
       this.$store.registerModule('userManagement', moduleUserManagement)
       moduleUserManagement.isRegistered = true

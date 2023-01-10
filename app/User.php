@@ -49,11 +49,9 @@ class User extends Authenticatable implements JWTSubject {
         return $this->belongsTo('App\UserSubject', 'user_id', 'id');
     }
 
-
-   public function TeachingProgram()
-    {
-        return $this->hasOne(TeachingProgram::class,'user_id');
-    }
+    public function TeachingProgram() {
+        return $this->belongsTo(App\Models\TeachingProgram::class, 'foreign_key', 'local_key'); 
+      }
     
     public function isRole() {
         return $this->role;

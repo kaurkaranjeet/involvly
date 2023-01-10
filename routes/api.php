@@ -67,7 +67,6 @@ Route::prefix('auth')->group(function () {
   // Location-list in search Teacher
   Route::any('/select-location/{id}', ['as' => 'manage.location', 'uses' => 'SubjectController@selectLocation']);
 
-
   Route::any('/save-subject', ['as' => 'save.subjects', 'uses' => 'SubjectController@saveSubject']);
   Route::any('/delete-subject/{id}', ['as' => 'delete.subjects', 'uses' => 'SubjectController@deleteSubject']);
   Route::any('/fetch-subject-detail/{id}', ['as' => 'fetch.subjects', 'uses' => 'SubjectController@fetchSubjectDetail']);

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class TeachingProgram extends Model
 {
@@ -36,10 +37,15 @@ class TeachingProgram extends Model
         return $this->belongsTo('App\Models\ClassCode', 'class_id');
     }
 
-    public function users()
+    public function User()
     {
-        return $this->hasMany('App\User');
+        return $this->belongsTo('App\User','user_id');
     }
+   
+    public function subjects() {
+        return $this->hasMany('App\UserSubject','user_id','user_id'); 
+      }
+  
     public static function add($data)
     {
         if ($data) {

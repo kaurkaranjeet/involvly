@@ -91,6 +91,7 @@ export default {
           'request_status' :id,
           'from_user':localStorage.user_id,
         }; 
+        console.log(arr);
         axios.post(`/api/auth/place-user`,arr)
           .then((response) => {
             this.showPlaceSuccess();

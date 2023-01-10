@@ -40,11 +40,15 @@ export default {
         })
     },
     fetchSearch({ commit }) {
+        // console.log('user_id',localStorage.getItem('user_id'));
         var x = localStorage.getItem('accessToken');
         var school_id = localStorage.getItem('school_id');
+        var from_user = localStorage.getItem('user_id');
+
         //  User Reward Card
         const requestOptions = {
             'type': 'searchdata',
+            'from_user': from_user,
             headers: { 'Authorization': 'Bearer ' + x },
 
         };
