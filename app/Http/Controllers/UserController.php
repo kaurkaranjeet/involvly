@@ -256,7 +256,7 @@ class UserController extends Controller
                 leftJoin('users', 'users.id', '=', 'teaching_program.user_id')
                 ->select(DB::raw('(select GROUP_CONCAT(subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= teaching_program.user_id) as subject_pr, 
             (select GROUP_CONCAT(class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= teaching_program.user_id) as class_name,
-            (select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = '.$request->from_user.' ) as request_status,
+            (select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = '.$request->from_user.' &&  teachin_program_requests.to_user = teaching_program.user_id) as request_status,
             availability,hourly_rate, location,preferences,users.*
             ')); 
         } elseif ($request->type == 'teacher') {
