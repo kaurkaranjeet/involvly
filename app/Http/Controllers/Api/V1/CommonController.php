@@ -292,7 +292,10 @@ WHERE class_id= class_code_subject .class_code_id AND
             } else {
                 $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
                 $subject = array();
-                if(!empty($request->selected_class)){
+                $subject = array();
+                if (!empty($request->selected_class)) {
+
+                    //dd($request->selected_class);
                     foreach ($request->selected_class as $key => $data) {
                         $subjects = Subject::select('id', 'subject_name')
                             ->where('school_id', $request->school_id);
@@ -300,9 +303,14 @@ WHERE class_id= class_code_subject .class_code_id AND
                             $subjects->where('subject_name', 'not like', 'General' . '%');
                         } else {
                             $subjects->where('subject_name', 'like', '%' . $data);
-                        } 
-                        $subject[] = $subjects->get();
-                    } 
+                        }
+                          
+                    $subjects = $subjects->get()->toArray();
+                    $subject = array_merge($subject, $subjects);
+       
+                    }
+                     //return array_values($subject);
+                     
                 }
 
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
