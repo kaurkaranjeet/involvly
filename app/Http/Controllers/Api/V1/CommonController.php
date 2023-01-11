@@ -305,7 +305,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                         }
                         $data = $subjects->get()->toArray();
                         $subject = array_unique(array_merge($subject, $data), SORT_REGULAR);
-                    }
+                    } 
                     // Convert array into an object
                     // $subjects = json_decode(json_encode($subject), true);
                     // echo gettype($subjects);
