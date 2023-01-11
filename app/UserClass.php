@@ -12,6 +12,10 @@ class UserClass extends Model
     ];
     protected $table = 'user_class';
 
+
+    protected $primaryKey = 'user_class_id';
+
+
     public function subjects()
     {
         return $this->hasMany('App\User');
@@ -19,10 +23,15 @@ class UserClass extends Model
 
     public static function add($data)
     {
-          self::create( 
+        self::updateOrCreate(
             [
-            'user_id' => $data['user_id'],
-            'class_id' => $data['class_id'],
-             ]);
-    }   
+                'user_id' => $data['user_id'],
+                'class_id' => $data['class_id'],
+            ],
+            [
+                'user_id' => $data['user_id'],
+                'class_id' => $data['class_id'],
+            ]
+        );
+    }
 }

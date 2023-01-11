@@ -7,22 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 class UserSubject extends Model
 {
     protected $fillable = [
-        'user_id', 'subject_id'
+        'user_id',
+        'subject_id'
     ];
     protected $table = 'user_subjects';
-    protected $primaryKey = 'teaching_id';
+    protected $primaryKey = 'user_subjects_id';
 
-    
-    public function subjects() 
+
+    public function subjects()
     {
         return $this->hasMany('App\User');
     }
- 
+
     public static function add($data)
     {
-          self::updateOrCreate([
-            'user_id' => $data['user_id'], 
-            'subject_id' => $data['subject_id'],
-        ]);
+        self::updateOrCreate(
+            [
+                'user_id' => $data['user_id'],
+                'subject_id' => $data['subject_id'],
+            ]
+            ,
+            [
+                'user_id' => $data['user_id'],
+                'subject_id' => $data['subject_id'],
+            ]
+        );
     }
 }

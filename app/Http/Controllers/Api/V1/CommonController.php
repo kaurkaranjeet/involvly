@@ -308,6 +308,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                     $subject =  array_unique(array_merge($subject, $subjects), SORT_REGULAR);
                     }  
                 }
+                
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
                 $data = array('classes' => $classes, 'subjects' => $subject, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
@@ -330,11 +331,10 @@ WHERE class_id= class_code_subject .class_code_id AND
                 'location' => 'required',
                 'preferences' => 'required|in:On-Site,Remote',
 
-            ]);
+            ]); 
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
-            } else {
-                $input['id'] = '1';
+            } else { 
                  $data = TeachingProgram::add($input);
                
                 if (is_array($request->subject_id)) {
