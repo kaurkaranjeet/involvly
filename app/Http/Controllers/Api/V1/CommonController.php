@@ -311,7 +311,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 }
 
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
-                $data = array('classes' => $classes, 'clas_sbject' => $subject, 'location' => $location);
+                $data = array('classes' => $classes, 'subjects' => $subject, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
             }
         } catch (\Exception $e) {
