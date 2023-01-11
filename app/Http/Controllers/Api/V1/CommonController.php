@@ -322,7 +322,7 @@ WHERE class_id= class_code_subject .class_code_id AND
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'user_id' => 'required',
+                'user_id' => 'required|exists:users,id',
                 'class_id' => 'required',
                 'subject_id' => 'required',
                 'hourly_rate' => 'required',
@@ -334,15 +334,15 @@ WHERE class_id= class_code_subject .class_code_id AND
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-                $input['id'] = $request->user_id;
-                $data = TeachingProgram::add($input);
-
+                $input['id'] = '1';
+                 $data = TeachingProgram::add($input);
+               
                 if (is_array($request->subject_id)) {
                     foreach ($request->subject_id as $key => $value) {
                         $subject['subject_id'] = $value;
                         $subject['user_id'] = $request->user_id;
-                        UserSubject::add($subject);
-                    }
+                         $subjects= UserSubject::add($subject);
+                    } 
                 }
                 if (is_array($request->class_id)) {
                     foreach ($request->class_id as $key => $value) {

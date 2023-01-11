@@ -278,7 +278,6 @@ class UserController extends Controller
             $users = User::where('role_id', 3)->where('school_id', $id)->select(DB::raw('(select GROUP_CONCAT(u.name) AS childrens from parent_childrens inner join users as u ON parent_childrens.children_id=u.id where parent_id=users.id) as associated_child ,users.*'));
         }
           $users = $users->orderBy('id', 'DESC')->get();
-
         //  print_r(DB::getQueryLog());die;
         foreach ($users as $user) {
             $user->subjects = 'Hindi';
@@ -331,8 +330,8 @@ class UserController extends Controller
             ->whereNotExists(function($query)
             {
                 $query->select(DB::raw(1))
-                      ->from('teaching_program')
-                      ->whereRaw('teaching_program.user_id = users.id');
+                 ->from('teaching_program')
+                ->whereRaw('teaching_program.user_id = users.id');
             })
             ->select(DB::raw('(select GROUP_CONCAT(u.class_code) AS class_codes from user_class_code inner join class_code as u ON user_class_code.class_id=u.id where user_id=users.id) as class_codes ,users.*'))->orderBy('id', 'DESC')->get();
             foreach ($users as $user) {

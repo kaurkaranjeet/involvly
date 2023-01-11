@@ -40,7 +40,6 @@ class TeachingProgramReq extends Model
             $usersData = User::where('id', $data['id'])
                 ->select('users.*', 'teaching_program.*')
                 ->leftJoin('teaching_program', 'users.id', '=', 'teaching_program.user_id')
-              
                 ->first();
               $from_user_id = intval($data['from_user']);
           

@@ -10,7 +10,9 @@ class UserSubject extends Model
         'user_id', 'subject_id'
     ];
     protected $table = 'user_subjects';
+    protected $primaryKey = 'teaching_id';
 
+    
     public function subjects() 
     {
         return $this->hasMany('App\User');
@@ -18,7 +20,7 @@ class UserSubject extends Model
  
     public static function add($data)
     {
-        return self::updateOrCreate([
+          self::updateOrCreate([
             'user_id' => $data['user_id'], 
             'subject_id' => $data['subject_id'],
         ]);
