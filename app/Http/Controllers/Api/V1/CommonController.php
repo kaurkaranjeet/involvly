@@ -303,8 +303,8 @@ WHERE class_id= class_code_subject .class_code_id AND
                         } else {
                             $subjects->where('subject_name', 'like', '%' . $data);
                         }
-                        $data = $subjects->get();
-                        // $subject = array_unique(array_merge($subject, $data), SORT_REGULAR);
+                        $data = $subjects->get()->toArray();
+                        $subject = array_unique(array_merge($subject, $data), SORT_REGULAR);
                     }
                     // Convert array into an object
                     // $subjects = json_decode(json_encode($subject), true);
@@ -312,7 +312,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 }
 
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
-                $data = array('classes' => $classes, 'subjects' => $data, 'location' => $location);
+                $data = array('classes' => $classes, 'subjects' => $subject, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
             }
         } catch (\Exception $e) {
