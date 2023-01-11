@@ -293,7 +293,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
                 $subject = array();
                 if (!empty($request->selected_class)) {
-
+                    
                     //dd($request->selected_class);
                     foreach ($request->selected_class as $key => $data) {
                         $subjects = Subject::select('id', 'subject_name')
