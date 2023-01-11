@@ -292,7 +292,6 @@ WHERE class_id= class_code_subject .class_code_id AND
             } else {
                 $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
                 $subject = array();
-                $subject = array();
                 if (!empty($request->selected_class)) {
 
                     //dd($request->selected_class);
@@ -304,25 +303,23 @@ WHERE class_id= class_code_subject .class_code_id AND
                         } else {
                             $subjects->where('subject_name', 'like', '%' . $data);
                         }
-                        $subjects = $subjects->get()->toArray();
-                        $subject = array_unique(array_merge($subject, $subjects), SORT_REGULAR);
+                        $data = $subjects->get();
+                        // $subject = array_unique(array_merge($subject, $data), SORT_REGULAR);
                     }
                     // Convert array into an object
-                $subject = json_decode(json_encode($subject));
-
-                  
-
+                    // $subjects = json_decode(json_encode($subject), true);
+                    // echo gettype($subjects);
                 }
 
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
-                $data = array('classes' => $classes, 'subjects' => $subject, 'location' => $location);
+                $data = array('classes' => $classes, 'subjects' => $data, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
-     
+
     public function AddTeachingProgram(Request $request)
     {
         try {
