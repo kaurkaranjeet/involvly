@@ -509,7 +509,7 @@ WHERE class_id= class_code_subject .class_code_id AND
             'user_id' => 'required|exists:users,id'
         ]);
 
-        if ($validator->fails()) {
+         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $userobj = User::where('id', $request->user_id)->first();
