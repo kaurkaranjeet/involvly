@@ -296,7 +296,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                     
                     //dd($request->selected_class);
                     foreach ($request->selected_class as $key => $data) {
-                        $subjects = Subject::select('id', 'subject_name')
+                        $subjects = Subject::select('id', 'subject_name')   
                             ->where('school_id', $request->school_id);
                         if (strpos($data, 'Grade') !== false) {
                             $subjects->where('subject_name', 'not like', 'General' . '%');
@@ -306,9 +306,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                         $data = $subjects->get()->toArray();
                         $subject = array_unique(array_merge($subject, $data), SORT_REGULAR);
                     } 
-                    // Convert array into an object
-                    // $subjects = json_decode(json_encode($subject), true);
-                    // echo gettype($subjects);
+                  
                 }
 
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
