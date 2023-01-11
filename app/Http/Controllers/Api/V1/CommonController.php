@@ -304,11 +304,16 @@ WHERE class_id= class_code_subject .class_code_id AND
                         } else {
                             $subjects->where('subject_name', 'like', '%' . $data);
                         }
-                    $subjects = $subjects->get()->toArray();
-                    $subject =  array_unique(array_merge($subject, $subjects), SORT_REGULAR);
-                    }  
+                        $subjects = $subjects->get()->toArray();
+                        $subject = array_unique(array_merge($subject, $subjects), SORT_REGULAR);
+                    }
+                    // Convert array into an object
+                $subject = json_decode(json_encode($subject));
+
+                  
+
                 }
-                
+
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
                 $data = array('classes' => $classes, 'subjects' => $subject, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Filtered Successfully'), 200);
@@ -317,7 +322,7 @@ WHERE class_id= class_code_subject .class_code_id AND
             return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
         }
     }
-
+     
     public function AddTeachingProgram(Request $request)
     {
         try {
@@ -331,18 +336,18 @@ WHERE class_id= class_code_subject .class_code_id AND
                 'location' => 'required',
                 'preferences' => 'required|in:On-Site,Remote',
 
-            ]); 
+            ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
-            } else { 
-                 $data = TeachingProgram::add($input);
-               
+            } else {
+                $data = TeachingProgram::add($input);
+
                 if (is_array($request->subject_id)) {
                     foreach ($request->subject_id as $key => $value) {
                         $subject['subject_id'] = $value;
                         $subject['user_id'] = $request->user_id;
-                         $subjects= UserSubject::add($subject);
-                    } 
+                        $subjects = UserSubject::add($subject);
+                    }
                 }
                 if (is_array($request->class_id)) {
                     foreach ($request->class_id as $key => $value) {
