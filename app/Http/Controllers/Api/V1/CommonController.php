@@ -293,14 +293,15 @@ WHERE class_id= class_code_subject .class_code_id AND
                 $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
                 $subject = array();
                 if (!empty($request->selected_class)) {
-                    
                     //dd($request->selected_class);
                     foreach ($request->selected_class as $key => $data) {
                         $subjects = Subject::select('id', 'subject_name')   
-                            ->where('school_id', $request->school_id);
+                        ->where('school_id', $request->school_id);
                         if (strpos($data, 'Grade') !== false) {
                             $subjects->where('subject_name', 'not like', 'General' . '%');
                         } else {
+                            $data = preg_replace('/[^A-Za-z0-9\-]/', '', $data);
+                            // $data = str_replace("'\'", "", $data);
                             $subjects->where('subject_name', 'like', '%' . $data);
                         }
                         $data = $subjects->get()->toArray();
