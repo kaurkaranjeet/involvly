@@ -236,7 +236,7 @@ Route::prefix('v1')->middleware('jwt.verify')->group(function () {
 
   //Teaching Program
 
-  // New Hire Teacher Request Api
+  // New Hire Teacher Request Api from Parent Side
   Route::post('get_teacher_list', 'Api\V1\ParentController@GetTeacherList'); //done
   Route::post('hire_teacher_list', 'Api\V1\ParentController@HireTeacherList'); //done
   Route::post('place_teacher_req', 'Api\V1\ParentController@PlaceTeacherReq'); //done  Teacher Accept Api will use by this api

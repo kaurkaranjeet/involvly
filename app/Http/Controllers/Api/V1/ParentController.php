@@ -57,7 +57,7 @@ class ParentController extends Controller
     // Register Student
     public function FirststepParentRegister(Request $request)
     {
-        
+
         try {
             $input = $request->all();
             $user = [
@@ -67,7 +67,7 @@ class ParentController extends Controller
                 'email' => 'required|unique:users',
                 'password' => 'required',
                 'role_id' => 'required',
-                      ];
+            ];
 
             $validator = Validator::make($input, $user);
             // var_dump($request->location);exit;
@@ -79,16 +79,16 @@ class ParentController extends Controller
                 $student_obj = new User;
                 $addUser = $student_obj->store($request);
                 $token = JWTAuth::fromUser($addUser);
-               
+
                 $addUser->ActiveJwttoken = $token;
                 $addUser->school_status = '0';
                 $addUser->update_detail = '0';
                 $addUser->school_live = '0';
-                 //Update jwt Token
-                 User::where('id',$addUser->id)->update(['ActiveJwttoken'=>$token]);
-                 //  $addUser->relationship = $request->relationship;
- 
- 
+                //Update jwt Token
+                User::where('id', $addUser->id)->update(['ActiveJwttoken' => $token]);
+                //  $addUser->relationship = $request->relationship;
+
+
                 return response()->json(array('error' => false, 'message' => 'Registered Successfully', 'data' => $addUser), 200);
             }
         } catch (\Exception $e) {
@@ -135,7 +135,8 @@ class ParentController extends Controller
                     $student_obj->status = '1';
                     if (empty($request->family_code)) {
                         $digits = 5;
-                        $family_code = $this->random_strings(5);;
+                        $family_code = $this->random_strings(5);
+                        ;
                         $student_obj->family_code = $family_code;
                     } else {
                         $code = User::where('family_code', $request->family_code)->count();
@@ -211,7 +212,7 @@ class ParentController extends Controller
                     if (!empty($request->family_code)) {
                         $parents = User::where('family_code', $request->family_code)->where('role_id', 3)->get();
                         foreach ($parents as $singl) {
-                            $count =  ParentChildrens::where('parent_id', $singl->id)->where('children_id', $request->user_id)->count();
+                            $count = ParentChildrens::where('parent_id', $singl->id)->where('children_id', $request->user_id)->count();
                             if ($count == 0) {
                                 DB::table('parent_childrens')->insert(
                                     [
@@ -229,7 +230,7 @@ class ParentController extends Controller
                     if (!empty($request->family_code)) {
                         $students = User::where('family_code', $request->family_code)->where('role_id', 2)->get();
                         foreach ($students as $singl) {
-                            $count =  ParentChildrens::where('parent_id', $student_obj->id)->where('children_id', $singl->id)->count();
+                            $count = ParentChildrens::where('parent_id', $student_obj->id)->where('children_id', $singl->id)->count();
                             if ($count == 0) {
 
                                 DB::table('parent_childrens')->insert(
@@ -419,7 +420,7 @@ class ParentController extends Controller
                 throw new Exception($validator->errors()->first());
             } else {
                 $parents = User::join('user_class_code', 'users.id', '=', 'user_class_code.user_id')->Join('class_code', 'user_class_code.class_id', '=', 'class_code.id')->select(DB::raw('users.id,users.name,users.role_id, class_code.class_name,(SELECT group_concat( distinct u.name)  from parent_childrens
-						INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens'))->where('role_id', 3)/* ->where('status', 1) */->where('class_code.id', $request->class_id)->groupBy('users.id')->get();
+						INNER join users as u On u.id= parent_childrens.children_id  where  parent_id=users.id)  as childrens'))->where('role_id', 3) /* ->where('status', 1) */->where('class_code.id', $request->class_id)->groupBy('users.id')->get();
 
 
                 return response()->json(array('error' => false, 'message' => 'Students fetched successfully', 'data' => $parents), 200);
@@ -738,9 +739,9 @@ class ParentController extends Controller
             //foreach ($selected_days as $key => $selected_day) {
             // 
             /*  $contain= Schedule::whereRaw('JSON_CONTAINS(selected_days,\'["'.$selected_day.'"]\')')->where('from_time',$request->from_time)->where('to_time',$request->to_time)->where('created_by',$request->created_by)->count();
-              if($contain > 0){
-              return response()->json(array('error' => true, 'message' =>'You have already selected this date and time'), 200);
-              } */
+            if($contain > 0){
+            return response()->json(array('error' => true, 'message' =>'You have already selected this date and time'), 200);
+            } */
             // }
             // Schedule::whereJsonContains('selected_days', 1)
             $task = new Schedule; //then create new object
@@ -1192,9 +1193,9 @@ class ParentController extends Controller
             } else {
                 $classes = ClassCode::select('id', 'class_name')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
 
-               $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
+                $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
 
-                $subjects = Subject::select('id','subject_name');
+                $subjects = Subject::select('id', 'subject_name');
                 if (strpos($request->selected_class, 'Grade') !== false) {
                     $subjects->where('subject_name', 'not like', 'General' . '%');
                 } else {
@@ -1210,16 +1211,18 @@ class ParentController extends Controller
         }
 
 
-        try { 
+        try {
             $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
- 
+
             $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
             $subjects = Subject::select('subject_name', 'id')->groupBy('subject_name')->get();
-            $data = array([
-                'classes' => $classes,
-                'location' => $location,                                                                                       
-                'subjects' => $subjects,
-            ]);
+            $data = array(
+                [
+                    'classes' => $classes,
+                    'location' => $location,
+                    'subjects' => $subjects,
+                ]
+            );
             if (!empty($data)) {
 
                 return response()->json(array('error' => false, 'message' => 'record found', 'data' => $data), 200);
@@ -1237,7 +1240,8 @@ class ParentController extends Controller
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'availabilty' =>  'nullable|string',
+                'parent_id' => 'required|exists:users,id',
+                'availabilty' => 'nullable|string',
                 'location' => 'nullable|string|exists:teaching_program,location',
                 'subject' => 'nullable|integer|exists:user_subjects,subject_id',
                 'class' => 'nullable|string|exists:class_code,class_name',
@@ -1248,20 +1252,20 @@ class ParentController extends Controller
             } else {
                 $users =
                     User::leftJoin('user_subjects', 'user_subjects.user_id', '=', 'users.id')
-                    ->leftJoin('subjects', 'subjects.id', '=', 'user_subjects.subject_id')
+                        ->leftJoin('subjects', 'subjects.id', '=', 'user_subjects.subject_id')
 
-                    ->leftJoin('user_class', 'user_class.user_id', '=', 'users.id')
-                    ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
+                        ->leftJoin('user_class', 'user_class.user_id', '=', 'users.id')
+                        ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
 
-                    ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
-                
+                        ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+                    
 
-                    ->select(DB::raw('(select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = '.$request->parent_id.' &&  teachin_program_requests.to_user = teaching_program.user_id) as request_status, users.id, users.name, class_code.class_name, teaching_program.*,users.profile_image'))
+                        ->select(DB::raw('(select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = ' . $request->parent_id . ' &&  teachin_program_requests.to_user = teaching_program.user_id) as request_status, users.id, users.name, class_code.class_name, teaching_program.*,users.profile_image'))
 
-                    ->selectRaw('GROUP_CONCAT(DISTINCT subjects.subject_name) as subject_names')
-                    ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
+                        ->selectRaw('GROUP_CONCAT(DISTINCT subjects.subject_name) as subject_names')
+                        ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
 
-                    ->whereNotNull('user_subjects.subject_id');
+                        ->whereNotNull('user_subjects.subject_id');
                 if ($request->subject_id) {
                     $users = $users->where('user_subjects.subject_id', $request->subject_id);
                 }
@@ -1309,11 +1313,10 @@ class ParentController extends Controller
                     $users = TeachingProgramReq::requestStatus($data);
 
                     if (!empty($users)) {
-                        return response()->json(['error' => false, 'message' =>'success', 'data' => $users], 200);
-                    } 
-                    else {
+                        return response()->json(['error' => false, 'message' => 'success', 'data' => $users], 200);
+                    } else {
                         throw new Exception('No Record found');
-                    }  
+                    }
                 }
             }
         } catch (\Exception $e) {
@@ -1328,7 +1331,7 @@ class ParentController extends Controller
             $input = $request->all();
             $validator = Validator::make($input, [
                 'id' => 'required|integer',
-                'request_type' =>'required'
+                'request_type' => 'required'
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
@@ -1337,7 +1340,7 @@ class ParentController extends Controller
                     $data['id'] = $request->id;
                     $data['req_satus'] = '1';
                     $data['request_type'] = $request->request_type;
-                    $users = TeachingProgramReq::fetchList($data); 
+                    $users = TeachingProgramReq::fetchList($data);
 
                     if (!empty($users)) {
                         return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);
@@ -1358,7 +1361,7 @@ class ParentController extends Controller
             $input = $request->all();
             $validator = Validator::make($input, [
                 'id' => 'required|integer',
-                'request_type' =>'required'
+                'request_type' => 'required'
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
@@ -1367,7 +1370,7 @@ class ParentController extends Controller
                     $data['id'] = $request->id;
                     $data['req_satus'] = '2';
                     $data['request_type'] = $request->request_type;
-                    $users = TeachingProgramReq::fetchList($data); 
+                    $users = TeachingProgramReq::fetchList($data);
 
                     if (!empty($users)) {
                         return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);
@@ -1396,7 +1399,7 @@ class ParentController extends Controller
             } else {
                 if (!empty($input)) {
                     $data['id'] = $request->id;
-                    $data['from_user'] =  $request->from_user;
+                    $data['from_user'] = $request->from_user;
                     $data['request_status'] = $request->request_status;
                     $users = TeachingProgramReq::requestStatus($data);
                     if ($request->request_status == 0) {
@@ -1405,7 +1408,7 @@ class ParentController extends Controller
                     if ($request->request_status == 2) {
                         $message = "Request has been Accepted";
                     }
-                     
+
                     if (!empty($users)) {
                         return response()->json(['message' => $message, 'data' => $users], 200);
                     } else {
@@ -1464,8 +1467,8 @@ class ParentController extends Controller
                 }
                 // }
                 /* else{
-                  throw new Exception('No children');
-                  } */
+                throw new Exception('No children');
+                } */
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
@@ -1502,8 +1505,8 @@ class ParentController extends Controller
 
                 // }
                 /* else{
-                  throw new Exception('No children');
-                  } */
+                throw new Exception('No children');
+                } */
             }
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
@@ -1634,26 +1637,25 @@ class ParentController extends Controller
             }
             $this->pusher->trigger('schedule-channel', 'schedule_user', $scheduke);
             /* foreach($tasks  as $single_task){
-              ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
-              $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
-
-              if(!empty($task_assigned)){
-              foreach($task_assigned as $single_task_to){
-              if (!empty($single_task_to->AssignedTo->device_token)) {
-              SendAllNotification($single_task_to->AssignedTo->device_token, 'A task has been assigned to you.', 'school_notification');
-              }
-              $notificationobj=new Notification;
-              $notificationobj->user_id=$single_task_to->task_assigned_to;
-              $notificationobj->notification_message='A task has been assigned to you.';
-              $notificationobj->notification_type='task_assign';
-              $notificationobj->type='school_notification';
-              $notificationobj->from_user_id=$single_task->task_assigned_by;
-              $notificationobj->task_id=$single_task->id;
-              $notificationobj->schedule_id=$single_task->schedule_id;
-              $notificationobj->save();
-              }
-              }
-              } */
+            ParentTaskAssigned::where('task_id',$single_task->id)->update(['handover' => '1']);
+            $task_assigned= ParentTaskAssigned::with('AssignedTo')->where('task_id',$single_task->id)->get();
+            if(!empty($task_assigned)){
+            foreach($task_assigned as $single_task_to){
+            if (!empty($single_task_to->AssignedTo->device_token)) {
+            SendAllNotification($single_task_to->AssignedTo->device_token, 'A task has been assigned to you.', 'school_notification');
+            }
+            $notificationobj=new Notification;
+            $notificationobj->user_id=$single_task_to->task_assigned_to;
+            $notificationobj->notification_message='A task has been assigned to you.';
+            $notificationobj->notification_type='task_assign';
+            $notificationobj->type='school_notification';
+            $notificationobj->from_user_id=$single_task->task_assigned_by;
+            $notificationobj->task_id=$single_task->id;
+            $notificationobj->schedule_id=$single_task->schedule_id;
+            $notificationobj->save();
+            }
+            }
+            } */
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }

@@ -63,18 +63,21 @@ class TeachingProgramReq extends Model
     }
     public static function fetchList($data)
     { 
-        $resultsa = ParentChildrens::select(DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id', $data['id'])->first();
-
+        
         $users = self::where('to_user', $data['id'])
         ->where('request_status',$data['req_satus'])
         
         ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.from_user')
+        ->leftJoin('schools','schools.id','=','users.school_id')
+        ->leftJoin('cities','cities.id','=','schools.city_id')
  
         ->select(DB::raw('(select GROUP_CONCAT(DISTINCT users.name) AS children from parent_childrens
         inner join users ON parent_childrens.children_id=users.id 
-        WHERE parent_childrens.parent_id = teachin_program_requests.from_user) as childrens, users.id, users.name, users.profile_image, teachin_program_requests.request_status'));
-
+        WHERE parent_childrens.parent_id = teachin_program_requests.from_user) as childrens,
+        schools.school_name, cities.city,cities.county,
+        users.id,users.school_id, users.name, users.profile_image, teachin_program_requests.request_status'));
         
+
         if($data['request_type'] == 5)
         {
             $users->where('users.role_id','=', $data['request_type']);
