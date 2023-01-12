@@ -1254,8 +1254,9 @@ class ParentController extends Controller
                     ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
 
                     ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+                
 
-                    ->select('users.id', 'users.name', 'class_code.class_name', 'teaching_program.*','users.profile_image')
+                    ->select(DB::raw('(select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = '.$request->parent_id.' &&  teachin_program_requests.to_user = teaching_program.user_id) as request_status, users.id, users.name, class_code.class_name, teaching_program.*,users.profile_image'))
 
                     ->selectRaw('GROUP_CONCAT(DISTINCT subjects.subject_name) as subject_names')
                     ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
