@@ -1258,7 +1258,7 @@ class ParentController extends Controller
                         ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
 
                         ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
-                    
+
 
                         ->select(DB::raw('(select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = ' . $request->parent_id . ' &&  teachin_program_requests.to_user = teaching_program.user_id) as request_status, users.id, users.name, class_code.class_name, teaching_program.*,users.profile_image'))
 
@@ -1291,7 +1291,46 @@ class ParentController extends Controller
         }
     }
 
+    // Hire Teacher Request List
+    public function HiredTeacherList(Request $request)
+    {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'id' => 'required|integer|exists:teachin_program_requests,from_user',
+                // 'request_status' => 'required|in:2'
+            ]);
+            if ($validator->fails()) {
+                throw new Exception($validator->errors()->first());
+            } else {
+                if (!empty($input)) {
 
+                    // $data['request_type'] = $request->request_type;
+
+                    $users = TeachingProgramReq::where('from_user', $request->id)
+                        ->where('request_status', '2')
+                        ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.to_user')
+                        ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+                        ->select(DB::raw('(select GROUP_CONCAT(DISTINCT subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON          user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= teaching_program.user_id) as subjects_names,
+                         (select GROUP_CONCAT(DISTINCT class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= teaching_program.user_id) as class_name,
+                         availability,hourly_rate, location,preferences,users.name,users.profile_image
+                        '))->get()->sortByDesc('teachin_program_requests.id');
+
+                    // $users = TeachingProgramReq::fetchList($data);
+
+                    if (!empty($users)) {
+                        return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);
+                    } else {
+                        throw new Exception('List empty!');
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
+        }
+
+
+    }
     // API- Make a Request for Hire Teacher
     public function PlaceTeacherReq(Request $request)
     {
