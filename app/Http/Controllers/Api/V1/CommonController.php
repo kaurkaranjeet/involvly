@@ -290,22 +290,25 @@ WHERE class_id= class_code_subject .class_code_id AND
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-                $classes = ClassCode::select('id', 'class_name')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
+                  
+                $mainClass = new ClassCode;
+                $classes = $mainClass->select('id', 'class_name')->groupBy('class_name')->get();
                 $subject = array();
+               
                 if (!empty($request->selected_class)) {
                     //dd($request->selected_class);
                     foreach ($request->selected_class as $key => $data) {
+                        $class_rec = $mainClass->select('class_name')->where('id', $data)->first();                    
                         $subjects = Subject::select('id', 'subject_name');
-                        if (strpos($data, 'Grade') !== false) {
+                        if (strpos($class_rec->class_name, 'Grade') !== false) {
                             $subjects->where('subject_name', 'not like', 'General' . '%');
                         } else {
-                            $data = preg_replace('/[^A-Za-z0-9\-]/', '', $data); // remove special charachters
-                            $subjects->where('subject_name', 'like', '%' . $data);
+                            $user_sub = preg_replace('/[^A-Za-z0-9\-]/', '', $class_rec->class_name); // remove special charachters
+                            $subjects->where('subject_name', 'like', '%' . $user_sub);
                         }
-                        $data = $subjects->get()->toArray();
-                        $subject = array_unique(array_merge($subject, $data), SORT_REGULAR);
+                        $users_subjects = $subjects->get()->toArray();
+                        $subject = array_unique(array_merge($subject, $users_subjects), SORT_REGULAR);
                     } 
-                  
                 }
 
                 $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
