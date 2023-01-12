@@ -48,16 +48,16 @@ class TeachingProgramReq extends Model
             $users = self::where('to_user','=', $data['id'])
             ->where('from_user','=', $data['from_user'])->first();
             if ($users->request_status == 0) {
-                $message = "Request has been cancelled";
+                $message = "Request has been cancelled!";
             } else if ($users->request_status == 1) {
-                $message = "Request has been Sent";
+                $message = "Request has been Sent!";
             } else if ($users->request_status == 2) {
-                $message = "Request has been Accepted";
+                $message = "Request has been Accepted!";
             } else {
                 $message = "Request not Placed!";
             }
-            return response()->json(['message' =>$message, 'data' => $users], 200);
- 
+            $data['message']= $message;
+            return  $data;
         }
     }
     public static function fetchList($data)

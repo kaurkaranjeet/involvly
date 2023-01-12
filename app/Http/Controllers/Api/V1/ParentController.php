@@ -1309,9 +1309,11 @@ class ParentController extends Controller
                     $users = TeachingProgramReq::requestStatus($data);
 
                     if (!empty($users)) {
-                        return response()->json(['message' =>'Updated req!', 'data' => $users], 200);
+                        return response()->json(['error' => false, 'message' =>'success', 'data' => $users], 200);
+                    } 
+                    else {
+                        throw new Exception('No Record found');
                     }  
-                    // $users = TeachingProgram::requestStatus($data); 
                 }
             }
         } catch (\Exception $e) {
