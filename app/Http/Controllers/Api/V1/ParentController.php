@@ -1217,7 +1217,7 @@ class ParentController extends Controller
             $subjects = Subject::select('subject_name', 'id')->groupBy('subject_name')->get();
             $data = array([
                 'classes' => $classes,
-                'location' => $location,
+                'location' => $location,                                                                                       
                 'subjects' => $subjects,
             ]);
             if (!empty($data)) {
@@ -1255,7 +1255,7 @@ class ParentController extends Controller
 
                     ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
 
-                    ->select('users.id', 'users.name', 'class_code.class_name', 'teaching_program.*')
+                    ->select('users.id', 'users.name', 'class_code.class_name', 'teaching_program.*','users.profile_image')
 
                     ->selectRaw('GROUP_CONCAT(DISTINCT subjects.subject_name) as subject_names')
                     ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
@@ -1334,7 +1334,7 @@ class ParentController extends Controller
                     $data['id'] = $request->id;
                     $data['req_satus'] = '1';
                     $data['request_type'] = $request->request_type;
-                   return $users = TeachingProgramReq::fetchList($data); 
+                    $users = TeachingProgramReq::fetchList($data); 
 
                     if (!empty($users)) {
                         return response()->json(['message' => 'data fetched successfully!', 'data' => $users], 200);
