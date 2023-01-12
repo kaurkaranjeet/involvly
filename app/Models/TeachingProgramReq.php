@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Jobs\ProcessRequest;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -61,11 +62,19 @@ class TeachingProgramReq extends Model
         }
     }
     public static function fetchList($data)
-    {
+    { 
+        $resultsa = ParentChildrens::select(DB::raw('GROUP_CONCAT(children_id) AS children'))->where('parent_id', $data['id'])->first();
+
         $users = self::where('to_user', $data['id'])
         ->where('request_status',$data['req_satus'])
+        
         ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.from_user')
-        ->select('users.*','teachin_program_requests.request_status');
+ 
+        ->select(DB::raw('(select GROUP_CONCAT(DISTINCT users.name) AS children from parent_childrens
+        inner join users ON parent_childrens.children_id=users.id 
+        WHERE parent_childrens.parent_id = teachin_program_requests.from_user) as childrens, users.id, users.name, users.profile_image, teachin_program_requests.request_status'));
+
+        
         if($data['request_type'] == 5)
         {
             $users->where('users.role_id','=', $data['request_type']);
@@ -75,6 +84,6 @@ class TeachingProgramReq extends Model
             $users->where('users.role_id','=', $data['request_type']);
         }
         return $users =  $users->get()
-        ->sortByDesc('teaching_id');
+        ->sortByDesc('teachin_program_requests.id');
     }
 }
