@@ -1184,17 +1184,17 @@ class ParentController extends Controller
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'school_id' => 'required',
+                // 'school_id' => 'required',
                 'selected_class' => 'exists:class_code,class_name',
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-                $classes = ClassCode::select('id', 'class_name')->where('school_id', $request->school_id)->get();
+                $classes = ClassCode::select('id', 'class_name')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
 
                $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
 
-                $subjects = Subject::select('id','subject_name')->where('school_id', $request->school_id);
+                $subjects = Subject::select('id','subject_name');
                 if (strpos($request->selected_class, 'Grade') !== false) {
                     $subjects->where('subject_name', 'not like', 'General' . '%');
                 } else {
