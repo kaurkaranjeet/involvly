@@ -1268,7 +1268,7 @@ class ParentController extends Controller
 
                         ->whereNotNull('user_subjects.subject_id');
                 if ($request->subject) {
-                    $users = $users->where('user_subjects.subject_id', $request->subject_id);
+                    $users = $users->where('user_subjects.subject_id', $request->subject);
                 }
                 if ($request->class) {
                     $users = $users->where('class_code.class_name', $request->class);
