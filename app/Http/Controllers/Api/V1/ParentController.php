@@ -1313,7 +1313,7 @@ class ParentController extends Controller
                         ->leftJoin('users', 'users.id', '=', 'teachin_program_requests.to_user')
                         ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
                         ->select(DB::raw('(select GROUP_CONCAT(DISTINCT subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON          user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= teaching_program.user_id) as subjects_names,
-                         (select GROUP_CONCAT(DISTINCT class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= teaching_program.user_id) as class_name,
+                         (select GROUP_CONCAT(DISTINCT class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= teaching_program.user_id) as class_name,request_status,
                          availability,hourly_rate, location,preferences,users.name,users.profile_image,teaching_program.user_id
                         '))->get()->sortByDesc('teachin_program_requests.id');
 
