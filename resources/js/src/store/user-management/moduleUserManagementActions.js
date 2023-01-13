@@ -62,6 +62,28 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
+    contractualUsers({ commit }) {
+        var x = localStorage.getItem('accessToken');
+        var school_id = localStorage.getItem('school_id');
+        var from_user = localStorage.getItem('user_id');
+
+        //  User Reward Card
+        const requestOptions = {
+            'type': 'contractual-teacher',
+            'from_user': from_user,
+            headers: { 'Authorization': 'Bearer ' + x },
+
+        };
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/manage-users/' + school_id, requestOptions)
+                .then((response) => {
+                    //  console.log(response.data.users);
+                    commit('SET_USERS', response.data.users)
+                    resolve(response)
+                })
+                .catch((error) => { reject(error) })
+        })
+    },
     fetchSeacrhRecord({commit}){
 
         var x = localStorage.getItem('accessToken');
@@ -107,25 +129,7 @@ export default {
                 .catch((error) => { reject(error) })
         })
     },
-    contractualUsers({ commit }) {
-        var x = localStorage.getItem('accessToken');
-        var school_id = localStorage.getItem('school_id');
-        //  User Reward Card
-        const requestOptions = {
-            'type': 'contractual-teacher',
-            headers: { 'Authorization': 'Bearer ' + x },
-
-        };
-        return new Promise((resolve, reject) => {
-            axios.post('/api/auth/manage-users/' + school_id, requestOptions)
-                .then((response) => {
-                    //  console.log(response.data.users);
-                    commit('SET_USERS', response.data.users)
-                    resolve(response)
-                })
-                .catch((error) => { reject(error) })
-        })
-    },
+    
 
     fetchClassCode({ commit }) {
         var x = localStorage.getItem('accessToken');
