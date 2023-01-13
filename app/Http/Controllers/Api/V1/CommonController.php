@@ -331,7 +331,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 'class_id' => 'required|exists:class_code,id',
                 'subject_id' => 'required|exists:subjects,id',
                 'hourly_rate' => 'required|integer',
-                'availability' => 'required|in:Full-Time,Part-Time,Both',
+                'availability' => 'required',
                 'location' => 'required',
                 'preferences' => 'required|in:On-Site,Remote',
 
