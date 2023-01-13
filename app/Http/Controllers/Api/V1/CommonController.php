@@ -281,11 +281,12 @@ WHERE class_id= class_code_subject .class_code_id AND
     }
     public function GetProgramList(Request $request)
     {
+        
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
                 // 'school_id' => 'required',
-                // 'selected_class' => 'exists:class_code,class_name',
+                 'selected_class' => 'exists:class_code,id',
             ]);
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
@@ -296,6 +297,7 @@ WHERE class_id= class_code_subject .class_code_id AND
                 $subject = array();
                
                 if (!empty($request->selected_class)) {
+                    
                     //dd($request->selected_class);
                     foreach ($request->selected_class as $key => $data) {
                         $class_rec = $mainClass->select('class_name')->where('id', $data)->first();                    
