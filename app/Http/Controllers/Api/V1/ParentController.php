@@ -848,6 +848,7 @@ class ParentController extends Controller
     //Get tasks
     public function Getschedules(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id'
         ]);
@@ -1313,7 +1314,7 @@ class ParentController extends Controller
                         ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
                         ->select(DB::raw('(select GROUP_CONCAT(DISTINCT subjects.subject_name) AS subject_pr from user_subjects inner join subjects ON          user_subjects.subject_id=subjects.id WHERE user_subjects.user_id= teaching_program.user_id) as subjects_names,
                          (select GROUP_CONCAT(DISTINCT class_code.class_name) AS class_name from user_class inner join class_code ON user_class.class_id=class_code.id WHERE user_class.user_id= teaching_program.user_id) as class_name,
-                         availability,hourly_rate, location,preferences,users.name,users.profile_image
+                         availability,hourly_rate, location,preferences,users.name,users.profile_image,teaching_program.user_id
                         '))->get()->sortByDesc('teachin_program_requests.id');
 
                     // $users = TeachingProgramReq::fetchList($data);
