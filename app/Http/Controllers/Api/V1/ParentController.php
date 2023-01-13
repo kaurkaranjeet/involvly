@@ -1267,7 +1267,7 @@ class ParentController extends Controller
                         ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
 
                         ->whereNotNull('user_subjects.subject_id');
-                if ($request->subject_id) {
+                if ($request->subject) {
                     $users = $users->where('user_subjects.subject_id', $request->subject_id);
                 }
                 if ($request->class) {
