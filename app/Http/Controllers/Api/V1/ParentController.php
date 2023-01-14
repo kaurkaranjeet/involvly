@@ -595,14 +595,15 @@ class ParentController extends Controller
     }
 
     // Create task 
-    public function AddScheduleTask(Request $request) {
+    public function AddScheduleTask(Request $request)
+    {
         $input = $request->all();
         $validator = Validator::make($input, [
-                    'task_assigned_by' => 'required|exists:users,id',
-//                    'task_assigned_to' => 'required',
-                    'task_name' => 'required',
-                    'schedule_id' => 'required|exists:schedules,id',
-//                  'task_time' => 'required',
+            'task_assigned_by' => 'required|exists:users,id',
+            //                    'task_assigned_to' => 'required',
+            'task_name' => 'required',
+            'schedule_id' => 'required|exists:schedules,id',
+            //                  'task_time' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
@@ -640,12 +641,12 @@ class ParentController extends Controller
             $task->save();
             //get task_assigned_to values
             $taskassignedids = Schedule::where('id', $request->schedule_id)->first();
-            if($taskassignedids->accept_reject_schedule != null){
-               $accept_reject_status = '1';
-            }else if($taskassignedids->rejected_user != null) {
-               $accept_reject_status = '2';
-            }else{
-               $accept_reject_status = '0';
+            if ($taskassignedids->accept_reject_schedule != null) {
+                $accept_reject_status = '1';
+            } else if ($taskassignedids->rejected_user != null) {
+                $accept_reject_status = '2';
+            } else {
+                $accept_reject_status = '0';
             }
 
             $dates_implode = implode(',', $dates);
@@ -656,7 +657,7 @@ class ParentController extends Controller
 
             $task_assigned = new ParentTaskAssigned; //then create new object
             $task_assigned->task_id = $task->id;
-//            $task_assigned->task_assigned_to = $request->task_assigned_to; 
+            //            $task_assigned->task_assigned_to = $request->task_assigned_to; 
             $task_assigned->task_assigned_to = $taskassignedids->assigned_to;
             if ($request->task_assigned_by == $taskassignedids->assigned_to) {
                 $task_assigned->handover = '1';
@@ -675,8 +676,9 @@ class ParentController extends Controller
 							) THEN TRUE
 							ELSE FALSE END)
 							AS is_complete,parent_tasks.*")))->with('User')->where('id', $task->id)->first();
-//             $addded->task_assigned_to=$request->task_assigned_to;
+                //             $addded->task_assigned_to=$request->task_assigned_to;
                 $addded->task_assigned_to = $taskassignedids->assigned_to;
+ 
                 $this->pusher->trigger('task-channel', 'task_add', $addded);
 
                 $user_data_to = User::where('id', $task_assigned->task_assigned_to)->first();
@@ -686,7 +688,7 @@ class ParentController extends Controller
 
                 $message = 'A new task has been assigned to you in this schedule \'' . $taskassignedids->schedule_name . '\'';
                 if (!empty($user_data_to->device_token)) {
-                    SendAllNotification($user_data_to->device_token, $message, 'social_notification', $task->id, 'add_task',null,null,null,null,null,$accept_reject_status);
+                    SendAllNotification($user_data_to->device_token, $message, 'social_notification', $task->id, 'add_task', null, null, null, null, null, $accept_reject_status);
                 }
                 $notificationobj = new Notification;
                 $notificationobj->user_id = $user_data_to->id;
@@ -698,9 +700,12 @@ class ParentController extends Controller
                 $notificationobj->push_type = 'add_task';
                 $notificationobj->from_user_id = $user_data_by->id;
                 $notificationobj->save();
-                
+
                 $notificationobj->role_type = 'all';
+                
+
                 $this->pusher->trigger('notification-channel', 'notification_all_read', $notificationobj);
+                
                 $data = array(
                     'name' => $user_data_to->name,
                     'email' => $user_data_to->email,
@@ -714,7 +719,7 @@ class ParentController extends Controller
                     $m->from('involvvely@gmail.com', 'Involvvely');
                     $m->to($user_data_to->email);
                     $m->subject('Assigned Task');
-                });
+                }); 
             }
             //}
             return response()->json(array('error' => false, 'message' => 'Success', 'data' => $task), 200);
@@ -722,7 +727,7 @@ class ParentController extends Controller
     }
 
     public function AddSchedule(Request $request)
-    {
+    { 
         $input = $request->all();
         $validator = Validator::make($input, [
             'created_by' => 'required|exists:users,id',
@@ -733,8 +738,7 @@ class ParentController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
-        } else {
-
+        } else { 
             //foreach ($selected_days as $key => $selected_day) {
             // 
             /*  $contain= Schedule::whereRaw('JSON_CONTAINS(selected_days,\'["'.$selected_day.'"]\')')->where('from_time',$request->from_time)->where('to_time',$request->to_time)->where('created_by',$request->created_by)->count();
@@ -767,7 +771,7 @@ class ParentController extends Controller
             $task->selected_days = $days_data;
             $task->save();
 
-            //            $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get(); 
+            //   $user= User::whereIn('id', explode(',',$task->assigned_to))->select('name','id')->get(); 
             $user = [];
             $user = User::where('id', $task->assigned_to)->select('name', 'id', 'timezone_id', 'school_id', 'type_of_schooling')->get();
             $task->assigned_to = $user;
@@ -844,54 +848,55 @@ class ParentController extends Controller
         }
     }
 
+
     //Get tasks
-    public function Getschedules(Request $request) {
+    public function Getschedules(Request $request)
+    {
+
         $validator = Validator::make($request->all(), [
-                    'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = Schedule::select((DB::raw("(SELECT CASE
-						WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
-
+            return $tasks = Schedule::
+            select((DB::raw("(SELECT CASE 
+                        WHEN FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
 						WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
 						ELSE 0
 						END
 						)
 						AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL OR  created_by=' . $request->user_id . ')')->orderBy('id', 'DESC')->get();
             // $tasks = Schedule::select((DB::raw("(SELECT CASE
-			// 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
+            // 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
 
-			// 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
-			// 			ELSE 0
-			// 			END
-			// 			)
-			// 			AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
+            // 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
+            // 			ELSE 0
+            // 			END
+            // 			)
+            // 			AS is_accept,schedules.*")))->with('User')->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)  OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL )')->orderBy('id', 'DESC')->get();
             foreach ($tasks as $singlke_task) {
-                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id','timezone_id','school_id','type_of_schooling')->get();
+                $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id', 'timezone_id', 'school_id', 'type_of_schooling')->get();
                 $singlke_task->assigned_to = $user;
-                foreach($user as $users){
-            if($users->type_of_schooling == 'school'){
-					if($users->timezone_id == null || $users->timezone_id == ''){
-                    //get school timezone
-                    $schooldata = School::where('id', $users->school_id)->first();
-                    $statedata = State::where('id', $schooldata->state_id)->first();
-                    $timezone = Timezone::where('id', $statedata->timezone_id)->first();
-                    // $users->timezone = $timezone;
-                    $users->timezone_offset = $timezone->utc_offset;
-                    $users->timezone_name = $timezone->timezone_name;
-                    
-                }else{
-                    //get user timezone
-                    $timezone = Timezone::where('id', $users->timezone_id)->first();
-                    // $users->timezone = $timezone;
-                    $users->timezone_offset = $timezone->utc_offset;
-                    $users->timezone_name = $timezone->timezone_name;
+                foreach ($user as $users) {
+                    if ($users->type_of_schooling == 'school') {
+                        if ($users->timezone_id == null || $users->timezone_id == '') {
+                            //get school timezone
+                            $schooldata = School::where('id', $users->school_id)->first();
+                            $statedata = State::where('id', $schooldata->state_id)->first();
+                            $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                            // $users->timezone = $timezone;
+                            $users->timezone_offset = $timezone->utc_offset;
+                            $users->timezone_name = $timezone->timezone_name;
+                        } else {
+                            //get user timezone
+                            $timezone = Timezone::where('id', $users->timezone_id)->first();
+                            // $users->timezone = $timezone;
+                            $users->timezone_offset = $timezone->utc_offset;
+                            $users->timezone_name = $timezone->timezone_name;
+                        }
+                    }
                 }
-            }
-				}
-
             }
 
 
@@ -899,36 +904,35 @@ class ParentController extends Controller
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+
 
 
     //Get tasks
-    public function GetScheduleTask(Request $request) {
+    public function GetScheduleTask(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:schedules,id'
+            'schedule_id' => 'required|exists:schedules,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
-            
         } else {
-            $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
-							SELECT *
-							FROM parent_task_assigned
-							WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3
-							) THEN TRUE
-							ELSE FALSE END)
-							AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
-							FROM parent_task_assigned
-							WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.handover = 1 AND task_assigned_to=' . $request->user_id . ')  OR  task_assigned_by=' . $request->user_id . ')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
-                            foreach ($tasks as $signle_user) {
-                                //check task schedule is accepted or not 
-                                $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
-                                if($schedule_status->rejected_user != null){
-                                   $signle_user->is_complete = 2;
-                                }
-                            }    
+            $tasks = ParentTask::
+            select((DB::raw("( CASE WHEN EXISTS ( SELECT * FROM parent_task_assigned
+			WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3) THEN TRUE
+			ELSE FALSE END) AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
+			FROM parent_task_assigned WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.handover = 1 AND task_assigned_to=' . $request->user_id . ')  OR  task_assigned_by=' . $request->user_id . ')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
+
+            foreach ($tasks as $signle_user) {
+                //check task schedule is accepted or not 
+                $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
+                if ($schedule_status->rejected_user != null) {
+                    $signle_user->is_complete = 2;
+                }
+            }
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $tasks), 200);
         }
     }
+
 
 
     //Get tasks assigned to me 
@@ -946,15 +950,16 @@ class ParentController extends Controller
     }
 
     //task detail
-    public function GetScheduleTaskDetail(Request $request) {
+      public function GetScheduleTaskDetail(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-                    'task_id' => 'required|exists:parent_tasks,id'
+            'task_id' => 'required|exists:parent_tasks,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             $accept_reject_data = ParentTaskAssigned::with('User', 'ParentTask.User')->where(['task_id' => $request->task_id, 'task_assigned_to' => $request->parent_id])->first();
-//           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id, 'handover'=>'1'])->first();
+            //           $accept_reject_data= ParentTaskAssigned::with('User','ParentTask.User')->where(['task_id'=>$request->task_id ,'task_assigned_to'=>$request->parent_id, 'handover'=>'1'])->first();
             if (!empty($accept_reject_data)) {
 
                 if ($request->accept_reject == 1) {
@@ -964,7 +969,6 @@ class ParentController extends Controller
                 }
                 // SElect parent_tasks.*, (CASE WHEN (Select Count(id) from parent_task_assigned where task_id=parent_tasks.id AND (parent_task_assigned.accept_reject=1 OR parent_task_assigned.accept_reject=0)) > 0  THEN parent_task_assigned.accept_reject ELSE '2' END )   from parent_tasks 
             } else {
-                
             }
             $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS (
 							SELECT *
@@ -977,12 +981,12 @@ class ParentController extends Controller
             foreach ($tasks as $signle_user) {
                 $task_user = ParentTaskAssigned::select('image', 'notes', 'task_assigned_to')->with('User:id,name')->where('task_id', $request->task_id)->first();
                 $signle_user->assigned_to = $task_user;
-                
+
                 //check task schedule is accepted or not 
-				$schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
-				if($schedule_status->rejected_user != null){
-				   $signle_user->is_complete = 2;
-				}
+                $schedule_status = Schedule::where('id', $signle_user->schedule_id)->first();
+                if ($schedule_status->rejected_user != null) {
+                    $signle_user->is_complete = 2;
+                }
             }
 
 
@@ -996,17 +1000,18 @@ class ParentController extends Controller
         }
     }
 
-
     //Schedule Detail
-    public function GetScheduleDetail(Request $request) {
+    public function GetScheduleDetail(Request $request)
+    {
+        
         $validator = Validator::make($request->all(), [
-                    'schedule_id' => 'required|exists:schedules,id'
+            'schedule_id' => 'required|exists:schedules,id'
         ]);
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
             //GET ASSIGNED USER_ID
-            $assigned_id = Schedule::where('id',$request->schedule_id)->first();
+            $assigned_id = Schedule::where('id', $request->schedule_id)->first();
             $tasks = Schedule::select((DB::raw("(SELECT CASE
 						WHEN  FIND_IN_SET(" . $assigned_id->assigned_to . " ,schedules.accept_reject_schedule ) THEN 1
 						WHEN FIND_IN_SET(" . $assigned_id->assigned_to . ", schedules.rejected_user) THEN 2
@@ -1016,12 +1021,12 @@ class ParentController extends Controller
 						AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
 
             // $tasks = Schedule::select((DB::raw("(SELECT CASE
-			// 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
-			// 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
-			// 			ELSE 0
-			// 			END
-			// 			)
-			// 			AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
+            // 			WHEN  FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
+            // 			WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
+            // 			ELSE 0
+            // 			END
+            // 			)
+            // 			AS is_accept,schedules.*")))->with('User:id,name')->where('id', $request->schedule_id)->first();
             $user = User::whereIn('id', explode(',', $tasks->assigned_to))->select('name')->get();
             $tasks->assigned_to = $user;
 
@@ -1030,7 +1035,6 @@ class ParentController extends Controller
             return response()->json(array('error' => false, 'message' => 'this task is pending', 'data' => []), 200);
         }
     }
-
 
     //remove task
     public function RemoveScheduleTask(Request $request) {
