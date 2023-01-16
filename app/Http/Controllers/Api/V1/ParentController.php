@@ -859,7 +859,7 @@ class ParentController extends Controller
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            return $tasks = Schedule::
+              $tasks = Schedule::
             select((DB::raw("(SELECT CASE 
                         WHEN FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
 						WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
