@@ -84,10 +84,11 @@ class NotificationController extends Controller
 					
 					if (!empty($tasks)) {
 						$user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token', 'timezone_id', 'school_id', 'type_of_schooling')->get();
-						return $tasks;
 
 						$scheduke->assigned_to = $user;
 						foreach ($user as $val) {
+						return $val;
+
 							if ($val->type_of_schooling == 'school') {
 								if (empty($val->timezone_id) || $val->timezone_id == '') {
 									//get school timezone
