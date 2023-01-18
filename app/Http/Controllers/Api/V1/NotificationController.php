@@ -62,6 +62,7 @@ class NotificationController extends Controller
 				->orderBy('id', 'DESC')
 				->get();
 				
+				
 			} else {
 				$notifications = Notification::where('user_id', $request->user_id)
 				->where('type', 'social_notification')
@@ -77,9 +78,10 @@ class NotificationController extends Controller
 				if (!empty($single_notification->schedule_id)) {
 				
 					$scheduke = Schedule::with('User')->where('id', $single_notification->schedule_id)->first();
-					
-					$tasks = ParentTask::with('AssignedUser')->where('schedule_id', $single_notification->schedule_id)->first();
+					return $scheduke;
 					 
+					$tasks = ParentTask::with('AssignedUser')->where('schedule_id', $single_notification->schedule_id)->first();
+					
 					if (!empty($tasks)) {
 						$user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token', 'timezone_id', 'school_id', 'type_of_schooling')->get();
 						$scheduke->assigned_to = $user;
@@ -104,12 +106,14 @@ class NotificationController extends Controller
 							}
 						}
 					} else {
-						$scheduke->assigned_to = '';
+						$scheduke->assigned_to = null;
+						
 					}
 
 					$single_notification->schedule = $scheduke;
+				
 				} else {
-					$single_notification->schedule = '';
+					$single_notification->schedule = null;
 
 				}
 
