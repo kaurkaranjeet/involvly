@@ -16,53 +16,42 @@
           <img src="@assets/images/elements/decore-right.png" class="decore-right" alt="Decore Right" width="175" />
           <feather-icon icon="AwardIcon" class="p-6 mb-8 bg-primary inline-flex rounded-full text-white shadow"
             svgClasses="h-8 w-8"></feather-icon> -->
-          <vx-card__body class="vx-row" :style="welcomePadding" >
+          <vx-card__body class="vx-row" :style="welcomePadding">
             <slot>
-            <div class="wrapper">
-           
-            <h4 class="mb-1 text-dark text-left demo-1"><img src="@assets/images/elements/Group.svg" alt="Group svg"
-                width="35px" /> </h4>
+              <div class="wrapper">
 
-            <h4 class="mb-1 text-dark text-left demo-1">Welcome </h4>
-            <h1 class="mb-4 text-left" style="margin-top:-10px;"><b class="h1-checkpoint">{{ checkpointReward.name
-            }}</b><img src="@assets/images/elements/party.png" alt="Decore Right" width="40px" /></h1>
-          </div>
-          <!-- <p class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white">
+                <h4 class="mb-1 text-dark text-left demo-1"><img src="@assets/images/elements/Group.svg" alt="Group svg"
+                    width="35px" /> </h4>
+
+                <h4 class="mb-1 text-dark text-left demo-1">Welcome </h4>
+                <h1 class="mb-4 text-left" style="margin-top:-10px;"><b class="h1-checkpoint">{{
+                  checkpointReward.name
+                }}</b><img src="@assets/images/elements/party.png" alt="Decore Right" width="40px" /></h1>
+              </div>
+              <!-- <p class="xl:w-3/4 lg:w-4/5 md:w-2/3 w-4/5 mx-auto text-white">
   -->
-        </slot>
+            </slot>
           </vx-card__body>
         </vx-card>
       </div>
       <!-- CARD 2: SUBSCRIBERS GAINED 
           :chartData="subscribersGained.Studentseries"-->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirect" style="cursor: pointer">
-         
-        <statistics-card-line 
-          icon="EyeIcon" 
-          :statistic="subscribersGained.students" 
-          statisticTitle="School Admins"
-          type="area"
-          statisticImage="/images/elements/Group1.svg"
-          CardBackground="'/images/elements/card1.png'"
-          >      
+
+        <statistics-card-line icon="EyeIcon" :statistic="subscribersGained.students" statisticTitle="School Admins"
+          type="area" statisticImage="/images/elements/Group1.svg" CardBackground="'/images/elements/card1.png'">
         </statistics-card-line>
 
-            </div>
+      </div>
 
       <!-- CARD 3: ORDER RECIEVED 
           :chartData="subscribersGained.Teacherseries"-->
       <div class="vx-col w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 mb-base" @click="redirecteacchers"
         style="cursor: pointer">
-       <statistics-card-line 
-          icon="UsersIcon" 
-          :statistic="subscribersGained.teachers"
-          statisticTitle="Independent Teachers" 
-          color="warning" 
-          statisticImage="/images/elements/indvidual.svg"
-          CardBackground="'/images/elements/card2.png'"
-          type="area"
-          ></statistics-card-line>
-         </div>
+        <statistics-card-line icon="UsersIcon" :statistic="subscribersGained.teachers"
+          statisticTitle="Independent Teachers" color="warning" statisticImage="/images/elements/indvidual.svg"
+          CardBackground="'/images/elements/card2.png'" type="area"></statistics-card-line>
+      </div>
     </div>
 
     <div class="vx-row" style="display: none;">
@@ -234,7 +223,7 @@
               <vs-tab :label="'Teachers (' + teacherCount + ')'">
 
                 <div class="tab-text">
-                  <vs-table max-items="5" :pagination="teacherpagination" :data="teacherRequests"
+                  <vs-table max-items="6" :pagination="teacherpagination" :data="teacherRequests"
                     class="table-dark-inverted">
                     <template slot="thead">
                       <vs-th>Id</vs-th>
@@ -299,7 +288,7 @@
               </vs-tab>
               <vs-tab :label="'Students (' + studentCount + ')'">
                 <div class="tab-text">
-                  <vs-table max-items="5" :pagination="studentpagination" :data="studentRequests"
+                  <vs-table max-items="6" :pagination="studentpagination" :data="studentRequests"
                     class="table-dark-inverted" ref="table">
                     <template slot="thead">
                       <vs-th>Id</vs-th>
@@ -362,7 +351,7 @@
               </vs-tab>
               <vs-tab :label="'Parents (' + parentCount + ')'">
                 <div class="tab-text">
-                  <vs-table max-items="5" :pagination="studentpagination" :data="parentRequests"
+                  <vs-table max-items="6" :pagination="studentpagination" :data="parentRequests"
                     class="table-dark-inverted">
                     <template slot="thead">
                       <vs-th>Id</vs-th>
@@ -425,7 +414,7 @@
                 </div>
               </vs-tab>
             </vs-tabs>
-          </div>
+          </div>  
         </vx-card>
       </div>
     </div>
@@ -448,7 +437,7 @@ export default {
       styleObject: {
         padding: "1.4rem"
       },
-      welcomePadding:{
+      welcomePadding: {
         padding: "1.8rem !important"
       },
       checkpointReward: {},
