@@ -131,8 +131,7 @@ class NotificationController extends Controller
 						$single_notification->class_id = null;
 					}
 				}
-				echo "here";
-				return $single_notification->assignment_id;
+			 
 			
 			}
 			if (count($notifications) > 0) {
