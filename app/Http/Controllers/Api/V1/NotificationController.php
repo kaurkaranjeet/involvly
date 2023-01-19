@@ -120,7 +120,9 @@ class NotificationController extends Controller
 					$single_notification->schedule = null;
 
 				}
-				return "here";
+				echo "here";
+				return $single_notification->assignment_id;
+			
 				if (!empty($single_notification->assignment_id)) {
 					$subject = AssignedAssignments::where("assignment_id", $single_notification->assignment_id)->select("subject_id", "class_id")->first();
 					if (!empty($subject)) {
