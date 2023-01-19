@@ -87,10 +87,8 @@ class NotificationController extends Controller
 
 						$scheduke->assigned_to = $user;
 						foreach ($user as $val) {
-							echo "inside user Loop";
 
 							if ($val->type_of_schooling == 'school') {
-								echo "inside val value";
 								if (empty($val->timezone_id) || $val->timezone_id == '') {
 									//get school timezone
 									$schooldata = School::where('id', $val->school_id)->first();
@@ -112,7 +110,7 @@ class NotificationController extends Controller
 					} else {
 						
 						$scheduke->assigned_to = null;
-				 
+						
 						
 					}
 
@@ -122,11 +120,10 @@ class NotificationController extends Controller
 					$single_notification->schedule = null;
 
 				}
-
+				return "here";
 				if (!empty($single_notification->assignment_id)) {
 					$subject = AssignedAssignments::where("assignment_id", $single_notification->assignment_id)->select("subject_id", "class_id")->first();
 					if (!empty($subject)) {
-						echo "inside assi";
 						$single_notification->subject_id = $subject->subject_id;
 						$single_notification->class_id = $subject->class_id;
 					} else {
