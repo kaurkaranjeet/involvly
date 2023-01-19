@@ -120,8 +120,6 @@ class NotificationController extends Controller
 					$single_notification->schedule = null;
 
 				}
-				echo "here";
-				return $single_notification->assignment_id;
 			
 				if (!empty($single_notification->assignment_id)) {
 					$subject = AssignedAssignments::where("assignment_id", $single_notification->assignment_id)->select("subject_id", "class_id")->first();
@@ -133,6 +131,9 @@ class NotificationController extends Controller
 						$single_notification->class_id = null;
 					}
 				}
+				echo "here";
+				return $single_notification->assignment_id;
+			
 			}
 			if (count($notifications) > 0) {
 				return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $notifications), 200);
