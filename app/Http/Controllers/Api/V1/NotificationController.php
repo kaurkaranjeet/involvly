@@ -86,9 +86,11 @@ class NotificationController extends Controller
 						$user = User::where('id', $tasks->AssignedUser->task_assigned_to)->select('name', 'id', 'device_token', 'timezone_id', 'school_id', 'type_of_schooling')->get();
 
 						$scheduke->assigned_to = $user;
-						foreach ($user as scheduke$val) {
+						foreach ($user as $val) {
+							echo "inside user Loop";
 
 							if ($val->type_of_schooling == 'school') {
+								echo "inside val value";
 								if (empty($val->timezone_id) || $val->timezone_id == '') {
 									//get school timezone
 									$schooldata = School::where('id', $val->school_id)->first();
@@ -110,7 +112,7 @@ class NotificationController extends Controller
 					} else {
 						
 						$scheduke->assigned_to = null;
-						return $scheduke;
+				 
 						
 					}
 
@@ -124,6 +126,7 @@ class NotificationController extends Controller
 				if (!empty($single_notification->assignment_id)) {
 					$subject = AssignedAssignments::where("assignment_id", $single_notification->assignment_id)->select("subject_id", "class_id")->first();
 					if (!empty($subject)) {
+						echo "inside assi";
 						$single_notification->subject_id = $subject->subject_id;
 						$single_notification->class_id = $subject->class_id;
 					} else {
