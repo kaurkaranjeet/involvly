@@ -22,6 +22,7 @@ use URL;
 
 class MessageController extends Controller {
  
+  protected $pusher;
      public function __construct() {
         $options = array(
             'cluster' => env('PUSHER_APP_CLUSTER'),
@@ -83,7 +84,7 @@ class MessageController extends Controller {
              $data->file =URL::to('/').'/files/'.$name;  
              //notification 
             $user_detailssfile = User::where('id', $request->to_user_id)->first();
-            $user_pusher = DB::table('users')->select('id', 'name', 'email')->where('id', $request->from_user_id)->first();
+            $user_pusher = User::select('id', 'name', 'email')->where('id', $request->from_user_id)->first();
             if($user_detailssfile->notification_settings == 1){
               if(!empty($user_detailssfile->device_token)){
                 $extension = $request->file->getClientOriginalExtension();
@@ -105,6 +106,7 @@ class MessageController extends Controller {
             $data->User;      
             
             $array=array('error' => false, 'data' => $data);
+    
             //notification 
             $user_detailss = User::where('id', $request->to_user_id)->first();
             $user_pushers = User::where('id', $request->from_user_id)->first();
@@ -112,21 +114,20 @@ class MessageController extends Controller {
 
             if($user_detailss->notification_settings == 1){
               if(!empty($user_detailss->device_token)){
-          
                 SendAllNotification($user_detailss->device_token,$request->message,'social_notification',null,'send_message',null,null,null,$user_pushers);          
               }
               // dd($request->from_user_id);
-              //  $notifications = Notification::create(['user_id'=>$user_detailss->id,'from_user_id'=>$from_user_id,'notification_message'=>$request->message,'type'=>'social_notification','notification_type'=>'message','push_type'=>'send_message','post_id'=>'']);
-              //  $notifications->role_type = 'all';
-            //   $notificationobj=new Notification;
-            //  $notificationobj->user_id=$user_detailss->id;
-            //  $notificationobj->notification_message=$request->message;
-            //  $notificationobj->notification_type='Message';
-            //  $notificationobj->type='social_notification';
-            //  $notificationobj->push_type='send_message';
-            //  $notificationobj->from_user_id=$from_user_id;
-            //  $notificationobj->save();
-            //  $notificationobj->role_type = 'all';
+             $notifications = Notification::create(['user_id'=>$user_detailss->id,'from_user_id'=>$from_user_id,'notification_message'=>$request->message,'type'=>'social_notification','notification_type'=>'message','push_type'=>'send_message','post_id'=>'']);
+             $notifications->role_type = 'all';
+             $notificationobj=new Notification;
+             $notificationobj->user_id=$user_detailss->id;
+             $notificationobj->notification_message=$request->message;
+             $notificationobj->notification_type='Message';
+             $notificationobj->type='social_notification';
+             $notificationobj->push_type='send_message';
+             $notificationobj->from_user_id=$from_user_id;
+             $notificationobj->save();
+             $notificationobj->role_type = 'all';
             }
             }
 
@@ -150,7 +151,7 @@ class MessageController extends Controller {
 
            $array_new=array('error' => false, 'data' => $pusher_data);
           
-
+   
 
           if($response1>0){
             $this->pusher->trigger('usermassage-channel', 'listuser_event', $array_new);
