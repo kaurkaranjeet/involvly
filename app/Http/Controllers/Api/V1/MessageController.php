@@ -21,7 +21,7 @@ use DB;
 use URL;
 
 class MessageController extends Controller {
-
+ 
      public function __construct() {
         $options = array(
             'cluster' => env('PUSHER_APP_CLUSTER'),
@@ -41,8 +41,9 @@ class MessageController extends Controller {
      * @param Request $request
      */
       public function sendUserMessage(Request $request)
-    {
+    { 
         $input = $request->all();
+         
         $response =[];
         try{
             $validator = Validator::make($input, [
@@ -53,11 +54,12 @@ class MessageController extends Controller {
             if($validator->fails()){
              throw new Exception( $validator->errors());
          }  else{
+ 
           $from_user_id=$request->from_user_id;
            $to_user_id=$request->to_user_id;
            if(empty($request->message) && empty($request->hasfile('file'))){
             throw new Exception('Please enter some data');
-           }
+           } 
            $query1=Message::where(function ($query) use ($from_user_id, $to_user_id) {
             $query->where('from_user_id', $to_user_id)->where('to_user_id', $from_user_id);
           })->oRwhere(function ($query) use ($from_user_id, $to_user_id) {
@@ -96,17 +98,21 @@ class MessageController extends Controller {
          }
             $data->is_read = 0; // message will be unread when sending message
             $data->save();
+      
            // $date = Carbon::parse($data->created_at); 
           // $data->message_date = $date->diffForHumans();   
             $data->message_date = $data->created_at; 
             $data->User;      
+            
             $array=array('error' => false, 'data' => $data);
             //notification 
             $user_detailss = User::where('id', $request->to_user_id)->first();
-            $user_pushers = DB::table('users')->select('id', 'name', 'email')->where('id', $request->from_user_id)->first();
+            $user_pushers = User::where('id', $request->from_user_id)->first();
             if(!empty($request->message)){
+
             if($user_detailss->notification_settings == 1){
               if(!empty($user_detailss->device_token)){
+          
                 SendAllNotification($user_detailss->device_token,$request->message,'social_notification',null,'send_message',null,null,null,$user_pushers);          
               }
               // dd($request->from_user_id);
@@ -161,8 +167,6 @@ class MessageController extends Controller {
           'message'  =>'Message send successfully',
           'data' =>  $data,
           'pusher_data' => $pusher_data
-         
-
         ]; 
     }
 }
