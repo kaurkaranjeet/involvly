@@ -885,17 +885,40 @@ class ParentController extends Controller
 						ELSE 0
 						END
 						)
-						AS is_accept,schedules.*,timezones.utc_offset,timezones.timezone_name,schedules.*,users.name AS user_name, users.id AS user_id, users.timezone_id AS user_timezone_id, users.school_id AS user_school_id, users.type_of_schooling AS user_type_of_schooling")))
-                    ->where("selected_days", "like", "%" . $date . "%")->with('User')
-                    ->leftJoin('users','users.id','=', 'schedules.assigned_to')
-                    ->leftJoin('schools','schools.id','=','users.school_id')
-                    ->leftJoin('states','states.id','=','schools.state_id')
-                    ->leftJoin('timezones','timezones.id','=','states.timezone_id')
- 
+						AS is_accept,schedules.*")))
+                    ->where("selected_days", "like", "%" . $date . "%") 
+                     
+                    
                     ->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)
                           OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL 
                           OR  created_by=' . $request->user_id . ')')
                     ->orderBy('id', 'DESC')->get();
+                    
+                    foreach ($dataSch as $singlke_task) {
+                        $user = User::whereIn('id', explode(',', $singlke_task->assigned_to))->select('name', 'id','timezone_id','school_id','type_of_schooling')->get();
+                        $singlke_task->assigned_to = $user;
+                        foreach($user as $users){
+                    if($users->type_of_schooling == 'school'){
+                            if($users->timezone_id == null || $users->timezone_id == ''){
+                            //get school timezone
+                            $schooldata = School::where('id', $users->school_id)->first();
+                            $statedata = State::where('id', $schooldata->state_id)->first();
+                            $timezone = Timezone::where('id', $statedata->timezone_id)->first();
+                            // $users->timezone = $timezone;
+                            $users->timezone_offset = $timezone->utc_offset;
+                            $users->timezone_name = $timezone->timezone_name;
+                            
+                        }else{
+                            //get user timezone
+                            $timezone = Timezone::where('id', $users->timezone_id)->first();
+                            // $users->timezone = $timezone;
+                            $users->timezone_offset = $timezone->utc_offset;
+                            $users->timezone_name = $timezone->timezone_name;
+                        }
+                    }
+                        }
+        
+                    }
                     $tasks[$count] = $dataSch;
                     $apiResponse[$count] = ['date' => $date,'data' => $tasks[$count]] ;
                     $count++;
