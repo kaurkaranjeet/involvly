@@ -895,30 +895,24 @@ class ParentController extends Controller
                     ->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)
                           OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL 
                           OR  created_by=' . $request->user_id . ')')
-                    ->orderBy('id', 'DESC')->get();
-                    $tasks[$count] = $dataSch;
-                    $apiResponse[$count] = ['date' => $date,'data' => $tasks[$count]] ;
+                          ->orderBy('id', 'DESC')->get();
+
+                          foreach ($dataSch as $singlke_task) {
+ 
+                              $singlke_task->assigned_to = [[
+                            'id' => $singlke_task->user_name, 
+                            'user_name'=>$singlke_task->user_name,
+                            'timezone_offset' => $singlke_task->utc_offset,
+                            'timezone_name' => $singlke_task->timezone_name
+                          ]];
+                        }
+            
+                    
+                     $tasks[$count] = $dataSch;
+                       $apiResponse[$count] = ['date' => $date,'data' => $tasks[$count]] ;
                     $count++;
             } 
-            $i =0;
-            foreach ($apiResponse as $key => $value) {
-                 
-                if(count($value['data']) > 0 )
-                { 
-                    if(isset($apiResponse[$key]['data'][$i]['assigned_to'])){
-                        echo $i;
-                        $apiResponse[$key]['data'][$i]['assigned_to'] = [[
-                            'id' => $value['data'][0]['user_id'],
-                            'user_name' => $value['data'][0]['user_name'],
-                            'timezone_offset' => $value['data'][0]['utc_offset'],
-                            'timezone_name' => $value['data'][0]['timezone_name'],
-    
-                        ]];
-                        $i++;
-                    }
-
-                }
-            }
+     
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $apiResponse), 200);
         }
     }
