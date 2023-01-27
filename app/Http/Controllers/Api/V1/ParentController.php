@@ -906,7 +906,8 @@ class ParentController extends Controller
                 if(count($value['data']) > 0 )
                 { 
                     if(isset($apiResponse[$key]['data'][$i]['assigned_to'])){
-                        $apiResponse[$key]['data'][0]['assigned_to'] = [[
+                        echo $i;
+                        $apiResponse[$key]['data'][$i]['assigned_to'] = [[
                             'id' => $value['data'][0]['user_id'],
                             'user_name' => $value['data'][0]['user_name'],
                             'timezone_offset' => $value['data'][0]['utc_offset'],
