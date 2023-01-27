@@ -900,17 +900,22 @@ class ParentController extends Controller
                     $apiResponse[$count] = ['date' => $date,'data' => $tasks[$count]] ;
                     $count++;
             } 
-
+            $i =0;
             foreach ($apiResponse as $key => $value) {
+                 
                 if(count($value['data']) > 0 )
                 { 
-                    $apiResponse[$key]['data'][0]['assigned_to'] = [[
-                        'id' => $value['data'][0]['user_id'],
-                        'user_name' => $value['data'][0]['user_name'],
-                        'timezone_offset' => $value['data'][0]['utc_offset'],
-                        'timezone_name' => $value['data'][0]['timezone_name'],
-
-                    ]];
+                    if(isset($apiResponse[$key]['data'][$i]['assigned_to'])){
+                        $apiResponse[$key]['data'][0]['assigned_to'] = [[
+                            'id' => $value['data'][0]['user_id'],
+                            'user_name' => $value['data'][0]['user_name'],
+                            'timezone_offset' => $value['data'][0]['utc_offset'],
+                            'timezone_name' => $value['data'][0]['timezone_name'],
+    
+                        ]];
+                        $i++;
+                    }
+                
                 }
             }
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $apiResponse), 200);
