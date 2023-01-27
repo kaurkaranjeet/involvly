@@ -915,7 +915,7 @@ class ParentController extends Controller
                         ]];
                         $i++;
                     }
-                
+
                 }
             }
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $apiResponse), 200);
