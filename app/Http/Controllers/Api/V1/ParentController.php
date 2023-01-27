@@ -136,8 +136,7 @@ class ParentController extends Controller
                     $student_obj->status = '1';
                     if (empty($request->family_code)) {
                         $digits = 5;
-                        $family_code = $this->random_strings(5);
-                        ;
+                        $family_code = $this->random_strings(5);;
                         $student_obj->family_code = $family_code;
                     } else {
                         $code = User::where('family_code', $request->family_code)->count();
@@ -869,7 +868,6 @@ class ParentController extends Controller
 
                 $currentMonthendDate = date("Y-m-t");
                 $currentMonthStarDate = date("Y-m-01");
-
             }
             $startDate = strtotime($currentMonthStarDate);
             $endDate = strtotime($currentMonthendDate);
@@ -878,8 +876,7 @@ class ParentController extends Controller
             $count = 0;
             for ($i = $startDate; $i <= $endDate; $i += (86400)) {
                 $date = date('Y-m-d', $i);
-                $dataSch = Schedule::with('User')->
-                    select((DB::raw("(SELECT CASE 
+                $dataSch = Schedule::with('User')->select((DB::raw("(SELECT CASE 
                         WHEN FIND_IN_SET(" . $request->user_id . " ,schedules.accept_reject_schedule ) THEN 1
 						WHEN FIND_IN_SET(" . $request->user_id . ", schedules.rejected_user) THEN 2
 						ELSE 0
@@ -887,32 +884,30 @@ class ParentController extends Controller
 						)
 						AS is_accept,schedules.*,timezones.utc_offset,timezones.timezone_name,schedules.*,users.name AS user_name, users.id AS user_id, users.timezone_id AS user_timezone_id, users.school_id AS user_school_id, users.type_of_schooling AS user_type_of_schooling")))
                     ->where("selected_days", "like", "%" . $date . "%")->with('User')
-                    ->leftJoin('users','users.id','=', 'schedules.assigned_to')
-                    ->leftJoin('schools','schools.id','=','users.school_id')
-                    ->leftJoin('states','states.id','=','schools.state_id')
-                    ->leftJoin('timezones','timezones.id','=','states.timezone_id')
- 
+                    ->leftJoin('users', 'users.id', '=', 'schedules.assigned_to')
+                    ->leftJoin('schools', 'schools.id', '=', 'users.school_id')
+                    ->leftJoin('states', 'states.id', '=', 'schools.state_id')
+                    ->leftJoin('timezones', 'timezones.id', '=', 'states.timezone_id')
+
                     ->whereRaw('( (FIND_IN_SET(' . $request->user_id . ', assigned_to ) AND  handover=1)
                           OR  created_by=' . $request->user_id . ')  AND  ( FIND_IN_SET(' . $request->user_id . ' ,rejected_user) IS NULL 
                           OR  created_by=' . $request->user_id . ')')
-                          ->orderBy('id', 'DESC')->get();
-
-                          foreach ($dataSch as $singlke_task) {
- 
-                              $singlke_task->assigned_to = [[
-                            'id' => $singlke_task->user_name, 
-                            'user_name'=>$singlke_task->user_name,
+                    ->orderBy('id', 'DESC')->get();
+                     
+                    foreach ($dataSch as $singlke_task) {
+                        $singlke_task->assigned_to = [[
+                            'id' => $singlke_task->user_id,
+                            'user_name' => $singlke_task->user_name,
                             'timezone_offset' => $singlke_task->utc_offset,
                             'timezone_name' => $singlke_task->timezone_name
-                          ]];
-                        }
-            
-                    
-                     $tasks[$count] = $dataSch;
-                       $apiResponse[$count] = ['date' => $date,'data' => $tasks[$count]] ;
-                    $count++;
-            } 
-     
+                        ]];
+                    }
+                
+                $tasks[$count] = $dataSch;
+                $apiResponse[$count] = ['date' => $date, 'data' => $tasks[$count]];
+                $count++;
+            }
+
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $apiResponse), 200);
         }
     }
@@ -928,8 +923,7 @@ class ParentController extends Controller
         if ($validator->fails()) {
             return response()->json(array('error' => true, 'message' => $validator->errors()->first()), 200);
         } else {
-            $tasks = ParentTask::
-                select((DB::raw("( CASE WHEN EXISTS ( SELECT * FROM parent_task_assigned
+            $tasks = ParentTask::select((DB::raw("( CASE WHEN EXISTS ( SELECT * FROM parent_task_assigned
 			WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.accept_reject = 3) THEN TRUE
 			ELSE FALSE END) AS is_complete,parent_tasks.*")))->with('User')->whereRaw('( id IN (SELECT task_id
 			FROM parent_task_assigned WHERE parent_task_assigned.task_id = parent_tasks.id  AND parent_task_assigned.handover = 1 AND task_assigned_to=' . $request->user_id . ')  OR  task_assigned_by=' . $request->user_id . ')')->where('schedule_id', $request->schedule_id)->orderBy('id', 'DESC')->get();
@@ -1271,20 +1265,20 @@ class ParentController extends Controller
             } else {
                 $users =
                     User::leftJoin('user_subjects', 'user_subjects.user_id', '=', 'users.id')
-                        ->leftJoin('subjects', 'subjects.id', '=', 'user_subjects.subject_id')
+                    ->leftJoin('subjects', 'subjects.id', '=', 'user_subjects.subject_id')
 
-                        ->leftJoin('user_class', 'user_class.user_id', '=', 'users.id')
-                        ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
+                    ->leftJoin('user_class', 'user_class.user_id', '=', 'users.id')
+                    ->leftJoin('class_code', 'class_code.id', '=', 'user_class.class_id')
 
-                        ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
+                    ->leftJoin('teaching_program', 'teaching_program.user_id', '=', 'users.id')
 
 
-                        ->select(DB::raw('(select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = ' . $request->parent_id . ' &&  teachin_program_requests.to_user = teaching_program.user_id) as request_status, users.id, users.name, class_code.class_name, teaching_program.*,users.profile_image'))
+                    ->select(DB::raw('(select request_status from teachin_program_requests WHERE teachin_program_requests.from_user = ' . $request->parent_id . ' &&  teachin_program_requests.to_user = teaching_program.user_id) as request_status, users.id, users.name, class_code.class_name, teaching_program.*,users.profile_image'))
 
-                        ->selectRaw('GROUP_CONCAT(DISTINCT subjects.subject_name) as subject_names')
-                        ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
+                    ->selectRaw('GROUP_CONCAT(DISTINCT subjects.subject_name) as subject_names')
+                    ->selectRaw('GROUP_CONCAT(DISTINCT class_code.class_name) as class_names')
 
-                        ->whereNotNull('user_subjects.subject_id');
+                    ->whereNotNull('user_subjects.subject_id');
                 if ($request->subject) {
                     $users = $users->where('user_subjects.subject_id', $request->subject);
                 }
@@ -1347,8 +1341,6 @@ class ParentController extends Controller
         } catch (\Exception $e) {
             return response()->json(array('error' => true, 'message' => $e->getMessage()), 200);
         }
-
-
     }
     // API- Make a Request for Hire Teacher
     public function PlaceTeacherReq(Request $request)
