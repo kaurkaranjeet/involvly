@@ -122,7 +122,9 @@ WHERE class_id= class_code_subject .class_code_id AND
  subject_id=class_code_subject .subject_id) as teacher_id , ( SELECT name FROM assigned_teachers INNER JOIN users
  ON users.id= assigned_teachers.teacher_id WHERE
  class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name, class_code_subject.*")))->with('subjects')
-                        ->where('class_code_id', $request->class_id)->groupBy('subject_id')->get();
+                        ->where('class_code_id', $request->class_id)
+                         ->whereNotNull('teacher_id')
+                        ->groupBy('subject_id')->get();
 
                 } else {
 
