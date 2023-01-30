@@ -45,7 +45,7 @@ class SubjectController extends Controller {
   public function selectLocation(Request $request , $id) {
      
     DB::enableQueryLog();
-     $location = Cities::select('county')->groupBy('county')->havingRaw('count(*) > 1')->get();
+     $location = Cities::select('county')->groupBy('county')->havingRaw('count(*) > 1')->orderBy('county')->get();
     if (!empty($location)) {
         return response()->json(compact('location'), 200);
     } else {

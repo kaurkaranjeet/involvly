@@ -1206,7 +1206,7 @@ class ParentController extends Controller
             } else {
                 $classes = ClassCode::select('id', 'class_name')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
 
-                $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->get();
+                $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->orderBy('county')->get();
 
                 $subjects = Subject::select('id', 'subject_name');
                 if (strpos($request->selected_class, 'Grade') !== false) {
