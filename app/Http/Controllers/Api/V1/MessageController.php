@@ -107,28 +107,28 @@ class MessageController extends Controller
         $array = array('error' => false, 'data' => $data);
 
         //notification 
-        $user_detailss = User::where('id', $request->to_user_id)->first();
-        $user_pushers = User::where('id', $request->from_user_id)->first();
-        if (!empty($request->message)) {
+        // $user_detailss = User::where('id', $request->to_user_id)->first();
+        // $user_pushers = User::where('id', $request->from_user_id)->first();
+        // if (!empty($request->message)) {
 
-          if ($user_detailss->notification_settings == 1) {
-            if (!empty($user_detailss->device_token)) {
-              SendAllNotification($user_detailss->device_token, $request->message, 'social_notification', null, 'send_message', null, null, null, $user_pushers);
-            }
-            // dd($request->from_user_id);
-            // $notifications = Notification::create(['user_id' => $user_detailss->id, 'from_user_id' => $from_user_id, 'notification_message' => $request->message, 'type' => 'social_notification', 'notification_type' => 'message', 'push_type' => 'send_message', 'post_id' => '']);
-            // $notifications->role_type = 'all';
-            // $notificationobj = new Notification;
-            // $notificationobj->user_id = $user_detailss->id;
-            // $notificationobj->notification_message = $request->message;
-            // $notificationobj->notification_type = 'Message';
-            // $notificationobj->type = 'social_notification';
-            // $notificationobj->push_type = 'send_message';
-            // $notificationobj->from_user_id = $from_user_id;
-            // $notificationobj->save();
-            // $notificationobj->role_type = 'all';
-          }
-        }
+        //   if ($user_detailss->notification_settings == 1) {
+        //     if (!empty($user_detailss->device_token)) {
+        //       SendAllNotification($user_detailss->device_token, $request->message, 'social_notification', null, 'send_message', null, null, null, $user_pushers);
+        //     }
+        //     // dd($request->from_user_id);
+        //     // $notifications = Notification::create(['user_id' => $user_detailss->id, 'from_user_id' => $from_user_id, 'notification_message' => $request->message, 'type' => 'social_notification', 'notification_type' => 'message', 'push_type' => 'send_message', 'post_id' => '']);
+        //     // $notifications->role_type = 'all';
+        //     // $notificationobj = new Notification;
+        //     // $notificationobj->user_id = $user_detailss->id;
+        //     // $notificationobj->notification_message = $request->message;
+        //     // $notificationobj->notification_type = 'Message';
+        //     // $notificationobj->type = 'social_notification';
+        //     // $notificationobj->push_type = 'send_message';
+        //     // $notificationobj->from_user_id = $from_user_id;
+        //     // $notificationobj->save();
+        //     // $notificationobj->role_type = 'all';
+        //   }
+        // }
         $this->pusher->trigger('chat-channel', 'chat_event', $array);
 
         $pusher_data = $data->User;
@@ -288,7 +288,7 @@ WHERE FIND_IN_SET(190, l.deleted_by_members))
     if($start < 0) $start = 0;*/
 
         $count = $query1->count();
-        /* $total_pages = ceil($count / $perPage);
+        /* $total_pages 0= ceil($count / $perPage);
  if($page>$total_pages){
      throw new Exception("Invalid page number");
  }*/
@@ -308,11 +308,6 @@ WHERE FIND_IN_SET(190, l.deleted_by_members))
               $data->message_date = null;
             }
           }
-
-
-
-
-
           $response = [
             'error' => false,
             'message' =>  'Record found',
