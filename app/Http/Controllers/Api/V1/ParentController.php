@@ -1204,9 +1204,11 @@ class ParentController extends Controller
             if ($validator->fails()) {
                 throw new Exception($validator->errors()->first());
             } else {
-                $classes = ClassCode::select('id', 'class_name')->groupBy('class_name')->havingRaw('count(*) > 1')->get();
+                $classes = ClassCode::select('id', 'class_name')->groupBy('class_name')->havingRaw('count(*) > 1')
+                ->orderBy('class_name')->get();
 
-                $location = Cities::select('county', 'id')->groupBy('county')->havingRaw('count(*) > 1')->orderBy('county')->get();
+                $location = Cities::select('county', 'id')->groupBy('county')->orderBy('county')
+                ->havingRaw('count(*) > 1')->get();
 
                 $subjects = Subject::select('id', 'subject_name');
                 if (strpos($request->selected_class, 'Grade') !== false) {
@@ -1215,7 +1217,7 @@ class ParentController extends Controller
                     $subjects->where('subject_name', 'like', '%' . $request->selected_class);
                 }
 
-                $subjects = $subjects->get();
+                $subjects = $subjects->orderBy('subject_name')->get();
                 $data = array('classes' => $classes, 'subjects' => $subjects, 'location' => $location);
                 return response()->json(array('error' => false, 'data' => $data, 'message' => 'Record fetched Success!'), 200);
             }
