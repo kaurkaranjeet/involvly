@@ -294,7 +294,7 @@ WHERE FIND_IN_SET(190, l.deleted_by_members))
  }*/
 
 
-        $results =  $query1->orderBy('created_at', 'desc')->get();
+        $results =  $query1->orderBy('created_at', 'asc')->get();
 
         // dd(DB::getQueryLog());
         if ($results) {
