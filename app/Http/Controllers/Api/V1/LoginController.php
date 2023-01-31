@@ -54,7 +54,7 @@ class LoginController extends Controller {
 
                 
                 if (!empty($classCode)) {
-                               $class_code = ClassCode::where('id', $classCode->class_id)->first();
+                    $class_code = ClassCode::where('id', $classCode->class_id)->first();
                     $user_details->class_id = $classCode->class_id;
                     $user_details->class_name = $class_code->class_name;
                     $user_details->school_status= $classCode->active;
@@ -65,6 +65,7 @@ class LoginController extends Controller {
                    $user_details->school_status = '0';
               }
               //check school approval status 
+              $school_details = School::where('id', $user_details->school_id)->first();
               if(!empty($school_details)){
                   if($school_details->approved == 1){
                      $user_details->school_live = '1'; 
