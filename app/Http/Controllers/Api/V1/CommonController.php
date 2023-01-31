@@ -120,7 +120,7 @@ class CommonController extends Controller
         class_id= class_code_subject .class_code_id AND subject_id=class_code_subject .subject_id) as name,
          class_code_subject.*")))->with('subjects')
                         ->where('class_code_id', $request->class_id)
-                    
+                        
                         ->groupBy('subject_id')->get();
 
                 } else {
@@ -174,7 +174,7 @@ class CommonController extends Controller
             if ($validator->fails()) {
                 return response()->json(array('error' => true, 'message' => $validator->errors()), 200);
             } else {
-                $states = School::where('city_id', $request->city_id)->get();
+                $states = School::where('city_id', $request->city_id)->orderBy('school_name')->get();
                 if (!empty($states)) {
                     return response()->json(array('error' => false, 'data' => $states), 200);
                 } else {
