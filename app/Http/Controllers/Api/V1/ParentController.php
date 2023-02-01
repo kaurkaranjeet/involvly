@@ -1260,6 +1260,10 @@ class ParentController extends Controller
                 'location' => 'nullable|string|exists:teaching_program,location',
                 'subject' => 'nullable|integer|exists:user_subjects,subject_id',
                 'class' => 'nullable|string|exists:class_code,class_name',
+            ],[
+                'location.exists' => 'No teachers available for this location!',
+                'subject.exists' => 'No teachers available for selected subject!',
+                'class.exists' => 'No teachers available for selected class!'
             ]);
 
             if ($validator->fails()) {
