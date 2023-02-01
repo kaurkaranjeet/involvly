@@ -50,7 +50,7 @@ class LoginController extends Controller {
             $user_details->device_token=$request->device_token;
             // get class code 
            // if ($user_details->role_id == 2) {
-                $classCode = UserClassCode::where('user_id', $user_details->id)->orderBy('id', 'DESC')->first();
+                $classCode = UserClassCode::where('user_id', $user_details->id)->first();
 
                 
                 if (!empty($classCode)) {
@@ -62,7 +62,7 @@ class LoginController extends Controller {
                 else{
                   $user_details->class_id = '';
                   $user_details->class_name = '';  
-                   $user_details->school_status = '0';
+                  $user_details->school_status = '0';
               }
               //check school approval status 
               $school_details = School::where('id', $user_details->school_id)->first();
