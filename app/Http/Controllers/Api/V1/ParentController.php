@@ -1205,7 +1205,7 @@ class ParentController extends Controller
                 throw new Exception($validator->errors()->first());
             } else {
                 $classes = ClassCode::select('id', 'class_name')->groupBy('class_name')->havingRaw('count(*) > 1')
-                ->orderBy('class_name')->get();
+                ->get();
 
                 $location = Cities::select('county', 'id')->groupBy('county')->orderBy('county')
                 ->havingRaw('count(*) > 1')->get();
