@@ -315,7 +315,7 @@ class AssignmentController extends Controller {
 //            $assignment = Assignment::with('AssignedClass')->where('teacher_id', $request->teacher_id)->get();
             $assignment = Assignment::with('User')->leftJoin('assigned_assignments', 'assignments.id', '=', 'assigned_assignments.assignment_id')
                             ->leftJoin('class_code', 'assigned_assignments.class_id', '=', 'class_code.id')
-                            ->select('assignments.*', 'class_code.class_name')
+                            ->select('assignments.*', 'class_code.class_name','class_code.id as class_id')
                             ->where('teacher_id', $request->teacher_id)->where('class_code.school_id', $request->school_id)->orderBy('assignments.id', 'DESC')->get();
             return response()->json(array('error' => false, 'message' => 'Record found', 'data' => $assignment), 200);
         }
