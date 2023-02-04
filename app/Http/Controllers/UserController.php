@@ -10,15 +10,16 @@ use App\Models\ClassCode;
 use App\User;
 use App\Models\Role;
 use DB;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use JWTAuth;
+ 
 use App\Models\UnapproveStudent;
 use App\Models\Group;
 use App\Models\School;
-use App\Models\ReportUser;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Models\ReportUser; 
 use Pusher\Pusher;
 use App\Notification;
 use App\Models\TeachingProgram;
@@ -35,6 +36,7 @@ use App\UserSubject;
 use Exception;
 use Mail;
 use Illuminate\Support\Str;
+use Tymon\JWTAuth\JWTAuth as JWTAuthJWTAuth;
 
 class UserController extends Controller
 {
@@ -75,20 +77,21 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+ 
 
         try {
             if (!$accessToken = JWTAuth::attempt($credentials)) {
-                return response()->json(['message' => 'Invalid Credentials'], 200);
+                 
+                return response()->json(['message' => 'Invalid Credentials', 'error' => true], 200);
             }
         } catch (JWTException $e) {
             return response()->json(['message' => 'could_not_create_token'], 500);
-        }
-
-        $users = User::where('email', '=', $request->input('email'))->where('role_id', 5)->first();
+        }  
+          $users = User::where('email', '=', $request->input('email'))->where('role_id', 5)->first();
         if (empty($users)) {
             return response()->json(['message' => 'Invalid Credentials'], 200);
         } else {
-            $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
+                 $user = User::where('email', '=', $request->input('email'))->where('role_id', 5)->where('status', 1)->first();
             if (empty($user)) {
                 return response()->json(['message' => 'Your account approval is pending'], 200);
             }
@@ -99,7 +102,6 @@ class UserController extends Controller
     // Register API
     public function register(Request $request)
     {
-
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
@@ -118,6 +120,13 @@ class UserController extends Controller
 
 
         $user = new User;
+         // $name = explode(',', $request->name);
+        // $user->first_name = $name[0];
+        // if (isset($name[1])) {
+        //     $user->last_name = $name[1];
+        // } else {
+        //     $user->last_name = '';
+        // }
         $name = $request->first_name . ' ' . $request->last_name;
         $user->name = $name;
         $user->first_name = $request->first_name;
@@ -129,7 +138,7 @@ class UserController extends Controller
         $user->school_id = $request->school_id;
         $user->country = $request->country;
         $user->position = $request->position;
-        $user->status = 1;
+        // $user->status = 1;
         $user->password = Hash::make($request->password);
         $user->role_id = 5;
         $user->save();
