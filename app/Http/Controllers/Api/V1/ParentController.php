@@ -1175,7 +1175,7 @@ class ParentController extends Controller
             } else {
                 // $teachers = AssignedTeacher::with('User')->with('Subjects')->where('class_id', $request->class_id)->where('school_id', $request->school_id)->get();
 
-                $users = User::where('school_id', $request->school_id)->where('role_id', 4)->where('status', 1)->select(DB::raw('users.id,users.name,user.profile_image,(SELECT group_concat( distinct class_name)  from class_code
+                $users = User::where('school_id', $request->school_id)->where('role_id', 4)->where('status', 1)->select(DB::raw('users.id,users.name,users.profile_image,(SELECT group_concat( distinct class_name)  from class_code
 						INNER join assigned_teachers as u On u.class_id= class_code.id  where  teacher_id=users.id)  as classes,(SELECT group_concat( distinct subject_name)  from subjects
 						INNER join assigned_teachers as u On u.subject_id= subjects.id  where  teacher_id=users.id)  as subjects'))->get();
 
