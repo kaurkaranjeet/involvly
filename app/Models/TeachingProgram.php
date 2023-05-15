@@ -12,17 +12,17 @@ class TeachingProgram extends Model
 
     protected $table = 'teaching_program';
     protected $primaryKey = 'teaching_id';
-    protected $fillable = [
-        'class_id',
-        'subject_id',
-        'hourly_rate',
-        'availability',
-        'location',
-        'preferences',
-        'user_id',
-        'request_status',
-
-    ];
+    // protected $fillable = [
+    //     'class_id',
+    //     'subject_id',
+    //     'hourly_rate',
+    //     'availability',
+    //     'location',
+    //     'preferences',
+    //     'user_id',
+    //     'request_status',
+    // ];
+    protected $guarded =['id'];
     // protected $casts = [
     //     'subject_id' => 'array',
     //     'class_id' => 'array'

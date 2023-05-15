@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomTeachingProgramRequest;
 use Illuminate\Http\Request;
 use Exception;
 use App\User;
@@ -321,46 +322,39 @@ class CommonController extends Controller
         }
     }
 
-    public function AddTeachingProgram(Request $request)
+    public function AddTeachingProgram(CustomTeachingProgramRequest $request)
     {
-        try {
             $input = $request->all();
-            $validator = Validator::make($input, [
-                'user_id' => 'required|exists:users,id',
-                'class_id' => 'required|exists:class_code,id',
-                'subject_id' => 'required|exists:subjects,id',
-                'hourly_rate' => 'required|integer',
-                'availability' => 'required|:Full-Time,Part-Time,Both',
-                'location' => 'required',
-                'preferences' => 'required|in:On-Site,Remote',
+            if($input){
+                DB::beginTransaction();
 
-            ]);
-            if ($validator->fails()) {
-                throw new Exception($validator->errors()->first());
-            } else {
-                $data = TeachingProgram::add($input);
+                try {
+                    $data = TeachingProgram::add($input);
 
-                if (is_array($request->subject_id)) {
-                    foreach ($request->subject_id as $key => $value) {
-                        $subject['subject_id'] = $value;
-                        $subject['user_id'] = $request->user_id;
-                        $subjects = UserSubject::add($subject);
+                    if (is_array($request->subject_id)) {
+                        foreach ($request->subject_id as $key => $value) {
+                            $subject['subject_id'] = $value;
+                            $subject['user_id'] = $request->user_id;
+                            $subjects = UserSubject::add($subject);
+                        }
                     }
-                }
-                if (is_array($request->class_id)) {
-                    foreach ($request->class_id as $key => $value) {
-                        $class_id['class_id'] = $value;
-                        $class_id['user_id'] = $request->user_id;
-                        UserClass::add($class_id);
+                    if (is_array($request->class_id)) {
+                        foreach ($request->class_id as $key => $value) {
+                            $class_id['class_id'] = $value;
+                            $class_id['user_id'] = $request->user_id;
+                            UserClass::add($class_id);
+                        }
                     }
+    
+                    // User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
+                    return response()->json(array('error' => false, 'data' => $data, 'message' => 'Updated Successfully'), 200);
+                } catch (\Exception $e) {
+                    DB::rollback();
+            
+                    return response()->json(['message' => 'Error: ' . $e->getMessage()], 500);
                 }
 
-                // User::where('id', $request->user_id)->update(['join_teaching_program' => $request->join_program_status]);
-                return response()->json(array('error' => false, 'data' => $data, 'message' => 'Updated Successfully'), 200);
             }
-        } catch (\Exception $e) {
-            return response()->json(array('error' => true, 'message' => $e->getMessage(), 'data' => []), 200);
-        }
     }
 
     public function UpdateUserImage(Request $request)
